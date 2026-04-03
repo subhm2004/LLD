@@ -1,3 +1,11 @@
 UML diagrams 2 type ke hote hai Structural (Static)  and Behavioral (Dynammic)
 ye donio hote h 7 7 type k total 14 lekin bum ebas 2 padhne h 1 static se (class Diagram) bohot imporant 
 i Dynamic se Sequence Diagram 
+
+
+public k liye + 
+protected k liye #
+private k liye - 
+
+2 types ki class hoti hai abstract class or ek concrete class 
+abstract class wo class hoti h jisme atlest ek virtual method hota hai jiski hum definane nhi dete bas use child class me define krte hai 

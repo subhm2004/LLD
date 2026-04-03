@@ -1,0 +1,3 @@
+UML diagrams 2 type ke hote hai Structural (Static)  and Behavioral (Dynammic)
+ye donio hote h 7 7 type k total 14 lekin bum ebas 2 padhne h 1 static se (class Diagram) bohot imporant 
+i Dynamic se Sequence Diagram 

@@ -21,9 +21,11 @@ Ek class ki sirf ek hi function honi chahiye. Agar aap ek hi class mein database
 
 O - Open/Closed Principle (OCP):
 Aapka code extension ke liye open hona chahiye par modification ke liye closed. Iska matlab hai ki naya feature lane ke liye purane code ko chhedne ki zaroorat na pade, balki naya code add karke kaam ho jaye.
+(A class should be open for extension , but closed for modification)
 
 L - Liskov Substitution Principle (LSP):
-Derived class (child class) ko apne base class (parent class) ki jagah bina kisi error ke use kiya ja sake [01:07:18]. Video mein example diya gaya hai ki agar ek Fixed Deposit account withdraw support nahi karta, toh use aise parent class se inherit nahi karna chahiye jo withdraw function force kare. Iske liye interface ko split karna behtar hota hai [01:06:15].
+Derived class (child class) ko apne base class (parent class) ki jagah bina kisi error ke use kiya ja sake hai. code me example diya gaya hai ki agar ek Fixed Deposit account withdraw support nahi karta, toh use aise parent class se inherit nahi karna chahiye jo withdraw function force kare. Iske liye interface ko split karna behtar hota hai .
+
 
 3. Baaki Principles
 Video ke end mein bataya gaya hai ki baaki do principles:

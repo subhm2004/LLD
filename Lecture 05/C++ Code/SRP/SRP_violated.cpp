@@ -4,62 +4,74 @@
 using namespace std;
 
 // Product class representing any item of any ECommerce.
-class Product {
+class Product
+{
 public:
     string name;
     double price;
- 
-    Product(string name, double price) {
+
+    Product(string name, double price)
+    {
         this->name = name;
         this->price = price;
     }
 };
 
 // Violating SRP: ShoppingCart is handling multiple responsibilities
-class ShoppingCart {
+class ShoppingCart
+{
 private:
-    vector<Product*> products; 
+    vector<Product *> products;
 
 public:
-    void addProduct(Product* p) { 
+    void addProduct(Product *p)
+    {
         products.push_back(p);
     }
 
-    const vector<Product*>& getProducts() { 
+    const vector<Product *> &getProducts()
+    {
         return products;
-    } 
+    }
 
     // 1. Calculates total price in cart.
-    double calculateTotal() {
+    double calculateTotal()
+    {
         double total = 0;
-        for (auto p : products) {
+        for (auto p : products)
+        {
             total += p->price;
         }
         return total;
     }
 
     // 2. Violating SRP - Prints invoice (Should be in a separate class)
-    void printInvoice() {
+    void printInvoice()
+    {
         cout << "Shopping Cart Invoice:\n";
-        for (auto p : products) {
+        for (auto p : products)
+        {
             cout << p->name << " - Rs " << p->price << endl;
         }
         cout << "Total: Rs " << calculateTotal() << endl;
     }
 
     // 3. Violating SRP - Saves to DB (Should be in a separate class)
-    void saveToDatabase() {
+    void saveToDatabase()
+    {
         cout << "Saving shopping cart to database..." << endl;
     }
 };
 
-int main() {
-    ShoppingCart* cart = new ShoppingCart();
+int main()
+{
+    ShoppingCart *cart = new ShoppingCart();
 
     cart->addProduct(new Product("Laptop", 50000));
+    cart->addProduct(new Product("SSD", 8000));
     cart->addProduct(new Product("Mouse", 2000));
 
-    cart->printInvoice();  
+    cart->printInvoice();
     cart->saveToDatabase();
 
     return 0;

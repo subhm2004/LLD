@@ -1,0 +1,36 @@
+Is video mein SOLID Design Principles ki theory samjhayi gayi hai, jo software development mein clean aur maintainable code likhne ke liye bahut zaroori hote hain. Ye principles Robert C. Martin (Uncle Bob) ne diye the.
+
+
+1. SOLID Principles ki Zaroorat Kyun Hai?
+Real-world projects mein jab hazaron classes aur laakhon lines ka code hota hai, toh bina principles ke code "Tightly Coupled" aur messy ho jata hai. Isse ye problems aati hain:
+
+Maintainability: Naye features add karna mushkil ho jata hai [02:53].
+
+Readability: Naya engineer code samajh nahi paata [03:26].
+
+Bugs: Ek jagah change karne se dusri jagah unexpected bugs aa jate hain [03:52].
+
+
+
+2. SOLID ka Matlab
+Video mein SOLID ke shuruati teen principles ko detail mein explain kiya gaya hai:
+
+S - Single Responsibility Principle (SRP):
+Ek class ki sirf ek hi function honi chahiye. Agar aap ek hi class mein database management, logging, aur business logic sab daal denge, toh wo maintain karna mushkil ho jayega.
+(A class should have only one reson to change , A class should do only one thing)
+
+O - Open/Closed Principle (OCP):
+Aapka code extension ke liye open hona chahiye par modification ke liye closed. Iska matlab hai ki naya feature lane ke liye purane code ko chhedne ki zaroorat na pade, balki naya code add karke kaam ho jaye.
+
+L - Liskov Substitution Principle (LSP):
+Derived class (child class) ko apne base class (parent class) ki jagah bina kisi error ke use kiya ja sake [01:07:18]. Video mein example diya gaya hai ki agar ek Fixed Deposit account withdraw support nahi karta, toh use aise parent class se inherit nahi karna chahiye jo withdraw function force kare. Iske liye interface ko split karna behtar hota hai [01:06:15].
+
+3. Baaki Principles
+Video ke end mein bataya gaya hai ki baaki do principles:
+
+I - Interface Segregation Principle (ISP)
+
+D - Dependency Inversion Principle (DIP)
+Inhe next video mein cover kiya jayega [01:07:23].
+
+Summary: SOLID principles ka main maqsad code ko "Loose Coupling" aur "High Cohesion" dena hai taaki software flexible aur bug-free rahe.

@@ -1,0 +1,3 @@
+agar kisi class ke aage hum Final laga de to wo immutable class ban jayegi ( us class ko koi inherit nahi kar sakte hai)
+
+or aagr hum ne kisi method ke aage laga diya Final to wo method immutable ho jayega (us method ko koi override nhi kr skta hai )

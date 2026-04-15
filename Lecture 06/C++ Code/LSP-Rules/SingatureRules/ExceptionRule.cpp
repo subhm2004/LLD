@@ -1,9 +1,9 @@
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 // Exception Rule:
-// A subclass should throw fewer or narrower exceptions 
+// A subclass should throw fewer or narrower exceptions
 // (but not additional or broader exceptions) than the parent.
 // C++ does not enforces this. Hence no compilation error.
 
@@ -17,51 +17,70 @@ using namespace std;
 ├── std::runtime_error      <-- For errors that occur at runtime
 │   ├── std::range_error        <-- Numeric result out of range
 │   ├── std::overflow_error     <-- Arithmetic overflow
-│   ├── std::underflow_error   
+│   ├── std::underflow_error
 */
 
-class Parent {
+class Parent
+{
 public:
-    virtual void getValue() noexcept(false) { // Parent throws logic_error exception
+    virtual void getValue() noexcept(false)
+    { // Parent throws logic_error exception
         throw logic_error("Parent error");
     }
 };
 
-class Child : public Parent {
+class Child : public Parent
+{
 public:
-    void getValue() noexcept(false)  override { // Child throws out_of_range exception
+    void getValue() noexcept(false) override
+    { // Child throws out_of_range exception
         throw out_of_range("Child error");
         // throw runtime_error("Child Error"); // This is Wrong
     }
 };
 
-class Client {
+class Client
+{
 private:
-    Parent* p;
+    Parent *p;
 
 public:
-    Client(Parent* p) {
+    Client(Parent *p)
+    {
         this->p = p;
     }
-    void takeValue() {
-        try {
+    void takeValue()
+    {
+        try
+        {
             p->getValue();
         }
-        catch(const logic_error& e) {
+        catch (const logic_error &e)
+        {
             cout << "Logic error exception occured : " << e.what() << endl;
         }
     }
 };
 
-int main() {
-    Parent* parent = new Parent();
-    Child* child = new Child();
+int main()
+{
+    Parent *parent = new Parent();
+    Child *child = new Child();
 
-    Client* client = new Client(parent);
-    //Client* client = new Client(child);
+    Client *client = new Client(parent);
+    // Client* client = new Client(child);
 
     client->takeValue();
 
     return 0;
 }
-    
+
+/*
+🔹  noexcept(false)
+
+👉 Iska matlab:
+
+Ye function exception throw kar sakta hai
+Default me bhi C++ me functions throw kar sakte hain, but yeh explicitly likha hai clarity ke liye
+
+*/

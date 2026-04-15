@@ -43,7 +43,7 @@ public:
         return a; // access de rahe hain (ownership B ke paas hi hai)
     }
 
-    // Destructor (VERY IMPORTANT ⚠️)
+    // Destructor (VERY IMPORTANT )
     ~B()
     {
         // manually memory free karna padega

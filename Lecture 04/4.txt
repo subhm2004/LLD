@@ -13,4 +13,6 @@ abstract class wo class hoti h jisme atlest ek virtual method hota hai jiski hum
 
 simple - 
 aggrigaton - independent exist kr skte hai 
-composition - independently exist nhi kr skte hai 
+composition - independently exist nhi kr skte hai  
+
+inheritance me is a realtion hota h composition me has a realtion

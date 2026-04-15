@@ -32,7 +32,8 @@ Video ke end mein bataya gaya hai ki baaki do principles:
 
 I - Interface Segregation Principle (ISP)
 
+
 D - Dependency Inversion Principle (DIP)
-Inhe next video mein cover kiya jayega [01:07:23].
+
 
 Summary: SOLID principles ka main maqsad code ko "Loose Coupling" aur "High Cohesion" dena hai taaki software flexible aur bug-free rahe.

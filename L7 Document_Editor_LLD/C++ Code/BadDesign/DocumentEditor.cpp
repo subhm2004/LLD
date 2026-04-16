@@ -2,34 +2,43 @@
 #include <vector>
 #include <string>
 #include <fstream>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-class DocumentEditor {
+class DocumentEditor
+{
 private:
     vector<string> documentElements;
     string renderedDocument;
 
 public:
     // Adds text as a plain string
-    void addText(string text) {
+    void addText(string text)
+    {
         documentElements.push_back(text);
     }
 
     // Adds an image represented by its file path
-    void addImage(string imagePath) {
+    void addImage(string imagePath)
+    {
         documentElements.push_back(imagePath);
     }
 
-    // Renders the document by checking the type of each element at runtime
-    string renderDocument() {
-        if(renderedDocument.empty()) {
+    // Renders the document by checking the type of each element at runtime (Business Logic h ye )
+    string renderDocument()
+    {
+        if (renderedDocument.empty())
+        {
             string result;
-            for (auto element : documentElements) {
+            for (auto element : documentElements)
+            {
                 if (element.size() > 4 && (element.substr(element.size() - 4) == ".jpg" ||
-                 element.substr(element.size() - 4) == ".png")) {
+                                           element.substr(element.size() - 4) == ".png"))
+                {
                     result += "[Image: " + element + "]" + "\n";
-                } else {
+                }
+                else
+                {
                     result += element + "\n";
                 }
             }
@@ -38,19 +47,24 @@ public:
         return renderedDocument;
     }
 
-    void saveToFile() {
+    void saveToFile()
+    {
         ofstream file("document.txt");
-        if (file.is_open()) {
+        if (file.is_open())
+        {
             file << renderDocument();
             file.close();
             cout << "Document saved to document.txt" << endl;
-        } else {
+        }
+        else
+        {
             cout << "Error: Unable to open file for writing." << endl;
         }
     }
 };
 
-int main() {
+int main()
+{
     DocumentEditor editor;
     editor.addText("Hello, world!");
     editor.addImage("picture.jpg");
@@ -59,6 +73,6 @@ int main() {
     cout << editor.renderDocument() << endl;
 
     editor.saveToFile();
-    
+
     return 0;
 }

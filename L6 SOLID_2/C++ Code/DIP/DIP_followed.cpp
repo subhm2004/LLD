@@ -6,6 +6,7 @@ class Database
 {
 public:
     virtual void save(string data) = 0; // Pure virtual function
+    virtual ~Database() {};
 };
 
 // MySQL implementation (Low-level module)
@@ -62,4 +63,9 @@ int main()
 
     UserService *service2 = new UserService(mongodb);
     service2->storeUser("Rohit");
+
+    delete service1;
+    delete service2;
+    delete mysql;
+    delete mongodb;
 }

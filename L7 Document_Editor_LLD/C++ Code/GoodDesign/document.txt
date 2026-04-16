@@ -1,0 +1,3 @@
+Hello, world!
+**This is a bold text.**
+	[Image: picture.jpg]

@@ -5,7 +5,7 @@ using namespace std;
 class WalkableRobot
 {
 public:
-    virtual void walk() = 0;
+    virtual void walk() = 0; // interface or abstract class
     virtual ~WalkableRobot() {}
 };
 
@@ -85,6 +85,7 @@ public:
 class Robot
 {
 protected:
+    // has a realtion
     WalkableRobot *walkBehavior;
     TalkableRobot *talkBehavior;
     FlyableRobot *flyBehavior;

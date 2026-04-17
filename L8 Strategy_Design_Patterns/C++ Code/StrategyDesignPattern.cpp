@@ -1,122 +1,153 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
 // --- Strategy Interface for Walk ---
-class WalkableRobot {
+class WalkableRobot
+{
 public:
     virtual void walk() = 0;
     virtual ~WalkableRobot() {}
 };
 
 // --- Concrete Strategies for walk ---
-class NormalWalk : public WalkableRobot {
+class NormalWalk : public WalkableRobot
+{
 public:
-    void walk() override { 
-        cout << "Walking normally..." << endl; 
+    void walk() override
+    {
+        cout << "Walking normally..." << endl;
     }
 };
 
-class NoWalk : public WalkableRobot {
+class NoWalk : public WalkableRobot
+{
 public:
-    void walk() override { 
-        cout << "Cannot walk." << endl; 
+    void walk() override
+    {
+        cout << "Cannot walk." << endl;
     }
 };
-
 
 // --- Strategy Interface for Talk ---
-class TalkableRobot {
+class TalkableRobot
+{
 public:
     virtual void talk() = 0;
     virtual ~TalkableRobot() {}
 };
 
 // --- Concrete Strategies for Talk ---
-class NormalTalk : public TalkableRobot {
+class NormalTalk : public TalkableRobot
+{
 public:
-    void talk() override { 
-        cout << "Talking normally..." << endl; 
+    void talk() override
+    {
+        cout << "Talking normally..." << endl;
     }
 };
 
-class NoTalk : public TalkableRobot {
+class NoTalk : public TalkableRobot
+{
 public:
-    void talk() override { 
-        cout << "Cannot talk." << endl; 
+    void talk() override
+    {
+        cout << "Cannot talk." << endl;
     }
 };
 
 // --- Strategy Interface for Fly ---
-class FlyableRobot {
+class FlyableRobot
+{
 public:
     virtual void fly() = 0;
     virtual ~FlyableRobot() {}
 };
 
-class NormalFly : public FlyableRobot {
+class NormalFly : public FlyableRobot
+{
 public:
-    void fly() override { 
-        cout << "Flying normally..." << endl; 
+    void fly() override
+    {
+        cout << "Flying normally..." << endl;
     }
 };
 
-class NoFly : public FlyableRobot {
+class NoFly : public FlyableRobot
+{
 public:
-    void fly() override { 
-        cout << "Cannot fly." << endl; 
+    void fly() override
+    {
+        cout << "Cannot fly." << endl;
     }
 };
 
 // --- Robot Base Class ---
-class Robot {
+class Robot
+{
 protected:
-    WalkableRobot* walkBehavior;
-    TalkableRobot* talkBehavior;
-    FlyableRobot* flyBehavior;
+    WalkableRobot *walkBehavior;
+    TalkableRobot *talkBehavior;
+    FlyableRobot *flyBehavior;
 
 public:
-    Robot(WalkableRobot* w, TalkableRobot* t, FlyableRobot* f) {
+    Robot(WalkableRobot *w, TalkableRobot *t, FlyableRobot *f)
+    {
         this->walkBehavior = w;
         this->talkBehavior = t;
         this->flyBehavior = f;
     }
-       
-    void walk() { 
-        walkBehavior->walk(); 
+    virtual ~Robot()
+    {
+        delete walkBehavior;
+        delete talkBehavior;
+        delete flyBehavior;
+        // is se heap memory clean ho jayegi
     }
-    void talk() { 
-        talkBehavior->talk(); 
+
+    void walk()
+    {
+        walkBehavior->walk();
     }
-    void fly() { 
-        flyBehavior->fly(); 
+    void talk()
+    {
+        talkBehavior->talk();
+    }
+    void fly()
+    {
+        flyBehavior->fly();
     }
 
     virtual void projection() = 0; // Abstract method for subclasses
 };
 
 // --- Concrete Robot Types ---
-class CompanionRobot : public Robot {
+class CompanionRobot : public Robot
+{
 public:
-    CompanionRobot(WalkableRobot* w, TalkableRobot* t, FlyableRobot* f)
+    CompanionRobot(WalkableRobot *w, TalkableRobot *t, FlyableRobot *f)
         : Robot(w, t, f) {}
 
-    void projection() override {
+    void projection() override
+    {
         cout << "Displaying friendly companion features..." << endl;
     }
 };
 
-class WorkerRobot : public Robot {
+class WorkerRobot : public Robot
+{
 public:
-    WorkerRobot(WalkableRobot* w, TalkableRobot* t, FlyableRobot* f)
+    WorkerRobot(WalkableRobot *w, TalkableRobot *t, FlyableRobot *f)
         : Robot(w, t, f) {}
 
-    void projection() override {
+    void projection() override
+    {
         cout << "Displaying worker efficiency stats..." << endl;
     }
 };
 
 // --- Main Function ---
-int main() {
+int main()
+{
     Robot *robot1 = new CompanionRobot(new NormalWalk(), new NormalTalk(), new NoFly());
     robot1->walk();
     robot1->talk();
@@ -130,6 +161,9 @@ int main() {
     robot2->talk();
     robot2->fly();
     robot2->projection();
+
+    delete robot1;
+    delete robot2;
 
     return 0;
 }

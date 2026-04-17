@@ -7,10 +7,15 @@ Jab hum normal inheritance use karte hain, toh kuch bade issues aate hain:
 - **The "Flying Duck" Problem:** Maan lo ek `Robot` base class hai jisme `fly()` method hai. Ab agar tum `WorkerRobot` banaoge jo zameen par chalta hai, toh inheritance ki wajah se uske paas bhi `fly()` aa jayega jo ki galat hai.
 - **Rigid Code:** Agar 10 robots ko ek hi tarah se walk karwana hai, toh logic duplicate hota hai.
 - **Inflexibility:** Runtime par robot ka behavior badalna (jaise walking se udne lagna) lagbhag impossible ho jata hai.
+- **Code Reuse** ache se nhi ho pata hai isse
+- **To add a new feature alot of changes are requied which is not good at all**
+- **Open Close Principle Break kr dega ye**
 
 ---
 
 ## 2. Strategy Design Pattern (Brief Note)
+
+**Strategy Design Pattern Defines a family of algorithms,put them into seprate classes,so that they can be changed at runtime.**
 
 Strategy Pattern ek **Behavioral Design Pattern** hai jo "Composition" par focus karta hai na ki "Inheritance" par.
 

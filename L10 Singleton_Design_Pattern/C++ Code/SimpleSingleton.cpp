@@ -1,3 +1,5 @@
+// Singleton ka mltb ek esi class banana jisk hum bas ek hi object bana paye dusra object banana hi possible na ho
+
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -23,7 +25,7 @@ public:
     }
 };
 
-// Initialize static member
+// Initialize static  (class ke bahar declare karna padta hai)
 Singleton *Singleton::instance = nullptr;
 
 int main()

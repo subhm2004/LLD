@@ -4,6 +4,7 @@
 
 using namespace std;
 
+// C++ me mutex help krta h lock and unlock krne k liye (multithreading ka concept hai )
 class Singleton
 {
 private:
@@ -18,7 +19,7 @@ private:
 public:
     static Singleton *getInstance()
     {
-        lock_guard<mutex> lock(mtx); // Lock for thread safety
+        lock_guard<mutex> lock(mtx); // Lock for thread safety (critical section ko lock kr diya hai taki ek baar me ek hi thread critical section me enter kre or wo use execute kare or jab thread vha se bahar nikle to wo critical section ko unlock kr de taki dusri thread us me enter ka paye)
         if (instance == nullptr)
         {
             instance = new Singleton();

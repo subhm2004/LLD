@@ -1,166 +1,222 @@
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 // Product 1 --> Burger
-class Burger {
+class Burger
+{
 public:
-    virtual void prepare() = 0;  // Pure virtual function
+    virtual void prepare() = 0; // Pure virtual function
+    virtual ~Burger() {}        // Virtual destructor
 };
 
-class BasicBurger : public Burger {
+class BasicBurger : public Burger
+{
 public:
-    void prepare() override {
+    void prepare() override
+    {
         cout << "Preparing Basic Burger with bun, patty, and ketchup!" << endl;
     }
 };
 
-class StandardBurger : public Burger {
+class StandardBurger : public Burger
+{
 public:
-    void prepare() override {
+    void prepare() override
+    {
         cout << "Preparing Standard Burger with bun, patty, cheese, and lettuce!" << endl;
     }
 };
 
-class PremiumBurger : public Burger {
+class PremiumBurger : public Burger
+{
 public:
-    void prepare() override {
+    void prepare() override
+    {
         cout << "Preparing Premium Burger with gourmet bun, premium patty, cheese, lettuce, and secret sauce!" << endl;
     }
 };
 
-class BasicWheatBurger : public Burger {
+class BasicWheatBurger : public Burger
+{
 public:
-    void prepare() override {
+    void prepare() override
+    {
         cout << "Preparing Basic Wheat Burger with bun, patty, and ketchup!" << endl;
     }
 };
 
-class StandardWheatBurger : public Burger {
+class StandardWheatBurger : public Burger
+{
 public:
-    void prepare() override {
+    void prepare() override
+    {
         cout << "Preparing Standard Wheat Burger with bun, patty, cheese, and lettuce!" << endl;
     }
 };
 
-class PremiumWheatBurger : public Burger {
+class PremiumWheatBurger : public Burger
+{
 public:
-    void prepare() override {
+    void prepare() override
+    {
         cout << "Preparing Premium Wheat Burger with gourmet bun, premium patty, cheese, lettuce, and secret sauce!" << endl;
     }
 };
 
 // Product 2 --> GarlicBread
-class GarlicBread {
+class GarlicBread
+{
 public:
     virtual void prepare() = 0;
+    virtual ~GarlicBread() {} // Virtual destructor
 };
 
-class BasicGarlicBread : public GarlicBread {
+class BasicGarlicBread : public GarlicBread
+{
 public:
-    void prepare() override {
+    void prepare() override
+    {
         std::cout << "Preparing Basic Garlic Bread with butter and garlic!\n";
     }
 };
 
-class CheeseGarlicBread : public GarlicBread {
+class CheeseGarlicBread : public GarlicBread
+{
 public:
-    void prepare() override {
+    void prepare() override
+    {
         std::cout << "Preparing Cheese Garlic Bread with extra cheese and butter!\n";
     }
 };
 
-class BasicWheatGarlicBread : public GarlicBread {
+class BasicWheatGarlicBread : public GarlicBread
+{
 public:
-    void prepare() override {
+    void prepare() override
+    {
         std::cout << "Preparing Basic Wheat Garlic Bread with butter and garlic!\n";
     }
 };
 
-class CheeseWheatGarlicBread : public GarlicBread {
+class CheeseWheatGarlicBread : public GarlicBread
+{
 public:
-    void prepare() override {
+    void prepare() override
+    {
         std::cout << "Preparing Cheese Wheat Garlic Bread with extra cheese and butter!\n";
     }
 };
 
 // Factory and its concretions
-class MealFactory {
+class MealFactory
+{
 public:
-    virtual Burger* createBurger(string& type) = 0;
-    virtual GarlicBread* createGarlicBread(string& type) = 0;
+    virtual Burger *createBurger(string &type) = 0;
+    virtual GarlicBread *createGarlicBread(string &type) = 0;
+    virtual ~MealFactory() {} // Virtual destructor
 };
 
-class SinghBurger : public MealFactory {
+class SinghBurger : public MealFactory
+{
 public:
-    Burger* createBurger(string& type) override {
-        if (type == "basic") {
+    Burger *createBurger(string &type) override
+    {
+        if (type == "basic")
+        {
             return new BasicBurger();
-        } else if (type == "standard") {
+        }
+        else if (type == "standard")
+        {
             return new StandardBurger();
-        } else if (type == "premium") {
+        }
+        else if (type == "premium")
+        {
             return new PremiumBurger();
-        } else {
+        }
+        else
+        {
             cout << "Invalid burger type! " << endl;
             return nullptr;
         }
     }
 
-    GarlicBread* createGarlicBread(string& type) override {
-        if (type == "basic") {
+    GarlicBread *createGarlicBread(string &type) override
+    {
+        if (type == "basic")
+        {
             return new BasicGarlicBread();
-        } else if (type == "cheese") {
+        }
+        else if (type == "cheese")
+        {
             return new CheeseGarlicBread();
-        } 
-        else {
+        }
+        else
+        {
             cout << "Invalid Garlic bread type! " << endl;
             return nullptr;
         }
     }
 };
 
-class KingBurger : public MealFactory {
+class KingBurger : public MealFactory
+{
 public:
-    Burger* createBurger(string& type) override {
-        if (type == "basic") {
+    Burger *createBurger(string &type) override
+    {
+        if (type == "basic")
+        {
             return new BasicWheatBurger();
-        } else if (type == "standard") {
+        }
+        else if (type == "standard")
+        {
             return new StandardWheatBurger();
-        } else if (type == "premium") {
+        }
+        else if (type == "premium")
+        {
             return new PremiumWheatBurger();
-        } else {
+        }
+        else
+        {
             cout << "Invalid burger type! " << endl;
             return nullptr;
         }
     }
 
-    GarlicBread* createGarlicBread(string& type) override {
-        if (type == "basic") {
+    GarlicBread *createGarlicBread(string &type) override
+    {
+        if (type == "basic")
+        {
             return new BasicWheatGarlicBread();
-        } else if (type == "cheese") {
+        }
+        else if (type == "cheese")
+        {
             return new CheeseWheatGarlicBread();
-        } 
-        else {
+        }
+        else
+        {
             cout << "Invalid Garlic bread type! " << endl;
             return nullptr;
         }
     }
 };
 
-int main() {
+int main()
+{
     string burgerType = "basic";
     string garlicBreadType = "cheese";
 
-    MealFactory* mealFactory = new KingBurger();
+    MealFactory *mealFactory = new KingBurger();
 
-    Burger* burger = mealFactory->createBurger(burgerType);
-    GarlicBread* garlicBread = mealFactory->createGarlicBread(garlicBreadType);
+    Burger *burger = mealFactory->createBurger(burgerType);
+    GarlicBread *garlicBread = mealFactory->createGarlicBread(garlicBreadType);
 
     burger->prepare();
     garlicBread->prepare();
 
+    delete burger;
+    delete garlicBread;
+    delete mealFactory;
+
     return 0;
 }
-
-
-

@@ -11,8 +11,13 @@ private k liye -
 abstract class wo class hoti h jisme atlest ek virtual method hota hai jiski hum definane nhi dete bas use child class me define krte hai 
 
 
-simple - 
-aggrigaton - independent exist kr skte hai 
-composition - independently exist nhi kr skte hai  
+simple - Simple Association: Jab do classes ek-doosre ko jaanti hain aur use karti hain, par unke beech koi 'Ownership' (maalik-naukar) ka rishta nahi hota.
 
-inheritance me is a realtion hota h composition me has a realtion
+aggrigaton - independent exist kr skte hai (Class ke andar doosri class ka pointer hota hai)
+composition - independently exist nhi kr skte hai (Class ke andar doosri class ka object hota hai)
+
+inheritance me is a realtion hota h 
+composition me has a realtion hota h 
+
+
+

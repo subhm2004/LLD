@@ -2,23 +2,26 @@
 #include "TomatoApp.h"
 using namespace std;
 
-int main() {
+int main()
+{
     // Create TomatoApp Object
-    TomatoApp* tomato = new TomatoApp();
+    TomatoApp *tomato = new TomatoApp();
 
     // Simulate a user coming in (Happy Flow)
-    User* user = new User(101, "Aditya", "Delhi");
+    User *user = new User(101, "Shubham", "Delhi");
     cout << "User: " << user->getName() << " is active." << endl;
 
     // User searches for restaurants by location
-    vector<Restaurant*> restaurantList = tomato->searchRestaurants("Delhi");
+    vector<Restaurant *> restaurantList = tomato->searchRestaurants("Delhi");
 
-    if (restaurantList.empty()) {
+    if (restaurantList.empty())
+    {
         cout << "No restaurants found!" << endl;
         return 0;
     }
     cout << "Found Restaurants:" << endl;
-    for (auto restaurant : restaurantList) {
+    for (auto restaurant : restaurantList)
+    {
         cout << " - " << restaurant->getName() << endl;
     }
 
@@ -34,14 +37,14 @@ int main() {
     tomato->printUserCart(user);
 
     // User checkout the cart
-    Order* order = tomato->checkoutNow(user, "Delivery", new UpiPaymentStrategy("1234567890"));
-    
+    Order *order = tomato->checkoutNow(user, "Delivery", new UpiPaymentStrategy("1234567890"));
+
     // User pay for the cart. If payment is success, notification is sent.
     tomato->payForOrder(user, order);
 
     // Cleanup Code.
     delete tomato;
     delete user;
-    
+
     return 0;
 }

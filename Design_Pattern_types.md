@@ -47,3 +47,10 @@ Ye patterns classes aur objects ko aise arrange karte hain ki system simple aur 
 ### Behavioral
 
 Ye patterns define karte hain ki objects ek dusre ke saath kaise communicate karte hain.
+
+---
+
+## Reference
+
+For detailed explanations and examples, visit:  
+https://refactoring.guru/design-patterns

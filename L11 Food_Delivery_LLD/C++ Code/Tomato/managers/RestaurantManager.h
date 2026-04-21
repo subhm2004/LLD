@@ -52,6 +52,16 @@ public:
         lock_guard<mutex> lock(mtx);
 
         vector<Restaurant *> result;
+        // ye line poori string ko lowercase me convert kar rahi hai.
+        /*
+
+        iska matlab hai :-
+
+        loc.begin(), loc.end() → poori string loc ke characters
+        loc.begin() → result wahi same string me store hoga (in-place)
+        ::tolower → har character ko lowercase me convert karo
+
+        */
         transform(loc.begin(), loc.end(), loc.begin(), ::tolower);
 
         for (auto r : restaurants)

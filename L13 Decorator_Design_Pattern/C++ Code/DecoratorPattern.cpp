@@ -20,11 +20,11 @@ public:
     }
 };
 
-// Abstract Decorator: Character_Decorator "is-a" Charatcer and "has-a" Character.
+// Abstract Decorator: Character_Decorator "is-a realtionship" Charatcer and "has-a" Character.
 class Character_Decorator : public Character
 {
 protected:
-    Character *character; // Wrapped component
+    Character *character; // Wrapped component (has-a relationship)
 public:
     Character_Decorator(Character *c)
     {
@@ -90,6 +90,12 @@ int main()
     // Finally, add a StarPowerUp decoration.
     mario = new StarPowerUp(mario);
     cout << "After StarPowerUp: " << mario->getAbilities() << endl;
+
+    cout << endl;
+
+    // just for learning see pg image in folder
+    mario = new StarPowerUp(new GunPowerUp(new HeightUp(mario)));
+    cout << "Just for learning :" << mario->getAbilities() << endl;
 
     delete mario;
 

@@ -2,7 +2,8 @@
 using namespace std;
 
 // Command Interface
-class Command {
+class Command
+{
 public:
     virtual void execute() = 0;
     virtual void undo() = 0;
@@ -10,131 +11,172 @@ public:
 };
 
 // Receivers
-class Light {
+class Light
+{
 public:
-    void on()  { 
-        cout << "Light is ON" << endl; 
+    void on()
+    {
+        cout << "Light is ON" << endl;
     }
-    void off() { 
+    void off()
+    {
         cout << "Light is OFF" << endl;
     }
 };
 
-class Fan {
+class Fan
+{
 public:
-    void on()  { 
-        cout << "Fan is ON" << endl; 
+    void on()
+    {
+        cout << "Fan is ON" << endl;
     }
-    void off() { 
-        cout << "Fan is OFF" << endl; 
+    void off()
+    {
+        cout << "Fan is OFF" << endl;
     }
 };
 
 // Concrete Command for Light
-class LightCommand : public Command {
+class LightCommand : public Command
+{
 private:
-    Light* light;
+    Light *light;
 
 public:
-    LightCommand(Light* l) { 
-        light = l; 
+    LightCommand(Light *l)
+    {
+        light = l;
     }
 
-    void execute() { 
-        light->on(); 
+    void execute()
+    {
+        light->on();
     }
 
-    void undo() { 
-        light->off(); 
+    void undo()
+    {
+        light->off();
     }
 };
 
 // Concrete Command for Fan
-class FanCommand : public Command {
+class FanCommand : public Command
+{
 private:
-    Fan* fan;
+    Fan *fan;
 
 public:
-    FanCommand(Fan* f) { 
-        fan = f; 
+    FanCommand(Fan *f)
+    {
+        fan = f;
     }
-    void execute() { 
-        fan->on(); 
+    void execute()
+    {
+        fan->on();
     }
-    void undo() { 
-        fan->off(); 
+    void undo()
+    {
+        fan->off();
     }
 };
 
-// Invoker: Remote Controller with static 2D array of 6 buttons (3 rows, 2 cols)
-class RemoteController {
+/* --- Dynamic Invoker: RemoteController --- */
+class RemoteController
+{
 private:
-    static const int numButtons = 4;
-    Command* buttons[numButtons];
-    bool buttonPressed[numButtons];
+    // Dynamic 2D structure: rows contain columns of commands
+    vector<vector<Command *>> buttons;
+    vector<vector<bool>> buttonPressed;
 
 public:
-    RemoteController() {
-        for (int i = 0; i < numButtons; i++) {
-            buttons[i] = nullptr;
-            buttonPressed[i] = false;  // false = off, true = on
+    // Constructor handles dynamic grid size
+    RemoteController(int rows, int cols)
+    {
+        buttons.resize(rows, vector<Command *>(cols, nullptr));
+        buttonPressed.resize(rows, vector<bool>(cols, false));
+    }
+
+    // Command set karne ke liye
+    void setCommand(int row, int col, Command *cmd)
+    {
+        if (row < buttons.size() && col < buttons[row].size())
+        {
+            if (buttons[row][col] != nullptr)
+                delete buttons[row][col];
+
+            buttons[row][col] = cmd;
+            buttonPressed[row][col] = false;
         }
     }
 
-    void setCommand(int idx, Command* cmd) {
-        if (idx >= 0 && idx < numButtons) {
-            if (buttons[idx] != nullptr)
-                delete buttons[idx];
-            buttons[idx] = cmd;
-            buttonPressed[idx] = false;
-        }
-    }
-
-    void pressButton(int idx) {
-        if (idx >= 0 && idx < numButtons && buttons[idx] != nullptr) {
-            if (buttonPressed[idx] == false) {
-                buttons[idx]->execute();
-            } else {
-                buttons[idx]->undo();
+    // Button press logic
+    void pressButton(int row, int col)
+    {
+        if (row < buttons.size() && col < buttons[row].size() && buttons[row][col] != nullptr)
+        {
+            if (buttonPressed[row][col] == false)
+            {
+                buttons[row][col]->execute();
             }
-            buttonPressed[idx] = !buttonPressed[idx];
-        } else {
-            cout << "No command assigned at button " << idx << endl;
+            else
+            {
+                buttons[row][col]->undo();
+            }
+            buttonPressed[row][col] = !buttonPressed[row][col];
+        }
+        else
+        {
+            cout << "Invalid button or no command at [" << row << "][" << col << "]\n";
         }
     }
 
-    ~RemoteController() {
-        for (int i = 0; i < numButtons; i++) {
-            if (buttons[i] != NULL)
-                delete buttons[i];
+    // Destructor to clean up all dynamic commands
+    ~RemoteController()
+    {
+        for (auto &row : buttons)
+        {
+            for (auto &cmd : row)
+            {
+                if (cmd != nullptr)
+                    delete cmd;
+            }
         }
     }
 };
 
-int main() {
+int main()
+{
+    // 1. Receivers create karein
+    Light *livingRoomLight = new Light();
+    Fan *ceilingFan = new Fan();
 
-    Light* livingRoomLight = new Light();
-    Fan* ceilingFan = new Fan();
+    // 2. RemoteController ka object banayein (Example: 2 rows aur 2 columns ka grid)
+    // Constructor ab (rows, cols) leta hai
+    RemoteController *remote = new RemoteController(2, 2);
 
-    RemoteController* remote = new RemoteController();
+    // 3. Commands set karein (Ab row aur column index dena hoga)
+    // Row 0, Col 0 par Light ka command
+    remote->setCommand(0, 0, new LightCommand(livingRoomLight));
 
-    remote->setCommand(0, new LightCommand(livingRoomLight));
-    remote->setCommand(1, new FanCommand(ceilingFan));
+    // Row 0, Col 1 par Fan ka command
+    remote->setCommand(0, 1, new FanCommand(ceilingFan));
 
-    // Simulate button presses (toggle behavior)
-    cout << "--- Toggling Light Button 0 ---" << endl;
-    remote->pressButton(0);  // ON
-    remote->pressButton(0);  // OFF
+    // 4. Simulate button presses (Toggle behavior)
+    cout << "--- Toggling Light Button [0][0] ---" << endl;
+    remote->pressButton(0, 0); // ON
+    remote->pressButton(0, 0); // OFF
 
-    cout << "--- Toggling Fan Button 1 ---" << endl;
-    remote->pressButton(1);  // ON
-    remote->pressButton(1);  // OFF
+    cout << "--- Toggling Fan Button [0][1] ---" << endl;
+    remote->pressButton(0, 1); // ON
+    remote->pressButton(0, 1); // OFF
 
-    // Press unassigned button to show default message
-    cout << "--- Pressing Unassigned Button 2 ---" << endl;
-    remote->pressButton(2);
+    // 5. Invalid ya Unassigned button press karke check karein
+    cout << "--- Pressing Unassigned Button [1][1] ---" << endl;
+    remote->pressButton(1, 1);
 
-    // Clean up
+    // 6. Clean up
+    // Note: RemoteController ka destructor khud commands delete kar dega
     delete remote;
     delete livingRoomLight;
     delete ceilingFan;

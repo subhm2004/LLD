@@ -14,7 +14,7 @@ public:
 // 2. Adaptee: provides XML data from a raw input
 class XmlDataProvider {
 public:
-    // Expect data in "name:id" format (e.g. "Alice:42")
+    // Expect data in "name:id" format (e.g. "Shubham:124")
     string getXmlData(const string& data) {
         size_t sep = data.find(':');
         string name = data.substr(0, sep);
@@ -72,12 +72,12 @@ int main() {
     IReports* adapter = new XmlDataProviderAdapter(xmlProv);
 
     // 3. Give it some raw data
-    string rawData = "Alice:42";
+    string rawData = "Shubham:124";
 
     // 4. Client prints the JSON
     Client* client = new Client();
     client->getReport(adapter, rawData);
-    // → Processed JSON: {"name":"Alice", "id":42}
+    // → Processed JSON: {"name":"Shubham", "id":124}
 
     // 5. Cleanup
     delete adapter;

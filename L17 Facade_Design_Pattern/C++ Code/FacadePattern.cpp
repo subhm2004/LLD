@@ -78,8 +78,8 @@ public:
 
 // Client
 int main() {
-    ComputerFacade computer;
-    computer.startComputer();
+    ComputerFacade* computer = new ComputerFacade();
+    computer->startComputer();
 
     return 0;
 }

@@ -1,0 +1,51 @@
+classDiagram
+direction LR
+
+class IReports {
+  <<interface>>
+  +getJsonData(data: string) string
+}
+
+class XmlDataProvider {
+  +getXmlData(data: string) string
+}
+
+class XmlDataProviderAdapter {
+  -xmlProvider: XmlDataProvider*
+  +XmlDataProviderAdapter(provider: XmlDataProvider*)
+  +getJsonData(data: string) string
+}
+
+class Client {
+  +getReport(report: IReports*, rawData: string) void
+}
+
+class Main {
+  +main() int
+}
+
+IReports <|.. XmlDataProviderAdapter : implements
+XmlDataProviderAdapter --> XmlDataProvider : has-a
+Client --> IReports : uses
+Main ..> XmlDataProvider : creates
+Main ..> XmlDataProviderAdapter : creates
+Main ..> Client : creates
+
+%% -----------------------------
+%% Runtime interaction
+%% -----------------------------
+sequenceDiagram
+participant M as main()
+participant C as Client
+participant A as XmlDataProviderAdapter (IReports)
+participant X as XmlDataProvider
+
+M->>X: create XmlDataProvider
+M->>A: create Adapter(X)
+M->>C: create Client
+M->>C: getReport(A, "Shubham:124")
+C->>A: getJsonData(rawData)
+A->>X: getXmlData(rawData)
+X-->>A: XML data
+A-->>C: JSON data
+C-->>M: print Processed JSON

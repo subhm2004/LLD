@@ -1,0 +1,35 @@
+classDiagram
+    class Two_Dimensional_Shape {
+        <<interface>>
+        +area() double
+    }
+
+    class Three_Dimensional_Shape {
+        <<interface>>
+        +area() double
+        +volume() double
+    }
+
+    class Square {
+        -side: double
+        +Square(s: double)
+        +area() double
+    }
+
+    class Rectangle {
+        -length: double
+        -width: double
+        +Rectangle(l: double, w: double)
+        +area() double
+    }
+
+    class Cube {
+        -side: double
+        +Cube(s: double)
+        +area() double
+        +volume() double
+    }
+
+    Two_Dimensional_Shape <|.. Square
+    Two_Dimensional_Shape <|.. Rectangle
+    Three_Dimensional_Shape <|.. Cube

@@ -1,0 +1,32 @@
+classDiagram
+    direction TB
+
+    class DocumentEditor {
+        -vector~string~ documentElements
+        -string renderedDocument
+        +addText(string text)
+        +addImage(string imagePath)
+        +renderDocument() string
+        +saveToFile()
+    }
+
+    class Main {
+        +main()
+    }
+
+    Main --> DocumentEditor : uses
+
+    note for DocumentEditor "Bad Design Highlights:
+1) Raw string data model (text/image both as string)
+2) Runtime type detection via file extension
+3) Rendering + persistence + data management in one class
+4) Cached renderedDocument can become stale after new edits"
+
+    %% Runtime decision flow (embedded as note for clarity)
+    note for Main "Flow:
+main() -> addText/addImage
+-> renderDocument()
+   loop each element
+      if endsWith .jpg/.png => [Image: path]
+      else => plain text
+-> saveToFile() -> document.txt"

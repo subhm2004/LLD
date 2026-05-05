@@ -1,0 +1,99 @@
+classDiagram
+    direction TB
+
+    class DocumentElement {
+        <<abstract>>
+        +render() string
+        +~DocumentElement()
+    }
+
+    class TextElement {
+        -string text
+        +TextElement(string text)
+        +render() string
+    }
+
+    class ImageElement {
+        -string imagePath
+        +ImageElement(string imagePath)
+        +render() string
+    }
+
+    class NewLineElement {
+        +render() string
+    }
+
+    class TabSpaceElement {
+        +render() string
+    }
+
+    class BoldTextElement {
+        -string text
+        +BoldTextElement(string text)
+        +render() string
+    }
+
+    class Document {
+        -vector~DocumentElement*~ documentElements
+        +addElement(DocumentElement* element)
+        +render() string
+    }
+
+    class Persistence {
+        <<abstract>>
+        +save(string data)
+        +~Persistence()
+    }
+
+    class FileStorage {
+        +save(string data)
+    }
+
+    class DBStorage {
+        +save(string data)
+    }
+
+    class DocumentEditor {
+        -Document* document
+        -Persistence* storage
+        -string renderedDocument
+        +DocumentEditor(Document*, Persistence*)
+        +addText(string text)
+        +addImage(string imagePath)
+        +addNewLine()
+        +addTabSpace()
+        +addBoldText(string text)
+        +renderDocument() string
+        +saveDocument()
+    }
+
+    class Main {
+        +main()
+    }
+
+    DocumentElement <|-- TextElement
+    DocumentElement <|-- ImageElement
+    DocumentElement <|-- NewLineElement
+    DocumentElement <|-- TabSpaceElement
+    DocumentElement <|-- BoldTextElement
+
+    Persistence <|-- FileStorage
+    Persistence <|-- DBStorage
+
+    Document o-- DocumentElement : contains
+    DocumentEditor --> Document : uses
+    DocumentEditor --> Persistence : depends on
+    Main --> DocumentEditor : drives
+
+    note for DocumentEditor "Key Design Wins:
+1) Open for extension via new DocumentElement types
+2) Storage pluggable via Persistence abstraction
+3) Editor depends on abstractions (DIP)
+4) Document rendering delegated to element polymorphism"
+
+    note for Main "Runtime Flow:
+main -> build Document + Persistence
+-> create DocumentEditor
+-> add elements
+-> renderDocument()
+-> saveDocument() to FileStorage / DBStorage"

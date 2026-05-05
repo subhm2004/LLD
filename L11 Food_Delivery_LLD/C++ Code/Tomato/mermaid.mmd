@@ -1,0 +1,223 @@
+%% Tomato food delivery LLD - project overview
+flowchart TD
+    main["main.cpp\nClient / Happy flow"]
+    app["TomatoApp\nFacade / Orchestrator"]
+
+    subgraph Managers
+        rm["RestaurantManager\nSingleton"]
+        om["OrderManager\nSingleton"]
+    end
+
+    subgraph Models
+        user["User"]
+        cart["Cart"]
+        restaurant["Restaurant"]
+        menuItem["MenuItem"]
+        order["Order (abstract)"]
+        delivery["DeliveryOrder"]
+        pickup["PickupOrder"]
+    end
+
+    subgraph Factories
+        orderFactory["OrderFactory (abstract)"]
+        nowFactory["NowOrderFactory"]
+        scheduledFactory["ScheduledOrderFactory"]
+    end
+
+    subgraph Strategy
+        paymentStrategy["PaymentStrategy (abstract)"]
+        upi["UpiPaymentStrategy"]
+        cc["CreditCardPaymentStrategy"]
+    end
+
+    subgraph Services_Utils
+        notification["NotificationService"]
+        timeUtils["TimeUtils"]
+    end
+
+    main --> app
+    main --> user
+    main --> upi
+
+    user --> cart
+    cart --> restaurant
+    cart --> menuItem
+    restaurant --> menuItem
+
+    app --> rm
+    app --> om
+    app --> orderFactory
+    app --> notification
+
+    rm --> restaurant
+    om --> order
+
+    orderFactory --> nowFactory
+    orderFactory --> scheduledFactory
+
+    nowFactory --> delivery
+    nowFactory --> pickup
+    scheduledFactory --> delivery
+    scheduledFactory --> pickup
+    nowFactory --> timeUtils
+
+    order --> paymentStrategy
+    paymentStrategy --> upi
+    paymentStrategy --> cc
+
+    order --> user
+    order --> restaurant
+    order --> menuItem
+    delivery --> order
+    pickup --> order
+    notification --> order
+
+---
+
+classDiagram
+    class TomatoApp {
+        +initializeRestaurants()
+        +searchRestaurants(location) vector~Restaurant*~
+        +selectRestaurant(user, restaurant)
+        +addToCart(user, itemCode)
+        +checkoutNow(user, orderType, payment) Order*
+        +checkoutScheduled(user, orderType, payment, scheduleTime) Order*
+        +payForOrder(user, order)
+    }
+
+    class RestaurantManager {
+        -vector~Restaurant*~ restaurants
+        +getInstance() RestaurantManager*
+        +addRestaurant(r)
+        +searchByLocation(loc) vector~Restaurant*~
+    }
+
+    class OrderManager {
+        -vector~Order*~ orders
+        +getInstance() OrderManager*
+        +addOrder(order)
+        +listOrders()
+    }
+
+    class User {
+        -userId: int
+        -name: string
+        -address: string
+        -cart: Cart*
+    }
+
+    class Cart {
+        -restaurant: Restaurant*
+        -items: vector~MenuItem~
+        +addItem(item)
+        +getTotalCost() double
+        +isEmpty() bool
+        +clear()
+    }
+
+    class Restaurant {
+        -restaurantId: int
+        -name: string
+        -location: string
+        -menu: vector~MenuItem~
+        +addMenuItem(item)
+        +getMenu() vector~MenuItem~
+    }
+
+    class MenuItem {
+        -code: string
+        -name: string
+        -price: int
+    }
+
+    class Order {
+        <<abstract>>
+        -orderId: int
+        -user: User*
+        -restaurant: Restaurant*
+        -items: vector~MenuItem~
+        -paymentStrategy: PaymentStrategy*
+        -total: double
+        -scheduled: string
+        +processPayment() bool
+        +getType()* string
+    }
+
+    class DeliveryOrder {
+        -userAddress: string
+        +getType() string
+    }
+
+    class PickupOrder {
+        -restaurantAddress: string
+        +getType() string
+    }
+
+    class PaymentStrategy {
+        <<abstract>>
+        +pay(amount)* void
+    }
+
+    class UpiPaymentStrategy {
+        -mobile: string
+        +pay(amount) void
+    }
+
+    class CreditCardPaymentStrategy {
+        -cardNumber: string
+        +pay(amount) void
+    }
+
+    class OrderFactory {
+        <<abstract>>
+        +createOrder(user, cart, restaurant, items, payment, totalCost, orderType)* Order*
+    }
+
+    class NowOrderFactory {
+        +createOrder(...) Order*
+    }
+
+    class ScheduledOrderFactory {
+        -scheduleTime: string
+        +createOrder(...) Order*
+    }
+
+    class NotificationService {
+        +notify(order) void
+    }
+
+    class TimeUtils {
+        +getCurrentTime() string
+    }
+
+    TomatoApp ..> RestaurantManager : uses
+    TomatoApp ..> OrderManager : uses
+    TomatoApp ..> OrderFactory : delegates creation
+    TomatoApp ..> NotificationService : sends notifications
+
+    User *-- Cart : owns
+    Cart --> Restaurant : selected
+    Cart --> MenuItem : contains
+    Restaurant --> MenuItem : menu has
+
+    Order --> User : references
+    Order --> Restaurant : references
+    Order --> MenuItem : includes
+    Order --> PaymentStrategy : has-a
+    DeliveryOrder --|> Order
+    PickupOrder --|> Order
+
+    UpiPaymentStrategy --|> PaymentStrategy
+    CreditCardPaymentStrategy --|> PaymentStrategy
+
+    NowOrderFactory --|> OrderFactory
+    ScheduledOrderFactory --|> OrderFactory
+    NowOrderFactory ..> TimeUtils : current time
+    NowOrderFactory ..> DeliveryOrder : creates
+    NowOrderFactory ..> PickupOrder : creates
+    ScheduledOrderFactory ..> DeliveryOrder : creates
+    ScheduledOrderFactory ..> PickupOrder : creates
+
+    RestaurantManager --> Restaurant : manages
+    OrderManager --> Order : manages
+    NotificationService ..> Order : reads details

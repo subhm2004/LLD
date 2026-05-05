@@ -1,0 +1,32 @@
+classDiagram
+    class Car {
+        #string brand
+        #string model
+        #bool isEngineOn
+        #int currentSpeed
+        +startEngine()
+        +stopEngine()
+        +accelerate()
+        +accelerate(int speed)
+        +brake()
+        +~Car()
+    }
+
+    class ManualCar {
+        -int currentGear
+        +shiftGear(int gear)
+        +accelerate()
+        +accelerate(int speed)
+        +brake()
+    }
+
+    class ElectricCar {
+        -int batteryLevel
+        +chargeBattery()
+        +accelerate()
+        +accelerate(int speed)
+        +brake()
+    }
+
+    Car <|-- ManualCar
+    Car <|-- ElectricCar

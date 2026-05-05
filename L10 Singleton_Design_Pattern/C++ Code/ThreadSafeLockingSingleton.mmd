@@ -1,0 +1,16 @@
+classDiagram
+    class Singleton {
+        -static Singleton* instance
+        -static mutex mtx
+        -Singleton()
+        +static Singleton* getInstance()
+    }
+
+    class Main {
+        +main() int
+    }
+
+    Main ..> Singleton : calls getInstance() for s1
+    Main ..> Singleton : calls getInstance() for s2
+    Singleton ..> mutex : locks entire getInstance()
+    Singleton --> Singleton : lazily creates instance

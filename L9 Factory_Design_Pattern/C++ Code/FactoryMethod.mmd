@@ -1,0 +1,35 @@
+classDiagram
+    class Burger {
+        <<abstract>>
+        +prepare() void
+    }
+
+    class BasicBurger
+    class StandardBurger
+    class PremiumBurger
+    class BasicWheatBurger
+    class StandardWheatBurger
+    class PremiumWheatBurger
+
+    Burger <|-- BasicBurger
+    Burger <|-- StandardBurger
+    Burger <|-- PremiumBurger
+    Burger <|-- BasicWheatBurger
+    Burger <|-- StandardWheatBurger
+    Burger <|-- PremiumWheatBurger
+
+    class BurgerFactory {
+        <<abstract>>
+        +createBurger(type: string) Burger*
+    }
+
+    class SinghBurger {
+        +createBurger(type: string) Burger*
+    }
+    class KingBurger {
+        +createBurger(type: string) Burger*
+    }
+
+    BurgerFactory <|-- SinghBurger
+    BurgerFactory <|-- KingBurger
+    BurgerFactory ..> Burger : factory method returns

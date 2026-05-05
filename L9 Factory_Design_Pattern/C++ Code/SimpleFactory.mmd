@@ -1,0 +1,25 @@
+classDiagram
+    class Burger {
+        <<abstract>>
+        +prepare() void
+    }
+
+    class BasicBurger {
+        +prepare() void
+    }
+    class StandardBurger {
+        +prepare() void
+    }
+    class PremiumBurger {
+        +prepare() void
+    }
+
+    Burger <|-- BasicBurger
+    Burger <|-- StandardBurger
+    Burger <|-- PremiumBurger
+
+    class BurgerFactory {
+        +createBurger(type: string) Burger*
+    }
+
+    BurgerFactory ..> Burger : creates

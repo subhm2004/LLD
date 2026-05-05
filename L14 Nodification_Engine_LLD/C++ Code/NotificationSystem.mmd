@@ -1,0 +1,99 @@
+classDiagram
+direction LR
+
+class INotification {
+  <<interface>>
+  +getContent() string
+}
+
+class SimpleNotification {
+  -text string
+  +getContent() string
+}
+
+class INotificationDecorator {
+  <<abstract>>
+  #notification INotification*
+}
+
+class TimestampDecorator {
+  +getContent() string
+}
+
+class SignatureDecorator {
+  -signature string
+  +getContent() string
+}
+
+INotification <|.. SimpleNotification
+INotification <|-- INotificationDecorator
+INotificationDecorator <|-- TimestampDecorator
+INotificationDecorator <|-- SignatureDecorator
+INotificationDecorator --> INotification : wraps
+
+class IObserver {
+  <<interface>>
+  +update() void
+}
+
+class IObservable {
+  <<interface>>
+  +addObserver(IObserver*) void
+  +removeObserver(IObserver*) void
+  +notifyObservers() void
+}
+
+class NotificationObservable {
+  -observers vector~IObserver*~
+  -currentNotification INotification*
+  +setNotification(INotification*) void
+  +getNotificationContent() string
+}
+
+IObservable <|.. NotificationObservable
+NotificationObservable --> IObserver : notifies
+
+class Logger {
+  -notificationObservable NotificationObservable*
+  +update() void
+}
+
+IObserver <|.. Logger
+Logger --> NotificationObservable : reads content
+
+class INotificationStrategy {
+  <<interface>>
+  +sendNotification(content) void
+}
+
+class EmailStrategy
+class SMSStrategy
+class PopUpStrategy
+
+INotificationStrategy <|.. EmailStrategy
+INotificationStrategy <|.. SMSStrategy
+INotificationStrategy <|.. PopUpStrategy
+
+class NotificationEngine {
+  -notificationObservable NotificationObservable*
+  -notificationStrategies vector~INotificationStrategy*~
+  +addNotificationStrategy(INotificationStrategy*) void
+  +update() void
+}
+
+IObserver <|.. NotificationEngine
+NotificationEngine --> NotificationObservable : reads content
+NotificationEngine o--> INotificationStrategy : uses
+
+class NotificationService {
+  <<singleton>>
+  -instance NotificationService*
+  -observable NotificationObservable*
+  -notifications vector~INotification*~
+  +getInstance() NotificationService*
+  +getObservable() NotificationObservable*
+  +sendNotification(INotification*) void
+}
+
+NotificationService --> NotificationObservable : owns
+NotificationService --> INotification : stores history

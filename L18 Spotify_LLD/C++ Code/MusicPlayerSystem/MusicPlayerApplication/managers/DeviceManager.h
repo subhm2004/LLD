@@ -1,9 +1,9 @@
 # ifndef DEVICE_MANAGER_HPP
 # define DEVICE_MANAGER_HPP
 #include<iostream>
-#include "../device/IAudioOutputDevice.hpp"
-#include "../enums/DeviceType.hpp"
-#include "../factories/DeviceFactory.hpp"
+#include "../device/IAudioOutputDevice.h"
+#include "../enums/DeviceType.h"
+#include "../factories/DeviceFactory.h"
 
 using namespace std;
 

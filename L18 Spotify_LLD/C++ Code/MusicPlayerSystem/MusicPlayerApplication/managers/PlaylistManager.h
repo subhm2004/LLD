@@ -1,6 +1,6 @@
 #   ifndef PLAYLIST_MANAGER_HPP
 #   define PLAYLIST_MANAGER_HPP
-#include "../models/Playlist.hpp"
+#include "../models/Playlist.h"
 #include<iostream>
 #include<string>
 #include<map>

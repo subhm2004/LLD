@@ -1,41 +1,41 @@
 MusicPlayerApp/
 │
 ├── main.cpp                          # Composition root and entry point
-├── MusicPlayerFacade.hpp               # Facade class (orchestrator)
-├── MusicPlayerApplication.hpp          # High-level application/demo runner
+├── MusicPlayerFacade.h               # Facade class (orchestrator)
+├── MusicPlayerApplication.h          # High-level application/demo runner
 │
 ├── core/                          
-│   └── AudioEngine.hpp                 # Playback engine          
+│   └── AudioEngine.h                 # Playback engine          
 │
 ├── enums/                              # All shared enum types
-│   ├── DeviceType.hpp                  # enum class DeviceType { BLUETOOTH, WIRED, HEADPHONES }
-│   └── PlayStrategyType.hpp            # enum class PlayStrategyType { SEQUENTIAL, RANDOM, CUSTOM_QUEUE }
+│   ├── DeviceType.h                  # enum class DeviceType { BLUETOOTH, WIRED, HEADPHONES }
+│   └── PlayStrategyType.h            # enum class PlayStrategyType { SEQUENTIAL, RANDOM, CUSTOM_QUEUE }
 │
 ├── models/
-│   ├── Song.hpp
-│   └── Playlist.hpp
+│   ├── Song.h
+│   └── Playlist.h
 │
 ├── managers/
-│   ├── PlaylistManager.hpp
-│   ├── DeviceManager.hpp
-|   └── StrategyManager.hpp
+│   ├── PlaylistManager.h
+│   ├── DeviceManager.h
+|   └── StrategyManager.h
 │
 ├── strategies/
-│   ├── PlayStrategy.hpp
-│   ├── SequentialPlayStrategy.hpp
-│   ├── RandomPlayStrategy.hpp
-│   └── CustomQueueStrategy.hpp
+│   ├── PlayStrategy.h
+│   ├── SequentialPlayStrategy.h
+│   ├── RandomPlayStrategy.h
+│   └── CustomQueueStrategy.h
 │
 ├── device/                            # Audio device interfaces & adapters
-│   ├── IAudioOutputDevice.hpp
-│   ├── BluetoothSpeakerAdapter.hpp
-│   ├── WiredSpeakerAdapter.hpp
-│   └── HeadphonesAdapter.hpp
+│   ├── IAudioOutputDevice.h
+│   ├── BluetoothSpeakerAdapter.h
+│   ├── WiredSpeakerAdapter.h
+│   └── HeadphonesAdapter.h
 |
 ├── external/                           # External devices
-│   ├── BluetoothSpeakerAPI.hpp
-│   ├── HeadphonesAPI.hpp
-│   └── WiredSpeakerAPI.hpp
+│   ├── BluetoothSpeakerAPI.h
+│   ├── HeadphonesAPI.h
+│   └── WiredSpeakerAPI.h
 │
 └── factories/
-    └── DeviceFactory.hpp               # Creates IAudioOutputDevice instances
+    └── DeviceFactory.h               # Creates IAudioOutputDevice instances

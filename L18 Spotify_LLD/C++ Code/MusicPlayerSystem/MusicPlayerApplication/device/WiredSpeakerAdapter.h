@@ -1,9 +1,9 @@
 #ifndef WIRED_SPEAKER_ADAPTER_HPP
 #define WIRED_SPEAKER_ADAPTER_HPP
 
-#include "../models/Song.hpp"
-#include "IAudioOutputDevice.hpp"
-#include "../external/WiredSpeakerAPI.hpp"
+#include "../models/Song.h"
+#include "IAudioOutputDevice.h"
+#include "../external/WiredSpeakerAPI.h"
 
 using namespace std;
 

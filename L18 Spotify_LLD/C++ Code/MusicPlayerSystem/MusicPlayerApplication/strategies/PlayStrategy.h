@@ -1,8 +1,8 @@
 #ifndef PLAY_STRATEGY_HPP
 #define PLAY_STRATEGY_HPP
 #include<iostream>
-#include "../models/Song.hpp"
-#include "../models/Playlist.hpp"
+#include "../models/Song.h"
+#include "../models/Playlist.h"
 
 using namespace std;
 

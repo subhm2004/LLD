@@ -1,11 +1,11 @@
 #ifndef DEVICE_FACTORY_HPP
 #define DEVICE_FACTORY_HPP
 #include<iostream>
-#include "../device/IAudioOutputDevice.hpp"
-#include "../device/BluetoothSpeakerAdapter.hpp"
-#include "../device/WiredSpeakerAdapter.hpp"
-#include "../device/HeadphonesAdapter.hpp"
-#include "../enums/DeviceType.hpp"
+#include "../device/IAudioOutputDevice.h"
+#include "../device/BluetoothSpeakerAdapter.h"
+#include "../device/WiredSpeakerAdapter.h"
+#include "../device/HeadphonesAdapter.h"
+#include "../enums/DeviceType.h"
 
 using namespace std;
 

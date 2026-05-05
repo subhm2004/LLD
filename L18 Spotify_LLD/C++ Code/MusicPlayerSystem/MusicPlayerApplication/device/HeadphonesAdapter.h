@@ -1,9 +1,9 @@
 #ifndef HEADPHONES_ADAPTER_HPP
 #define HEADPHONES_ADAPTER_HPP
 
-#include "../models/Song.hpp"
-#include "IAudioOutputDevice.hpp"
-#include "../external/HeadphonesAPI.hpp"
+#include "../models/Song.h"
+#include "IAudioOutputDevice.h"
+#include "../external/HeadphonesAPI.h"
 
 using namespace std;
 

@@ -1,8 +1,8 @@
 # ifndef CUSTOM_QUEUE_STRATEGY_HPP
 # define CUSTOM_QUEUE_STRATEGY_HPP
 #include<iostream>
-#include "../models/Playlist.hpp"
-#include "PlayStrategy.hpp"
+#include "../models/Playlist.h"
+#include "PlayStrategy.h"
 
 class CustomQueueStrategy : public PlayStrategy {
 private:

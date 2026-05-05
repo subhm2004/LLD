@@ -1,10 +1,10 @@
 #ifndef STRATEGY_MANAGER_HPP
 #define STRATEGY_MANAGER_HPP
 #include<iostream>
-#include "../strategies/SequentialPlayStrategy.hpp"
-#include "../strategies/CustomQueueStrategy.hpp"
-#include "../strategies/RandomPlayStrategy.hpp"
-#include "../enums/PlayStrategyType.hpp"
+#include "../strategies/SequentialPlayStrategy.h"
+#include "../strategies/CustomQueueStrategy.h"
+#include "../strategies/RandomPlayStrategy.h"
+#include "../enums/PlayStrategyType.h"
 
 using namespace std;
 

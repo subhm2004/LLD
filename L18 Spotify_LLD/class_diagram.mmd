@@ -1,0 +1,245 @@
+classDiagram
+direction TB
+
+class MusicPlayerApplication {
+  - static MusicPlayerApplication* instance
+  - vector~Song*~ songLibrary
+  - MusicPlayerApplication()
+  + static MusicPlayerApplication* getInstance()
+  + void createSongInLibrary(title, artist, path)
+  + Song* findSongByTitle(title)
+  + void createPlaylist(playlistName)
+  + void addSongToPlaylist(playlistName, songTitle)
+  + void connectAudioDevice(deviceType)
+  + void selectPlayStrategy(strategyType)
+  + void loadPlaylist(playlistName)
+  + void playSingleSong(songTitle)
+  + void pauseCurrentSong(songTitle)
+  + void playAllTracksInPlaylist()
+  + void playPreviousTrackInPlaylist()
+  + void queueSongNext(songTitle)
+}
+
+class MusicPlayerFacade {
+  - static MusicPlayerFacade* instance
+  - AudioEngine* audioEngine
+  - Playlist* loadedPlaylist
+  - PlayStrategy* playStrategy
+  - MusicPlayerFacade()
+  + static MusicPlayerFacade* getInstance()
+  + void connectDevice(deviceType)
+  + void setPlayStrategy(strategyType)
+  + void loadPlaylist(name)
+  + void playSong(song)
+  + void pauseSong(song)
+  + void playAllTracks()
+  + void playNextTrack()
+  + void playPreviousTrack()
+  + void enqueueNext(song)
+}
+
+class AudioEngine {
+  - Song* currentSong
+  - bool songIsPaused
+  + AudioEngine()
+  + string getCurrentSongTitle()
+  + bool isPaused()
+  + void play(device, song)
+  + void pause()
+}
+
+class Song {
+  - string title
+  - string artist
+  - string filePath
+  + Song(t, a, f)
+  + string getTitle()
+  + string getArtist()
+  + string getFilePath()
+}
+
+class Playlist {
+  - string playlistName
+  - vector~Song*~ songList
+  + Playlist(name)
+  + string getPlaylistName()
+  + vector~Song*~ getSongs()
+  + int getSize()
+  + void addSongToPlaylist(song)
+}
+
+class PlaylistManager {
+  - static PlaylistManager* instance
+  - map~string, Playlist*~ playlists
+  - PlaylistManager()
+  + static PlaylistManager* getInstance()
+  + void createPlaylist(name)
+  + void addSongToPlaylist(playlistName, song)
+  + Playlist* getPlaylist(name)
+}
+
+class DeviceManager {
+  - static DeviceManager* instance
+  - IAudioOutputDevice* currentOutputDevice
+  - DeviceManager()
+  + static DeviceManager* getInstance()
+  + void connect(deviceType)
+  + IAudioOutputDevice* getOutputDevice()
+  + bool hasOutputDevice()
+}
+
+class StrategyManager {
+  - static StrategyManager* instance
+  - SequentialPlayStrategy* sequentialStrategy
+  - RandomPlayStrategy* randomStrategy
+  - CustomQueueStrategy* customQueueStrategy
+  - StrategyManager()
+  + static StrategyManager* getInstance()
+  + PlayStrategy* getStrategy(type)
+}
+
+class PlayStrategy {
+  <<interface>>
+  + void setPlaylist(playlist)
+  + Song* next()
+  + bool hasNext()
+  + Song* previous()
+  + bool hasPrevious()
+  + void addToNext(song)
+}
+
+class SequentialPlayStrategy {
+  - Playlist* currentPlaylist
+  - int currentIndex
+  + SequentialPlayStrategy()
+  + void setPlaylist(playlist)
+  + bool hasNext()
+  + Song* next()
+  + bool hasPrevious()
+  + Song* previous()
+}
+
+class RandomPlayStrategy {
+  - Playlist* currentPlaylist
+  - vector~Song*~ remainingSongs
+  - stack~Song*~ history
+  + RandomPlayStrategy()
+  + void setPlaylist(playlist)
+  + bool hasNext()
+  + Song* next()
+  + bool hasPrevious()
+  + Song* previous()
+}
+
+class CustomQueueStrategy {
+  - Playlist* currentPlaylist
+  - int currentIndex
+  - queue~Song*~ nextQueue
+  - stack~Song*~ prevStack
+  - Song* nextSequential()
+  - Song* previousSequential()
+  + CustomQueueStrategy()
+  + void setPlaylist(playlist)
+  + bool hasNext()
+  + Song* next()
+  + bool hasPrevious()
+  + Song* previous()
+  + void addToNext(song)
+}
+
+class IAudioOutputDevice {
+  <<interface>>
+  + void playAudio(song)
+}
+
+class BluetoothSpeakerAdapter {
+  - BluetoothSpeakerAPI* bluetoothApi
+  + BluetoothSpeakerAdapter(api)
+  + void playAudio(song)
+}
+
+class WiredSpeakerAdapter {
+  - WiredSpeakerAPI* wiredApi
+  + WiredSpeakerAdapter(api)
+  + void playAudio(song)
+}
+
+class HeadphonesAdapter {
+  - HeadphonesAPI* headphonesApi
+  + HeadphonesAdapter(api)
+  + void playAudio(song)
+}
+
+class DeviceFactory {
+  + static IAudioOutputDevice* createDevice(deviceType)
+}
+
+class BluetoothSpeakerAPI {
+  + void playSoundViaBluetooth(data)
+}
+
+class WiredSpeakerAPI {
+  + void playSoundViaCable(data)
+}
+
+class HeadphonesAPI {
+  + void playSoundViaJack(data)
+}
+
+class DeviceType {
+  <<enumeration>>
+  BLUETOOTH
+  WIRED
+  HEADPHONES
+}
+
+class PlayStrategyType {
+  <<enumeration>>
+  SEQUENTIAL
+  RANDOM
+  CUSTOM_QUEUE
+}
+
+MusicPlayerApplication --> MusicPlayerFacade : uses
+MusicPlayerApplication --> Song : manages library
+MusicPlayerApplication --> PlaylistManager : delegates playlist ops
+
+MusicPlayerFacade --> AudioEngine : owns
+MusicPlayerFacade --> Playlist : loads
+MusicPlayerFacade --> PlayStrategy : uses
+MusicPlayerFacade --> DeviceManager : uses
+MusicPlayerFacade --> PlaylistManager : uses
+MusicPlayerFacade --> StrategyManager : uses
+
+Playlist "1" o-- "*" Song : contains
+PlaylistManager --> Playlist : manages many
+
+StrategyManager --> SequentialPlayStrategy : holds
+StrategyManager --> RandomPlayStrategy : holds
+StrategyManager --> CustomQueueStrategy : holds
+StrategyManager --> PlayStrategy : returns
+
+PlayStrategy <|.. SequentialPlayStrategy
+PlayStrategy <|.. RandomPlayStrategy
+PlayStrategy <|.. CustomQueueStrategy
+
+AudioEngine --> IAudioOutputDevice : calls
+AudioEngine --> Song : plays current
+
+DeviceManager --> DeviceFactory : creates via
+DeviceManager --> IAudioOutputDevice : holds current
+
+IAudioOutputDevice <|.. BluetoothSpeakerAdapter
+IAudioOutputDevice <|.. WiredSpeakerAdapter
+IAudioOutputDevice <|.. HeadphonesAdapter
+
+BluetoothSpeakerAdapter --> BluetoothSpeakerAPI : adapts
+WiredSpeakerAdapter --> WiredSpeakerAPI : adapts
+HeadphonesAdapter --> HeadphonesAPI : adapts
+
+MusicPlayerApplication --> DeviceType : uses
+MusicPlayerApplication --> PlayStrategyType : uses
+MusicPlayerFacade --> DeviceType : uses
+MusicPlayerFacade --> PlayStrategyType : uses
+DeviceFactory --> DeviceType : uses
+StrategyManager --> PlayStrategyType : uses

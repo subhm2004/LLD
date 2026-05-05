@@ -1,7 +1,7 @@
 #ifndef MUSIC_PLAYER_APPLICATION_HPP
 #define MUSIC_PLAYER_APPLICATION_HPP
-#include "managers/PlaylistManager.hpp"
-#include "MusicPlayerFacade.hpp"
+#include "managers/PlaylistManager.h"
+#include "MusicPlayerFacade.h"
 
 using namespace std;
 

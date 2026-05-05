@@ -1,14 +1,14 @@
 # ifndef MUSIC_PLAYER_FACADE_HPP
 # define MUSIC_PLAYER_FACADE_HPP
-#include "core/AudioEngine.hpp"
-#include "models/Playlist.hpp"
-#include "models/Song.hpp"
-#include "strategies/PlayStrategy.hpp"
-#include "enums/DeviceType.hpp"
-#include "enums/PlayStrategyType.hpp"
-#include "managers/DeviceManager.hpp"
-#include "managers/PlaylistManager.hpp"
-#include "managers/StrategyManager.hpp"
+#include "core/AudioEngine.h"
+#include "models/Playlist.h"
+#include "models/Song.h"
+#include "strategies/PlayStrategy.h"
+#include "enums/DeviceType.h"
+#include "enums/PlayStrategyType.h"
+#include "managers/DeviceManager.h"
+#include "managers/PlaylistManager.h"
+#include "managers/StrategyManager.h"
 
 using namespace std;
 

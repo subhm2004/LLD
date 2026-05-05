@@ -1,8 +1,8 @@
 # ifndef BLUETOOTH_SPEAKER_ADAPTER_HPP
 # define BLUETOOTH_SPEAKER_ADAPTER_HPP
-#include "../models/Song.hpp"
-#include "IAudioOutputDevice.hpp"
-#include "../external/BluetoothSpeakerAPI.hpp"
+#include "../models/Song.h"
+#include "IAudioOutputDevice.h"
+#include "../external/BluetoothSpeakerAPI.h"
 
 using namespace std;
 

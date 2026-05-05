@@ -2,8 +2,8 @@
 #define SEQUENTIAL_PLAY_STRATEGY_HPP
 
 #include<iostream>
-#include "../models/Playlist.hpp"
-#include "PlayStrategy.hpp"
+#include "../models/Playlist.h"
+#include "PlayStrategy.h"
 
 using namespace std;
 

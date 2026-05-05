@@ -1,6 +1,6 @@
 #ifndef I_AUDIO_OUTPUT_DEVICE_HPP
 #define I_AUDIO_OUTPUT_DEVICE_HPP
-#include "../models/Song.hpp"
+#include "../models/Song.h"
 
 class IAudioOutputDevice {
 public:

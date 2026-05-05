@@ -1,8 +1,8 @@
 #ifndef AUDIO_ENGINE_HPP
 #define AUDIO_ENGINE_HPP
 
-#include "../models/Song.hpp"
-#include "../device/IAudioOutputDevice.hpp"
+#include "../models/Song.h"
+#include "../device/IAudioOutputDevice.h"
 #include<string>
 #include<iostream>
 

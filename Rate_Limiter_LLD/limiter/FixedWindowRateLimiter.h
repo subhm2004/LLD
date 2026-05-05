@@ -10,6 +10,7 @@
 #include "../model/RateLimitConfig.h"
 
 using namespace std;
+namespace rate_limiter_lld {
 class FixedWindowRateLimiter : public RateLimiter
 {
 private:
@@ -54,5 +55,6 @@ public:
         return false;
     }
 };
+}
 
 #endif // FIXED_WINDOW_RATE_LIMITER_H

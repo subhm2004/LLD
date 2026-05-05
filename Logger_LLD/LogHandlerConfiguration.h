@@ -11,13 +11,20 @@
 #include "enums/LogLevel.h"
 #include <memory>
 
+namespace logger_lld {
+
 class LogHandlerConfiguration {
 private:
-    static std::shared_ptr<LogHandler> debug;
-    static std::shared_ptr<LogHandler> info;
-    static std::shared_ptr<LogHandler> warn;
-    static std::shared_ptr<LogHandler> error;
-    static std::shared_ptr<LogHandler> fatal;
+    inline static std::shared_ptr<LogHandler> debug = nullptr;
+    inline static std::shared_ptr<LogHandler> info = nullptr;
+    inline static std::shared_ptr<LogHandler> warn = nullptr;
+    inline static std::shared_ptr<LogHandler> error = nullptr;
+    inline static std::shared_ptr<LogHandler> fatal = nullptr;
+    static void ensureInitialized() {
+        if (debug == nullptr) {
+            build();
+        }
+    }
 
 public:
     static std::shared_ptr<LogHandler> build() {
@@ -37,6 +44,7 @@ public:
     }
 
     static void addAppenderForLevel(LogLevel level, std::shared_ptr<LogAppender> appender) {
+        ensureInitialized();
         switch (level) {
             case LogLevel::DEBUG: debug->subscribe(appender); break;
             case LogLevel::INFO:  info->subscribe(appender);  break;
@@ -48,11 +56,6 @@ public:
     }
 };
 
-// Static member definitions
-std::shared_ptr<LogHandler> LogHandlerConfiguration::debug = nullptr;
-std::shared_ptr<LogHandler> LogHandlerConfiguration::info  = nullptr;
-std::shared_ptr<LogHandler> LogHandlerConfiguration::warn  = nullptr;
-std::shared_ptr<LogHandler> LogHandlerConfiguration::error = nullptr;
-std::shared_ptr<LogHandler> LogHandlerConfiguration::fatal = nullptr;
+}
 
 #endif // LOGHANDLERCONFIGURATION_H

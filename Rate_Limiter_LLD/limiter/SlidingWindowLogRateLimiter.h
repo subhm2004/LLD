@@ -11,6 +11,7 @@
 #include "../model/RateLimitConfig.h"
 
 using namespace std;
+namespace rate_limiter_lld {
 class SlidingWindowLogRateLimiter : public RateLimiter {
 private:
     unordered_map<string, queue<long long>> requestLog;
@@ -41,5 +42,6 @@ public:
         return false;
     }
 };
+}
 
 #endif // SLIDING_WINDOW_LOG_RATE_LIMITER_H

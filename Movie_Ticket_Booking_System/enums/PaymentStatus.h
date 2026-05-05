@@ -1,0 +1,10 @@
+#ifndef MOVIE_TICKET_BOOKING_SYSTEM_ENUMS_PAYMENTSTATUS_H
+#define MOVIE_TICKET_BOOKING_SYSTEM_ENUMS_PAYMENTSTATUS_H
+
+namespace movie_ticket_booking {
+
+enum class PaymentStatus { INITIATED, SUCCESS, FAILED };
+
+}
+
+#endif

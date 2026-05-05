@@ -1,0 +1,10 @@
+#ifndef MOVIE_TICKET_BOOKING_SYSTEM_ENUMS_BOOKINGSTATUS_H
+#define MOVIE_TICKET_BOOKING_SYSTEM_ENUMS_BOOKINGSTATUS_H
+
+namespace movie_ticket_booking {
+
+enum class BookingStatus { CREATED, CONFIRMED, CANCELLED };
+
+}
+
+#endif

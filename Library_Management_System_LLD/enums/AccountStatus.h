@@ -1,0 +1,13 @@
+#ifndef LIBRARY_MANAGEMENT_SYSTEM_LLD_ENUMS_ACCOUNTSTATUS_H
+#define LIBRARY_MANAGEMENT_SYSTEM_LLD_ENUMS_ACCOUNTSTATUS_H
+
+namespace library_mgmt {
+
+enum class AccountStatus {
+    ACTIVE,
+    BLOCKED
+};
+
+} // namespace library_mgmt
+
+#endif // LIBRARY_MANAGEMENT_SYSTEM_LLD_ENUMS_ACCOUNTSTATUS_H

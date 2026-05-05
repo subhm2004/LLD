@@ -5,6 +5,8 @@
 #include "../enums/RateLimitType.h"
 #include "../model/RateLimitConfig.h"
 
+namespace rate_limiter_lld {
+
 class RateLimiter {
 protected:
     const RateLimitConfig config;
@@ -17,5 +19,7 @@ public:
     virtual ~RateLimiter() = default;
     virtual bool allowRequest(const std::string& userId) = 0;
 };
+
+}
 
 #endif // RATE_LIMITER_H

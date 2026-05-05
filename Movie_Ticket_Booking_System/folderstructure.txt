@@ -1,0 +1,31 @@
+Movie_Ticket_Booking_System/
+├── core/
+│   └── MovieTicketSystem.h
+├── device/
+│   └── KioskTerminal.h
+├── enums/
+│   ├── BookingStatus.h
+│   ├── PaymentStatus.h
+│   └── SeatType.h
+├── external/
+│   ├── NotificationService.h
+│   └── PaymentGateway.h
+├── factories/
+│   └── BookingFactory.h
+├── managers/
+│   ├── BookingManager.h
+│   ├── CatalogManager.h
+│   └── ShowManager.h
+├── models/
+│   ├── Booking.h
+│   ├── Movie.h
+│   ├── Payment.h
+│   ├── Screen.h
+│   ├── Seat.h
+│   ├── Show.h
+│   ├── Theater.h
+│   └── User.h
+├── strategies/
+│   ├── PricingStrategy.h
+│   └── StandardPricingStrategy.h
+└── main.cpp

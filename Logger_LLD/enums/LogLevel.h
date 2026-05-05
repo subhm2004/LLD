@@ -1,6 +1,7 @@
 #ifndef LOGLEVEL_H
 #define LOGLEVEL_H
 
+namespace logger_lld {
 enum class LogLevel {
     TRACE,
     DEBUG,
@@ -9,5 +10,6 @@ enum class LogLevel {
     ERROR,
     FATAL
 };
+}
 
 #endif // LOGLEVEL_H

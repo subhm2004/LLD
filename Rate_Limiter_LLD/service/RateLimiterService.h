@@ -10,6 +10,8 @@
 #include "../model/RateLimitConfig.h"
 #include "../model/User.h"
 
+namespace rate_limiter_lld {
+
 class RateLimiterService {
 private:
     // UserTier -> RateLimiter map (using int key since enum class not hashable by default)
@@ -38,3 +40,5 @@ public:
         return it->second->allowRequest(user.getUserId());
     }
 };
+
+}

@@ -10,6 +10,8 @@
 #include "../limiter/FixedWindowRateLimiter.h"
 #include "../limiter/SlidingWindowLogRateLimiter.h"
 
+namespace rate_limiter_lld {
+
 class RateLimiterFactory {
 public:
     static std::unique_ptr<RateLimiter> createRateLimiter(RateLimitType algo, RateLimitConfig config) {
@@ -25,5 +27,7 @@ public:
         }
     }
 };
+
+}
 
 #endif // RATE_LIMITER_FACTORY_H

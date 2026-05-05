@@ -7,6 +7,8 @@
 #include <string>
 #include <ctime>
 
+namespace logger_lld {
+
 class JsonFormatter : public LogFormatter {
 private:
     std::string levelToString(LogLevel level) const {
@@ -36,5 +38,7 @@ public:
                "\", \"message\": \"" + message.getMessage() + "\"}";
     }
 };
+
+}
 
 #endif // JSONFORMATTER_H

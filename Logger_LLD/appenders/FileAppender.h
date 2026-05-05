@@ -10,6 +10,8 @@
 #include <stdexcept>
 #include <iostream>
 
+namespace logger_lld {
+
 class FileAppender : public LogAppender {
 private:
     std::shared_ptr<LogFormatter> formatter;
@@ -33,7 +35,6 @@ public:
         std::lock_guard<std::mutex> lock(mtx); // synchronized block
         if (fileStream.is_open()) {
             fileStream << formatter->format(message) << std::endl;
-            fileStream.flush();
         }
     }
 
@@ -44,5 +45,7 @@ public:
         }
     }
 };
+
+}
 
 #endif // FILEAPPENDER_H

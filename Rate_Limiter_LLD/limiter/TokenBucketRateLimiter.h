@@ -11,6 +11,7 @@
 #include "../model/RateLimitConfig.h"
 
 using namespace std;
+namespace rate_limiter_lld {
 class TokenBucketRateLimiter : public RateLimiter
 {
 private:
@@ -65,5 +66,6 @@ public:
         return false;
     }
 };
+}
 
 #endif // TOKEN_BUCKET_RATE_LIMITER_H

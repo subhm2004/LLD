@@ -5,6 +5,7 @@
 #include "../enums/UserTier.h"
 
 using namespace std;
+namespace rate_limiter_lld {
 class User
 {
 private:
@@ -18,5 +19,6 @@ public:
     const string &getUserId() const { return userId; }
     UserTier getTier() const { return tier; }
 };
+}
 
 #endif // USER_H

@@ -7,6 +7,8 @@
 #include <memory>
 #include <iostream>
 
+namespace logger_lld {
+
 class ConsoleAppender : public LogAppender {
 private:
     std::shared_ptr<LogFormatter> formatter;
@@ -19,5 +21,7 @@ public:
         std::cout << formatter->format(message) << std::endl;
     }
 };
+
+}
 
 #endif // CONSOLEAPPENDER_H

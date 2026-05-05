@@ -9,6 +9,8 @@
 #include <iomanip>
 #include <ctime>
 
+namespace logger_lld {
+
 class PlainTextFormatter : public LogFormatter {
 private:
     std::string levelToString(LogLevel level) const {
@@ -38,5 +40,7 @@ public:
                + message.getMessage();
     }
 };
+
+}
 
 #endif // PLAINTEXTFORMATTER_H

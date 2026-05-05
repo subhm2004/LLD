@@ -8,6 +8,8 @@
 #include <memory>
 #include <mutex>
 
+namespace logger_lld {
+
 class LogHandler {
 protected:
     std::shared_ptr<LogHandler> next;
@@ -28,8 +30,12 @@ public:
     }
 
     void notifyObservers(const LogMessage& message) {
+        std::vector<std::shared_ptr<LogAppender>> localAppenders;
+        {
         std::lock_guard<std::mutex> lock(appenderMtx);
-        for (auto& appender : appenders) {
+            localAppenders = appenders;
+        }
+        for (auto& appender : localAppenders) {
             appender->append(message);
         }
     }
@@ -45,5 +51,7 @@ public:
 protected:
     virtual bool canHandle(LogLevel level) = 0;
 };
+
+}
 
 #endif // LOGHANDLER_H

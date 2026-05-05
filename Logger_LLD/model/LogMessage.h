@@ -4,6 +4,8 @@
 #include <string>
 #include "../enums/LogLevel.h"
 
+namespace logger_lld {
+
 class LogMessage {
 private:
     LogLevel level;
@@ -18,5 +20,7 @@ public:
     const std::string& getMessage() const { return message; }
     long long getTimestamp() const { return timestamp; }
 };
+
+}
 
 #endif // LOGMESSAGE_H

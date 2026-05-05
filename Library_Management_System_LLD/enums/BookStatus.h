@@ -1,0 +1,15 @@
+#ifndef LIBRARY_MANAGEMENT_SYSTEM_LLD_ENUMS_BOOKSTATUS_H
+#define LIBRARY_MANAGEMENT_SYSTEM_LLD_ENUMS_BOOKSTATUS_H
+
+namespace library_mgmt {
+
+enum class BookStatus {
+    AVAILABLE,
+    RESERVED,
+    LOANED,
+    LOST
+};
+
+} // namespace library_mgmt
+
+#endif // LIBRARY_MANAGEMENT_SYSTEM_LLD_ENUMS_BOOKSTATUS_H

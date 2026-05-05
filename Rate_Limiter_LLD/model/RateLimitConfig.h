@@ -1,6 +1,8 @@
 #ifndef RATE_LIMIT_CONFIG_H
 #define RATE_LIMIT_CONFIG_H
 
+namespace rate_limiter_lld {
+
 class RateLimitConfig {
 private:
     int maxRequests;
@@ -13,5 +15,7 @@ public:
     int getMaxRequests() const { return maxRequests; }
     int getWindowInSeconds() const { return windowInSeconds; }
 };
+
+}
 
 #endif // RATE_LIMIT_CONFIG_H

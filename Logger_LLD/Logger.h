@@ -9,6 +9,8 @@
 #include <string>
 #include <chrono>
 
+namespace logger_lld {
+
 class Logger {
 private:
     std::shared_ptr<LogHandler> handlerChain;
@@ -46,5 +48,7 @@ public:
     void error(const std::string& msg) { log(LogLevel::ERROR, msg); }
     void fatal(const std::string& msg) { log(LogLevel::FATAL, msg); }
 };
+
+}
 
 #endif // LOGGER_H

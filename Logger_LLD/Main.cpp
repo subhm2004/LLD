@@ -6,6 +6,8 @@
 #include "enums/LogLevel.h"
 #include <memory>
 
+using namespace logger_lld;
+
 int main() {
     Logger& logger = Logger::getInstance();
 

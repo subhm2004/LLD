@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SEQUENTIAL_PLAY_STRATEGY_HPP
+#define SEQUENTIAL_PLAY_STRATEGY_HPP
+
 #include<iostream>
 #include "../models/Playlist.hpp"
 #include "PlayStrategy.hpp"
@@ -46,3 +48,5 @@ public:
         return currentPlaylist->getSongs()[currentIndex];
     }
 };
+
+#endif // SEQUENTIAL_PLAY_STRATEGY_HPP

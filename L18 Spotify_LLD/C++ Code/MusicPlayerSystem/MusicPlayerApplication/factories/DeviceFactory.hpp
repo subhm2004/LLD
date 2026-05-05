@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DEVICE_FACTORY_HPP
+#define DEVICE_FACTORY_HPP
 #include<iostream>
 #include "../device/IAudioOutputDevice.hpp"
 #include "../device/BluetoothSpeakerAdapter.hpp"
@@ -20,3 +21,6 @@ public:
         }
     }
 };
+#endif // DEVICE_FACTORY_HPP
+
+#

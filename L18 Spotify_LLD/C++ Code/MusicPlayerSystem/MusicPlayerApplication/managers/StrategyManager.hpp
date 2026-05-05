@@ -1,4 +1,5 @@
-#pragma once
+#ifndef STRATEGY_MANAGER_HPP
+#define STRATEGY_MANAGER_HPP
 #include<iostream>
 #include "../strategies/SequentialPlayStrategy.hpp"
 #include "../strategies/CustomQueueStrategy.hpp"
@@ -38,3 +39,4 @@ public:
 };
 
 StrategyManager* StrategyManager::instance = nullptr;
+#endif // STRATEGY_MANAGER_HPP

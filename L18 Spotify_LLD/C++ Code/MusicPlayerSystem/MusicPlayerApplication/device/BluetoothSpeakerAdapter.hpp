@@ -1,4 +1,5 @@
-#pragma once
+# ifndef BLUETOOTH_SPEAKER_ADAPTER_HPP
+# define BLUETOOTH_SPEAKER_ADAPTER_HPP
 #include "../models/Song.hpp"
 #include "IAudioOutputDevice.hpp"
 #include "../external/BluetoothSpeakerAPI.hpp"
@@ -18,3 +19,5 @@ public:
         bluetoothApi->playSoundViaBluetooth(payload);
     }
 };
+
+#endif // BLUETOOTH_SPEAKER_ADAPTER_HPP

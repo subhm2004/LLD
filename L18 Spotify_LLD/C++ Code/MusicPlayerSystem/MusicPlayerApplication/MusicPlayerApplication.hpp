@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MUSIC_PLAYER_APPLICATION_HPP
+#define MUSIC_PLAYER_APPLICATION_HPP
 #include "managers/PlaylistManager.hpp"
 #include "MusicPlayerFacade.hpp"
 
@@ -92,3 +93,4 @@ public:
 };
 
 MusicPlayerApplication* MusicPlayerApplication::instance = nullptr;
+#endif // MUSIC_PLAYER_APPLICATION_HPP

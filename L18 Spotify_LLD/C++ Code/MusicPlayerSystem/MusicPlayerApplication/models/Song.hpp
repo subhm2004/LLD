@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SONG_HPP
+#define SONG_HPP
 #include <string>
 #include <iostream>
 
@@ -25,3 +26,4 @@ public:
         return filePath;  
     }
 };
+#endif // SONG_HPP

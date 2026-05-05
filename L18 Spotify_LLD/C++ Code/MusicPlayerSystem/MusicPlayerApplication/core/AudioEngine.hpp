@@ -1,4 +1,6 @@
-#pragma once
+#ifndef AUDIO_ENGINE_HPP
+#define AUDIO_ENGINE_HPP
+
 #include "../models/Song.hpp"
 #include "../device/IAudioOutputDevice.hpp"
 #include<string>
@@ -53,3 +55,5 @@ public:
         cout << "Pausing song: " << currentSong->getTitle() << "\n";
     }
 };
+
+#endif // AUDIO_ENGINE_HPP

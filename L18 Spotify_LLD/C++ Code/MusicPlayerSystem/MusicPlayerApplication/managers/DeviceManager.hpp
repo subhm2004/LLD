@@ -1,4 +1,5 @@
-#pragma once
+# ifndef DEVICE_MANAGER_HPP
+# define DEVICE_MANAGER_HPP
 #include<iostream>
 #include "../device/IAudioOutputDevice.hpp"
 #include "../enums/DeviceType.hpp"
@@ -52,3 +53,4 @@ public:
 };
 
 DeviceManager* DeviceManager::instance = nullptr;
+#endif // DEVICE_MANAGER_HPP

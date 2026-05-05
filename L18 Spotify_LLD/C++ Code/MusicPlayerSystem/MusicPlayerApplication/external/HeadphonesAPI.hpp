@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HEADPHONES_API_HPP
+#define HEADPHONES_API_HPP
 #include<string>
 #include<iostream>
 
@@ -11,3 +12,4 @@ public:
         // mimics playing music
     }
 };
+#endif // HEADPHONES_API_HPP

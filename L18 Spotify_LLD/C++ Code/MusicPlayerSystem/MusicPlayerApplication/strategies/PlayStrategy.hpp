@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PLAY_STRATEGY_HPP
+#define PLAY_STRATEGY_HPP
 #include<iostream>
 #include "../models/Song.hpp"
 #include "../models/Playlist.hpp"
@@ -15,3 +16,5 @@ public:
     virtual bool hasPrevious() = 0;
     virtual void addToNext(Song* song) {}
 };
+
+#endif // PLAY_STRATEGY_HPP

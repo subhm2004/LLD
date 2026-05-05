@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BLUETOOTH_SPEAKER_API_HPP
+#define BLUETOOTH_SPEAKER_API_HPP
 #include<string>
 #include<iostream>
 
@@ -11,3 +12,5 @@ public:
         // mimics playing music
     }
 };
+#endif // BLUETOOTH_SPEAKER_API_HPP
+

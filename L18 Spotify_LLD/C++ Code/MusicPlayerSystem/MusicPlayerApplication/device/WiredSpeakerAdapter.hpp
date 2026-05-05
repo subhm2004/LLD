@@ -1,4 +1,6 @@
-#pragma once
+#ifndef WIRED_SPEAKER_ADAPTER_HPP
+#define WIRED_SPEAKER_ADAPTER_HPP
+
 #include "../models/Song.hpp"
 #include "IAudioOutputDevice.hpp"
 #include "../external/WiredSpeakerAPI.hpp"
@@ -18,3 +20,6 @@ public:
         wiredApi->playSoundViaCable(payload);
     }
 };
+
+
+#endif // WIRED_SPEAKER_ADAPTER_HPP

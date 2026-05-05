@@ -1,4 +1,5 @@
-#pragma once
+# ifndef MUSIC_PLAYER_FACADE_HPP
+# define MUSIC_PLAYER_FACADE_HPP
 #include "core/AudioEngine.hpp"
 #include "models/Playlist.hpp"
 #include "models/Song.hpp"
@@ -109,4 +110,4 @@ public:
 };
 
 MusicPlayerFacade* MusicPlayerFacade::instance = nullptr;
-    
+#endif // MUSIC_PLAYER_FACADE_HPP

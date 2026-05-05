@@ -1,4 +1,5 @@
-#pragma once
+#   ifndef PLAYLIST_MANAGER_HPP
+#   define PLAYLIST_MANAGER_HPP
 #include "../models/Playlist.hpp"
 #include<iostream>
 #include<string>
@@ -41,3 +42,4 @@ public:
     }
 };
 PlaylistManager* PlaylistManager::instance = nullptr;
+#endif // PLAYLIST_MANAGER_HPP

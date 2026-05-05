@@ -1,4 +1,5 @@
-#pragma once
+# ifndef CUSTOM_QUEUE_STRATEGY_HPP
+# define CUSTOM_QUEUE_STRATEGY_HPP
 #include<iostream>
 #include "../models/Playlist.hpp"
 #include "PlayStrategy.hpp"
@@ -107,3 +108,4 @@ public:
         nextQueue.push(song);
     }
 };
+# endif // CUSTOM_QUEUE_STRATEGY_HPP

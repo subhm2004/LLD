@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HEADPHONES_ADAPTER_HPP
+#define HEADPHONES_ADAPTER_HPP
+
 #include "../models/Song.hpp"
 #include "IAudioOutputDevice.hpp"
 #include "../external/HeadphonesAPI.hpp"
@@ -19,3 +21,5 @@ public:
     }
 };
 
+
+#endif // HEADPHONES_ADAPTER_HPP

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PLAYLIST_HPP
+#define PLAYLIST_HPP
 #include <vector>
 #include <string>
 #include <iostream>
@@ -6,27 +7,36 @@
 
 using namespace std;
 
-class Playlist {
+class Playlist
+{
 private:
     string playlistName;
-    vector<Song*> songList;
+    vector<Song *> songList;
+
 public:
-    Playlist(string name) {
+    Playlist(string name)
+    {
         playlistName = name;
     }
-    string getPlaylistName() {
+    string getPlaylistName()
+    {
         return playlistName;
     }
-    const vector<Song*> getSongs() {
+    const vector<Song *> getSongs()
+    {
         return songList;
     }
-    int getSize() {
+    int getSize()
+    {
         return (int)songList.size();
     }
-    void addSongToPlaylist(Song* song) {
-        if (song == nullptr) {
+    void addSongToPlaylist(Song *song)
+    {
+        if (song == nullptr)
+        {
             throw runtime_error("Cannot add null song to playlist.");
         }
         songList.push_back(song);
     }
 };
+#endif // PLAYLIST_HPP

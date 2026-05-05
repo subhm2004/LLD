@@ -1,4 +1,5 @@
-#pragma once
+#ifndef WIRED_SPEAKER_API_HPP
+#define WIRED_SPEAKER_API_HPP
 #include<string>
 #include<iostream>
 
@@ -11,3 +12,4 @@ public:
         // mimics playing music
     }
 };
+#endif // WIRED_SPEAKER_API_HPP

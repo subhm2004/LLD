@@ -1,98 +1,79 @@
 # Low-Level Design (LLD) Master Repository
 
-A deep, code-first repository for mastering **Low-Level Design**, **object-oriented modeling**, and **interview-grade system decomposition** in C++.
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2500&pause=800&color=2F81F7&center=true&vCenter=true&width=900&lines=Master+LLD+with+Code-First+Practice;Design+Patterns+%2B+System+Design+Case+Studies;Interview-Ready+C%2B%2B+Architecture+Repository" alt="Typing animation" />
+</p>
 
-This repository is built as a practical LLD workbook:
+<p align="center">
+  <img src="https://img.shields.io/badge/Language-C%2B%2B-blue?style=for-the-badge" alt="C++ Badge" />
+  <img src="https://img.shields.io/badge/Focus-LLD%20%7C%20OOP%20%7C%20Design%20Patterns-6f42c1?style=for-the-badge" alt="Focus Badge" />
+  <img src="https://img.shields.io/badge/Repository%20Style-Code--First-success?style=for-the-badge" alt="Repo style badge" />
+  <img src="https://img.shields.io/badge/Learning-Interview%20Ready-orange?style=for-the-badge" alt="Interview ready badge" />
+</p>
 
-- concept learning + implementation in one place
-- pattern-focused modules and real system case studies
-- modular C++ codebases with folderized architecture
-- requirement docs and problem statements for structured thinking
-- extension-friendly implementations for iterative design evolution
+Deep, implementation-heavy repository for mastering **Low-Level Design**, **object-oriented modeling**, and **interview-grade system decomposition** in C++.
 
 ---
 
-## What Makes This Repository Valuable
+## Why This Repository Is Strong
 
-Most LLD preparation fails at one of these stages:
+Most LLD preparation breaks at one of these points:
 
-- understanding theory but not converting it into classes/interfaces
-- coding quickly but with weak extensibility and maintainability
-- solving examples once but not learning reusable design intuition
+- theory samajh aata hai, but classes/interfaces me convert nahi hota
+- code likh lete hain, but extensibility weak hoti hai
+- 1-2 examples solve karte hain, but reusable design intuition build nahi hoti
 
-This repository addresses all three by combining:
+This repository solves that with layered learning:
 
-- **Foundation Layer**: OOP, UML, SOLID, clean abstraction principles
-- **Pattern Layer**: isolated lessons for core design patterns
-- **System Layer**: full end-to-end LLD implementations
-- **Interview Layer**: problem framing, assumptions, trade-offs, extensibility points
+- **Foundation Layer**: OOP, UML, SOLID
+- **Pattern Layer**: isolated design pattern practice
+- **System Layer**: production-like modular implementations
+- **Interview Layer**: assumptions, trade-offs, extension points
 
 ---
 
 ## Repository Goals
 
-- Build strong command over class design and object collaboration.
-- Practice converting business requirements into clean domain models.
-- Learn when and why to apply specific design patterns.
-- Gain confidence in discussing design decisions during interviews.
-- Develop a reusable personal template for future LLD rounds.
+- Build strong command over class design and object collaboration
+- Convert business requirements into clean domain models
+- Learn when and why to apply each pattern
+- Explain design clearly in interviews (not just code it)
+- Maintain a reusable personal LLD template for new problems
 
 ---
 
-## How To Use This Repo Effectively
+## Learning Flow (Recommended)
 
-### 1) Learn in Layers
+1. Start with OOP + SOLID + UML modules
+2. Move to design pattern-specific folders
+3. Build full system-level implementations
+4. Add 1-2 enhancements to each project
+5. Revisit old projects with better abstractions
 
-1. Start with OOP + SOLID + UML basics.
-2. Move to pattern-specific lessons.
-3. Build system-level projects.
-4. Add 1-2 enhancements to each system.
-5. Revisit earlier designs with improved abstractions.
-
-### 2) For Every Project, Practice 5 Questions
+For every project, practice:
 
 - What assumptions did I make?
 - Why is each class/interface needed?
 - What can change in future, and where is extension hook?
-- Which design pattern gave maximum value here?
-- What would break first at scale, and how would I redesign?
-
-### 3) Convert Coding to Communication
-
-For interview readiness, always explain:
-
-- problem statement in 60 seconds
-- core entities and responsibilities
-- APIs / workflows
-- design trade-offs
-- future extensibility plan
+- Which design pattern gave maximum value?
+- What breaks first at scale?
 
 ---
 
-## Featured System Implementations
+## Featured Implementations
 
+- [WhatsApp LLD](./WhatsApp_LLD/)
+- [Notification Engine LLD (New)](./L14%20Notification_Engine_LLD/notification_lld/)
 - [Movie Ticket Booking System](./Movie_Ticket_Booking_System/)
 - [Ride Sharing App](./Ride_sharing_app_LLD/)
 - [Parking Lot System](./Parking_lot_system_LLD/)
 - [Elevator System](./Elevator_System_LLD/)
-- [Vending Machine](./vending_machine_LLD/)
-- [Library Management System](./Library_Management_System_LLD/)
-- [URL Shortener](./URL_Shortner_LLD/)
-- [JSON Parser](./JSON_Parser_LLD/)
-- [LinkedIn LLD](./Linkedin_LLD/)
-- [Car Rental System](./Car_Rental_System_LLD/)
-- [Load Balancer LLD](./LoadBalancer_LLD/)
-- [Uber LLD](./Uber_LLD/)
-- [ATM LLD](./ATM_LLD/)
-- [Logger LLD](./Logger_LLD/)
 - [Rate Limiter LLD](./Rate_Limiter_LLD/)
-- [Blinkit LLD](./L26%20Blinkit_LLD/)
-- [Tinder LLD](./L27%20Tinder_LLD/)
+- [Load Balancer LLD](./LoadBalancer_LLD/)
 - [Splitwise LLD](./L31%20Splitwise_LLD/)
 - [Tic Tac Toe LLD](./L33%20Tic_Tac_Toe_LLD/)
 - [Snake & Ladder LLD](./L34%20Snake_ladder_LLD/)
 - [Chess LLD](./L37%20Chess_LLD/)
-- [Insta/YouTube Reel Architecture](./Insta_reel_LLD/yt%20reel%20architecture/)
 
 ---
 
@@ -113,7 +94,7 @@ For interview readiness, always explain:
 - [L11 Food_Delivery_LLD](./L11%20Food_Delivery_LLD/)
 - [L12 Observer_Design_Pattern](./L12%20Observer_Design_Pattern/)
 - [L13 Decorator_Design_Pattern](./L13%20Decorator_Design_Pattern/)
-- [L14 Nodification_Engine_LLD](./L14%20Nodification_Engine_LLD/)
+- [L14 Notification_Engine_LLD](./L14%20Notification_Engine_LLD/)
 - [L15 Command_Design_Pattern](./L15%20Command_Design_Pattern/)
 - [L16 Adapter_Design_Pattern](./L16%20Adapter_Design_Pattern/)
 - [L17 Facade_Design_Pattern](./L17%20Facade_Design_Pattern/)
@@ -143,27 +124,24 @@ For interview readiness, always explain:
 
 ### System Implementations
 
-- [Logger_LLD](./Logger_LLD/)
-- [Rate_Limiter_LLD](./Rate_Limiter_LLD/)
-- [Multi_threading_C++](./Multi_threading_C++/)
+- [ATM_LLD](./ATM_LLD/)
+- [Car_Rental_System_LLD](./Car_Rental_System_LLD/)
 - [Elevator_System_LLD](./Elevator_System_LLD/)
-- [Parking_lot_system_LLD](./Parking_lot_system_LLD/)
-- [vending_machine_LLD](./vending_machine_LLD/)
 - [JSON_Parser_LLD](./JSON_Parser_LLD/)
-- [URL_Shortner_LLD](./URL_Shortner_LLD/)
-- [Ride_sharing_app_LLD](./Ride_sharing_app_LLD/)
-- [Movie_Ticket_Booking_System](./Movie_Ticket_Booking_System/)
 - [Library_Management_System_LLD](./Library_Management_System_LLD/)
 - [Linkedin_LLD](./Linkedin_LLD/)
-- [Car_Rental_System_LLD](./Car_Rental_System_LLD/)
 - [LoadBalancer_LLD](./LoadBalancer_LLD/)
+- [Logger_LLD](./Logger_LLD/)
+- [Movie_Ticket_Booking_System_LLD](./Movie_Ticket_Booking_System/)
+- [Parking_lot_system_LLD](./Parking_lot_system_LLD/)
+- [Rate_Limiter_LLD](./Rate_Limiter_LLD/)
+- [Ride_sharing_app_LLD](./Ride_sharing_app_LLD/)
 - [Uber_LLD](./Uber_LLD/)
-- [ATM_LLD](./ATM_LLD/)
-- [L31 Splitwise_LLD](./L31%20Splitwise_LLD/)
-- [L33 Tic_Tac_Toe_LLD](./L33%20Tic_Tac_Toe_LLD/)
-- [L34 Snake_ladder_LLD](./L34%20Snake_ladder_LLD/)
-- [L37 Chess_LLD](./L37%20Chess_LLD/)
-- [Insta_reel_LLD/yt reel architecture](./Insta_reel_LLD/yt%20reel%20architecture/)
+- [URL_Shortner_LLD](./URL_Shortner_LLD/)
+- [vending_machine_LLD](./vending_machine_LLD/)
+- [WhatsApp_LLD](./WhatsApp_LLD/)
+- [Notification_Engine_LLD](./L14%20Notification_Engine_LLD/)
+- [Insta_reel_LLD ](./Insta_reel_LLD/yt%20reel%20architecture/)
 
 ---
 
@@ -212,38 +190,40 @@ For interview readiness, always explain:
 
 ### Core Design Principles
 
-- SOLID
-- DRY
-- KISS
-- YAGNI
+- SOLID (Single Responsibility, Open-Closed, Liskov Substitution, Interface Segregation, Dependency Inversion)
+- DRY (Don't Repeat Yourself)
+- KISS (Keep It Simple, Stupid)
+- YAGNI (You Aren't Gonna Need It)
 - high cohesion, low coupling
 
 ### System Thinking
 
-- requirements decomposition
+- requirement decomposition
 - domain modeling
 - API and workflow design
 - extension points and trade-off analysis
 - modular architecture and maintainability
 
-
-
 ---
 
-## Coding Conventions Used in This Repository
+## Project Structure Style
 
-- C++ implementation-first approach
-- modular folders (`core`, `models`, `services`, `enums`, etc.)
-- header-file-based decomposition for readability
-- explicit namespace usage per project
-- interview-friendly, readable class design over over-optimization
+Most systems follow this modular decomposition:
+
+- `core` for orchestration classes
+- `models` for domain objects
+- `services` for business logic
+- `enums` for type-safe constants
+- `rules`, `strategies`, `factories`, `observers` when needed
+- `main.cpp` for runnable demo
+- `requirements.md` + `problem_statement.md` for design-first thinking
 
 ---
 
 ## Tech Stack
 
 - **Language**: C++ (majority of implementations)
-- **Focus Areas**: LLD, OOP, design patterns, concurrency, interview problem solving
+- **Focus Areas**: LLD, OOP, Design Patterns, Concurrency
 - **Repository Style**: educational + practical + extensible
 
 ---

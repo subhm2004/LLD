@@ -1,17 +1,20 @@
+#include <bits/stdc++.h>
 #include "MusicPlayerApplication.h"
 
 using namespace std;
 
-int main() {
-    try {
+int main()
+{
+    try
+    {
         auto application = MusicPlayerApplication::getInstance();
 
         // Populate library
-        application->createSongInLibrary("Kesariya",  "Arijit Singh",  "/music/kesariya.mp3");
-        application->createSongInLibrary("Chaiyya Chaiyya",   "Sukhwinder Singh",  "/music/chaiyya_chaiyya.mp3");
-        application->createSongInLibrary("Tum Hi Ho",  "Arijit Singh",  "/music/tum_hi_ho.mp3");
-        application->createSongInLibrary("Jai Ho",  "A. R. Rahman",  "/music/jai_ho.mp3");
-        application->createSongInLibrary("Zinda",  "Siddharth Mahadevan",  "/music/zinda.mp3");
+        application->createSongInLibrary("Kesariya", "Arijit Singh", "/music/kesariya.mp3");
+        application->createSongInLibrary("Chaiyya Chaiyya", "Sukhwinder Singh", "/music/chaiyya_chaiyya.mp3");
+        application->createSongInLibrary("Tum Hi Ho", "Arijit Singh", "/music/tum_hi_ho.mp3");
+        application->createSongInLibrary("Jai Ho", "A. R. Rahman", "/music/jai_ho.mp3");
+        application->createSongInLibrary("Zinda", "Siddharth Mahadevan", "/music/zinda.mp3");
 
         // Create playlist and add songs
         application->createPlaylist("Bollywood Vibes");
@@ -23,10 +26,10 @@ int main() {
         // Connect device
         application->connectAudioDevice(DeviceType::BLUETOOTH);
 
-        //Play/pause a single song
+        // Play/pause a single song
         application->playSingleSong("Zinda");
         application->pauseCurrentSong("Zinda");
-        application->playSingleSong("Zinda");  // resume
+        application->playSingleSong("Zinda"); // resume
 
         cout << "\n-- Sequential Playback --\n";
         application->selectPlayStrategy(PlayStrategyType::SEQUENTIAL);
@@ -52,8 +55,9 @@ int main() {
 
         application->playPreviousTrackInPlaylist();
         application->playPreviousTrackInPlaylist();
-
-    } catch (const exception& error) {
+    }
+    catch (const exception &error)
+    {
         cerr << "Error: " << error.what() << endl;
     }
     return 0;

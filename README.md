@@ -8,7 +8,6 @@
   <img src="https://img.shields.io/badge/Language-C%2B%2B-blue?style=for-the-badge" alt="C++ Badge" />
   <img src="https://img.shields.io/badge/Lessons-L1%E2%80%93L40-6f42c1?style=for-the-badge" alt="Lessons badge" />
   <img src="https://img.shields.io/badge/System+Projects-19-success?style=for-the-badge" alt="Projects badge" />
-  <img src="https://img.shields.io/badge/README-1500%2B%20lines-critical?style=for-the-badge" alt="README depth" />
   <img src="https://img.shields.io/badge/Focus-Interview%20Ready-orange?style=for-the-badge" alt="Interview badge" />
 </p>
 

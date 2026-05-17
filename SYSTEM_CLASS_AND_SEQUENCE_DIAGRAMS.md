@@ -1,7 +1,46 @@
 # System Projects — Class Diagrams & Sequence Diagrams
 
-> **18 LLD projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
-> GitHub / VS Code / Cursor me Mermaid preview se diagrams render honge.
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=6F42C1&center=true&vCenter=true&width=920&lines=UML+Reference+%E2%80%94+19+System+Projects;Class+Diagrams+%2B+Sequence+Flows;Mermaid+%7C+Code-Accurate+Names" alt="Typing animation" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Systems-19-blue?style=for-the-badge" alt="19 systems" />
+  <img src="https://img.shields.io/badge/Diagrams-Mermaid-6f42c1?style=for-the-badge" alt="Mermaid" />
+  <img src="https://img.shields.io/badge/Lines-2500%2B-success?style=for-the-badge" alt="2500+ lines" />
+  <img src="https://img.shields.io/badge/Synced-With%20Code-orange?style=for-the-badge" alt="Synced with code" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Class-Diagrams-Per%20Project-informational?style=flat-square" alt="Class" />
+  <img src="https://img.shields.io/badge/Sequence-2--3%20per%20System-informational?style=flat-square" alt="Sequence" />
+  <img src="https://img.shields.io/badge/Preview-GitHub%20%7C%20VS%20Code%20%7C%20Cursor-informational?style=flat-square" alt="Preview" />
+</p>
+
+> **19 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
+> GitHub / VS Code / Cursor me **Markdown Preview** se Mermaid diagrams render honge.
+
+---
+
+## Maintenance Status
+
+| Item | Status |
+| ---- | ------ |
+| **Projects covered** | 19 / 19 standalone systems (incl. LRU + LFU) |
+| **Last aligned with code** | Repo `main` — class/method names match headers |
+| **LFU Cache (§19)** | Added — mirrors `LFU_Cache_LLD/` structure |
+| **Lesson modules (L1–L40)** | Not in this file — system projects only |
+| **How to verify** | Code change → update matching Mermaid block in same section |
+
+```mermaid
+flowchart LR
+    A[Read problem_statement.md] --> B[Trace core/ + services/]
+    B --> C[Update Class Diagram]
+    C --> D[Update Sequence Diagrams]
+    D --> E[Preview in Cursor Cmd+Shift+V]
+```
+
+**Pair with:** [`README.md`](./README.md) (study guide) · per-project `compile.sh` (run demos)
 
 ---
 
@@ -27,6 +66,7 @@
 | 16 | [WhatsApp](#16-whatsapp) | `WhatsApp_LLD/` |
 | 17 | [Insta/YouTube Reels](#17-instayoutube-reels) | `Insta_reel_LLD/yt reel architecture/` |
 | 18 | [Thread-Safe LRU Cache](#18-thread-safe-lru-cache) | `LRU_Cache_LLD/` |
+| 19 | [Thread-Safe LFU Cache](#19-thread-safe-lfu-cache) | `LFU_Cache_LLD/` |
 
 ---
 
@@ -2441,8 +2481,220 @@ sequenceDiagram
 ### Build
 
 ```bash
-cd LRU_Cache_LLD && g++ -std=c++17 -pthread main.cpp -o lru_cache_app && ./lru_cache_app
+cd LRU_Cache_LLD && ./compile.sh && ./lru_cache_app
 ```
+
+---
+
+## 19. Thread-Safe LFU Cache
+
+**Namespace:** `lfu_cache_lld`  
+**Path:** [`LFU_Cache_LLD/`](./LFU_Cache_LLD/)  
+**Facade:** `CacheService`  
+**Patterns:** Facade, Decorator (`ThreadSafeLFUCache`), `ICache` interface  
+**Eviction:** Lowest frequency first; tie → LRU within same frequency bucket (`list::pop_back`)
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    direction TB
+
+    class ICache~Key,Value~ {
+        <<interface>>
+        +get(key) optional~Value~
+        +put(key, value)
+        +contains(key) bool
+        +remove(key) bool
+        +clear()
+        +size() size_t
+        +capacity() size_t
+    }
+
+    class LFUCacheCore~Key,Value~ {
+        -CacheConfig config_
+        -unordered_map keyMap_
+        -unordered_map freqBuckets_
+        -int minFreq_
+        -bool lastPutEvicted_
+        +get(key) optional~Value~
+        +put(key, value)
+        +increaseFrequency(node)
+        +evictLeastFrequentlyUsed()
+        +insertWithFrequencyOne(node)
+    }
+
+    class ThreadSafeLFUCache~Key,Value~ {
+        -mutex mutex_
+        -LFUCacheCore core_
+        +get(key) optional~Value~
+        +put(key, value)
+        +didLastPutEvict() bool
+    }
+
+    class CacheService~Key,Value~ {
+        -ThreadSafeLFUCache cache_
+        -CacheStatistics statistics_
+        +get(key) optional~Value~
+        +put(key, value)
+        +getFrequency(key) optional~int~
+        +printStatistics()
+    }
+
+    class LFUNode~Key,Value~ {
+        +Key key
+        +Value value
+        +int frequency
+        +list iterator
+    }
+
+    class CacheConfig {
+        -size_t capacity_
+        +getCapacity() size_t
+    }
+
+    class CacheStatistics {
+        -atomic hits_, misses_, puts_
+        -atomic evictions_, removes_
+        +recordHit()
+        +recordMiss()
+        +recordEviction()
+        +getHitRatio() double
+    }
+
+    class EvictionPolicyType {
+        <<enumeration>>
+        LFU
+    }
+
+    ICache <|.. LFUCacheCore
+    ICache <|.. ThreadSafeLFUCache
+    ThreadSafeLFUCache *-- LFUCacheCore : decorates
+    CacheService *-- ThreadSafeLFUCache
+    CacheService *-- CacheStatistics
+    LFUCacheCore *-- CacheConfig
+    LFUCacheCore o-- LFUNode
+    LFUCacheCore ..> EvictionPolicyType
+```
+
+### Internal data structure (LFU frequency buckets)
+
+```mermaid
+flowchart TB
+    subgraph keyMap ["keyMap_ — key → LFUNode"]
+        KA["api:/users → freq 6"]
+        KB["api:/orders → freq 3"]
+    end
+
+    subgraph buckets ["freqBuckets_ — freq → list of keys"]
+        F1["freq=1 → [newest … oldest]"]
+        F3["freq=3 → [api:/orders]"]
+        F6["freq=6 → [api:/users]"]
+    end
+
+    min["minFreq_ = 1"]
+    evict["evict: pop_back from minFreq bucket"]
+    min --> F1
+    F1 --> evict
+```
+
+### Sequence Diagram — Put (new key + LFU eviction)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant Service as CacheService
+    participant TS as ThreadSafeLFUCache
+    participant Core as LFUCacheCore
+    participant Stats as CacheStatistics
+
+    Client->>Service: put(key, value)
+    Service->>TS: put(key, value)
+    TS->>TS: lock_guard(mutex_)
+    TS->>Core: put(key, value)
+    Core->>Core: keyMap_.find(key)
+    alt key exists
+        Core->>Core: update value + increaseFrequency()
+    else new key
+        alt size >= capacity
+            Core->>Core: evictLeastFrequentlyUsed()
+            Note over Core: pop_back from freqBuckets_[minFreq_]
+        end
+        Core->>Core: make_unique LFUNode + insertWithFrequencyOne()
+        Core->>Core: keyMap_.emplace(key, node)
+    end
+    TS-->>Service: return
+    Service->>Stats: recordPut()
+    alt didLastPutEvict()
+        Service->>Stats: recordEviction()
+    end
+```
+
+### Sequence Diagram — Get (hit increases frequency)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant Service as CacheService
+    participant TS as ThreadSafeLFUCache
+    participant Core as LFUCacheCore
+    participant Stats as CacheStatistics
+
+    Client->>Service: get(key)
+    Service->>TS: get(key)
+    TS->>TS: lock_guard(mutex_)
+    TS->>Core: get(key)
+    Core->>Core: keyMap_.find(key)
+    alt hit
+        Core->>Core: increaseFrequency(node)
+        Note over Core: move to freq+1 bucket, update minFreq_
+        Core-->>TS: optional(value)
+        Service->>Stats: recordHit()
+    else miss
+        Core-->>TS: nullopt
+        Service->>Stats: recordMiss()
+    end
+    Service-->>Client: optional~Value~
+```
+
+### Sequence Diagram — Concurrent stress test
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Main
+    participant Barrier as CyclicBarrier
+    participant Workers as Thread pool
+    participant Service as CacheService
+
+    Main->>Service: CacheService(capacity=100)
+    par 16 threads
+        Workers->>Barrier: arriveAndWait()
+    end
+    Note over Workers: synchronized start
+    par concurrent put/get
+        Workers->>Service: put / get random keys
+    end
+    Workers->>Main: join
+    Main->>Service: printStatistics()
+```
+
+### Build
+
+```bash
+cd LFU_Cache_LLD && ./compile.sh && ./lfu_cache_app
+```
+
+### LRU vs LFU (quick compare)
+
+| Aspect | §18 LRU | §19 LFU |
+| ------ | ------- | ------- |
+| Eviction | Least recently **used** | Least frequently **used** |
+| Core DS | `list` + `unordered_map` | Freq buckets + `keyMap_` |
+| `get()` effect | Promotes to MRU | Increases frequency |
+| Best for | Temporal locality | Hot-key / API caching |
 
 ---
 
@@ -2455,7 +2707,8 @@ graph LR
         Parking[ParkingLot]
         Uber[UberSystem]
         WA[WhatsAppSystem]
-        LRU[CacheService]
+        LRU[CacheService LRU]
+        LFU[CacheService LFU]
     end
 
     subgraph Strategy
@@ -2474,14 +2727,16 @@ graph LR
     end
 
     subgraph Decorator
-        TS[ThreadSafeLRUCache]
+        TS_LRU[ThreadSafeLRUCache]
+        TS_LFU[ThreadSafeLFUCache]
     end
 
     Parking --> Pricing
     LB --> RoundRobin
     RL --> TokenBucket
     WA --> Encrypt
-    TS --> LRU
+    TS_LRU --> LRU
+    TS_LFU --> LFU
 ```
 
 | Project | Facade | Primary Pattern(s) |
@@ -2504,6 +2759,7 @@ graph LR
 | WhatsApp | `WhatsAppSystem` | Strategy, Decorator, Observer |
 | Reels | `ReelPlatformService` | Facade, Feed ranking |
 | LRU Cache | `CacheService` | Facade, Decorator, `ICache` interface |
+| LFU Cache | `CacheService` | Facade, Decorator, frequency buckets + `minFreq` |
 
 ---
 
@@ -2522,11 +2778,17 @@ graph LR
 |------|---------|
 | [`README.md`](./README.md) | Full repository guide |
 | [`LRU_Cache_LLD/README.md`](./LRU_Cache_LLD/README.md) | LRU project guide + inline diagrams |
+| [`LFU_Cache_LLD/README.md`](./LFU_Cache_LLD/README.md) | LFU project guide + compile notes |
 | [`Design_Pattern_types.md`](./Design_Pattern_types.md) | Pattern taxonomy |
 | Per-project `problem_statement.md` | Ground-truth requirements |
 
 ---
 
 <p align="center">
-  <b>18 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b>
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=16&duration=3000&pause=1200&color=2F81F7&center=true&vCenter=true&width=700&lines=Happy+Designing+%E2%80%94+Whiteboard+First%2C+Code+Second" alt="Footer animation" />
+</p>
+
+<p align="center">
+  <b>19 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
+  <sub>Maintained alongside <code>README.md</code> and per-project headers</sub>
 </p>

@@ -1,11 +1,4 @@
 #include <bits/stdc++.h>
-#include <iostream>
-#include <mutex>
-#include <optional>
-#include <string>
-#include <thread>
-#include <utility>
-#include <vector>
 
 #include "config/CacheConfig.h"
 #include "core/CacheService.h"

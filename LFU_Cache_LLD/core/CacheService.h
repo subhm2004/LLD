@@ -9,7 +9,7 @@
 
 #include "../cache/ThreadSafeLFUCache.h"
 #include "../config/CacheConfig.h"
-#include "../config/CppStandard.h"
+#include <bits/stdc++.h>
 #include "../enums/CacheOperationType.h"
 #include "../enums/EvictionPolicyType.h"
 #include "../stats/CacheStatistics.h"

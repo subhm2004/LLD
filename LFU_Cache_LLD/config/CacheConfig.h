@@ -4,7 +4,7 @@
 #include <cstddef>
 #include <stdexcept>
 
-#include "CppStandard.h"
+#include <bits/stdc++.h>
 
 namespace lfu_cache_lld {
 

@@ -1,13 +1,14 @@
 # Low-Level Design (LLD) — Complete Master Repository Guide
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2500&pause=800&color=2F81F7&center=true&vCenter=true&width=900&lines=Master+LLD+with+Code-First+Practice;40+Lessons+%7C+18+System+Projects;Design+Patterns+%2B+Interview+Case+Studies" alt="Typing animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2500&pause=800&color=2F81F7&center=true&vCenter=true&width=900&lines=Master+LLD+Guide+%E2%80%94+1800%2B+Lines;40+Lessons+%7C+19+System+Projects;Patterns+%2B+Interview+Deep+Dives" alt="Typing animation" />
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Language-C%2B%2B-blue?style=for-the-badge" alt="C++ Badge" />
   <img src="https://img.shields.io/badge/Lessons-L1%E2%80%93L40-6f42c1?style=for-the-badge" alt="Lessons badge" />
-  <img src="https://img.shields.io/badge/System+Projects-18%2B-success?style=for-the-badge" alt="Projects badge" />
+  <img src="https://img.shields.io/badge/System+Projects-19-success?style=for-the-badge" alt="Projects badge" />
+  <img src="https://img.shields.io/badge/README-1500%2B%20lines-critical?style=for-the-badge" alt="README depth" />
   <img src="https://img.shields.io/badge/Focus-Interview%20Ready-orange?style=for-the-badge" alt="Interview badge" />
 </p>
 
@@ -35,7 +36,45 @@
 16. [Reference Materials In Repo](#reference-materials-in-repo)
 17. [Extension Exercises](#extension-exercises)
 18. [Quick Navigation Index](#quick-navigation-index)
-19. [Glossary](#glossary)
+19. [System Projects — Deep Dive & Interview Bank](#system-projects--deep-dive--interview-bank)
+20. [Company-Wise Problem Mapping](#company-wise-problem-mapping)
+21. [12-Week Study Calendar](#12-week-study-calendar)
+22. [FAQ — Frequently Asked Questions](#faq--frequently-asked-questions)
+23. [Troubleshooting — Build & IDE](#troubleshooting--build--ide)
+24. [Glossary](#glossary)
+25. [Changelog & Maintenance](#changelog--maintenance)
+
+---
+
+## Quick Start (5 Minutes)
+
+Agar tum **abhi** start kar rahe ho, yeh minimal path follow karo:
+
+```mermaid
+flowchart LR
+    A[README skim] --> B[L1-L6 Foundations]
+    B --> C[L8 Strategy + L9 Factory]
+    C --> D[1 System Project]
+    D --> E[Whiteboard + main.cpp run]
+    E --> F[SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md]
+```
+
+| Step | Action | Time |
+| ---- | ------ | ---- |
+| 1 | Clone repo, open in VS Code / Cursor | 2 min |
+| 2 | `cd Parking_lot_system_LLD && ./compile.sh` | 1 min |
+| 3 | `problem_statement.md` padho, phir `core/ParkingLot.h` | 5 min |
+| 4 | Khud se ek method add karo (e.g. VIP spot) | 30–60 min |
+
+**First compile (any system project):**
+
+```bash
+cd Parking_lot_system_LLD
+./compile.sh          # preferred — C++17 + -I.
+./parking_app
+```
+
+**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (~2500 lines Mermaid).
 
 ---
 
@@ -976,8 +1015,10 @@ cd vending_machine_LLD && g++ -std=c++17 main.cpp -o vending_app && ./vending_ap
 **Services:** `ChatService`, `EncryptionService`, `NotificationService`, `NotificationEngine` (pattern demo)
 
 ```bash
-cd WhatsApp_LLD && g++ -std=c++17 main.cpp -o whatsapp && ./whatsapp
+cd WhatsApp_LLD && ./compile.sh && ./whatsapp_app
 ```
+
+**Encryption (LLD hook — real E2E nahi):** `EncryptionService` interface + `NoOpEncryptionService` (plain text) + demo `DemoEncryptionService` in `main.cpp` (`"Hello"` → `"enc(Hello)"`). `ChatService::getEncryptedMessage()` har send par encrypt karta hai. Interview me bolo: production me Signal-style key exchange + AES — yahan **Strategy pattern** dikhane ke liye stub hai.
 
 ---
 
@@ -1105,6 +1146,28 @@ g++ -std=c++17 -pthread thread_pool.cpp -o thread_pool && ./thread_pool
 | "WhatsApp message ordering?"         | WhatsApp — sequence numbers (extension)         |
 | "LRU cache sharded / distributed?" | LRU Cache — consistent hashing + per-shard LRU    |
 | "LRU me get() thread-safe kaise?"    | LRU Cache — mutex; get mutates order via splice   |
+| "LFU me same frequency tie?"         | LFU — LRU tie-break within frequency bucket       |
+| "Parking lot multi-entry?"           | Multiple `ParkingLot` or zone id on ticket        |
+| "Logger async without blocking?"     | Queue + worker thread; batch writes               |
+| "URL shortener analytics?"           | `UrlEntry` click count — aggregate to DB            |
+| "ATM dispense exact amount?"         | CashDispenser greedy — NP-hard general case note  |
+| "Reels feed cold start?"             | Popular / trending fallback for new users         |
+| "LinkedIn connection mutual?"        | Store directed edge; accept creates双向 (extension) |
+| "JSON parser streaming?"             | SAX-style vs DOM composite — memory trade-off       |
+
+### Mock interview rubric (self-score / peer)
+
+| Criteria | 0 | 1 | 2 |
+| -------- | - | - | - |
+| Requirements clarified | Skipped | Partial | Assumptions listed |
+| Class diagram | Missing | Incomplete | Clear entities + relations |
+| Patterns named | None | Wrong pattern | Correct + justification |
+| Code structure | Monolith | Some layers | core/models/services |
+| Extensibility | Hard-coded | Some interfaces | OCP demonstrated |
+| Trade-offs | None | Vague | Concrete (scale, consistency) |
+| Time management | Over 60 min | 45–60 min | Finished core in 35 min |
+
+**Target:** Score ≥ 8/12 before real interview loop.
 
 ### SOLID quick recall (interview)
 
@@ -1122,43 +1185,51 @@ g++ -std=c++17 -pthread thread_pool.cpp -o thread_pool && ./thread_pool
 
 ### Prerequisites
 
-- **Compiler:** `g++` with C++17 support (GCC 7+ / Clang 5+)
+- **Compiler:** `g++` or `clang++` with **C++17** (`-std=c++17`)
 - **OS:** macOS, Linux, Windows (WSL recommended)
-- **Threading:** `-pthread` flag for `Multi_threading_C++` and thread-safe lessons
+- **Threading:** `-pthread` for `Multi_threading_C++`, `LRU_Cache_LLD`, `LFU_Cache_LLD`
 
-### Universal compile command
+### C++17 + compile helpers (system projects)
+
+Har standalone system project me **`#include <bits/stdc++.h>`** + **C++17** build:
+
+| File | Purpose |
+| ---- | ------- |
+| `.clangd` | IDE: `-std=c++17 -pthread -I.` |
+| `compile.sh` | One-command build from project folder |
+
+**Recommended (per project):**
 
 ```bash
-g++ -std=c++17 main.cpp -o app_name
-./app_name
+cd ATM_LLD
+./compile.sh
+./atm_app
+```
+
+**Manual equivalent:**
+
+```bash
+g++ -std=c++17 -Wall -Wextra -pthread -I. main.cpp -o atm_app
+```
+
+**Build all 18 systems from repo root:**
+
+```bash
+chmod +x scripts/build_all_systems.sh
+./scripts/build_all_systems.sh
 ```
 
 ### Projects with non-standard entry files
 
-| Project          | Entry file                      | Output binary      |
-| ---------------- | ------------------------------- | ------------------ |
-| Logger_LLD       | `Main.cpp`                      | `logger_app`       |
-| Rate_Limiter_LLD | `Main.cpp`                      | `rate_limiter_app` |
-| LRU_Cache_LLD    | `main.cpp` (use `-pthread`)     | `lru_cache_app`    |
-| Insta_reel_LLD   | `yt reel architecture/main.cpp` | `reels_app`        |
+| Project          | Entry file                        | Output binary        |
+| ---------------- | --------------------------------- | -------------------- |
+| Logger_LLD       | `Main.cpp`                        | `logger_app`         |
+| Rate_Limiter_LLD | `Main.cpp`                        | `rate_limiter_app`   |
+| LRU_Cache_LLD    | `main.cpp` (`-pthread` in script) | `lru_cache_app`      |
+| LFU_Cache_LLD    | `main.cpp` (`-pthread`)           | `lfu_cache_app`      |
+| Insta_reel_LLD   | `yt reel architecture/main.cpp` | `reels_app`          |
 
-### Batch compile script (optional — run from repo root)
-
-```bash
-#!/bin/bash
-# save as build_all.sh — compiles all projects with main.cpp
-for dir in ATM_LLD Car_Rental_System_LLD Elevator_System_LLD JSON_Parser_LLD \
-  Library_Management_System_LLD Linkedin_LLD LoadBalancer_LLD \
-  Parking_lot_system_LLD Ride_sharing_app_LLD Uber_LLD URL_Shortner_LLD \
-  vending_machine_LLD WhatsApp_LLD; do
-  if [ -f "$dir/main.cpp" ]; then
-    echo "Building $dir..."
-    (cd "$dir" && g++ -std=c++17 main.cpp -o "${dir##*/}_app" && echo "OK: $dir") || echo "FAIL: $dir"
-  fi
-done
-```
-
-> Lesson folders (`L*`) me often header-only demos hain — unke liye specific `.cpp` file compile karo.
+> Lesson folders (`L*`) me often header-only demos hain — unke liye specific `.cpp` file compile karo with `-std=c++17`.
 
 ---
 
@@ -1303,6 +1374,368 @@ Har project complete karne ke baad yeh try karo:
 
 ---
 
+## System Projects — Deep Dive & Interview Bank
+
+Har system ke liye **entities**, **main APIs**, **patterns**, aur **top interview questions** — revision ke liye one-stop.
+
+### ATM_LLD
+
+| Entities | `BankAccount`, `Card`, `Transaction` |
+| -------- | ------------------------------------ |
+| Enums | `TransactionType`, `TransactionStatus` |
+| Services | `AuthenticationService`, `CashDispenser` (greedy notes) |
+| Facade | `ATMSystem` |
+
+**Flow:** `addAccount` → `addCard` → `login(card, pin)` → `getBalance` / `withdraw` → `logout`
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Invalid PIN kitni baar try? | Extension — lock card after N attempts |
+| Concurrent withdraw same account? | Mutex per account / DB transaction |
+| Cash dispenser notes khatam? | Greedy fail → partial dispense policy |
+
+```bash
+cd ATM_LLD && ./compile.sh && ./atm_app
+```
+
+---
+
+### Parking_lot_system_LLD
+
+| Entities | `Vehicle`, `ParkingSpot`, `Ticket` |
+| -------- | ---------------------------------- |
+| Strategy | `PricingStrategy` → `HourlyPricingStrategy` |
+| Facade | `ParkingLot` |
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Multiple floors? | `ParkingLot` per floor or composite floor manager |
+| Electric vehicle spots? | New `SpotType` + strategy pricing |
+| Full lot behavior? | Return error / waitlist enum |
+
+---
+
+### Movie_Ticket_Booking_System
+
+| Managers | `CatalogManager`, `ShowManager`, `BookingManager` |
+| -------- | --------------------------------------------------- |
+| Patterns | Factory (`BookingFactory`), Strategy (`PricingStrategy`) |
+| Device | `KioskTerminal` |
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Two users same seat? | `mutex` on `Show` seat map / optimistic locking |
+| Dynamic pricing? | Strategy per show/time slot |
+| Refund on cancel? | State on `Booking` + payment reversal service |
+
+---
+
+### Rate_Limiter_LLD
+
+| Algorithms | Token Bucket, Fixed Window, Sliding Window Log |
+| ---------- | ---------------------------------------------- |
+| Patterns | Strategy + Factory |
+| Concurrency | `mutex` + demo `Barrier` / `Latch` in `Main.cpp` |
+
+| Algorithm | Pros | Cons |
+| --------- | ---- | ---- |
+| Token Bucket | Smooth burst | State per user |
+| Fixed Window | Simple | Boundary spike at window edge |
+| Sliding Window Log | Accurate | Memory per request timestamp |
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Distributed rate limit? | Redis + Lua atomic incr + TTL |
+| Premium vs Free tier? | `UserTier` → different `RateLimitConfig` |
+| Thread-safe `allowRequest`? | Lock map entry or shard by userId hash |
+
+```bash
+cd Rate_Limiter_LLD && ./compile.sh && ./rate_limiter_app
+```
+
+---
+
+### LRU_Cache_LLD vs LFU_Cache_LLD
+
+| Aspect | LRU | LFU |
+| ------ | --- | --- |
+| Eviction | Least recently **used** | Least frequently **used** |
+| DS | `unordered_map` + `list` + `splice` | Freq buckets + `minFreq` |
+| Thread safety | `ThreadSafeLRUCache` mutex | `ThreadSafeLFUCache` mutex |
+| Use case | Temporal locality | Hot key protection (CDN, API cache) |
+| Tie-break | N/A | LRU within same frequency |
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| `get()` updates order? | Haan — LRU me get = touch = move to front |
+| O(1) guarantee? | Map + list pointers; LFU bucket lists |
+| Sharded cache? | `hash(key) % N` → N independent caches |
+
+```bash
+cd LRU_Cache_LLD && ./compile.sh && ./lru_cache_app
+cd LFU_Cache_LLD && g++ -std=c++17 -pthread -I. main.cpp -o lfu_cache_app && ./lfu_cache_app
+```
+
+---
+
+### LoadBalancer_LLD
+
+| Strategies | `RoundRobinStrategy`, `LeastConnectionsStrategy` |
+| ---------- | ------------------------------------------------ |
+| Server state | `ServerStatus` UP/DOWN, connection counts |
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Sticky sessions? | Hash client IP → fixed server index |
+| Health checks? | Background thread marks DOWN; skip in strategy |
+| Weighted round robin? | Extend strategy with weight vector |
+
+---
+
+### Logger_LLD
+
+| Patterns | Singleton, Chain of Responsibility, Strategy (formatters), Observer |
+| -------- | --------------------------------------------------------------------- |
+| Chain | Debug → Info → Warn → Error → Fatal |
+| Output | `ConsoleAppender`, `FileAppender` |
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Async logging? | Producer queue + background writer thread |
+| Log level runtime change? | Handler chain reconfiguration |
+| Structured logs? | `JsonFormatter` implements formatter interface |
+
+```bash
+cd Logger_LLD && ./compile.sh && ./logger_app
+```
+
+---
+
+### WhatsApp_LLD
+
+| Feature | Implementation |
+| ------- | ---------------- |
+| 1:1 chat | `Chat` in `ChatService` |
+| Groups | `Group` + admin |
+| Message status | `MessageStatus` enum |
+| Encryption | `EncryptionService` Strategy (demo stub) |
+| Notifications | `NotificationEngine` + decorators |
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Message ordering? | Sequence number per chat (extension) |
+| Read receipts? | Observer on message status |
+| Real E2E? | Key exchange + encrypt at client — not in this LLD |
+| Group add member? | Admin check on `Group` |
+
+---
+
+### Uber_LLD vs Ride_sharing_app_LLD
+
+| Feature | Ride_sharing | Uber_LLD |
+| ------- | ------------ | -------- |
+| Matching | Nearest driver | `DriverMatchingService` |
+| OTP | — | `OtpService` |
+| Payment | Basic fare | `PaymentService` + status |
+| Cancel ride | — | Supported |
+
+Start with **Ride_sharing** (simpler), then **Uber** for richer lifecycle.
+
+---
+
+### JSON_Parser_LLD
+
+| Pattern | **Composite** — `JsonObject`, `JsonArray`, primitives |
+| ------- | ----------------------------------------------------- |
+| Parser | Recursive descent `JsonParser::parse()` |
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Invalid JSON? | Exception + line/col (extension) |
+| Pretty print? | Visitor on composite tree |
+
+---
+
+### URL_Shortner_LLD
+
+| Component | `UrlShortnerService`, `Base62Encoder` |
+| --------- | -------------------------------------- |
+| Features | Shorten, resolve, dedupe long URL, click count |
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Collision on short code? | Retry / longer code |
+| Custom alias? | Map alias → validate unique |
+
+---
+
+### Elevator_System_LLD
+
+| Components | `ElevatorCar`, `ElevatorScheduler`, `ElevatorSystemController` |
+| ---------- | -------------------------------------------------------------- |
+| Requests | External (UP/DOWN) + internal floor buttons |
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| SCAN vs nearest car? | Trade-off: fairness vs energy |
+| Multiple elevators? | Scheduler picks idle + direction match |
+
+---
+
+### Linkedin_LLD
+
+| Features | Connections (pending/accepted), posts, likes, feed |
+| -------- | -------------------------------------------------- |
+| Feed | `FeedService` — posts from connections |
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Feed ranking? | Score = likes + recency (extension) |
+| Connection limit? | Enum reject reason |
+
+---
+
+### Insta_reel_LLD (YouTube-style)
+
+| Path | `Insta_reel_LLD/yt reel architecture/` |
+| ---- | -------------------------------------- |
+| Features | Upload reel, view/like/comment, follow graph, ranked feed |
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Feed algorithm? | Views + likes weighted score |
+| CDN for video? | HLD — object storage + edge (out of LLD scope) |
+
+---
+
+### Vending_machine_LLD
+
+| State flow | Select → pay → dispense OR cancel/refund |
+| ---------- | ---------------------------------------- |
+| Components | `Inventory`, `MoneyManager`, `VendingMachine` |
+
+Pair with **L32 State** pattern lesson for interview synergy.
+
+---
+
+### Library_Management_System_LLD
+
+| Services | `CatalogService`, `FineService` |
+| -------- | ------------------------------- |
+| Rules | Borrow limits, late fines on return |
+
+---
+
+### Car_Rental_System_LLD
+
+| Lifecycle | RESERVED → RENTED → AVAILABLE |
+| --------- | ----------------------------- |
+| Pricing | `days × dailyRate` via `PricingService` |
+
+---
+
+## Company-Wise Problem Mapping
+
+| Company tier | Commonly asked LLD | Repo path |
+| ------------ | ------------------ | --------- |
+| FAANG / Big Tech | LRU Cache, Rate Limiter, Logger | `LRU_Cache_LLD`, `Rate_Limiter_LLD`, `Logger_LLD` |
+| Amazon | Parking Lot, Locker (extension), Load Balancer | `Parking_lot_system_LLD`, `LoadBalancer_LLD` |
+| Microsoft | Elevator, Logger, Cache | `Elevator_System_LLD`, `Logger_LLD` |
+| Uber / Swiggy / Zomato | Ride, Food (L11), Movie Ticket | `Uber_LLD`, `L11 Food_Delivery`, `Movie_Ticket_Booking_System` |
+| Meta / Social | WhatsApp, LinkedIn, Reels | `WhatsApp_LLD`, `Linkedin_LLD`, `Insta_reel_LLD` |
+| Flipkart / E-commerce lessons | Payment Gateway L23, Coupon L24 | `L23`, `L24` |
+| Fintech | ATM, Payment Gateway, Splitwise | `ATM_LLD`, `L23`, `L31 Splitwise` |
+| Startups (general) | URL Shortener, Vending Machine | `URL_Shortner_LLD`, `vending_machine_LLD` |
+
+> Yeh mapping **heuristic** hai — actual interviews company/team par vary karte hain. Repo se **pattern reuse** seekho, exact company list yaad karne ki zarurat nahi.
+
+---
+
+## 12-Week Study Calendar
+
+| Week | Focus | Deliverable |
+| ---- | ----- | ----------- |
+| 1 | L1–L4 OOP + UML | Draw 3 class diagrams from memory |
+| 2 | L5–L6 SOLID | Refactor one violated example verbally |
+| 3 | L8–L10 Strategy, Factory, Singleton | Implement Strategy for new domain (5 min) |
+| 4 | L11–L14 Food + Notification | Explain Facade vs God class |
+| 5 | L15–L20 Command → Template | One pattern per day code trace |
+| 6 | L21–L26 Proxy → Blinkit | Payment Gateway whiteboard |
+| 7 | **Parking Lot** + **Movie Ticket** | Run + 10 interview Q answers written |
+| 8 | **LRU** + **Rate Limiter** + **Logger** | Compare algorithms table from memory |
+| 9 | **Uber** + **WhatsApp** + **Load Balancer** | Sequence diagram explain karo |
+| 10 | L31 Splitwise + L37 Chess | Debt simplify algorithm walkthrough |
+| 11 | Remaining systems (ATM, JSON, URL, Elevator…) | `./compile.sh` har project |
+| 12 | Mock interviews + **Multi_threading_C++** | 2 full LLD mocks timed 45 min |
+
+**Daily habit (45 min):** 15 min read `problem_statement.md` → 15 min code trace → 15 min extensions list.
+
+---
+
+## FAQ — Frequently Asked Questions
+
+### General
+
+**Q: Kya yeh repo HLD cover karti hai?**  
+A: Partially via DDIA pdf aur extension discussions. Primary focus **LLD** (classes, patterns, in-memory).
+
+**Q: Database kyun nahi hai?**  
+A: Interview LLD usually in-memory + interfaces. Persistence = Repository pattern extension.
+
+**Q: `bits/stdc++.h` kyun use hota hai?**  
+A: Competitive / interview speed ke liye. Compile with `-std=c++17`. Production me explicit headers prefer karo.
+
+**Q: CMake kahan hai?**  
+A: Kuch projects (`LFU_Cache_LLD`) me hai; zyada tar `./compile.sh` ya single-file `g++` compile.
+
+### Technical
+
+**Q: Smart pointers vs raw pointers?**  
+A: L18 Spotify notes intentional mix. New code me `unique_ptr` / `shared_ptr` prefer karo.
+
+**Q: Thread safety har project me?**  
+A: Nahi — sirf jahan demo hai (Rate Limiter, LRU/LFU, Multi_threading). Baaki me extension exercise.
+
+**Q: WhatsApp me real encryption hai?**  
+A: Nahi — `EncryptionService` Strategy stub; `enc(text)` demo. Real E2E = keys + Signal protocol (HLD/Security).
+
+**Q: LRU vs LFU interview me kaun puchega?**  
+A: Dono — LRU zyada common; LFU CDN / cache warming scenarios me.
+
+### Preparation
+
+**Q: Kitne projects enough?**  
+A: **8–10 deep** + baaki skim. Priority: Parking, Movie, LRU, Rate Limiter, Splitwise, Logger, Uber/WhatsApp.
+
+**Q: Diagrams banana zaroori?**  
+A: Haan — [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) se practice, phir blank paper.
+
+**Q: Mock interview kaise?**  
+A: 45 min timer → requirements → classes → 2 patterns → code skeleton → trade-offs. Record yourself.
+
+---
+
+## Troubleshooting — Build & IDE
+
+| Problem | Fix |
+| ------- | --- |
+| `bits/stdc++.h` not found (macOS) | Install GCC: `brew install gcc`, use `g++-14` or create bits header in include path |
+| `optional` / `variant` errors | Add `-std=c++17` — use `./compile.sh` |
+| Undefined reference pthread | Add `-pthread` to compile command |
+| clangd red squiggles on headers | Project `.clangd` has `-std=c++17 -pthread -I.` — restart clangd |
+| `Main.cpp` vs `main.cpp` | Logger & Rate Limiter use capital `Main.cpp` |
+| Insta Reels path has space | `cd "Insta_reel_LLD/yt reel architecture"` |
+| Permission denied `compile.sh` | `chmod +x compile.sh` |
+
+**Clean rebuild:**
+
+```bash
+rm -f *_app atm_app parking_app  # project binaries
+./compile.sh
+```
+
+---
+
 ## Glossary
 
 | Term          | Meaning                                                         |
@@ -1320,6 +1753,52 @@ Har project complete karne ke baad yeh try karo:
 | **OCP**       | Open for extension, closed for modification                     |
 | **DCLP**      | Double-Checked Locking Pattern                                  |
 | **RAII**      | Resource Acquisition Is Initialization — C++ cleanup idiom      |
+| **Repository**| Abstraction over persistence — swap in-memory vs SQL              |
+| **DDD-lite**  | `models/` + `services/` + `core/` folder convention in this repo  |
+| **Cohesion**  | Classes that change together stay together                        |
+| **Coupling**  | Minimize dependencies between modules — DIP helps                 |
+| **Idempotent**| Same request twice = same effect (payments, bookings)           |
+| **CAP**       | Consistency / Availability / Partition — HLD; mention in LLD scale Q |
+| **Token Bucket** | Rate limit algo — tokens refill at fixed rate                |
+| **Sliding Window** | Rate limit — count events in rolling time window           |
+| **Composite** | Tree where leaf and container share interface (`JsonValue`)     |
+| **Mediator**  | Central hub reduces N² connections (Chess chat, L35)            |
+| **Flyweight** | Share intrinsic state across many objects (L30)                   |
+| **Memento**   | Snapshot state for undo (L39, Chess extension)                    |
+| **Anti-pattern** | God class, shotgun surgery, spaghetti — L40 notes            |
+
+### Pattern selection cheat sheet
+
+```
+Need interchangeable algorithm?     → Strategy
+Need one instance globally?         → Singleton (careful)
+Need create family of objects?      → Factory / Abstract Factory
+Need add behavior without subclass? → Decorator
+Need notify many on change?         → Observer
+Need tree structure uniform API?    → Composite
+Need simplify complex subsystem?    → Facade
+Need pass request along handlers?   → Chain of Responsibility
+Need undo?                          → Command / Memento
+```
+
+---
+
+## Changelog & Maintenance
+
+| Date | Change |
+| ---- | ------ |
+| 2025 | Initial 40 lessons + 18 system projects |
+| 2025 | Added `LRU_Cache_LLD`, `LFU_Cache_LLD`, `Multi_threading_C++/dining_philosophers.cpp` |
+| 2025 | Added `SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md` (Mermaid UML) |
+| 2025 | Per-project `compile.sh` + `.clangd` (C++17) |
+| 2025 | Master README expanded to 1500+ lines — deep dive + interview bank |
+
+**Maintainer checklist:**
+
+- [ ] Har naye project me `problem_statement.md`, `requirements.md`, `compile.sh`
+- [ ] Root README me project table update
+- [ ] Diagram file me naya section add
+- [ ] `./scripts/build_all_systems.sh` green before push
 
 ---
 

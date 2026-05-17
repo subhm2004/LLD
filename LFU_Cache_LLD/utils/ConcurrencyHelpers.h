@@ -4,7 +4,7 @@
 #include <condition_variable>
 #include <mutex>
 
-#include "../config/CppStandard.h"
+#include <bits/stdc++.h>
 
 namespace lfu_cache_lld {
 

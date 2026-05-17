@@ -8,7 +8,7 @@
 #include "../cache/ICache.h"
 #include "../cache/LFUCacheCore.h"
 #include "../config/CacheConfig.h"
-#include "../config/CppStandard.h"
+#include <bits/stdc++.h>
 
 namespace lfu_cache_lld {
 

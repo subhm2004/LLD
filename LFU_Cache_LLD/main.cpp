@@ -1,13 +1,6 @@
-#include <iostream>
-#include <mutex>
-#include <optional>
-#include <string>
-#include <thread>
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
 
 #include "config/CacheConfig.h"
-#include "config/CppStandard.h"
 #include "core/CacheService.h"
 #include "enums/CacheOperationType.h"
 #include "utils/ConcurrencyHelpers.h"
@@ -23,8 +16,7 @@ using std::vector;
 using namespace lfu_cache_lld;
 
 static void printCppStandardBanner() {
-    cout << "LFU_Cache_LLD — C++" << kCppStandardYear << " (__cplusplus=" << __cplusplus
-         << ")\n";
+    cout << "LFU_Cache_LLD — C++17 (__cplusplus=" << __cplusplus << ")\n";
 }
 
 void runBasicLfuDemo() {

@@ -1,6 +1,10 @@
 #include <bits/stdc++.h>
 
 #include "core/LinkedinSystem.h"
+#include "enums/ConnectionStatus.h"
+#include "models/UserProfile.h"
+#include "models/Post.h"
+#include "services/FeedService.h"
 
 using namespace std;
 using namespace linkedin_lld;

@@ -1,3 +1,4 @@
+#include <bits/stdc++.h>
 #include "Logger.h"
 #include "LogHandlerConfiguration.h"
 #include "appenders/ConsoleAppender.h"

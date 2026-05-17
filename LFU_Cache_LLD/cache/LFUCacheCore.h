@@ -10,7 +10,7 @@
 
 #include "../cache/ICache.h"
 #include "../config/CacheConfig.h"
-#include "../config/CppStandard.h"
+#include <bits/stdc++.h>
 #include "../models/LFUNode.h"
 
 namespace lfu_cache_lld {

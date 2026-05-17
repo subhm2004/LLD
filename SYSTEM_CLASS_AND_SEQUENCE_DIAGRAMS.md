@@ -1,11 +1,11 @@
 # System Projects — Class Diagrams & Sequence Diagrams
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=6F42C1&center=true&vCenter=true&width=920&lines=UML+Reference+%E2%80%94+19+System+Projects;Class+Diagrams+%2B+Sequence+Flows;Mermaid+%7C+Code-Accurate+Names" alt="Typing animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=6F42C1&center=true&vCenter=true&width=920&lines=UML+Reference+%E2%80%94+20+System+Projects;Class+Diagrams+%2B+Sequence+Flows;Mermaid+%7C+Code-Accurate+Names" alt="Typing animation" />
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Systems-19-blue?style=for-the-badge" alt="19 systems" />
+  <img src="https://img.shields.io/badge/Systems-20-blue?style=for-the-badge" alt="20 systems" />
   <img src="https://img.shields.io/badge/Diagrams-Mermaid-6f42c1?style=for-the-badge" alt="Mermaid" />
   <img src="https://img.shields.io/badge/Lines-2500%2B-success?style=for-the-badge" alt="2500+ lines" />
   <img src="https://img.shields.io/badge/Synced-With%20Code-orange?style=for-the-badge" alt="Synced with code" />
@@ -17,7 +17,7 @@
   <img src="https://img.shields.io/badge/Preview-GitHub%20%7C%20VS%20Code%20%7C%20Cursor-informational?style=flat-square" alt="Preview" />
 </p>
 
-> **19 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
+> **20 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
 > GitHub / VS Code / Cursor me **Markdown Preview** se Mermaid diagrams render honge.
 
 ---
@@ -26,9 +26,10 @@
 
 | Item | Status |
 | ---- | ------ |
-| **Projects covered** | 19 / 19 standalone systems (incl. LRU + LFU) |
+| **Projects covered** | 20 / 20 standalone systems (incl. LRU, LFU, LeetCode) |
 | **Last aligned with code** | Repo `main` — class/method names match headers |
-| **LFU Cache (§19)** | Added — mirrors `LFU_Cache_LLD/` structure |
+| **LeetCode (§20)** | Online judge + HARD DP problem |
+| **LFU Cache (§19)** | Mirrors `LFU_Cache_LLD/` structure |
 | **Lesson modules (L1–L40)** | Not in this file — system projects only |
 | **How to verify** | Code change → update matching Mermaid block in same section |
 
@@ -67,6 +68,7 @@ flowchart LR
 | 17 | [Insta/YouTube Reels](#17-instayoutube-reels) | `Insta_reel_LLD/yt reel architecture/` |
 | 18 | [Thread-Safe LRU Cache](#18-thread-safe-lru-cache) | `LRU_Cache_LLD/` |
 | 19 | [Thread-Safe LFU Cache](#19-thread-safe-lfu-cache) | `LFU_Cache_LLD/` |
+| 20 | [LeetCode Online Judge](#20-leetcode-online-judge) | `LeetCode_LLD/` |
 
 ---
 
@@ -2698,6 +2700,196 @@ cd LFU_Cache_LLD && ./compile.sh && ./lfu_cache_app
 
 ---
 
+## 20. LeetCode Online Judge
+
+**Namespace:** `leetcode_lld`  
+**Path:** [`LeetCode_LLD/`](./LeetCode_LLD/)  
+**Facade:** `LeetCodeSystem`  
+**Patterns:** Facade, Strategy (`ICodeRunner`), Service layer  
+**HARD algo:** `MinCostDivideArraySolver` — [problem doc](./LeetCode_LLD/problems/MIN_COST_DIVIDE_ARRAY.md)
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    direction TB
+
+    class LeetCodeSystem {
+        -MockCodeRunner codeRunner_
+        -JudgeService judgeService_
+        -ProblemCatalogService catalogService_
+        -SubmissionService submissionService_
+        -LeaderboardService leaderboardService_
+        -unordered_map users_
+        +registerUser(userId, displayName)
+        +addProblem(problem)
+        +searchProblemsByTag(tag)
+        +searchProblemsByDifficulty(difficulty)
+        +submitSolution(userId, problemId, language, code) Submission
+        +getLeaderboard(limit)
+        +seedDefaultProblems()
+    }
+
+    class ProblemCatalogService {
+        -unordered_map problems_
+        +addProblem(problem)
+        +getProblem(problemId) Problem
+        +searchByTag(tag)
+        +searchByDifficulty(difficulty)
+    }
+
+    class SubmissionService {
+        -ProblemCatalogService catalog_
+        -JudgeService judge_
+        -unordered_map submissions_
+        +submit(...) Submission
+        +getSubmissionsForUser(userId)
+    }
+
+    class JudgeService {
+        -ICodeRunner codeRunner_
+        +judge(submission, problem)
+    }
+
+    class ICodeRunner {
+        <<interface>>
+        +execute(problemId, code, language, input) string
+    }
+
+    class MockCodeRunner {
+        +execute(...)
+    }
+
+    class LeaderboardService {
+        +getTopUsersBySolvedCount(users, limit)
+    }
+
+    class Problem {
+        -string problemId_
+        -string title_
+        -Difficulty difficulty_
+        -vector tags_
+        -vector testCases_
+        +recordSubmission(accepted)
+        +getAcceptanceRate() double
+    }
+
+    class Submission {
+        -SubmissionStatus status_
+        -string failedTestCaseId_
+        +setResult(status, runtime, memory)
+    }
+
+    class User {
+        -int solvedCount_
+        +markProblemSolved(problemId)
+    }
+
+    class TestCase {
+        -string input_
+        -string expectedOutput_
+    }
+
+    class MinCostDivideArraySolver {
+        <<utility>>
+        +solve(nums, cost, k) long long
+    }
+
+    class Difficulty {
+        <<enumeration>>
+        EASY MEDIUM HARD
+    }
+
+    class SubmissionStatus {
+        <<enumeration>>
+        PENDING ACCEPTED WRONG_ANSWER TLE RUNTIME_ERROR COMPILE_ERROR
+    }
+
+    LeetCodeSystem *-- ProblemCatalogService
+    LeetCodeSystem *-- SubmissionService
+    LeetCodeSystem *-- LeaderboardService
+    LeetCodeSystem *-- MockCodeRunner
+    SubmissionService --> JudgeService
+    SubmissionService --> ProblemCatalogService
+    JudgeService --> ICodeRunner
+    ICodeRunner <|.. MockCodeRunner
+    Problem o-- TestCase
+    MockCodeRunner ..> MinCostDivideArraySolver : MIN_COST_DIVIDE_ARRAY
+```
+
+### Sequence Diagram — Submit solution & judge
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant System as LeetCodeSystem
+    participant SubSvc as SubmissionService
+    participant Catalog as ProblemCatalogService
+    participant Judge as JudgeService
+    participant Runner as MockCodeRunner
+    participant Stats as Problem/User stats
+
+    User->>System: submitSolution(userId, problemId, language, code)
+    System->>SubSvc: submit(...)
+    SubSvc->>Catalog: getProblem(problemId)
+    SubSvc->>SubSvc: create Submission (PENDING)
+    SubSvc->>Judge: judge(submission, problem)
+    loop each TestCase
+        Judge->>Runner: execute(problemId, code, language, input)
+        Runner-->>Judge: actualOutput
+        alt output != expected
+            Judge->>SubSvc: setResult(WRONG_ANSWER, failedTcId)
+        end
+    end
+    Judge->>SubSvc: setResult(ACCEPTED)
+    SubSvc->>Stats: problem.recordSubmission + user.markProblemSolved
+    SubSvc-->>System: Submission
+    System-->>User: final status + runtime
+```
+
+### Sequence Diagram — Search problems by tag
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant System as LeetCodeSystem
+    participant Catalog as ProblemCatalogService
+
+    User->>System: searchProblemsByTag("dynamic-programming")
+    System->>Catalog: searchByTag(tag)
+    Catalog->>Catalog: filter problems_.hasTag(tag)
+    Catalog-->>System: vector Problem*
+    System-->>User: matching problems list
+```
+
+### Sequence Diagram — HARD: Min cost divide array (judge path)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Runner as MockCodeRunner
+    participant Parser as TestInputParser
+    participant Solver as MinCostDivideArraySolver
+
+    Note over Runner: code contains SOLUTION_MIN_COST_DIVIDE
+    Runner->>Parser: parseMinCostDivideInput(input)
+    Parser-->>Runner: nums, cost, k
+    Runner->>Solver: solve(nums, cost, k)
+    Note over Solver: dp[i] O(n^2) optimized DP
+    Solver-->>Runner: minTotalCost (e.g. 110, 985)
+    Runner-->>Runner: return to_string(cost)
+```
+
+### Build
+
+```bash
+cd LeetCode_LLD && ./compile.sh && ./leetcode_app
+```
+
+---
+
 ## Cross-Project Pattern Summary
 
 ```mermaid
@@ -2709,6 +2901,7 @@ graph LR
         WA[WhatsAppSystem]
         LRU[CacheService LRU]
         LFU[CacheService LFU]
+        LC[LeetCodeSystem]
     end
 
     subgraph Strategy
@@ -2716,6 +2909,7 @@ graph LR
         LB[LoadBalancingStrategy]
         RL[RateLimiter]
         Encrypt[EncryptionService]
+        Runner[ICodeRunner]
     end
 
     subgraph CoR
@@ -2737,6 +2931,8 @@ graph LR
     WA --> Encrypt
     TS_LRU --> LRU
     TS_LFU --> LFU
+    LC --> Runner
+    Runner --> MockCodeRunner
 ```
 
 | Project | Facade | Primary Pattern(s) |
@@ -2760,6 +2956,7 @@ graph LR
 | Reels | `ReelPlatformService` | Facade, Feed ranking |
 | LRU Cache | `CacheService` | Facade, Decorator, `ICache` interface |
 | LFU Cache | `CacheService` | Facade, Decorator, frequency buckets + `minFreq` |
+| LeetCode | `LeetCodeSystem` | Facade, Strategy (`ICodeRunner`), Judge pipeline |
 
 ---
 
@@ -2779,6 +2976,8 @@ graph LR
 | [`README.md`](./README.md) | Full repository guide |
 | [`LRU_Cache_LLD/README.md`](./LRU_Cache_LLD/README.md) | LRU project guide + inline diagrams |
 | [`LFU_Cache_LLD/README.md`](./LFU_Cache_LLD/README.md) | LFU project guide + compile notes |
+| [`LeetCode_LLD/README.md`](./LeetCode_LLD/README.md) | Online judge + HARD DP problem |
+| [`LeetCode_LLD/problems/MIN_COST_DIVIDE_ARRAY.md`](./LeetCode_LLD/problems/MIN_COST_DIVIDE_ARRAY.md) | Hard problem statement |
 | [`Design_Pattern_types.md`](./Design_Pattern_types.md) | Pattern taxonomy |
 | Per-project `problem_statement.md` | Ground-truth requirements |
 
@@ -2789,6 +2988,6 @@ graph LR
 </p>
 
 <p align="center">
-  <b>19 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
+  <b>20 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
   <sub>Maintained alongside <code>README.md</code> and per-project headers</sub>
 </p>

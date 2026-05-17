@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds all 18 standalone system LLD projects (C++17).
+# Builds all standalone system LLD projects (C++17).
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 "$ROOT/scripts/apply_cpp17_to_projects.sh" >/dev/null 2>&1 || true
@@ -10,6 +10,7 @@ declare -a PROJECTS=(
   Movie_Ticket_Booking_System Parking_lot_system_LLD Rate_Limiter_LLD
   Ride_sharing_app_LLD Uber_LLD URL_Shortner_LLD vending_machine_LLD
   WhatsApp_LLD "Insta_reel_LLD/yt reel architecture" LRU_Cache_LLD
+  LeetCode_LLD
 )
 
 ok=0

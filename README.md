@@ -1,13 +1,13 @@
 # Low-Level Design (LLD) — Complete Master Repository Guide
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2500&pause=800&color=2F81F7&center=true&vCenter=true&width=900&lines=Master+LLD+Guide+%E2%80%94+1800%2B+Lines;40+Lessons+%7C+19+System+Projects;Patterns+%2B+Interview+Deep+Dives" alt="Typing animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2500&pause=800&color=2F81F7&center=true&vCenter=true&width=900&lines=Master+LLD+Guide+%E2%80%94+1800%2B+Lines;40+Lessons+%7C+20+System+Projects;Patterns+%2B+Interview+Deep+Dives" alt="Typing animation" />
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Language-C%2B%2B-blue?style=for-the-badge" alt="C++ Badge" />
   <img src="https://img.shields.io/badge/Lessons-L1%E2%80%93L40-6f42c1?style=for-the-badge" alt="Lessons badge" />
-  <img src="https://img.shields.io/badge/System+Projects-19-success?style=for-the-badge" alt="Projects badge" />
+  <img src="https://img.shields.io/badge/System+Projects-20-success?style=for-the-badge" alt="Projects badge" />
   <img src="https://img.shields.io/badge/Focus-Interview%20Ready-orange?style=for-the-badge" alt="Interview badge" />
 </p>
 
@@ -73,7 +73,7 @@ cd Parking_lot_system_LLD
 ./parking_app
 ```
 
-**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (~2500 lines Mermaid).
+**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (~2900+ lines Mermaid).
 
 ---
 
@@ -84,7 +84,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | Category               | Count        | Description                                                                |
 | ---------------------- | ------------ | -------------------------------------------------------------------------- |
 | **Lesson modules**     | L1 – L40     | OOP, SOLID, UML, har major design pattern, aur pattern + system hybrids    |
-| **Standalone systems** | 19 projects  | Interview-favourite systems + LRU/LFU caches |
+| **Standalone systems** | 20 projects  | Interview systems + LRU/LFU + LeetCode judge |
 | **Concurrency labs**   | 1 folder     | `Multi_threading_C++` — threads, mutex, semaphores, thread pool, DCLP      |
 | **Reference assets**   | PDFs, images | Gang of Four, DDIA, design pattern cheat sheets                            |
 
@@ -100,10 +100,10 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | ------------------------------------ | ----------------------- |
 | Total C++/header source files        | ~490+                   |
 | Lesson folders (L1–L40)              | 40                      |
-| Runnable system demos                | 19+                     |
+| Runnable system demos                | 20+                     |
+| Projects with dedicated `README.md`  | 20+                     |
 | Design patterns demonstrated         | 20+ (GoF + Null Object) |
 | Projects with `problem_statement.md` | 26+                     |
-| Projects with dedicated `README.md`  | 19                      |
 | UML class + sequence diagrams        | [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) |
 
 ---
@@ -116,7 +116,7 @@ Zyada tar LLD preparation in points par atak jaati hai:
 | ------------------------------------------------- | ---------------------------------------------------------------------- |
 | Theory samajh aata hai, code me convert nahi hota | Har concept ke saath runnable `.cpp` / modular headers                 |
 | Code likh lete hain, extensibility weak hoti hai  | SOLID + OCP-focused refactors (e.g. L7 Bad vs Good design)             |
-| Sirf 1–2 problems solve kiye                      | 18+ full systems + 10+ lesson-level LLDs                               |
+| Sirf 1–2 problems solve kiye                      | 20+ full systems + 10+ lesson-level LLDs                               |
 | Patterns yaad hain, use-case nahi                 | Har pattern ke saath real domain (ATM, Food Delivery, Payment Gateway) |
 | Interview me sirf code, design explain nahi       | Har project me assumptions, trade-offs, extension hooks                |
 
@@ -214,7 +214,7 @@ Priority interview list:
 ```
 LLD/
 ├── L1 Introduction/ … L40 Null_object_pattern_and_Antipatterns/   # 40 lessons
-├── ATM_LLD/ … WhatsApp_LLD/ … LRU_Cache_LLD/                      # 18 systems
+├── ATM_LLD/ … WhatsApp_LLD/ … LRU_Cache_LLD/ … LeetCode_LLD/        # 20 systems
 ├── Multi_threading_C++/                                             # Concurrency labs
 ├── Design_Pattern_types.md                                          # Pattern taxonomy (Hindi)
 ├── Design_Pattern_Sheet_1.webp, Design_Pattern_Sheet_2.webp         # Cheat sheets
@@ -952,8 +952,28 @@ cd LRU_Cache_LLD && g++ -std=c++17 -pthread main.cpp -o lru_cache_app && ./lru_c
 | **Compare** | [LRU Cache](./LRU_Cache_LLD/) |
 
 ```bash
-cd LFU_Cache_LLD && g++ -std=c++17 -pthread main.cpp -o lfu_cache_app && ./lfu_cache_app
+cd LFU_Cache_LLD && ./compile.sh && ./lfu_cache_app
 ```
+
+---
+
+### LeetCode_LLD
+
+| | |
+|---|---|
+| **Path** | [`LeetCode_LLD/`](./LeetCode_LLD/) |
+| **Patterns** | Facade (`LeetCodeSystem`), Strategy (`ICodeRunner`), Service layer |
+| **Features** | Problem catalog, submit code, judge verdicts, leaderboard, acceptance rate |
+| **HARD problem** | [Minimum Cost to Divide Array](./LeetCode_LLD/problems/MIN_COST_DIVIDE_ARRAY.md) — O(n²) DP |
+| **Diagrams** | [Class + Sequence — Section 20](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#20-leetcode-online-judge) |
+
+**Core flow:** `registerUser` → browse/search problems → `submitSolution` → `JudgeService` + `MockCodeRunner` → update stats & leaderboard
+
+```bash
+cd LeetCode_LLD && ./compile.sh && ./leetcode_app
+```
+
+**Seeded problems:** `TWO_SUM`, `REVERSE_STRING`, `VALID_PARENTHESES`, `MIN_COST_DIVIDE_ARRAY` (Hard)
 
 ---
 
@@ -1072,7 +1092,7 @@ g++ -std=c++17 -pthread thread_pool.cpp -o thread_pool && ./thread_pool
 | --------------------------- | -------------------------------- | ----------------------------------------------------------- |
 | **Singleton**               | L10, L14, L23, L26               | Logger                                                      |
 | **Factory**                 | L9, L11, L23, L31, L33–34, L37   | Movie Ticket, Rate Limiter                                  |
-| **Strategy**                | L8, L11, L14, L18, L24, L31, L33 | Parking, Load Balancer, Rate Limiter, WhatsApp (encryption) |
+| **Strategy**                | L8, L11, L14, L18, L24, L31, L33 | Parking, Load Balancer, Rate Limiter, WhatsApp, LeetCode (`ICodeRunner`) |
 | **Observer**                | L12, L14, L31, L33–34            | Logger (appenders)                                          |
 | **Decorator**               | L13, L14                         | WhatsApp (notification decorators), LRU (`ThreadSafeLRUCache`) |
 | **Adapter**                 | L16, L18                         | —                                                           |
@@ -1129,6 +1149,7 @@ g++ -std=c++17 -pthread thread_pool.cpp -o thread_pool && ./thread_pool
 | ⭐⭐     | Uber / Ride Sharing       | Matching, lifecycle                  |
 | ⭐⭐     | WhatsApp / Chat           | Real-time patterns, message states   |
 | ⭐⭐     | Load Balancer             | Strategy pattern classic             |
+| ⭐⭐     | LeetCode / Online Judge   | Submit → judge pipeline, Strategy runner |
 | ⭐⭐     | Logger                    | Chain of Responsibility classic      |
 | ⭐       | URL Shortener             | Encoding, deduplication              |
 | ⭐       | Vending Machine           | State pattern (also L32)             |
@@ -1211,7 +1232,7 @@ cd ATM_LLD
 g++ -std=c++17 -Wall -Wextra -pthread -I. main.cpp -o atm_app
 ```
 
-**Build all 18 systems from repo root:**
+**Build all 20 systems from repo root:**
 
 ```bash
 chmod +x scripts/build_all_systems.sh
@@ -1227,6 +1248,7 @@ chmod +x scripts/build_all_systems.sh
 | LRU_Cache_LLD    | `main.cpp` (`-pthread` in script) | `lru_cache_app`      |
 | LFU_Cache_LLD    | `main.cpp` (`-pthread`)           | `lfu_cache_app`      |
 | Insta_reel_LLD   | `yt reel architecture/main.cpp` | `reels_app`          |
+| LeetCode_LLD     | `main.cpp`                        | `leetcode_app`       |
 
 > Lesson folders (`L*`) me often header-only demos hain — unke liye specific `.cpp` file compile karo with `-std=c++17`.
 
@@ -1288,6 +1310,7 @@ Har project complete karne ke baad yeh try karo:
 | Rate Limiter              | Distributed Redis backend, per-API limits           |
 | LRU Cache                 | TTL expiry, sharded locks, LFU eviction policy        |
 | LFU Cache                 | Frequency aging, window LFU, unified cache factory    |
+| LeetCode                  | Contests, editorial service, real sandbox `ICodeRunner` |
 | Splitwise                 | Currency conversion, recurring expenses             |
 | WhatsApp                  | End-to-end encryption interface, read receipts sync |
 | Elevator                  | SCAN algorithm, weight capacity                     |
@@ -1363,6 +1386,7 @@ Har project complete karne ke baad yeh try karo:
 | Rate Limiter         | [Rate_Limiter_LLD](./Rate_Limiter_LLD/)                           |
 | LRU Cache            | [LRU_Cache_LLD](./LRU_Cache_LLD/)                                 |
 | LFU Cache            | [LFU_Cache_LLD](./LFU_Cache_LLD/)                                 |
+| LeetCode             | [LeetCode_LLD](./LeetCode_LLD/)                                   |
 | Ride Sharing         | [Ride_sharing_app_LLD](./Ride_sharing_app_LLD/)                   |
 | Uber                 | [Uber_LLD](./Uber_LLD/)                                           |
 | URL Shortener        | [URL_Shortner_LLD](./URL_Shortner_LLD/)                           |
@@ -1472,7 +1496,31 @@ cd Rate_Limiter_LLD && ./compile.sh && ./rate_limiter_app
 
 ```bash
 cd LRU_Cache_LLD && ./compile.sh && ./lru_cache_app
-cd LFU_Cache_LLD && g++ -std=c++17 -pthread -I. main.cpp -o lfu_cache_app && ./lfu_cache_app
+cd LFU_Cache_LLD && ./compile.sh && ./lfu_cache_app
+```
+
+---
+
+### LeetCode_LLD
+
+| Entities | `User`, `Problem`, `Submission`, `TestCase` |
+| -------- | ------------------------------------------- |
+| Enums | `Difficulty`, `SubmissionStatus`, `ProgrammingLanguage` |
+| Services | `ProblemCatalogService`, `SubmissionService`, `JudgeService`, `LeaderboardService` |
+| Strategy | `ICodeRunner` → `MockCodeRunner` |
+| Algorithms | `MinCostDivideArraySolver` (HARD — O(n²) DP) |
+| Facade | `LeetCodeSystem` |
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Real code execution? | Sandbox workers + isolate (HLD); LLD uses `MockCodeRunner` |
+| Distributed judge? | Queue (Kafka/SQS) + worker pool + result callback |
+| Partial test cases? | Stop at first WA/TLE; return failed `testCaseId` |
+| Contest support? | `ContestService` + separate leaderboard (extension) |
+| Hard DP problem? | Min cost divide array — optimized `dp[i]` formula |
+
+```bash
+cd LeetCode_LLD && ./compile.sh && ./leetcode_app
 ```
 
 ---
@@ -1637,7 +1685,7 @@ Pair with **L32 State** pattern lesson for interview synergy.
 
 | Company tier | Commonly asked LLD | Repo path |
 | ------------ | ------------------ | --------- |
-| FAANG / Big Tech | LRU Cache, Rate Limiter, Logger | `LRU_Cache_LLD`, `Rate_Limiter_LLD`, `Logger_LLD` |
+| FAANG / Big Tech | LRU Cache, Rate Limiter, Logger, Online Judge | `LRU_Cache_LLD`, `Rate_Limiter_LLD`, `Logger_LLD`, `LeetCode_LLD` |
 | Amazon | Parking Lot, Locker (extension), Load Balancer | `Parking_lot_system_LLD`, `LoadBalancer_LLD` |
 | Microsoft | Elevator, Logger, Cache | `Elevator_System_LLD`, `Logger_LLD` |
 | Uber / Swiggy / Zomato | Ride, Food (L11), Movie Ticket | `Uber_LLD`, `L11 Food_Delivery`, `Movie_Ticket_Booking_System` |
@@ -1791,6 +1839,7 @@ Need undo?                          → Command / Memento
 | 2025 | Added `SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md` (Mermaid UML) |
 | 2025 | Per-project `compile.sh` + `.clangd` (C++17) |
 | 2025 | Master README expanded to 1500+ lines — deep dive + interview bank |
+| 2025 | Added `LeetCode_LLD` — online judge + HARD min-cost divide array DP |
 
 **Maintainer checklist:**
 

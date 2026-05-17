@@ -11,6 +11,8 @@ declare -a PROJECTS=(
   Ride_sharing_app_LLD Uber_LLD URL_Shortner_LLD vending_machine_LLD
   WhatsApp_LLD "Insta_reel_LLD/yt reel architecture" LRU_Cache_LLD
   LeetCode_LLD
+  OYO_Hotel_Booking_LLD
+  "L24 Discount_coupon_engine_LLD"
 )
 
 ok=0

@@ -1,11 +1,11 @@
 # System Projects — Class Diagrams & Sequence Diagrams
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=6F42C1&center=true&vCenter=true&width=920&lines=UML+Reference+%E2%80%94+20+System+Projects;Class+Diagrams+%2B+Sequence+Flows;Mermaid+%7C+Code-Accurate+Names" alt="Typing animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=6F42C1&center=true&vCenter=true&width=920&lines=UML+Reference+%E2%80%94+21+System+Projects;Class+Diagrams+%2B+Sequence+Flows;Mermaid+%7C+Code-Accurate+Names" alt="Typing animation" />
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Systems-20-blue?style=for-the-badge" alt="20 systems" />
+  <img src="https://img.shields.io/badge/Systems-21-blue?style=for-the-badge" alt="21 systems" />
   <img src="https://img.shields.io/badge/Diagrams-Mermaid-6f42c1?style=for-the-badge" alt="Mermaid" />
   <img src="https://img.shields.io/badge/Lines-2500%2B-success?style=for-the-badge" alt="2500+ lines" />
   <img src="https://img.shields.io/badge/Synced-With%20Code-orange?style=for-the-badge" alt="Synced with code" />
@@ -17,7 +17,7 @@
   <img src="https://img.shields.io/badge/Preview-GitHub%20%7C%20VS%20Code%20%7C%20Cursor-informational?style=flat-square" alt="Preview" />
 </p>
 
-> **20 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
+> **21 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
 > GitHub / VS Code / Cursor me **Markdown Preview** se Mermaid diagrams render honge.
 
 ---
@@ -26,8 +26,9 @@
 
 | Item | Status |
 | ---- | ------ |
-| **Projects covered** | 20 / 20 standalone systems (incl. LRU, LFU, LeetCode) |
+| **Projects covered** | 21 / 21 standalone systems |
 | **Last aligned with code** | Repo `main` — class/method names match headers |
+| **OYO Hotel (§21)** | Search, availability, booking lifecycle |
 | **LeetCode (§20)** | Online judge + HARD DP problem |
 | **LFU Cache (§19)** | Mirrors `LFU_Cache_LLD/` structure |
 | **Lesson modules (L1–L40)** | Not in this file — system projects only |
@@ -69,6 +70,7 @@ flowchart LR
 | 18 | [Thread-Safe LRU Cache](#18-thread-safe-lru-cache) | `LRU_Cache_LLD/` |
 | 19 | [Thread-Safe LFU Cache](#19-thread-safe-lfu-cache) | `LFU_Cache_LLD/` |
 | 20 | [LeetCode Online Judge](#20-leetcode-online-judge) | `LeetCode_LLD/` |
+| 21 | [OYO Hotel Booking](#21-oyo-hotel-booking) | `OYO_Hotel_Booking_LLD/` |
 
 ---
 
@@ -2890,6 +2892,188 @@ cd LeetCode_LLD && ./compile.sh && ./leetcode_app
 
 ---
 
+## 21. OYO Hotel Booking
+
+**Namespace:** `oyo_hotel_lld`  
+**Path:** [`OYO_Hotel_Booking_LLD/`](./OYO_Hotel_Booking_LLD/)  
+**Facade:** `OYOHotelBookingSystem`  
+**Patterns:** Facade, Strategy (`IPricingStrategy`), Service layer (availability, pricing, notification)
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    direction TB
+
+    class OYOHotelBookingSystem {
+        -unordered_map guests_
+        -unordered_map hotels_
+        -unordered_map rooms_
+        -unordered_map bookings_
+        -PricingService pricingService_
+        -NotificationService notificationService_
+        +registerGuest(guest)
+        +addHotel(hotel)
+        +addRoom(room)
+        +searchHotelsByCity(city)
+        +getAvailableRooms(hotelId, checkIn, checkOut)
+        +createBooking(guestId, roomId, checkIn, checkOut) string
+        +cancelBooking(bookingId)
+        +checkIn(bookingId)
+        +checkOut(bookingId)
+        +useWeekendPricing()
+    }
+
+    class Hotel {
+        -string hotelId_
+        -string city_
+        -double rating_
+    }
+
+    class Room {
+        -string roomId_
+        -RoomType type_
+        -double pricePerNight_
+        -RoomStatus status_
+    }
+
+    class Guest {
+        -string guestId_
+        -string email_
+    }
+
+    class Booking {
+        -int checkInDay_
+        -int checkOutDay_
+        -double totalAmount_
+        -BookingStatus status_
+    }
+
+    class AvailabilityService {
+        <<service>>
+        +isDateRangeOverlapping()
+        +isRoomAvailableForStay()
+        +filterAvailableRooms()
+    }
+
+    class PricingService {
+        -IPricingStrategy strategy_
+        +calculateStayAmount()
+        +setStrategy(strategy)
+    }
+
+    class IPricingStrategy {
+        <<interface>>
+        +calculateTotal(pricePerNight, checkIn, checkOut) double
+    }
+
+    class StandardPricingStrategy {
+        +calculateTotal()
+    }
+
+    class WeekendSurchargePricingStrategy {
+        +calculateTotal()
+    }
+
+    class NotificationService {
+        +sendBookingConfirmed()
+        +sendBookingCancelled()
+    }
+
+    class RoomType {
+        <<enumeration>>
+        STANDARD DELUXE SUITE
+    }
+
+    class BookingStatus {
+        <<enumeration>>
+        CONFIRMED CANCELLED CHECKED_IN CHECKED_OUT
+    }
+
+    OYOHotelBookingSystem *-- PricingService
+    OYOHotelBookingSystem *-- NotificationService
+    OYOHotelBookingSystem o-- Hotel
+    OYOHotelBookingSystem o-- Room
+    OYOHotelBookingSystem o-- Guest
+    OYOHotelBookingSystem o-- Booking
+    OYOHotelBookingSystem ..> AvailabilityService
+    PricingService --> IPricingStrategy
+    IPricingStrategy <|.. StandardPricingStrategy
+    IPricingStrategy <|.. WeekendSurchargePricingStrategy
+    Booking --> BookingStatus
+    Room --> RoomType
+```
+
+### Sequence Diagram — Search & list available rooms
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Guest
+    participant System as OYOHotelBookingSystem
+    participant Avail as AvailabilityService
+
+    Guest->>System: searchHotelsByCity("Jaipur")
+    System->>System: filter hotels by city, sort by rating
+    System-->>Guest: hotel list
+
+    Guest->>System: getAvailableRooms("H1", checkIn=10, checkOut=12)
+    System->>System: collect rooms for hotel H1
+    System->>Avail: filterAvailableRooms(rooms, 10, 12, bookings_)
+    loop each room
+        Avail->>Avail: isRoomAvailableForStay (no overlap)
+    end
+    Avail-->>System: available room pointers
+    System-->>Guest: R101, R102, ...
+```
+
+### Sequence Diagram — Create booking
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Guest
+    participant System as OYOHotelBookingSystem
+    participant Avail as AvailabilityService
+    participant Price as PricingService
+    participant Notify as NotificationService
+
+    Guest->>System: createBooking(G1, R102, 10, 12)
+    System->>Avail: isRoomAvailableForStay(R102, 10, 12)
+    Avail-->>System: true
+    System->>Price: calculateStayAmount(1800, 10, 12)
+    Price->>Price: strategy_.calculateTotal()
+    Price-->>System: Rs 3600
+    System->>System: save Booking CONFIRMED, room BOOKED
+    System->>Notify: sendBookingConfirmed(email, OYO_1, amount)
+    Notify-->>Guest: email notification
+    System-->>Guest: bookingId OYO_1
+```
+
+### Sequence Diagram — Cancel booking
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Guest
+    participant System as OYOHotelBookingSystem
+    participant Notify as NotificationService
+
+    Guest->>System: cancelBooking(OYO_2)
+    System->>System: validate status != CHECKED_IN
+    System->>System: booking CANCELLED, room AVAILABLE
+    System->>Notify: sendBookingCancelled(email, OYO_2)
+    System-->>Guest: success
+```
+
+### Build
+
+```bash
+cd OYO_Hotel_Booking_LLD && ./compile.sh && ./oyo_hotel_app
+```
+
+---
+
 ## Cross-Project Pattern Summary
 
 ```mermaid
@@ -2902,10 +3086,12 @@ graph LR
         LRU[CacheService LRU]
         LFU[CacheService LFU]
         LC[LeetCodeSystem]
+        OYO[OYOHotelBookingSystem]
     end
 
     subgraph Strategy
         Pricing[PricingStrategy]
+        HotelPrice[IPricingStrategy]
         LB[LoadBalancingStrategy]
         RL[RateLimiter]
         Encrypt[EncryptionService]
@@ -2926,6 +3112,7 @@ graph LR
     end
 
     Parking --> Pricing
+    OYO --> HotelPrice
     LB --> RoundRobin
     RL --> TokenBucket
     WA --> Encrypt
@@ -2957,6 +3144,7 @@ graph LR
 | LRU Cache | `CacheService` | Facade, Decorator, `ICache` interface |
 | LFU Cache | `CacheService` | Facade, Decorator, frequency buckets + `minFreq` |
 | LeetCode | `LeetCodeSystem` | Facade, Strategy (`ICodeRunner`), Judge pipeline |
+| OYO Hotel | `OYOHotelBookingSystem` | Facade, Strategy (pricing), Availability service |
 
 ---
 
@@ -2978,6 +3166,7 @@ graph LR
 | [`LFU_Cache_LLD/README.md`](./LFU_Cache_LLD/README.md) | LFU project guide + compile notes |
 | [`LeetCode_LLD/README.md`](./LeetCode_LLD/README.md) | Online judge + HARD DP problem |
 | [`LeetCode_LLD/problems/MIN_COST_DIVIDE_ARRAY.md`](./LeetCode_LLD/problems/MIN_COST_DIVIDE_ARRAY.md) | Hard problem statement |
+| [`OYO_Hotel_Booking_LLD/README.md`](./OYO_Hotel_Booking_LLD/README.md) | OYO hotel booking guide |
 | [`Design_Pattern_types.md`](./Design_Pattern_types.md) | Pattern taxonomy |
 | Per-project `problem_statement.md` | Ground-truth requirements |
 
@@ -2988,6 +3177,6 @@ graph LR
 </p>
 
 <p align="center">
-  <b>20 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
+  <b>21 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
   <sub>Maintained alongside <code>README.md</code> and per-project headers</sub>
 </p>

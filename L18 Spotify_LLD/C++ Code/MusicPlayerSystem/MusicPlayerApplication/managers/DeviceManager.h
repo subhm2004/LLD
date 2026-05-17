@@ -9,13 +9,13 @@ using namespace std;
 
 class DeviceManager {
 private:
-    static DeviceManager* instance;
     IAudioOutputDevice* currentOutputDevice;
     DeviceManager() {
         currentOutputDevice = nullptr;
     }
 public:
     static DeviceManager* getInstance() {
+        static DeviceManager* instance = nullptr;
         if (instance == nullptr) {
             instance = new DeviceManager();
         }
@@ -52,5 +52,4 @@ public:
     }
 };
 
-DeviceManager* DeviceManager::instance = nullptr;
 #endif // DEVICE_MANAGER_HPP

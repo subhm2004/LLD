@@ -7,7 +7,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Language-C%2B%2B-blue?style=for-the-badge" alt="C++ Badge" />
   <img src="https://img.shields.io/badge/Lessons-L1%E2%80%93L40-6f42c1?style=for-the-badge" alt="Lessons badge" />
-  <img src="https://img.shields.io/badge/System+Projects-20-success?style=for-the-badge" alt="Projects badge" />
+  <img src="https://img.shields.io/badge/System+Projects-21-success?style=for-the-badge" alt="Projects badge" />
   <img src="https://img.shields.io/badge/Focus-Interview%20Ready-orange?style=for-the-badge" alt="Interview badge" />
 </p>
 
@@ -84,7 +84,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | Category               | Count        | Description                                                                |
 | ---------------------- | ------------ | -------------------------------------------------------------------------- |
 | **Lesson modules**     | L1 – L40     | OOP, SOLID, UML, har major design pattern, aur pattern + system hybrids    |
-| **Standalone systems** | 20 projects  | Interview systems + LRU/LFU + LeetCode judge |
+| **Standalone systems** | 21 projects  | Interview systems + caches + OYO hotel booking |
 | **Concurrency labs**   | 1 folder     | `Multi_threading_C++` — threads, mutex, semaphores, thread pool, DCLP      |
 | **Reference assets**   | PDFs, images | Gang of Four, DDIA, design pattern cheat sheets                            |
 
@@ -594,9 +594,10 @@ Note: Yeh full ATM LLD nahi hai — pattern demo hai. Full ATM ke liye [`ATM_LLD
 | ------------ | ------------------------------------------------------------------------ |
 | **Path**     | [`L24 Discount_coupon_engine_LLD/`](./L24%20Discount_coupon_engine_LLD/) |
 | **Patterns** | Strategy, Chain of Responsibility, Singleton                             |
-| **File**     | `C++ Code/DiscountCoupon.cpp` (monolithic but complete)                  |
+| **Build**    | `./compile.sh` → `discount_coupon_app`                                   |
+| **Legacy**   | `C++ Code/DiscountCoupon.cpp` (original monolith, preserved)             |
 
-**Features:** Flat/percent/capped discounts, coupon chains, cart offers (seasonal, loyalty, bulk, banking), thread-safe coupon registry.
+**Features:** Flat/percent/capped discounts, coupon chains, cart offers (seasonal, loyalty, bulk, banking), thread-safe coupon registry. Modular headers under `core/`, `coupons/`, `strategies/`, `models/`.
 
 ---
 
@@ -953,6 +954,21 @@ cd LRU_Cache_LLD && g++ -std=c++17 -pthread main.cpp -o lru_cache_app && ./lru_c
 
 ```bash
 cd LFU_Cache_LLD && ./compile.sh && ./lfu_cache_app
+```
+
+---
+
+### OYO_Hotel_Booking_LLD
+
+| | |
+|---|---|
+| **Path** | [`OYO_Hotel_Booking_LLD/`](./OYO_Hotel_Booking_LLD/) |
+| **Patterns** | Facade, Strategy (pricing), Service layer |
+| **Features** | Search by city, date-range availability, book/cancel, check-in/out |
+| **Diagrams** | [Section 21](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#21-oyo-hotel-booking) |
+
+```bash
+cd OYO_Hotel_Booking_LLD && ./compile.sh && ./oyo_hotel_app
 ```
 
 ---
@@ -1387,6 +1403,7 @@ Har project complete karne ke baad yeh try karo:
 | LRU Cache            | [LRU_Cache_LLD](./LRU_Cache_LLD/)                                 |
 | LFU Cache            | [LFU_Cache_LLD](./LFU_Cache_LLD/)                                 |
 | LeetCode             | [LeetCode_LLD](./LeetCode_LLD/)                                   |
+| OYO Hotel Booking    | [OYO_Hotel_Booking_LLD](./OYO_Hotel_Booking_LLD/)                 |
 | Ride Sharing         | [Ride_sharing_app_LLD](./Ride_sharing_app_LLD/)                   |
 | Uber                 | [Uber_LLD](./Uber_LLD/)                                           |
 | URL Shortener        | [URL_Shortner_LLD](./URL_Shortner_LLD/)                           |

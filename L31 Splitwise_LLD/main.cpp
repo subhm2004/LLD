@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 
 #include "core/Splitwise.h"
-#include "core/StaticDefinitions.h"
 
 using namespace std;
 using namespace splitwise_lld;

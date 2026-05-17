@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 
 #include "controllers/PaymentController.h"
-#include "core/StaticDefinitions.h"
 
 using namespace std;
 using namespace payment_gateway_lld;

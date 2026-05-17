@@ -46,7 +46,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | Category               | Count        | Description                                                                |
 | ---------------------- | ------------ | -------------------------------------------------------------------------- |
 | **Lesson modules**     | L1 – L40     | OOP, SOLID, UML, har major design pattern, aur pattern + system hybrids    |
-| **Standalone systems** | 18 projects  | Interview-favourite real-world systems (Parking Lot, Uber, WhatsApp, LRU Cache, etc.) |
+| **Standalone systems** | 19 projects  | Interview-favourite systems + LRU/LFU caches |
 | **Concurrency labs**   | 1 folder     | `Multi_threading_C++` — threads, mutex, semaphores, thread pool, DCLP      |
 | **Reference assets**   | PDFs, images | Gang of Four, DDIA, design pattern cheat sheets                            |
 
@@ -62,10 +62,10 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | ------------------------------------ | ----------------------- |
 | Total C++/header source files        | ~490+                   |
 | Lesson folders (L1–L40)              | 40                      |
-| Runnable system demos                | 18+                     |
+| Runnable system demos                | 19+                     |
 | Design patterns demonstrated         | 20+ (GoF + Null Object) |
 | Projects with `problem_statement.md` | 26+                     |
-| Projects with dedicated `README.md`  | 18                      |
+| Projects with dedicated `README.md`  | 19                      |
 | UML class + sequence diagrams        | [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) |
 
 ---
@@ -903,6 +903,22 @@ cd LRU_Cache_LLD && g++ -std=c++17 -pthread main.cpp -o lru_cache_app && ./lru_c
 
 ---
 
+### LFU_Cache_LLD
+
+| | |
+|---|---|
+| **Path** | [`LFU_Cache_LLD/`](./LFU_Cache_LLD/) |
+| **Patterns** | Facade (`CacheService`), Decorator (`ThreadSafeLFUCache`), `ICache` interface |
+| **Data structures** | `unordered_map` + frequency buckets + `minFreq` |
+| **Eviction** | Least frequently used; tie → LRU within bucket |
+| **Compare** | [LRU Cache](./LRU_Cache_LLD/) |
+
+```bash
+cd LFU_Cache_LLD && g++ -std=c++17 -pthread main.cpp -o lfu_cache_app && ./lfu_cache_app
+```
+
+---
+
 ### Ride_sharing_app_LLD
 
 Uber/Ola-lite: rider/driver registration, nearest driver matching, ride lifecycle, fare via `PricingService` + `GeoUtils`.
@@ -1066,6 +1082,7 @@ g++ -std=c++17 -pthread thread_pool.cpp -o thread_pool && ./thread_pool
 | ⭐⭐⭐   | BookMyShow / Movie Ticket | Concurrency on seats, complex domain |
 | ⭐⭐⭐   | Splitwise                 | Graph-like balances, algorithms      |
 | ⭐⭐⭐   | LRU Cache                 | Hash map + DLL, `list::splice`, mutex decorator |
+| ⭐⭐     | LFU Cache                 | Frequency buckets + `minFreq`, tie-break LRU      |
 | ⭐⭐⭐   | Rate Limiter              | Token bucket, sliding window, concurrency       |
 | ⭐⭐     | Elevator                  | Scheduling, state machines           |
 | ⭐⭐     | Chess / Tic-Tac-Toe       | Game rules, extensibility            |
@@ -1200,6 +1217,7 @@ Har project complete karne ke baad yeh try karo:
 | Movie Ticket              | Concurrent seat booking (mutex), waitlist           |
 | Rate Limiter              | Distributed Redis backend, per-API limits           |
 | LRU Cache                 | TTL expiry, sharded locks, LFU eviction policy        |
+| LFU Cache                 | Frequency aging, window LFU, unified cache factory    |
 | Splitwise                 | Currency conversion, recurring expenses             |
 | WhatsApp                  | End-to-end encryption interface, read receipts sync |
 | Elevator                  | SCAN algorithm, weight capacity                     |
@@ -1274,6 +1292,7 @@ Har project complete karne ke baad yeh try karo:
 | Parking Lot          | [Parking_lot_system_LLD](./Parking_lot_system_LLD/)               |
 | Rate Limiter         | [Rate_Limiter_LLD](./Rate_Limiter_LLD/)                           |
 | LRU Cache            | [LRU_Cache_LLD](./LRU_Cache_LLD/)                                 |
+| LFU Cache            | [LFU_Cache_LLD](./LFU_Cache_LLD/)                                 |
 | Ride Sharing         | [Ride_sharing_app_LLD](./Ride_sharing_app_LLD/)                   |
 | Uber                 | [Uber_LLD](./Uber_LLD/)                                           |
 | URL Shortener        | [URL_Shortner_LLD](./URL_Shortner_LLD/)                           |

@@ -171,4 +171,5 @@ g++ -std=c++17 -pthread main.cpp -o lru_cache_app
 
 - [Problem Statement](./problem_statement.md)
 - [Requirements](./requirements.md)
+- [LFU Cache (compare)](../LFU_Cache_LLD/)
 - [All System Diagrams](../SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#18-thread-safe-lru-cache)

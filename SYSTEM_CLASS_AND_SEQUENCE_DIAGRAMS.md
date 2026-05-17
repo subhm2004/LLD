@@ -1,6 +1,6 @@
 # System Projects — Class Diagrams & Sequence Diagrams
 
-> **17 LLD projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
+> **18 LLD projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
 > GitHub / VS Code / Cursor me Mermaid preview se diagrams render honge.
 
 ---
@@ -26,6 +26,7 @@
 | 15 | [Vending Machine](#15-vending-machine) | `vending_machine_LLD/` |
 | 16 | [WhatsApp](#16-whatsapp) | `WhatsApp_LLD/` |
 | 17 | [Insta/YouTube Reels](#17-instayoutube-reels) | `Insta_reel_LLD/yt reel architecture/` |
+| 18 | [Thread-Safe LRU Cache](#18-thread-safe-lru-cache) | `LRU_Cache_LLD/` |
 
 ---
 
@@ -2220,6 +2221,231 @@ sequenceDiagram
 
 ---
 
+## 18. Thread-Safe LRU Cache
+
+**Namespace:** `lru_cache_lld`  
+**Path:** [`LRU_Cache_LLD/`](./LRU_Cache_LLD/)  
+**Facade:** `CacheService`  
+**Patterns:** Facade, Decorator (`ThreadSafeLRUCache`), interface segregation (`ICache`)
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    direction TB
+
+    class ICache~Key,Value~ {
+        <<interface>>
+        +get(key) optional~Value~
+        +put(key, value)
+        +contains(key) bool
+        +remove(key) bool
+        +clear()
+        +size() size_t
+        +capacity() size_t
+    }
+
+    class LRUCacheCore~Key,Value~ {
+        -CacheConfig config_
+        -list~CacheEntry~ order_
+        -unordered_map lookup_
+        -bool lastPutEvicted_
+        +get(key) optional~Value~
+        +put(key, value)
+        +contains(key) bool
+        +remove(key) bool
+        +clear()
+        -touch(iterator)
+        -evictLeastRecentlyUsed()
+    }
+
+    class ThreadSafeLRUCache~Key,Value~ {
+        -mutex mutex_
+        -LRUCacheCore core_
+        +get(key) optional~Value~
+        +put(key, value)
+        +didLastPutEvict() bool
+    }
+
+    class CacheService~Key,Value~ {
+        -ThreadSafeLRUCache cache_
+        -CacheStatistics statistics_
+        +get(key) optional~Value~
+        +put(key, value)
+        +remove(key) bool
+        +printStatistics()
+        +executeAndDescribe(op, key, value)
+    }
+
+    class CacheConfig {
+        -size_t capacity_
+        +getCapacity() size_t
+    }
+
+    class CacheEntry~Key,Value~ {
+        +Key key
+        +Value value
+    }
+
+    class CacheStatistics {
+        -atomic hits_, misses_, puts_
+        -atomic evictions_, removes_
+        +recordHit()
+        +recordMiss()
+        +recordEviction()
+        +getHitRatio() double
+        +print()
+    }
+
+    class CyclicBarrier {
+        +arriveAndWait()
+    }
+
+    class CountDownLatch {
+        +countDown()
+        +await()
+    }
+
+    class CacheOperationType {
+        <<enumeration>>
+        GET
+        PUT
+        CONTAINS
+        REMOVE
+        CLEAR
+    }
+
+    ICache <|.. LRUCacheCore
+    ICache <|.. ThreadSafeLRUCache
+    ThreadSafeLRUCache *-- LRUCacheCore : decorates
+    CacheService *-- ThreadSafeLRUCache
+    CacheService *-- CacheStatistics
+    LRUCacheCore *-- CacheConfig
+    LRUCacheCore o-- CacheEntry
+    CacheService ..> CacheOperationType
+```
+
+### Internal data structure (LRU order)
+
+```mermaid
+flowchart LR
+    subgraph list_order ["std::list — MRU → LRU"]
+        A["user:2 (MRU)"]
+        B["user:5"]
+        C["user:4 (LRU)"]
+    end
+
+    subgraph hash ["unordered_map — key → iterator"]
+        K2["user:2"] --> A
+        K5["user:5"] --> B
+        K4["user:4"] --> C
+    end
+```
+
+### Sequence Diagram — Put (new key + eviction)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant Service as CacheService
+    participant TS as ThreadSafeLRUCache
+    participant Core as LRUCacheCore
+    participant Stats as CacheStatistics
+
+    Client->>Service: put(key, value)
+    Service->>TS: put(key, value)
+    TS->>TS: lock_guard(mutex_)
+    TS->>Core: put(key, value)
+    Core->>Core: lookup_.find(key)
+    alt key not found
+        Core->>Core: order_.push_front(CacheEntry)
+        Core->>Core: lookup_[key] = order_.begin()
+        alt size > capacity
+            Core->>Core: evictLeastRecentlyUsed()
+            Note over Core: pop_back + erase from map
+        end
+    else key exists
+        Core->>Core: update value + touch(splice to front)
+    end
+    TS-->>Service: return
+    Service->>Stats: recordPut()
+    alt didLastPutEvict()
+        Service->>TS: didLastPutEvict()
+        Service->>Stats: recordEviction()
+    end
+```
+
+### Sequence Diagram — Get (hit promotes to MRU)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant Service as CacheService
+    participant TS as ThreadSafeLRUCache
+    participant Core as LRUCacheCore
+    participant Stats as CacheStatistics
+
+    Client->>Service: get(key)
+    Service->>TS: get(key)
+    TS->>TS: lock_guard(mutex_)
+    TS->>Core: get(key)
+    Core->>Core: lookup_.find(key)
+    alt cache hit
+        Core->>Core: touch(iterator)
+        Note over Core: list::splice to front — O(1)
+        Core-->>TS: optional(value)
+        TS-->>Service: value
+        Service->>Stats: recordHit()
+    else cache miss
+        Core-->>TS: nullopt
+        TS-->>Service: nullopt
+        Service->>Stats: recordMiss()
+    end
+    Service-->>Client: optional~Value~
+```
+
+### Sequence Diagram — Concurrent stress test
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Main
+    participant Barrier as CyclicBarrier
+    participant T1 as Thread 1
+    participant T2 as Thread N
+    participant Service as CacheService
+
+    Main->>Service: CacheService(capacity=100)
+    par spawn workers
+        Main->>T1: start
+        Main->>T2: start
+    end
+    T1->>Barrier: arriveAndWait()
+    T2->>Barrier: arriveAndWait()
+    Note over T1,T2: all threads start together
+    par concurrent ops
+        loop 500 ops
+            T1->>Service: put(key) or get(key)
+        end
+        loop 500 ops
+            T2->>Service: put(key) or get(key)
+        end
+    end
+    T1->>Main: join
+    T2->>Main: join
+    Main->>Service: printStatistics()
+```
+
+### Build
+
+```bash
+cd LRU_Cache_LLD && g++ -std=c++17 -pthread main.cpp -o lru_cache_app && ./lru_cache_app
+```
+
+---
+
 ## Cross-Project Pattern Summary
 
 ```mermaid
@@ -2229,6 +2455,7 @@ graph LR
         Parking[ParkingLot]
         Uber[UberSystem]
         WA[WhatsAppSystem]
+        LRU[CacheService]
     end
 
     subgraph Strategy
@@ -2246,10 +2473,15 @@ graph LR
         JSON[JsonValue Tree]
     end
 
+    subgraph Decorator
+        TS[ThreadSafeLRUCache]
+    end
+
     Parking --> Pricing
     LB --> RoundRobin
     RL --> TokenBucket
     WA --> Encrypt
+    TS --> LRU
 ```
 
 | Project | Facade | Primary Pattern(s) |
@@ -2271,6 +2503,7 @@ graph LR
 | Vending Machine | `VendingMachine` | Composition |
 | WhatsApp | `WhatsAppSystem` | Strategy, Decorator, Observer |
 | Reels | `ReelPlatformService` | Facade, Feed ranking |
+| LRU Cache | `CacheService` | Facade, Decorator, `ICache` interface |
 
 ---
 
@@ -2288,11 +2521,12 @@ graph LR
 | File | Purpose |
 |------|---------|
 | [`README.md`](./README.md) | Full repository guide |
+| [`LRU_Cache_LLD/README.md`](./LRU_Cache_LLD/README.md) | LRU project guide + inline diagrams |
 | [`Design_Pattern_types.md`](./Design_Pattern_types.md) | Pattern taxonomy |
 | Per-project `problem_statement.md` | Ground-truth requirements |
 
 ---
 
 <p align="center">
-  <b>17 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b>
+  <b>18 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b>
 </p>

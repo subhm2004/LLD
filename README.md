@@ -979,7 +979,7 @@ cd "Insta_reel_LLD/yt reel architecture" && g++ -std=c++17 main.cpp -o reels_app
 
 ## Multi-Threading Module
 
-**Path:** [`Multi_threading_C++/`](./Multi_threading_C++/)
+**Path:** [`Multi_threading_C++/`](./Multi_threading_C++/) · **[Full README](./Multi_threading_C++/README.md)**
 
 Educational snippets — har file alag topic. **Not** a unified system.
 
@@ -992,6 +992,7 @@ Educational snippets — har file alag topic. **Not** a unified system.
 | `lock_mechanism.cpp`, `types_of_locks.cpp` | Lock varieties            |
 | `semaphor.cpp`                             | Semaphores                |
 | `producer_consumer.cpp`                    | Classic producer-consumer |
+| `dining_philosophers.cpp`                  | Dining philosophers (4 solutions) |
 | `thread_pool.cpp`                          | Custom thread pool        |
 | `deadlock_and_protection.cpp`              | Deadlock scenarios        |
 | `DCLP.cpp`                                 | Double-checked locking    |

@@ -7,7 +7,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Language-C%2B%2B-blue?style=for-the-badge" alt="C++ Badge" />
   <img src="https://img.shields.io/badge/Lessons-L1%E2%80%93L40-6f42c1?style=for-the-badge" alt="Lessons badge" />
-  <img src="https://img.shields.io/badge/System+Projects-21-success?style=for-the-badge" alt="Projects badge" />
+  <img src="https://img.shields.io/badge/System+Projects-22-success?style=for-the-badge" alt="Projects badge" />
   <img src="https://img.shields.io/badge/Focus-Interview%20Ready-orange?style=for-the-badge" alt="Interview badge" />
 </p>
 
@@ -84,7 +84,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | Category               | Count        | Description                                                                |
 | ---------------------- | ------------ | -------------------------------------------------------------------------- |
 | **Lesson modules**     | L1 – L40     | OOP, SOLID, UML, har major design pattern, aur pattern + system hybrids    |
-| **Standalone systems** | 21 projects  | Interview systems + caches + OYO hotel booking |
+| **Standalone systems** | 22 projects  | Interview systems + caches + OYO + File Manager |
 | **Concurrency labs**   | 1 folder     | `Multi_threading_C++` — threads, mutex, semaphores, thread pool, DCLP      |
 | **Reference assets**   | PDFs, images | Gang of Four, DDIA, design pattern cheat sheets                            |
 
@@ -844,6 +844,20 @@ cd Library_Management_System_LLD && g++ -std=c++17 main.cpp -o library_app && ./
 
 ---
 
+### File_Manager_LLD
+
+|              |                                                                      |
+| ------------ | -------------------------------------------------------------------- |
+| **Path**     | [`File_Manager_LLD/`](./File_Manager_LLD/)                           |
+| **Patterns** | **Composite** (dir + files), **Facade**, path/search/copy services   |
+| **Commands** | `mkdir`, `createFile`, `cd`, `pwd`, `ls`, `cat`, `rm`, `mv`, `cp`, `find`, `getSize` |
+
+```bash
+cd File_Manager_LLD && ./compile.sh && ./file_manager_app
+```
+
+---
+
 ### Linkedin_LLD
 
 Users, connection requests (pending/accepted), posts, likes, personalized feed from connections via `FeedService`.
@@ -1396,6 +1410,7 @@ Har project complete karne ke baad yeh try karo:
 | Elevator             | [Elevator_System_LLD](./Elevator_System_LLD/)                     |
 | JSON Parser          | [JSON_Parser_LLD](./JSON_Parser_LLD/)                             |
 | Library Management   | [Library_Management_System_LLD](./Library_Management_System_LLD/) |
+| File Manager (VFS)   | [File_Manager_LLD](./File_Manager_LLD/)                           |
 | LinkedIn             | [Linkedin_LLD](./Linkedin_LLD/)                                   |
 | Load Balancer        | [LoadBalancer_LLD](./LoadBalancer_LLD/)                           |
 | Logger               | [Logger_LLD](./Logger_LLD/)                                       |

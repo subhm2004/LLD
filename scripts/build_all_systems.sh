@@ -12,6 +12,7 @@ declare -a PROJECTS=(
   WhatsApp_LLD "Insta_reel_LLD/yt reel architecture" LRU_Cache_LLD
   LeetCode_LLD
   OYO_Hotel_Booking_LLD
+  File_Manager_LLD
   "L24 Discount_coupon_engine_LLD"
 )
 

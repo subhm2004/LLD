@@ -272,6 +272,8 @@ LLD/
 |                |                                                                                                              |
 | -------------- | ------------------------------------------------------------------------------------------------------------ |
 | **Path**       | [`L4 UML_Diagrams/`](./L4%20UML_Diagrams/)                                                                   |
+| **Guides**     | [`UML_DIAGRAMS_AND_NOTATION.md`](./L4%20UML_Diagrams/UML_DIAGRAMS_AND_NOTATION.md) · [`INHERITANCE_AND_COMPOSITION.md`](./L4%20UML_Diagrams/INHERITANCE_AND_COMPOSITION.md) |
+| **Cpp README** | [`L4 README`](./L4%20UML_Diagrams/README.md) — `inheritance.cpp` + `composition.cpp` deep dive |
 | **Files**      | `4.txt`, `inheritance.cpp`, `composition.cpp`, `composition_old_style_ptr.cpp`, `example_of_composition.cpp` |
 | **Concepts**   | Structural vs behavioral UML; `+` `#` `-` visibility; association, aggregation, composition, inheritance     |
 | **Modern C++** | Composition with `std::unique_ptr` (RAII, exception safety)                                                  |

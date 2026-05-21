@@ -1326,6 +1326,7 @@ chmod +x scripts/build_all_systems.sh
 | `imp_design_patterns.png`, `imp_problems.png`                | Important patterns & problems cheat sheet          |
 | `Some_patterns.png`, `Commonly Asked Questions.png`          | Interview aids                                     |
 | Per-lesson `Notes.pdf`, `UML.jpeg`                           | Lesson-specific diagrams                           |
+| [`Exception_Handling/`](./Exception_Handling/)               | 14× C++17 demos — try/catch, RAII, facade, LSP, optional |
 
 **External reference:** [Refactoring Guru — Design Patterns](https://refactoring.guru/design-patterns)
 

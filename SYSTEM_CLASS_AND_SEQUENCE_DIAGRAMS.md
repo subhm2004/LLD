@@ -7,7 +7,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Systems-21-blue?style=for-the-badge" alt="21 systems" />
   <img src="https://img.shields.io/badge/Diagrams-Mermaid-6f42c1?style=for-the-badge" alt="Mermaid" />
-  <img src="https://img.shields.io/badge/Lines-2500%2B-success?style=for-the-badge" alt="2500+ lines" />
+  <img src="https://img.shields.io/badge/Lines-3100%2B-success?style=for-the-badge" alt="3100+ lines" />
   <img src="https://img.shields.io/badge/Synced-With%20Code-orange?style=for-the-badge" alt="Synced with code" />
 </p>
 
@@ -42,11 +42,149 @@ flowchart LR
     D --> E[Preview in Cursor Cmd+Shift+V]
 ```
 
-**Pair with:** [`README.md`](./README.md) (study guide) · per-project `compile.sh` (run demos)
+**Pair with:** [`README.md`](./README.md) · [`PROJECT_DESIGN_PATTERNS.md`](./PROJECT_DESIGN_PATTERNS.md) · [`SOLID.md`](./SOLID.md) · per-project `compile.sh`
+
+---
+
+## 0. Visual Study Hub (Diagrams & Navigation)
+
+> Poora file scroll karne se pehle — **high-priority systems** aur **diagram types** yahan se pick karo.
+
+### 0.1 21 systems — category map
+
+```mermaid
+mindmap
+  root((21 Systems))
+    Infrastructure
+      ATM
+      Load Balancer
+      Rate Limiter
+      Logger
+      LRU Cache
+      LFU Cache
+    Booking Commerce
+      Parking Lot
+      Movie Ticket
+      OYO Hotel
+      Car Rental
+      Vending Machine
+    Transport Social
+      Uber
+      Ride Sharing
+      LinkedIn
+      WhatsApp
+    Tech Products
+      URL Shortener
+      JSON Parser
+      LeetCode Judge
+      Insta Reels
+    Building
+      Elevator
+      Library
+```
+
+### 0.2 Interview priority — kya pehle padho
+
+```mermaid
+flowchart TB
+    subgraph star [⭐⭐⭐ Must whiteboard]
+        P10[§10 Parking Lot]
+        P9[§9 Movie Ticket]
+        P8[§8 Logger]
+        P20[§20 LeetCode]
+        P21[§21 OYO Hotel]
+    end
+
+    subgraph strong [⭐⭐ Strong]
+        P16[§16 WhatsApp]
+        P7[§7 Load Balancer]
+        P18[§18 LRU Cache]
+        P13[§13 Uber]
+        P1[§1 ATM]
+    end
+
+    subgraph good [⭐ Good depth]
+        P4[§4 JSON Parser]
+        P3[§3 Elevator]
+        P17[§17 Reels]
+        P19[§19 LFU Cache]
+    end
+
+    star --> strong
+    strong --> good
+```
+
+### 0.3 Recommended revision order (gantt)
+
+```mermaid
+gantt
+    title UML revision sprint
+    dateFormat X
+    axisFormat %s
+
+    section Week 1
+    Parking Lot      :w1, 0, 2
+    Movie Ticket     :w2, 2, 4
+    Logger           :w3, 4, 6
+
+    section Week 2
+    OYO Hotel        :w4, 6, 8
+    LeetCode         :w5, 8, 10
+    WhatsApp         :w6, 10, 12
+
+    section Week 3
+    LRU LFU Cache    :w7, 12, 14
+    Uber ATM         :w8, 14, 16
+    Baaki systems    :w9, 16, 20
+```
+
+### 0.4 Har system mein kya milega (diagram types)
+
+```mermaid
+flowchart LR
+    A[Open section §N] --> B[Class Diagram]
+    B --> C[Sequence 1 main flow]
+    C --> D[Sequence 2 edge case]
+    D --> E[Sequence 3 optional]
+    E --> F[compile.sh / g++ command]
+
+    style B fill:#e3f2fd
+    style C fill:#fff9c4
+    style D fill:#fff9c4
+```
+
+### 0.5 Pattern heatmap (cross-project)
+
+```mermaid
+pie showData
+    title Most common patterns in 21 systems
+    "Facade / System entry" : 18
+    "Strategy" : 12
+    "Service layer" : 15
+    "Chain of Responsibility" : 2
+    "Decorator" : 3
+    "Composite" : 2
+    "Other" : 8
+```
+
+### 0.6 Quick jump — animated sequence previews
+
+| System | Section | Main sequence flow |
+|--------|---------|-------------------|
+| Park vehicle | [§10](#10-parking-lot) | enter → ticket → exit → fee |
+| Book show seat | [§9](#9-movie-ticket-booking) | search → lock seat → pay |
+| Log pipeline | [§8](#8-logger) | log() → chain → format → append |
+| Submit code | [§20](#20-leetcode-online-judge) | submit → judge → verdict |
+| Book hotel | [§21](#21-oyo-hotel-booking) | search → avail → book → notify |
+| Send message | [§16](#16-whatsapp) | chat → encrypt → notify |
 
 ---
 
 ## Table of Contents
+
+| Hub | Link |
+|-----|------|
+| **0** | [Visual Study Hub](#0-visual-study-hub-diagrams--navigation) — mindmap, priority, gantt, quick flows |
 
 | # | Project | Folder |
 |---|---------|--------|
@@ -85,6 +223,27 @@ flowchart LR
 | `-->` | Dependency / uses |
 | `+` | public method |
 | `-` | private attribute |
+
+### Sequence diagram reading tip (step animation)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as User/Client
+    participant F as Facade
+    participant S as Service
+    participant M as Model/DB
+
+    Note over U,M: Typical LLD sequence in this file
+    U->>F: API call
+    F->>S: business rule
+    S->>M: read/write
+    M-->>S: result
+    S-->>F: DTO / status
+    F-->>U: response
+```
+
+> **`autonumber`** = step numbers — interview whiteboard par 1→2→3 draw karna easy.
 
 ---
 
@@ -3076,6 +3235,22 @@ cd OYO_Hotel_Booking_LLD && ./compile.sh && ./oyo_hotel_app
 
 ## Cross-Project Pattern Summary
 
+### Animated facade → service drill-down
+
+```mermaid
+flowchart TB
+    Client[Client / main.cpp] --> Facade[ATMSystem / ParkingLot / OYOHotel / ...]
+    Facade --> S1[Domain Service 1]
+    Facade --> S2[Domain Service 2]
+    Facade --> S3[Domain Service 3]
+    S1 --> Models[(Models / Maps)]
+    S2 --> Models
+    S3 --> Strategy[PricingStrategy / ICodeRunner / ...]
+
+    style Facade fill:#c8e6c9
+    style Strategy fill:#bbdefb
+```
+
 ```mermaid
 graph LR
     subgraph Facades
@@ -3150,10 +3325,124 @@ graph LR
 
 ## How To View Diagrams
 
-1. **GitHub** — is file ko repo me push karo; Mermaid auto-render hoga
-2. **VS Code / Cursor** — Markdown Preview (`Cmd+Shift+V`)
-3. **Online** — [mermaid.live](https://mermaid.live) par code paste karo
-4. **Export PNG** — mermaid.live se SVG/PNG download
+```mermaid
+flowchart LR
+    A[Open .md file] --> B{Where?}
+    B -->|Cursor/VS Code| C[Cmd+Shift+V Preview]
+    B -->|GitHub| D[Push repo view file]
+    B -->|Export| E[mermaid.live paste]
+    C --> F[Diagrams render live]
+    D --> F
+    E --> G[Download SVG/PNG]
+
+    style F fill:#c8e6c9
+    style G fill:#fff9c4
+```
+
+1. **GitHub** — push ke baad file view; Mermaid auto-render
+2. **VS Code / Cursor** — Markdown Preview (`Cmd+Shift+V`) — **best for study**
+3. **Online** — [mermaid.live](https://mermaid.live) — edit + animate layout
+4. **Export PNG/SVG** — slides / Notion ke liye
+5. **Side-by-side** — code header kholo + diagram same section compare karo
+
+---
+
+## Star Systems — Expandable Quick Flows
+
+<details>
+<summary><strong>§10 Parking Lot</strong> — park → unpark → fee · <a href="./Parking_lot_system_LLD/">code</a></summary>
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Driver
+    participant PL as ParkingLot
+    participant PS as HourlyPricingStrategy
+
+    Driver->>PL: parkVehicle(car)
+    PL-->>Driver: Ticket
+    Driver->>PL: unparkVehicle(ticketId)
+    PL->>PS: calculateFee(type, entry, exit)
+    PS-->>PL: amount
+    PL-->>Driver: charge Rs
+```
+
+</details>
+
+<details>
+<summary><strong>§8 Logger</strong> — log level chain · <a href="./Logger_LLD/">code</a></summary>
+
+```mermaid
+flowchart LR
+    App[logger.info msg] --> G[Logger Singleton]
+    G --> D[DebugHandler]
+    D --> I[InfoHandler]
+    I --> W[WarnHandler]
+    W --> E[ErrorHandler]
+    E --> F[FatalHandler]
+    F --> Fmt[Formatter Strategy]
+    Fmt --> Out[Console/File Appender]
+```
+
+</details>
+
+<details>
+<summary><strong>§21 OYO Hotel</strong> — book lifecycle · <a href="./OYO_Hotel_Booking_LLD/">code</a></summary>
+
+```mermaid
+stateDiagram-v2
+    [*] --> Search
+    Search --> Available : rooms free
+    Available --> Booked : createBooking
+    Booked --> CheckedIn : checkIn
+    CheckedIn --> CheckedOut : checkOut
+    Booked --> Cancelled : cancelBooking
+    CheckedOut --> [*]
+    Cancelled --> [*]
+```
+
+</details>
+
+<details>
+<summary><strong>§20 LeetCode</strong> — submit → judge · <a href="./LeetCode_LLD/">code</a></summary>
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant LC as LeetCodeSystem
+    participant J as JudgeService
+    participant R as MockCodeRunner
+
+    User->>LC: submitSolution(code)
+    LC->>J: runTests()
+    J->>R: execute(testCases)
+    R-->>J: verdict per test
+    J-->>LC: ACCEPTED / WA / TLE
+    LC-->>User: result + leaderboard update
+```
+
+</details>
+
+<details>
+<summary><strong>§16 WhatsApp</strong> — message + notify · <a href="./WhatsApp_LLD/">code</a></summary>
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as User
+    participant WS as WhatsAppSystem
+    participant CS as ChatService
+    participant NE as NotificationEngine
+
+    U->>WS: sendMessage(chatId, text)
+    WS->>CS: deliver(encrypt optional)
+    CS-->>WS: stored
+    WS->>NE: notify participants
+    NE-->>U: push / SMS / email strategy
+```
+
+</details>
 
 ---
 
@@ -3162,6 +3451,9 @@ graph LR
 | File | Purpose |
 |------|---------|
 | [`README.md`](./README.md) | Full repository guide |
+| [`PROJECT_DESIGN_PATTERNS.md`](./PROJECT_DESIGN_PATTERNS.md) | Kaunse project mein kaunsa pattern |
+| [`SOLID.md`](./SOLID.md) | SOLID principles + diagrams |
+| [`Design_Patterns.md`](./Design_Patterns.md) | Pattern theory deep dive |
 | [`LRU_Cache_LLD/README.md`](./LRU_Cache_LLD/README.md) | LRU project guide + inline diagrams |
 | [`LFU_Cache_LLD/README.md`](./LFU_Cache_LLD/README.md) | LFU project guide + compile notes |
 | [`LeetCode_LLD/README.md`](./LeetCode_LLD/README.md) | Online judge + HARD DP problem |

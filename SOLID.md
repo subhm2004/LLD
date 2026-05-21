@@ -1,13 +1,26 @@
 # SOLID Design Principles — Complete Guide
 
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=2F81F7&center=true&vCenter=true&width=920&lines=SOLID+Principles+%E2%80%94+Complete+Guide;S+O+L+I+D+Explained+with+Repo+Code;Violated+vs+Fixed+%2B+Mermaid+Flows" alt="Typing animation" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Principles-5-blue?style=for-the-badge" alt="5 principles" />
+  <img src="https://img.shields.io/badge/Lessons-L5+%2B+L6-purple?style=for-the-badge" alt="L5 L6" />
+  <img src="https://img.shields.io/badge/Diagrams-Mermaid-success?style=for-the-badge" alt="Mermaid" />
+  <img src="https://img.shields.io/badge/Lines-950%2B-informational?style=for-the-badge" alt="lines" />
+</p>
+
 > **File:** `SOLID.md` — SOLID principles deep dive for this repo  
 > **Author of principles:** Robert C. Martin (“Uncle Bob”)  
-> **Code references:** [`L5 SOLID_1`](./L5%20SOLID_1/) · [`L6 SOLID_2`](./L6%20SOLID_2/)
+> **Code references:** [`L5 SOLID_1`](./L5%20SOLID_1/) · [`L6 SOLID_2`](./L6%20SOLID_2/)  
+> **Related:** [`Design_Patterns.md`](./Design_Patterns.md) · [`PROJECT_DESIGN_PATTERNS.md`](./PROJECT_DESIGN_PATTERNS.md) · [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md)
 
 ---
 
 ## Table of Contents
 
+0. [Visual Overview (Animated Diagrams)](#0-visual-overview-animated-diagrams)
 1. [Why SOLID Exists](#1-why-solid-exists)
 2. [What SOLID Stands For](#2-what-solid-stands-for)
 3. [S — Single Responsibility Principle](#3-s--single-responsibility-principle-srp)
@@ -19,6 +32,122 @@
 9. [SOLID in LLD Interviews](#9-solid-in-lld-interviews)
 10. [Quick Cheat Sheet](#10-quick-cheat-sheet)
 11. [Compile & Run Lesson Code](#11-compile--run-lesson-code)
+12. [Visual Principle Cards (Expand)](#12-visual-principle-cards-expand)
+
+---
+
+## 0. Visual Overview (Animated Diagrams)
+
+> GitHub / Cursor **Markdown Preview** (`Cmd+Shift+V`) mein Mermaid render hota hai — arrows follow karo step-by-step.
+
+### 0.1 SOLID acronym — mind map
+
+```mermaid
+mindmap
+  root((SOLID))
+    S
+      Single Responsibility
+      ShoppingCart split L5
+      One reason to change
+    O
+      Open Closed
+      Persistence L5
+      Extension not edit
+    L
+      Liskov Substitution
+      Bank accounts L5
+      LSP rules L6
+    I
+      Interface Segregation
+      2D vs 3D shapes L6
+    D
+      Dependency Inversion
+      Database interface L6
+      unique_ptr DI
+```
+
+### 0.2 Learning path (L5 → L6)
+
+```mermaid
+gantt
+    title SOLID study order in repo
+    dateFormat X
+    axisFormat %s
+
+    section L5 SOLID_1
+    SRP ShoppingCart     :a1, 0, 2
+    OCP Persistence    :a2, 2, 4
+    LSP Bank accounts  :a3, 4, 6
+
+    section L6 SOLID_2
+    ISP Shapes         :b1, 6, 8
+    DIP UserService    :b2, 8, 10
+    LSP Rules deep     :b3, 10, 12
+```
+
+### 0.3 Violated → Fixed (animation-style flow)
+
+```mermaid
+flowchart TB
+    subgraph srp_flow [SRP — Shopping Cart]
+        V1[ShoppingCart prints + saves + calculates] -->|split| F1[Cart + Printer + Storage]
+    end
+
+    subgraph ocp_flow [OCP — Storage]
+        V2[if SQL else Mongo else File] -->|abstract| F2[Persistence interface + subclasses]
+    end
+
+    subgraph lsp_flow [LSP — Accounts]
+        V3[FixedDeposit withdraw throws] -->|split iface| F3[DepositOnly vs Withdrawable]
+    end
+
+    subgraph isp_flow [ISP — Shapes]
+        V4[Square implements volume throw] -->|split| F4[Two_D vs Three_D interfaces]
+    end
+
+    subgraph dip_flow [DIP — DB]
+        V5[UserService new MySQL] -->|inject| F5[UserService depends Database*]
+    end
+
+    style V1 fill:#ffcdd2
+    style V2 fill:#ffcdd2
+    style V3 fill:#ffcdd2
+    style V4 fill:#ffcdd2
+    style V5 fill:#ffcdd2
+    style F1 fill:#c8e6c9
+    style F2 fill:#c8e6c9
+    style F3 fill:#c8e6c9
+    style F4 fill:#c8e6c9
+    style F5 fill:#c8e6c9
+```
+
+### 0.4 Repo lesson map
+
+```mermaid
+flowchart LR
+    L5[L5 SOLID_1] --> SRP[SRP violated/followed]
+    L5 --> OCP[OCP violated/followed]
+    L5 --> LSP[LSP violated/followed]
+    L6[L6 SOLID_2] --> ISP[ISP violated/followed]
+    L6 --> DIP[DIP violated/followed]
+    L6 --> RULES[LSP Rules 6 files]
+
+    SRP --> PROJ[Spotify managers OYO services]
+    OCP --> PROJ2[Payment Persistence strategies]
+    LSP --> PROJ3[Parking accounts]
+    DIP --> PROJ4[Logger GatewayFactory]
+```
+
+### 0.5 External animated tutorials
+
+| Principle | Refactoring Guru |
+|-----------|------------------|
+| All SOLID | https://refactoring.guru/design-principles |
+| SRP | https://refactoring.guru/design-principles/single-responsibility-principle |
+| OCP | https://refactoring.guru/design-principles/open-closed-principle |
+| LSP | https://refactoring.guru/design-principles/liskov-substitution-principle |
+| ISP | https://refactoring.guru/design-principles/interface-segregation-principle |
+| DIP | https://refactoring.guru/design-principles/dependency-inversion-principle |
 
 ---
 
@@ -66,6 +195,15 @@ flowchart LR
 
 > **Mnemonic (Hindi):** *“SOLID se code solid banta hai — ek kaam, extend karo, substitute safe, chhote interface, abstraction pe depend.”*
 
+```mermaid
+pie showData
+    title Interview focus weightage
+    "SRP + OCP" : 35
+    "LSP + ISP" : 30
+    "DIP" : 25
+    "All together" : 10
+```
+
 ---
 
 ## 3. S — Single Responsibility Principle (SRP)
@@ -106,6 +244,23 @@ class ShoppingCart {
 - Unit testing cart math requires mocking DB and console output
 
 ### 3.3 Fix — Split responsibilities
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant Cart as ShoppingCart
+    participant Prn as ShoppingCartPrinter
+    participant Stg as ShoppingCartStorage
+
+    Client->>Cart: addProduct()
+    Client->>Prn: printInvoice(cart)
+    Prn->>Cart: getProducts()
+    Prn-->>Client: invoice output
+    Client->>Stg: saveToDatabase(cart)
+    Stg->>Cart: getProducts()
+    Stg-->>Client: saved
+```
 
 **File:** [`L5 SOLID_1/C++ Code/SRP/SRP_followed.cpp`](./L5%20SOLID_1/C%2B%2B%20Code/SRP/SRP_followed.cpp)
 
@@ -560,11 +715,46 @@ flowchart TB
 ## 8. How SOLID Principles Work Together
 
 ```mermaid
-flowchart LR
-    SRP[SRP: split roles] --> OCP[OCP: extend via new types]
-    ISP[ISP: small interfaces] --> LSP[LSP: safe substitution]
-    DIP[DIP: depend on abstractions] --> OCP
+flowchart TB
+    SRP[SRP split responsibilities]
+    OCP[OCP extend via new classes]
+    LSP[LSP safe subtypes]
+    ISP[ISP lean interfaces]
+    DIP[DIP abstractions]
+
+    SRP --> OCP
+    ISP --> LSP
     LSP --> DIP
+    DIP --> OCP
+    SRP --> ISP
+
+    subgraph projects [Repo LLD examples]
+        P1[L5 Cart]
+        P2[OYO Pricing]
+        P3[L5 Accounts]
+        P4[L6 Shapes]
+        P5[L6 UserService]
+    end
+
+    SRP -.-> P1
+    OCP -.-> P2
+    LSP -.-> P3
+    ISP -.-> P4
+    DIP -.-> P5
+```
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Dev as Developer
+    participant S as SRP classes
+    participant O as OCP hierarchy
+    participant D as DIP injection
+
+    Dev->>S: Split god class
+    Dev->>O: Add feature via subclass
+    Dev->>D: Wire interface at main()
+    Note over Dev,D: SOLID stack in one LLD design
 ```
 
 | Scenario | Principles involved |
@@ -658,12 +848,113 @@ g++ -std=c++17 PostConditions.cpp -o post && ./post
 
 ---
 
-## Further Reading
+## 12. Visual Principle Cards (Expand)
 
-- Robert C. Martin — *Agile Software Development, Principles, Patterns, and Practices*  
-- [`L5 SOLID_1/C++ Code/summary.txt`](./L5%20SOLID_1/C%2B%2B%20Code/summary.txt) — Hindi/English lesson notes from video  
-- [`README.md`](./README.md) — full LLD repo index  
+<details>
+<summary><strong>S — SRP</strong> · Shopping Cart · <a href="./L5%20SOLID_1/C++%2B%2B%20Code/SRP/">code</a></summary>
+
+```mermaid
+classDiagram
+    class ShoppingCart
+    class ShoppingCartPrinter
+    class ShoppingCartStorage
+    Client --> ShoppingCart
+    Client --> ShoppingCartPrinter
+    Client --> ShoppingCartStorage
+    ShoppingCartPrinter --> ShoppingCart : uses
+    ShoppingCartStorage --> ShoppingCart : uses
+```
+
+| Violated | Fixed |
+|----------|-------|
+| 1 class, 3 jobs | 3 classes, 1 job each |
+
+</details>
+
+<details>
+<summary><strong>O — OCP</strong> · Persistence · <a href="./L5%20SOLID_1/C++%2B%2B%20Code/OCP/">code</a></summary>
+
+```mermaid
+classDiagram
+    class Persistence {
+        <<interface>>
+        +save(cart)
+    }
+    class SQLPersistence
+    class MongoPersistence
+    class FilePersistence
+    Persistence <|.. SQLPersistence
+    Persistence <|.. MongoPersistence
+    Persistence <|.. FilePersistence
+```
+
+</details>
+
+<details>
+<summary><strong>L — LSP</strong> · Bank accounts · <a href="./L5%20SOLID_1/C++%2B%2B%20Code/LSP/">code</a></summary>
+
+```mermaid
+stateDiagram-v2
+    [*] --> UsingWithdrawable
+    UsingWithdrawable --> Savings : SavingAccount
+    UsingWithdrawable --> Current : CurrentAccount
+    [*] --> DepositOnly
+    DepositOnly --> FixedTerm : FixedTermAccount only deposit
+```
+
+</details>
+
+<details>
+<summary><strong>I — ISP</strong> · Shapes · <a href="./L6%20SOLID_2/C++%2B%2B%20Code/ISP/">code</a></summary>
+
+```mermaid
+flowchart LR
+    Square --> TwoD[Two_Dimensional_Shape]
+    Cube --> ThreeD[Three_Dimensional_Shape]
+    TwoD --> area2D[area only]
+    ThreeD --> area3D[area + volume]
+```
+
+</details>
+
+<details>
+<summary><strong>D — DIP</strong> · UserService · <a href="./L6%20SOLID_2/C++%2B%2B%20Code/DIP/">code</a></summary>
+
+```mermaid
+sequenceDiagram
+    participant Main
+    participant US as UserService
+    participant DB as Database
+    participant MySQL as MySQLDatabase
+
+    Main->>MySQL: new MySQLDatabase()
+    Main->>US: new UserService(mysql)
+    US->>DB: save(data)
+    Note over US,DB: Depends on abstraction not concrete
+```
+
+</details>
 
 ---
 
-*Last updated: aligned with `L5 SOLID_1` and `L6 SOLID_2` lesson code in this repository.*
+## Further Reading
+
+| Resource | Link |
+|----------|------|
+| Uncle Bob book | *Agile Software Development, Principles, Patterns, and Practices* |
+| Lesson notes | [`L5 SOLID_1/C++ Code/summary.txt`](./L5%20SOLID_1/C%2B%2B%20Code/summary.txt) |
+| Design patterns | [`Design_Patterns.md`](./Design_Patterns.md) |
+| Project patterns | [`PROJECT_DESIGN_PATTERNS.md`](./PROJECT_DESIGN_PATTERNS.md) |
+| UML systems | [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) |
+| Repo index | [`README.md`](./README.md) |
+
+---
+
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=16&duration=3000&pause=1200&color=6F42C1&center=true&vCenter=true&width=700&lines=SRP+first+%E2%86%92+OCP+%E2%86%92+LSP+%E2%86%92+ISP+%E2%86%92+DIP;Happy+Learning" alt="Footer animation" />
+</p>
+
+<p align="center">
+  <b>SOLID — aligned with L5 SOLID_1 & L6 SOLID_2</b><br/>
+  <sub>Mermaid diagrams render on GitHub & VS Code Markdown preview</sub>
+</p>

@@ -1,0 +1,16 @@
+# Compiled binaries — edit C++ Code/*.cpp only
+bin/
+01_basics_try_catch
+02_standard_exception_hierarchy
+03_custom_exception
+04_catch_order_and_rethrow
+05_raii_exception_safety
+06_noexcept
+07_lld_service_validation
+08_lsp_exception_rule
+09_cpp17_features
+10_nested_try_finally_raii
+11_exception_ptr
+12_catch_all_and_bad_throw
+13_lld_facade_error_boundary
+14_stack_unwinding_destructors

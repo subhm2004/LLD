@@ -1,0 +1,24 @@
+Exception Handling — C++17 (14 demos)
+
+SOURCE : Exception_Handling/C++ Code/*.cpp
+BUILD  : ./compile.sh  (-std=c++17)  -> bin/
+RUN ALL: ./run_all.sh
+GUIDE  : EXCEPTION_HANDLING_GUIDE.md
+
+Topics:
+01 try/catch/throw
+02 logic_error vs runtime_error
+03 custom exception class
+04 catch order, rethrow
+05 RAII + unique_ptr
+06 noexcept
+07 LLD service validation
+08 LSP exception rule
+09 optional, string_view (C++17)
+10 nested try + ScopeGuard (finally)
+11 exception_ptr
+12 catch(...), bad throw int
+13 facade error boundary + optional
+14 stack unwinding + dtors
+
+Interview: catch const&, RAII, facade boundary, optional vs exception

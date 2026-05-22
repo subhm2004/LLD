@@ -3,7 +3,7 @@ Exception Handling — C++17 (14 demos)
 SOURCE : Exception_Handling/C++ Code/*.cpp
 BUILD  : ./compile.sh  (-std=c++17)  -> bin/
 RUN ALL: ./run_all.sh
-GUIDE  : EXCEPTION_HANDLING_GUIDE.md
+GUIDE  : EXCEPTION_HANDLING_COMPLETE.md  (MAIN — full detail)
 
 Topics:
 01 try/catch/throw

@@ -4064,38 +4064,131 @@ cd Truecaller_LLD && ./compile.sh && ./truecaller_app
 
 ```mermaid
 classDiagram
+    direction TB
+
     class MeetingSchedulerSystem {
-        +registerUser()
-        +setAvailability()
-        +scheduleMeeting()
-        +cancelMeeting()
-        +findMutualFreeSlots()
+        -users_ map
+        -emailToUserId_ map
+        -availability_ map
+        -meetings_ map
+        -availabilityService_ AvailabilityService
+        -conflictService_ ConflictDetectionService
+        -bookingService_ BookingService
+        -slotFinderService_ SlotFinderService
+        +registerUser(name, email, timezone) string
+        +setAvailability(userId, date, start, end)
+        +scheduleMeeting(...) Meeting
+        +cancelMeeting(meetingId, requesterId)
+        +findMutualFreeSlots(userIds, date, duration) TimeSlot[]
+        +listMeetingsForUser(userId, date) Meeting[]
     }
 
-    class AvailabilityService
-    class ConflictDetectionService
-    class BookingService
-    class SlotFinderService
+    class AvailabilityService {
+        +addWindow(userId, date, start, end, store)
+        +listForUser(userId, date, store) AvailabilityWindow[]
+    }
+
+    class ConflictDetectionService {
+        +validateSchedule(date, start, end, participantIds, availability, meetings)
+    }
+
+    class BookingService {
+        +schedule(organizerId, attendeeIds, title, ...) Meeting
+        +cancel(meetingId, requesterId, meetings)
+    }
+
+    class SlotFinderService {
+        -strategy_ IFreeSlotStrategy
+        +findMutualSlots(userIds, date, duration, availability, meetings) TimeSlot[]
+    }
 
     class IFreeSlotStrategy {
         <<interface>>
-        +findSlots()
+        +findSlots(date, duration, userIds, availability, meetings) TimeSlot[]
     }
-    class EarliestMutualSlotStrategy
-    class MeetingFactory
 
-    class User
-    class Meeting
-    class AvailabilityWindow
-    class TimeSlot
+    class EarliestMutualSlotStrategy {
+        +findSlots(...)
+    }
 
-    MeetingSchedulerSystem --> AvailabilityService
-    MeetingSchedulerSystem --> BookingService
-    MeetingSchedulerSystem --> SlotFinderService
-    BookingService --> ConflictDetectionService
-    SlotFinderService --> IFreeSlotStrategy
+    class MeetingFactory {
+        +create(...) Meeting$
+    }
+
+    class User {
+        -userId_ string
+        -name_ string
+        -email_ string
+        -timezone_ string
+        +getUserId() string
+    }
+
+    class AvailabilityWindow {
+        -userId_ string
+        -date_ string
+        -startMinutes_ int
+        -endMinutes_ int
+        +contains(start, end) bool
+        +overlaps(start, end) bool
+    }
+
+    class Meeting {
+        -meetingId_ string
+        -organizerId_ string
+        -attendeeIds_ string[]
+        -title_ string
+        -date_ string
+        -startMinutes_ int
+        -endMinutes_ int
+        -status_ MeetingStatus
+        +involvesUser(userId) bool
+        +overlaps(start, end) bool
+        +cancel()
+    }
+
+    class TimeSlot {
+        -date_ string
+        -startMinutes_ int
+        -endMinutes_ int
+        +durationMinutes() int
+    }
+
+    class MeetingStatus {
+        <<enumeration>>
+        SCHEDULED
+        CANCELLED
+    }
+
+    MeetingSchedulerSystem *-- AvailabilityService
+    MeetingSchedulerSystem *-- ConflictDetectionService
+    MeetingSchedulerSystem *-- BookingService
+    MeetingSchedulerSystem *-- SlotFinderService
+    MeetingSchedulerSystem o-- User : users_
+    MeetingSchedulerSystem o-- AvailabilityWindow : availability_
+    MeetingSchedulerSystem o-- Meeting : meetings_
+
+    BookingService --> ConflictDetectionService : uses
+    BookingService ..> MeetingFactory : creates
+    MeetingFactory ..> Meeting : «creates»
+
+    SlotFinderService o-- IFreeSlotStrategy
     IFreeSlotStrategy <|-- EarliestMutualSlotStrategy
-    BookingService --> MeetingFactory
+
+    AvailabilityService ..> AvailabilityWindow : «creates»
+
+    ConflictDetectionService ..> AvailabilityWindow : «reads»
+    ConflictDetectionService ..> Meeting : «reads»
+
+    EarliestMutualSlotStrategy ..> AvailabilityWindow : «reads»
+    EarliestMutualSlotStrategy ..> Meeting : «reads»
+    EarliestMutualSlotStrategy ..> TimeSlot : «returns»
+
+    SlotFinderService ..> TimeSlot : «returns»
+
+    User "1" o-- "*" AvailabilityWindow : owns windows
+    Meeting --> MeetingStatus
+    Meeting --> User : organizer
+    Meeting ..> User : attendees
 ```
 
 ### Sequence Diagram — scheduleMeeting

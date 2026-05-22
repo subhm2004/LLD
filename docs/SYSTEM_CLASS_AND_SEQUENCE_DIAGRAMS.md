@@ -1,11 +1,11 @@
 # System Projects — Class Diagrams & Sequence Diagrams
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=6F42C1&center=true&vCenter=true&width=920&lines=UML+Reference+%E2%80%94+26+System+Projects;Class+Diagrams+%2B+Sequence+Flows;Mermaid+%7C+Code-Accurate+Names" alt="Typing animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=6F42C1&center=true&vCenter=true&width=920&lines=UML+Reference+%E2%80%94+27+System+Projects;Class+Diagrams+%2B+Sequence+Flows;Mermaid+%7C+Code-Accurate+Names" alt="Typing animation" />
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Systems-26-blue?style=for-the-badge" alt="26 systems" />
+  <img src="https://img.shields.io/badge/Systems-27-blue?style=for-the-badge" alt="27 systems" />
   <img src="https://img.shields.io/badge/Diagrams-Mermaid-6f42c1?style=for-the-badge" alt="Mermaid" />
   <img src="https://img.shields.io/badge/Lines-3100%2B-success?style=for-the-badge" alt="3100+ lines" />
   <img src="https://img.shields.io/badge/Synced-With%20Code-orange?style=for-the-badge" alt="Synced with code" />
@@ -17,7 +17,7 @@
   <img src="https://img.shields.io/badge/Preview-GitHub%20%7C%20VS%20Code%20%7C%20Cursor-informational?style=flat-square" alt="Preview" />
 </p>
 
-> **26 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
+> **27 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
 > GitHub / VS Code / Cursor me **Markdown Preview** se Mermaid diagrams render honge.
 
 ---
@@ -26,7 +26,8 @@
 
 | Item | Status |
 | ---- | ------ |
-| **Projects covered** | 26 / 26 standalone systems |
+| **Projects covered** | 27 / 27 standalone systems |
+| **Meeting Scheduler (§27)** | Availability, book, conflict, mutual slots |
 | **GPay (§25)** | P2P UPI, QR pay, request money, payment rail strategy |
 | **Truecaller (§26)** | Caller lookup, spam report, block, contact sync |
 | **Last aligned with code** | Repo `main` — class/method names match headers |
@@ -233,6 +234,7 @@ pie showData
 | 24 | [Thread-Safe TTL Cache](#24-thread-safe-ttl-cache) | `Thread_Safe_Cache_with_TTL_LLD/` |
 | 25 | [GPay (UPI P2P)](#25-gpay-upi-p2p) | `GPay_LLD/` |
 | 26 | [Truecaller](#26-truecaller) | `Truecaller_LLD/` |
+| 27 | [Meeting Scheduler](#27-meeting-scheduler) | `Meeting_Scheduler_LLD/` |
 
 ---
 
@@ -4054,6 +4056,97 @@ cd Truecaller_LLD && ./compile.sh && ./truecaller_app
 
 ---
 
+## 27. Meeting Scheduler
+
+**Folder:** [`Meeting_Scheduler_LLD/`](../Meeting_Scheduler_LLD/) · **Facade:** `MeetingSchedulerSystem` · **Patterns:** Strategy (free slots), Factory, Service layer
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    class MeetingSchedulerSystem {
+        +registerUser()
+        +setAvailability()
+        +scheduleMeeting()
+        +cancelMeeting()
+        +findMutualFreeSlots()
+    }
+
+    class AvailabilityService
+    class ConflictDetectionService
+    class BookingService
+    class SlotFinderService
+
+    class IFreeSlotStrategy {
+        <<interface>>
+        +findSlots()
+    }
+    class EarliestMutualSlotStrategy
+    class MeetingFactory
+
+    class User
+    class Meeting
+    class AvailabilityWindow
+    class TimeSlot
+
+    MeetingSchedulerSystem --> AvailabilityService
+    MeetingSchedulerSystem --> BookingService
+    MeetingSchedulerSystem --> SlotFinderService
+    BookingService --> ConflictDetectionService
+    SlotFinderService --> IFreeSlotStrategy
+    IFreeSlotStrategy <|-- EarliestMutualSlotStrategy
+    BookingService --> MeetingFactory
+```
+
+### Sequence Diagram — scheduleMeeting
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Org as Organizer
+    participant MS as MeetingSchedulerSystem
+    participant Book as BookingService
+    participant Conf as ConflictDetectionService
+
+    Org->>MS: scheduleMeeting(organizer, attendees, slot)
+    MS->>Book: schedule(...)
+    Book->>Conf: validateSchedule(participants)
+    alt conflict or outside availability
+        Conf-->>Book: throw
+        Book-->>Org: error
+    else ok
+        Book->>Book: MeetingFactory.create()
+        Book-->>MS: Meeting SCHEDULED
+        MS-->>Org: meetingId
+    end
+```
+
+### Sequence Diagram — findMutualFreeSlots
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant MS as MeetingSchedulerSystem
+    participant SF as SlotFinderService
+    participant Strat as EarliestMutualSlotStrategy
+
+    User->>MS: findMutualFreeSlots(userIds, date, 60min)
+    MS->>SF: findMutualSlots(...)
+    SF->>Strat: findSlots(...)
+    Strat-->>SF: TimeSlot list
+    SF-->>MS: slots
+    MS-->>User: 11:00-12:00, 14:00-15:00, ...
+```
+
+### Build
+
+```bash
+cd Meeting_Scheduler_LLD && ./compile.sh && ./meeting_scheduler_app
+```
+
+---
+
 ## Cross-Project Pattern Summary
 
 ### Animated facade → service drill-down
@@ -4161,6 +4254,7 @@ graph LR
 | TTL Cache | `ThreadSafeTTLCache` | `shared_mutex` reader-writer, lazy expiry, eviction |
 | GPay | `GPaySystem` | Facade, Strategy (bank/wallet rail), Factory, transfer + ledger services |
 | Truecaller | `TruecallerSystem` | Facade, Strategy (spam scoring), lookup/sync/block services |
+| Meeting Scheduler | `MeetingSchedulerSystem` | Facade, Strategy (mutual slots), conflict + booking services |
 
 ---
 
@@ -4393,6 +4487,6 @@ sequenceDiagram
 </p>
 
 <p align="center">
-  <b>26 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
+  <b>27 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
   <sub>Maintained alongside <code>README.md</code> and per-project headers</sub>
 </p>

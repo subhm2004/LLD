@@ -228,6 +228,7 @@ flowchart LR
 | 58 | Thread-Safe TTL Cache | [`Thread_Safe_Cache_with_TTL_LLD/`](../Thread_Safe_Cache_with_TTL_LLD/) | **Facade-like** (`ThreadSafeTTLCache`), reader-writer concurrency (not GoF) |
 | 59 | GPay (UPI P2P) | [`GPay_LLD/`](../GPay_LLD/) | **Facade** (`GPaySystem`), **Strategy** (bank vs wallet rail), **Factory** (rail + transaction) |
 | 60 | Truecaller | [`Truecaller_LLD/`](../Truecaller_LLD/) | **Facade** (`TruecallerSystem`), **Strategy** (spam scoring), **Service layer** |
+| 61 | Meeting Scheduler | [`Meeting_Scheduler_LLD/`](../Meeting_Scheduler_LLD/) | **Facade**, **Strategy** (free slots), **Factory**, **Service layer** |
 
 > **Note:** L1–L6 = OOP + SOLID foundation ([`L2 OOPS_1`](../L2%20OOPS_1/), [`L5 SOLID_1`](../L5%20SOLID_1/), [`L6 SOLID_2`](../L6%20SOLID_2/)) — design pattern **lessons** nahi, principles hain.
 
@@ -619,6 +620,7 @@ flowchart TB
         LOCKER[Amazon Locker]
         GPAY[GPay UPI]
         TC[Truecaller]
+        MSCH[Meeting Scheduler]
     end
 
     subgraph concurrency [Concurrency labs — Multi_threading_C++]
@@ -890,6 +892,28 @@ cd GPay_LLD && ./compile.sh && ./gpay_app
 cd Truecaller_LLD && ./compile.sh && ./truecaller_app
 ```
 
+### Meeting Scheduler
+
+| | |
+|---|---|
+| **Path** | [`Meeting_Scheduler_LLD/`](../Meeting_Scheduler_LLD/) |
+| **Priority** | ⭐⭐⭐ (Calendly / Google Calendar — Microsoft/Meta favorite) |
+| **Problem** | Availability, conflict-safe booking, mutual free-slot discovery |
+| **Patterns** | **Facade**, **Strategy**, **Factory**, **Service layer** |
+
+| Pattern | Kyun? | Class / file |
+|---------|-------|--------------|
+| Facade | One API for users, availability, booking | `MeetingSchedulerSystem` |
+| Strategy | Pluggable slot scan (15-min grid) | `EarliestMutualSlotStrategy` |
+| Factory | Create `Meeting` consistently | `MeetingFactory` |
+| Service layer | Availability, conflict, booking, slot finder | `AvailabilityService`, `ConflictDetectionService`, `BookingService`, `SlotFinderService` |
+
+**UML:** [Section 27](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#27-meeting-scheduler)
+
+```bash
+cd Meeting_Scheduler_LLD && ./compile.sh && ./meeting_scheduler_app
+```
+
 ### ATM
 | Pattern | Where |
 |---------|-------|
@@ -922,6 +946,7 @@ cd Truecaller_LLD && ./compile.sh && ./truecaller_app
 | [TTL Cache](../Thread_Safe_Cache_with_TTL_LLD/) | `ThreadSafeTTLCache` | Lazy TTL, `shared_mutex` | Facade-like |
 | [GPay](../GPay_LLD/) | `GPaySystem` | `TransferService`, `PinAuthService`, rail strategies | **Facade** + **Strategy** + **Factory** |
 | [Truecaller](../Truecaller_LLD/) | `TruecallerSystem` | `LookupService`, `SpamReportService`, `BlockService` | **Facade** + **Strategy** |
+| [Meeting Scheduler](../Meeting_Scheduler_LLD/) | `MeetingSchedulerSystem` | `BookingService`, `ConflictDetectionService`, slot strategy | **Facade** + **Strategy** + **Factory** |
 
 ---
 
@@ -1030,12 +1055,12 @@ flowchart TB
 | Pattern | Projects / lessons |
 |---------|-------------------|
 | **Singleton** | L10, L14, L18, L23, L24, L31, L37, **Logger** |
-| **Factory** | L9, L11, L18, L23, L24, L26, L31, L33, L34, L37, **Movie Ticket**, **Rate Limiter**, **GPay** (rail + transaction) |
-| **Strategy** | L8, L11, L14, L18, L24, L26, L31, L33, L34, L37, **Parking**, **Load Balancer**, **Rate Limiter**, **OYO**, **LeetCode**, **WhatsApp**, **Movie Ticket**, **Amazon Locker** (allocation), **Concurrent HashMap** (locking), **GPay** (bank vs wallet), **Truecaller** (spam score) |
+| **Factory** | L9, L11, L18, L23, L24, L26, L31, L33, L34, L37, **Movie Ticket**, **Rate Limiter**, **GPay** (rail + transaction), **Meeting Scheduler** |
+| **Strategy** | L8, L11, L14, L18, L24, L26, L31, L33, L34, L37, **Parking**, **Load Balancer**, **Rate Limiter**, **OYO**, **LeetCode**, **WhatsApp**, **Movie Ticket**, **Amazon Locker** (allocation), **Concurrent HashMap** (locking), **GPay** (bank vs wallet), **Truecaller** (spam score), **Meeting Scheduler** (free slots) |
 | **Observer** | L12, L14, L31, L33, L34, **Logger** (appenders), **WhatsApp** |
 | **Decorator** | L13, L14, **LRU**, **LFU**, **WhatsApp** |
 | **Adapter** | L16, L18 |
-| **Facade** | L11, L17, L18, L26, L27, L31, **ATM**, **OYO**, **LeetCode**, **LRU**, **LFU**, **Movie Ticket**, **WhatsApp** (`WhatsAppSystem`), **Amazon Locker**, **TTL Cache** (facade-like), **GPay**, **Truecaller** |
+| **Facade** | L11, L17, L18, L26, L27, L31, **ATM**, **OYO**, **LeetCode**, **LRU**, **LFU**, **Movie Ticket**, **WhatsApp** (`WhatsAppSystem`), **Amazon Locker**, **TTL Cache** (facade-like), **GPay**, **Truecaller**, **Meeting Scheduler** |
 | **Command** | L15 |
 | **Template Method** | L20, L23 |
 | **Chain of Responsibility** | L22, L24, **Logger** |

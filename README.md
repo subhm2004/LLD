@@ -930,6 +930,20 @@ cd Truecaller_LLD && ./compile.sh && ./truecaller_app
 
 ---
 
+### Meeting_Scheduler_LLD
+
+|              |                                                                                    |
+| ------------ | ---------------------------------------------------------------------------------- |
+| **Path**     | [`Meeting_Scheduler_LLD/`](./Meeting_Scheduler_LLD/)                               |
+| **Patterns** | **Facade**, **Strategy** (mutual free slots), **Factory**, service layer         |
+| **Flow**     | Set availability → find slots → schedule → conflict check → cancel               |
+
+```bash
+cd Meeting_Scheduler_LLD && ./compile.sh && ./meeting_scheduler_app
+```
+
+---
+
 ### Amazon_Locker_Service_LLD
 
 |              |                                                                              |
@@ -1583,6 +1597,7 @@ Har project complete karne ke baad yeh try karo:
 | Amazon Locker Service | [Amazon_Locker_Service_LLD](./Amazon_Locker_Service_LLD/) |
 | GPay (UPI P2P)       | [GPay_LLD](./GPay_LLD/)                                           |
 | Truecaller           | [Truecaller_LLD](./Truecaller_LLD/)                               |
+| Meeting Scheduler    | [Meeting_Scheduler_LLD](./Meeting_Scheduler_LLD/)                 |
 | Pub-Sub System       | [Pub_Sub_System_LLD](./Pub_Sub_System_LLD/)                       |
 | Airline Management   | [Airline_Management_System_LLD](./Airline_Management_System_LLD/) |
 | LinkedIn             | [Linkedin_LLD](./Linkedin_LLD/)                                   |
@@ -1656,6 +1671,30 @@ cd GPay_LLD && ./compile.sh && ./gpay_app
 
 ```bash
 cd Truecaller_LLD && ./compile.sh && ./truecaller_app
+```
+
+---
+
+### Meeting_Scheduler_LLD
+
+| Entities | `User`, `Meeting`, `AvailabilityWindow`, `TimeSlot` |
+| -------- | --------------------------------------------------- |
+| Services | `AvailabilityService`, `ConflictDetectionService`, `BookingService`, `SlotFinderService` |
+| Strategy | `EarliestMutualSlotStrategy` |
+| Facade | `MeetingSchedulerSystem` |
+
+**Flow:** `registerUser` → `setAvailability` → `findMutualFreeSlots` → `scheduleMeeting` → `cancelMeeting`
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Double booking? | `ConflictDetectionService` — overlap on active meetings per participant |
+| Outside 9–5? | Slot must fit inside an `AvailabilityWindow` for every participant |
+| Calendly vs this? | Same core; add timezone + recurring + reminders in HLD |
+
+**UML:** [§27 Meeting Scheduler](./docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#27-meeting-scheduler)
+
+```bash
+cd Meeting_Scheduler_LLD && ./compile.sh && ./meeting_scheduler_app
 ```
 
 ---
@@ -2102,6 +2141,7 @@ Need undo?                          → Command / Memento
 | 2025 | Added `LeetCode_LLD` — online judge + HARD min-cost divide array DP |
 | 2026 | Added `GPay_LLD` (UPI P2P) + `Truecaller_LLD` — §25–§26 in diagrams, pattern map updated |
 | 2026 | Repo cleanup — `docs/`, `assets/`, `books/` (root ab sirf README + project folders) |
+| 2026 | Added `Meeting_Scheduler_LLD` — §27 UML + pattern map |
 
 **Maintainer checklist:**
 

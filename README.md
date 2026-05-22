@@ -1,17 +1,122 @@
-# Low-Level Design (LLD) — Complete Master Repository Guide
+<div align="center">
 
-<p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2500&pause=800&color=2F81F7&center=true&vCenter=true&width=900&lines=Master+LLD+Guide+%E2%80%94+1800%2B+Lines;40+Lessons+%7C+26+System+Projects;Patterns+%2B+Interview+Deep+Dives" alt="Typing animation" />
+<!-- ═══ HERO BANNER ═══ -->
+<img src="https://capsule-render.vercel.app/api?type=venom&height=260&gradientColor=0:0f0c29,25:302b63,55:24243e,85:0f4c75,100:00d4ff&text=🏗️%20LOW%20LEVEL%20DESIGN&fontSize=46&fontColor=ffffff&stroke=00d4ff" alt="LLD Hero" />
+
+<img src="https://capsule-render.vercel.app/api?type=sliced&height=32&gradientColor=0:bc13fe,50:00d4ff,100:2ea043&section=header&reversal=true&textAlign=center&fontSize=0" alt="Divider" />
+
+<h3>
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=26&duration=3200&pause=900&color=00D4FF&center=true&vCenter=true&width=980&lines=Complete+Master+Repository+Guide;40+Lessons+%E2%80%A2+27+Runnable+Systems;23%2B+GoF+Patterns+%E2%80%A2+C%2B%2B17+Code;4500%2B+Lines+UML+%E2%80%A2+Mermaid;From+OOP+to+GPay+%E2%80%A2+Truecaller+%E2%80%A2+Calendly&colors=00D4FF,BC8CFF,FFD166,2EA043,F85149,58A6FF" alt="Typing" />
+</h3>
+
+<br/>
+
+<!-- Tech stack icons (animated on hover at skillicons.dev) -->
+<a href="https://skillicons.dev">
+  <img src="https://skillicons.dev/icons?i=cpp,cmake,linux,github,vscode,git&perline=6&theme=dark" alt="Tech stack" />
+</a>
+
+<br/><br/>
+
+<!-- ═══ METRIC CARDS ═══ -->
+<table>
+  <tr>
+    <td align="center" width="155">
+      <img src="https://img.shields.io/badge/📚_LESSONS-40-8A2BE2?style=for-the-badge&labelColor=0d1117" alt="lessons" /><br/>
+      <b>L1 → L40</b><br/>
+      <sub>OOP · SOLID · GoF · LLD</sub>
+    </td>
+    <td align="center" width="155">
+      <img src="https://img.shields.io/badge/🏢_SYSTEMS-27-2EA043?style=for-the-badge&labelColor=0d1117" alt="systems" /><br/>
+      <b>Full LLD</b><br/>
+      <sub>Parking · Uber · GPay…</sub>
+    </td>
+    <td align="center" width="155">
+      <img src="https://img.shields.io/badge/🧵_THREADS-Labs-0078D4?style=for-the-badge&labelColor=0d1117" alt="threads" /><br/>
+      <b>06 Module</b><br/>
+      <sub>LC · Pool · CAS</sub>
+    </td>
+    <td align="center" width="155">
+      <img src="https://img.shields.io/badge/📐_UML-27_§-FB8500?style=for-the-badge&labelColor=0d1117" alt="uml" /><br/>
+      <b>Class + Seq</b><br/>
+      <sub>Interview boards</sub>
+    </td>
+  </tr>
+</table>
+
+<br/>
+
+<!-- Glow badges -->
+<p>
+  <img src="https://img.shields.io/badge/C%2B%2B-17-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" />
+  <img src="https://img.shields.io/badge/GoF-23%2B_Patterns-BC8CFF?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Status-Interview_Ready-FF6F00?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Lines-2200%2B-2F81F7?style=for-the-badge" />
 </p>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Language-C%2B%2B-blue?style=for-the-badge" alt="C++ Badge" />
-  <img src="https://img.shields.io/badge/Lessons-L1%E2%80%93L40-6f42c1?style=for-the-badge" alt="Lessons badge" />
-  <img src="https://img.shields.io/badge/System+Projects-25-success?style=for-the-badge" alt="Projects badge" />
-  <img src="https://img.shields.io/badge/Focus-Interview%20Ready-orange?style=for-the-badge" alt="Interview badge" />
+<br/>
+
+<!-- Featured systems — pill style -->
+<p>
+  <img src="https://img.shields.io/badge/🅿️_Parking_Lot-Strategy-1f6feb?style=for-the-badge&labelColor=161b22" />
+  <img src="https://img.shields.io/badge/💳_GPay-UPI_P2P-2ea043?style=for-the-badge&labelColor=161b22" />
+  <img src="https://img.shields.io/badge/📞_Truecaller-Spam_ID-58a6ff?style=for-the-badge&labelColor=161b22" />
+  <img src="https://img.shields.io/badge/📅_Meeting_Scheduler-Calendly-f778ba?style=for-the-badge&labelColor=161b22" />
+  <img src="https://img.shields.io/badge/⚡_LeetCode-Judge-f0883e?style=for-the-badge&labelColor=161b22" />
 </p>
 
-> Har folder, har lesson, har system project — structure, concepts, patterns, compile commands, aur interview tips — sab yahan detail me documented hai.
+<br/>
+
+<!-- Learning path mini diagram -->
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#2F81F7', 'primaryTextColor': '#fff', 'lineColor': '#58a6ff', 'secondaryColor': '#6f42c1', 'tertiaryColor': '#161b22'}}}%%
+flowchart LR
+    A([📖 L1-L6<br/>Foundations]) --> B([🧩 L7-L40<br/>Patterns])
+    B --> C([🏗️ 27 Systems<br/>Runnable C++])
+    C --> D([🎯 Interview<br/>Ready])
+    style A fill:#302b63,stroke:#00d4ff,color:#fff
+    style B fill:#6f42c1,stroke:#bc8cff,color:#fff
+    style C fill:#0f4c75,stroke:#2ea043,color:#fff
+    style D fill:#bc13fe,stroke:#ffd166,color:#fff
+```
+
+<br/>
+
+<!-- CTA buttons -->
+<a href="#quick-start-5-minutes">
+  <img src="https://img.shields.io/badge/🚀_QUICK_START-5_Min_Path-00d4ff?style=for-the-badge&labelColor=0d1117" />
+</a>
+<a href="docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md">
+  <img src="https://img.shields.io/badge/📊_UML_HUB-27_Diagrams-BC8CFF?style=for-the-badge&labelColor=0d1117" />
+</a>
+<a href="docs/PROJECT_DESIGN_PATTERNS.md">
+  <img src="https://img.shields.io/badge/🧩_PATTERN_MAP-57_Projects-2F81F7?style=for-the-badge&labelColor=0d1117" />
+</a>
+<a href="docs/README.md">
+  <img src="https://img.shields.io/badge/📚_DOCS-Theory_+_SOLID-FFD166?style=for-the-badge&labelColor=0d1117" />
+</a>
+<a href="Multi_threading_C++/README.md">
+  <img src="https://img.shields.io/badge/🧵_CONCURRENCY-Full_Module-2EA043?style=for-the-badge&labelColor=0d1117" />
+</a>
+
+<br/><br/>
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,14,19,24,30&height=100&section=footer&text=★%20Code+First%20·%20Design+Always%20·%20Whiteboard+Second%20★&fontSize=18&fontColor=fff&animation=twinkling" alt="Footer wave" />
+
+</div>
+
+<table width="100%">
+  <tr>
+    <td>
+      <blockquote>
+        <p align="center">
+          <b>Har folder · har lesson · har system</b> — patterns, <code>compile.sh</code>, UML, interview Q&A.<br/>
+          <i>Ground truth → har project ka <code>problem_statement.md</code></i>
+        </p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
 
 ---
 
@@ -73,7 +178,7 @@ cd Parking_lot_system_LLD
 ./parking_app
 ```
 
-**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (26 systems, ~4300+ lines Mermaid).
+**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (27 systems, ~4500+ lines Mermaid).
 
 ---
 
@@ -84,7 +189,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | Category               | Count        | Description                                                                |
 | ---------------------- | ------------ | -------------------------------------------------------------------------- |
 | **Lesson modules**     | L1 – L40     | OOP, SOLID, UML, har major design pattern, aur pattern + system hybrids    |
-| **Standalone systems** | 25 projects  | Interview systems + Airline + Pub-Sub + OTP |
+| **Standalone systems** | 27 projects  | Parking, GPay, Truecaller, Meeting Scheduler + more |
 | **Concurrency labs**   | 1 folder     | `Multi_threading_C++` — threads, mutex, semaphores, thread pool, DCLP      |
 | **Reference assets**   | PDFs, images | Gang of Four, DDIA, design pattern cheat sheets                            |
 

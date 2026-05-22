@@ -1,0 +1,10 @@
+#ifndef OTP_GENERATION_SYSTEM_LLD_ENUMS_OTPCHANNEL_H
+#define OTP_GENERATION_SYSTEM_LLD_ENUMS_OTPCHANNEL_H
+
+namespace otp_lld {
+
+enum class OTPChannel { SMS, EMAIL };
+
+} // namespace otp_lld
+
+#endif // OTP_GENERATION_SYSTEM_LLD_ENUMS_OTPCHANNEL_H

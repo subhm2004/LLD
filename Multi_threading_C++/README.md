@@ -3,7 +3,36 @@
 Educational C++ concurrency snippets for **threads, locks, synchronization, and classic problems**.  
 Har file ek alag topic cover karti hai — compile karke run karo, output se flow samjho.
 
-> **Related LLD projects:** [LRU Cache (thread-safe)](../LRU_Cache_LLD/) · [Rate Limiter](../Rate_Limiter_LLD/) · [L10 Singleton thread-safe variants](../L10%20Singleton_Design_Pattern/)
+> **Related LLD projects:** [LRU Cache (thread-safe)](../LRU_Cache_LLD/) · [Concurrent HashMap](../Concurrent_HashMap_LLD/) · [TTL Cache](../Thread_Safe_Cache_with_TTL_LLD/) · [Rate Limiter](../Rate_Limiter_LLD/) · [Root README](../README.md#multi-threading-module)
+
+## Subfolders — quick navigation
+
+| Area | Folder | README | COMPLETE guide |
+|------|--------|--------|----------------|
+| **Patterns (hub)** | [`Concurrency_Patterns/`](./Concurrency_Patterns/) | [README](./Concurrency_Patterns/README.md) | — |
+| → Signaling | [`Signaling_Pattern/`](./Concurrency_Patterns/Signaling_Pattern/) | [README](./Concurrency_Patterns/Signaling_Pattern/README.md) | [COMPLETE](./Concurrency_Patterns/Signaling_Pattern/SIGNALING_PATTERN_COMPLETE.md) |
+| → Thread Pool | [`Thread_Pool_Pattern/`](./Concurrency_Patterns/Thread_Pool_Pattern/) | [README](./Concurrency_Patterns/Thread_Pool_Pattern/README.md) | [COMPLETE](./Concurrency_Patterns/Thread_Pool_Pattern/THREAD_POOL_PATTERN_COMPLETE.md) |
+| → Producer-Consumer | [`Producer_Consumer_Pattern/`](./Concurrency_Patterns/Producer_Consumer_Pattern/) | [README](./Concurrency_Patterns/Producer_Consumer_Pattern/README.md) | [COMPLETE](./Concurrency_Patterns/Producer_Consumer_Pattern/PRODUCER_CONSUMER_PATTERN_COMPLETE.md) |
+| → Reader-Writer | [`Reader_Writer_Pattern/`](./Concurrency_Patterns/Reader_Writer_Pattern/) | [README](./Concurrency_Patterns/Reader_Writer_Pattern/README.md) | [COMPLETE](./Concurrency_Patterns/Reader_Writer_Pattern/READER_WRITER_PATTERN_COMPLETE.md) |
+| **Challenges (hub)** | [`Concurrency_Challenges/`](./Concurrency_Challenges/) | [README](./Concurrency_Challenges/README.md) | — |
+| → Deadlock | [`Deadlock/`](./Concurrency_Challenges/Deadlock/) | [README](./Concurrency_Challenges/Deadlock/README.md) | [COMPLETE](./Concurrency_Challenges/Deadlock/DEADLOCK_COMPLETE.md) |
+| → Livelock | [`Livelock/`](./Concurrency_Challenges/Livelock/) | [README](./Concurrency_Challenges/Livelock/README.md) | [COMPLETE](./Concurrency_Challenges/Livelock/LIVELOCK_COMPLETE.md) |
+| **Fizz Buzz** | [`FIZZ_BUZZ_Problem/`](./FIZZ_BUZZ_Problem/) | [README](./FIZZ_BUZZ_Problem/README.md) | [COMPLETE](./FIZZ_BUZZ_Problem/Fizz_Buzz_Multithreaded/FIZZ_BUZZ_MULTITHREADED_COMPLETE.md) |
+| → demos | [`Fizz_Buzz_Multithreaded/`](./FIZZ_BUZZ_Problem/Fizz_Buzz_Multithreaded/) | [README](./FIZZ_BUZZ_Problem/Fizz_Buzz_Multithreaded/README.md) | ↑ |
+| **Merge Sort** | [`Multi_threaded_Merge_Sort/`](./Multi_threaded_Merge_Sort/) | [README](./Multi_threaded_Merge_Sort/README.md) | [COMPLETE](./Multi_threaded_Merge_Sort/MULTI_THREADED_MERGE_SORT_COMPLETE.md) |
+
+### Build all highlights
+
+```bash
+cd Concurrency_Patterns/Signaling_Pattern && ./compile.sh && ./bin/01_condition_variable_basics
+cd Concurrency_Patterns/Thread_Pool_Pattern && ./compile.sh && ./bin/01_basic_thread_pool
+cd Concurrency_Patterns/Producer_Consumer_Pattern && ./compile.sh && ./bin/01_single_producer_single_consumer
+cd Concurrency_Patterns/Reader_Writer_Pattern && ./compile.sh && ./bin/01_std_shared_mutex_basics
+cd Concurrency_Challenges/Deadlock && ./compile.sh && ./bin/01_coffman_four_conditions
+cd Concurrency_Challenges/Livelock && ./compile.sh && ./bin/01_what_is_livelock
+cd FIZZ_BUZZ_Problem/Fizz_Buzz_Multithreaded && ./compile.sh && ./bin/04_condition_variable
+cd Multi_threaded_Merge_Sort && ./compile.sh && ./bin/06_compare_timings
+```
 
 ---
 
@@ -30,8 +59,12 @@ g++ -std=c++17 -pthread <file>.cpp -o <output>
 | 5 | `lock_mechanism.cpp` | Lock patterns + `std::lock()` deadlock fix |
 | 6 | `lesson_3.cpp` | `condition_variable` — ordered tasks |
 | 7 | `producer_consumer.cpp` | Producer–consumer with CV |
+| 7b | [`Concurrency_Patterns/Signaling_Pattern/`](./Concurrency_Patterns/Signaling_Pattern/) | **Signaling pattern** — 6 demos + docs |
+| 7c | [`Concurrency_Patterns/Thread_Pool_Pattern/`](./Concurrency_Patterns/Thread_Pool_Pattern/) | **Thread pool pattern** — 6 demos + `ThreadPool.h` |
+| 7d | [`Concurrency_Patterns/Producer_Consumer_Pattern/`](./Concurrency_Patterns/Producer_Consumer_Pattern/) | **Producer-consumer** — 6 demos + `BoundedBuffer.h` |
+| 7e | [`Concurrency_Patterns/Reader_Writer_Pattern/`](./Concurrency_Patterns/Reader_Writer_Pattern/) | **Reader-writer** — `shared_mutex` + custom RW lock |
 | 8 | `semaphor.cpp` | Custom semaphore + connection pool |
-| 9 | `deadlock_and_protection.cpp` | Deadlock demos & prevention |
+| 9 | `deadlock_and_protection.cpp` | Deadlock demos (see also [`Concurrency_Challenges/Deadlock/`](./Concurrency_Challenges/Deadlock/)) |
 | 10 | **`dining_philosophers.cpp`** | **Classic DP — 4 solutions** |
 | 11 | `thread_pool.cpp` | Worker pool pattern |
 | 12 | `DCLP.cpp` | Double-checked locking |

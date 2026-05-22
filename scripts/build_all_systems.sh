@@ -13,6 +13,12 @@ declare -a PROJECTS=(
   LeetCode_LLD
   OYO_Hotel_Booking_LLD
   File_Manager_LLD
+  OTP_Generation_System_LLD
+  Pub_Sub_System_LLD
+  Airline_Management_System_LLD
+  Thread_Safe_Cache_with_TTL_LLD
+  Concurrent_HashMap_LLD
+  Amazon_Locker_Service_LLD
   "L24 Discount_coupon_engine_LLD"
 )
 

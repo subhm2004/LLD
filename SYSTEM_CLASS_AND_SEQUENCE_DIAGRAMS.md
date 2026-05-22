@@ -1,11 +1,11 @@
 # System Projects — Class Diagrams & Sequence Diagrams
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=6F42C1&center=true&vCenter=true&width=920&lines=UML+Reference+%E2%80%94+21+System+Projects;Class+Diagrams+%2B+Sequence+Flows;Mermaid+%7C+Code-Accurate+Names" alt="Typing animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=6F42C1&center=true&vCenter=true&width=920&lines=UML+Reference+%E2%80%94+24+System+Projects;Class+Diagrams+%2B+Sequence+Flows;Mermaid+%7C+Code-Accurate+Names" alt="Typing animation" />
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Systems-21-blue?style=for-the-badge" alt="21 systems" />
+  <img src="https://img.shields.io/badge/Systems-24-blue?style=for-the-badge" alt="24 systems" />
   <img src="https://img.shields.io/badge/Diagrams-Mermaid-6f42c1?style=for-the-badge" alt="Mermaid" />
   <img src="https://img.shields.io/badge/Lines-3100%2B-success?style=for-the-badge" alt="3100+ lines" />
   <img src="https://img.shields.io/badge/Synced-With%20Code-orange?style=for-the-badge" alt="Synced with code" />
@@ -17,7 +17,7 @@
   <img src="https://img.shields.io/badge/Preview-GitHub%20%7C%20VS%20Code%20%7C%20Cursor-informational?style=flat-square" alt="Preview" />
 </p>
 
-> **21 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
+> **24 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
 > GitHub / VS Code / Cursor me **Markdown Preview** se Mermaid diagrams render honge.
 
 ---
@@ -26,8 +26,11 @@
 
 | Item | Status |
 | ---- | ------ |
-| **Projects covered** | 21 / 21 standalone systems |
+| **Projects covered** | 24 / 24 standalone systems |
 | **Last aligned with code** | Repo `main` — class/method names match headers |
+| **Amazon Locker (§22)** | Deposit, OTP pickup, compartment allocation |
+| **Concurrent HashMap (§23)** | Coarse lock vs lock striping |
+| **TTL Cache (§24)** | `shared_mutex`, lazy expiry, capacity eviction |
 | **OYO Hotel (§21)** | Search, availability, booking lifecycle |
 | **LeetCode (§20)** | Online judge + HARD DP problem |
 | **LFU Cache (§19)** | Mirrors `LFU_Cache_LLD/` structure |
@@ -50,11 +53,11 @@ flowchart LR
 
 > Poora file scroll karne se pehle — **high-priority systems** aur **diagram types** yahan se pick karo.
 
-### 0.1 21 systems — category map
+### 0.1 24 systems — category map
 
 ```mermaid
 mindmap
-  root((21 Systems))
+  root((24 Systems))
     Infrastructure
       ATM
       Load Balancer
@@ -62,6 +65,9 @@ mindmap
       Logger
       LRU Cache
       LFU Cache
+      TTL Cache
+      Concurrent HashMap
+      Amazon Locker
     Booking Commerce
       Parking Lot
       Movie Ticket
@@ -99,6 +105,9 @@ flowchart TB
         P16[§16 WhatsApp]
         P7[§7 Load Balancer]
         P18[§18 LRU Cache]
+        P23[§23 Concurrent HashMap]
+        P24[§24 TTL Cache]
+        P22[§22 Amazon Locker]
         P13[§13 Uber]
         P1[§1 ATM]
     end
@@ -157,7 +166,7 @@ flowchart LR
 
 ```mermaid
 pie showData
-    title Most common patterns in 21 systems
+    title Most common patterns in 24 systems
     "Facade / System entry" : 18
     "Strategy" : 12
     "Service layer" : 15
@@ -176,6 +185,9 @@ pie showData
 | Log pipeline | [§8](#8-logger) | log() → chain → format → append |
 | Submit code | [§20](#20-leetcode-online-judge) | submit → judge → verdict |
 | Book hotel | [§21](#21-oyo-hotel-booking) | search → avail → book → notify |
+| Locker deposit | [§22](#22-amazon-locker-service) | allocate → OTP → notify customer |
+| Concurrent map | [§23](#23-concurrent-hashmap) | put/get under stripe locks |
+| TTL cache get | [§24](#24-thread-safe-ttl-cache) | shared read → lazy expire erase |
 | Send message | [§16](#16-whatsapp) | chat → encrypt → notify |
 
 ---
@@ -209,6 +221,9 @@ pie showData
 | 19 | [Thread-Safe LFU Cache](#19-thread-safe-lfu-cache) | `LFU_Cache_LLD/` |
 | 20 | [LeetCode Online Judge](#20-leetcode-online-judge) | `LeetCode_LLD/` |
 | 21 | [OYO Hotel Booking](#21-oyo-hotel-booking) | `OYO_Hotel_Booking_LLD/` |
+| 22 | [Amazon Locker Service](#22-amazon-locker-service) | `Amazon_Locker_Service_LLD/` |
+| 23 | [Concurrent HashMap](#23-concurrent-hashmap) | `Concurrent_HashMap_LLD/` |
+| 24 | [Thread-Safe TTL Cache](#24-thread-safe-ttl-cache) | `Thread_Safe_Cache_with_TTL_LLD/` |
 
 ---
 
@@ -3233,6 +3248,520 @@ cd OYO_Hotel_Booking_LLD && ./compile.sh && ./oyo_hotel_app
 
 ---
 
+## 22. Amazon Locker Service
+
+**Namespace:** `amazon_locker_lld`  
+**Path:** [`Amazon_Locker_Service_LLD/`](./Amazon_Locker_Service_LLD/)  
+**Facade:** `AmazonLockerService`  
+**Patterns:** Facade, Strategy (`ICompartmentAllocationStrategy`), Service layer (OTP, notification)
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    direction TB
+
+    class AmazonLockerService {
+        -shared_ptr~ICompartmentAllocationStrategy~ allocationStrategy_
+        -AccessCodeService accessCodeService_
+        -NotificationService notificationService_
+        -unordered_map stations_
+        -unordered_map packages_
+        +registerStation(station)
+        +depositPackage(stationId, orderId, customerId, size) string
+        +pickupPackage(stationId, enteredCode) bool
+        +printStationAvailability(stationId)
+        +getPackage(packageId) Package
+    }
+
+    class LockerStation {
+        -string stationId_
+        -string address_
+        -vector compartments_
+        +addCompartment(compartment)
+        +getCompartment(compartmentId) LockerCompartment
+        +printAvailability()
+    }
+
+    class LockerCompartment {
+        -string compartmentId_
+        -LockerSize size_
+        -CompartmentStatus status_
+        -string packageId_
+        +isAvailable() bool
+        +occupy(packageId)
+        +release()
+    }
+
+    class Package {
+        -string packageId_
+        -string orderId_
+        -string customerId_
+        -LockerSize size_
+        -PackageStatus status_
+        +markDeposited(stationId, compartmentId)
+        +markPickedUp()
+        +markExpired()
+    }
+
+    class AccessCode {
+        -string codeId_
+        -string code_
+        -string packageId_
+        -string compartmentId_
+        -AccessCodeStatus status_
+        -int failedAttempts_
+        +isExpired(nowEpoch) bool
+        +recordFailedAttempt(now)
+        +markUsed()
+    }
+
+    class AccessCodeService {
+        -unordered_map codesById_
+        -unordered_map codesByValue_
+        +generate(packageId, compartmentId, now) AccessCode
+        +getByCode(enteredCode) AccessCode
+        +save(code)
+    }
+
+    class NotificationService {
+        +notifyPickupCode(customerId, station, compartment, code, hours)
+        +notifyPickupSuccess(customerId, packageId)
+    }
+
+    class ICompartmentAllocationStrategy {
+        <<interface>>
+        +allocate(station, requiredSize) optional~string~
+    }
+
+    class FirstFitAllocationStrategy {
+        +allocate(station, requiredSize) optional~string~
+    }
+
+    class LockerSize {
+        <<enumeration>>
+        SMALL MEDIUM LARGE
+    }
+
+    class CompartmentStatus {
+        <<enumeration>>
+        AVAILABLE OCCUPIED OUT_OF_SERVICE
+    }
+
+    class PackageStatus {
+        <<enumeration>>
+        CREATED DEPOSITED PICKED_UP EXPIRED
+    }
+
+    class AccessCodeStatus {
+        <<enumeration>>
+        ACTIVE USED EXPIRED LOCKED
+    }
+
+    AmazonLockerService --> ICompartmentAllocationStrategy
+    ICompartmentAllocationStrategy <|.. FirstFitAllocationStrategy
+    AmazonLockerService *-- AccessCodeService
+    AmazonLockerService *-- NotificationService
+    AmazonLockerService o-- LockerStation
+    AmazonLockerService o-- Package
+    LockerStation *-- LockerCompartment
+    AccessCodeService o-- AccessCode
+    LockerCompartment --> LockerSize
+    LockerCompartment --> CompartmentStatus
+    Package --> PackageStatus
+    AccessCode --> AccessCodeStatus
+```
+
+### Compartment allocation (First-Fit)
+
+```mermaid
+flowchart LR
+    subgraph sizes [Package size → allowed compartment]
+        S[SMALL → S/M/L]
+        M[MEDIUM → M/L]
+        L[LARGE → L only]
+    end
+    A[Scan compartments in order] --> B{First AVAILABLE + fits?}
+    B -->|yes| C[Return compartmentId]
+    B -->|no| D[throw: no compartment]
+```
+
+### Sequence Diagram — Courier deposit + OTP notify
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Courier
+    participant Service as AmazonLockerService
+    participant Station as LockerStation
+    participant Strat as FirstFitAllocationStrategy
+    participant OTP as AccessCodeService
+    participant Notify as NotificationService
+
+    Courier->>Service: depositPackage(stationId, orderId, customerId, size)
+    Service->>Station: getStation(stationId)
+    Service->>Strat: allocate(station, size)
+    Strat->>Station: scan AVAILABLE compartments
+    Strat-->>Service: compartmentId
+    Service->>Service: create Package, markDeposited
+    Service->>Station: compartment.occupy(packageId)
+    Service->>OTP: generate(packageId, compartmentId, now)
+    OTP-->>Service: AccessCode (6-digit)
+    Service->>OTP: save(code)
+    Service->>Notify: notifyPickupCode(customer, station, compartment, code)
+    Notify-->>Courier: simulated SMS/App
+    Service-->>Courier: packageId
+```
+
+### Sequence Diagram — Customer pickup (valid code)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Customer
+    participant Service as AmazonLockerService
+    participant OTP as AccessCodeService
+    participant Station as LockerStation
+
+    Customer->>Service: pickupPackage(stationId, enteredCode)
+    Service->>OTP: getByCode(enteredCode)
+    OTP-->>Service: AccessCode ACTIVE
+    Service->>Service: validate station + not expired
+    Service->>Station: getCompartment(compartmentId)
+    Service->>Station: compartment.release()
+    Service->>Service: package.markPickedUp()
+    Service->>OTP: accessCode.markUsed(), save()
+    Service->>Service: notifyPickupSuccess(customer, packageId)
+    Service-->>Customer: door open / success
+```
+
+### Sequence Diagram — Wrong / expired code
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Customer
+    participant Service as AmazonLockerService
+    participant OTP as AccessCodeService
+
+    Customer->>Service: pickupPackage(station, badCode)
+    alt invalid code
+        Service->>OTP: getByCode(badCode)
+        OTP-->>Service: throw invalid_argument
+    else expired
+        OTP-->>Service: AccessCode ACTIVE but isExpired(now)
+        Service->>OTP: markExpired(), save()
+        Service-->>Customer: throw expired
+    else already used
+        OTP-->>Service: status USED
+        Service-->>Customer: throw already used
+    else max attempts
+        Service->>OTP: recordFailedAttempt → LOCKED
+        Service-->>Customer: throw locked
+    end
+```
+
+### Build
+
+```bash
+cd Amazon_Locker_Service_LLD && ./compile.sh && ./amazon_locker_app
+```
+
+---
+
+## 23. Concurrent HashMap
+
+**Namespace:** `concurrent_hashmap_lld`  
+**Path:** [`Concurrent_HashMap_LLD/`](./Concurrent_HashMap_LLD/)  
+**Interface:** `IConcurrentMap`  
+**Implementations:** `CoarseGrainedHashMap`, `StripedHashMap` (`ConcurrentHashMap` = alias)  
+**Patterns:** Strategy (locking granularity), interface segregation
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    direction TB
+
+    class IConcurrentMap {
+        <<interface>>
+        +put(key, value)
+        +get(key) optional~string~
+        +remove(key) bool
+        +contains(key) bool
+        +size() size_t
+        +strategyName() const char*
+    }
+
+    class CoarseGrainedHashMap {
+        -mutex mtx_
+        -unordered_map store_
+        -MapStatistics stats_
+        +put(key, value)
+        +get(key) optional~string~
+        +remove(key) bool
+        +strategyName() "Coarse-grained"
+    }
+
+    class StripedHashMap {
+        -size_t stripes_
+        -vector buckets_
+        -vector~unique_ptr~mutex~~ locks_
+        -MapStatistics stats_
+        +put(key, value)
+        +get(key) optional~string~
+        +stripeIndex(key) size_t
+        +strategyName() "Lock striping"
+    }
+
+    class ConcurrentHashMap {
+        <<typedef>>
+        StripedHashMap
+    }
+
+    class MapStatistics {
+        -atomic~long long~ puts_, gets_hit_, gets_miss_
+        +recordPut()
+        +recordGet(hit)
+        +print()
+    }
+
+    IConcurrentMap <|.. CoarseGrainedHashMap
+    IConcurrentMap <|.. StripedHashMap
+    CoarseGrainedHashMap *-- MapStatistics
+    StripedHashMap *-- MapStatistics
+```
+
+### Lock striping — key → stripe
+
+```mermaid
+flowchart LR
+    K[key hash] --> H["hash(key) % num_stripes"]
+    H --> S0[Stripe 0 + mutex 0]
+    H --> S1[Stripe 1 + mutex 1]
+    H --> S2[Stripe 2 + mutex 2]
+    H --> SN[Stripe N-1]
+
+    K2[Different keys, different stripes] --> P[Parallel put/get possible]
+    K3[Same stripe] --> Q[Serialized — same as coarse for those keys]
+```
+
+### Sequence Diagram — Parallel put (different stripes)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant T1 as Thread 1
+    participant T2 as Thread 2
+    participant Map as StripedHashMap
+    participant L0 as mutex stripe 0
+    participant L3 as mutex stripe 3
+
+    par concurrent puts
+        T1->>Map: put("user:1", "Alice")
+        Map->>L0: lock_guard stripe 0
+        L0-->>T1: write bucket 0
+    and
+        T2->>Map: put("order:9", "pending")
+        Map->>L3: lock_guard stripe 3
+        L3-->>T2: write bucket 3
+    end
+    Note over T1,T2: Different stripes → no lock contention
+```
+
+### Sequence Diagram — Coarse-grained put (single mutex)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant T1 as Thread 1
+    participant T2 as Thread 2
+    participant Map as CoarseGrainedHashMap
+    participant M as global mutex
+
+    T1->>Map: put("a", "1")
+    Map->>M: lock
+    M-->>T1: write store_
+    T1->>M: unlock
+
+    T2->>Map: put("b", "2")
+    Map->>M: lock
+    Note over T2,M: T2 waits if T1 holds lock
+    M-->>T2: write store_
+```
+
+### Sequence Diagram — Hot key contention (same stripe)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant T1 as Thread 1
+    participant T2 as Thread 2
+    participant Map as StripedHashMap
+    participant L as same stripe mutex
+
+    loop many puts same key
+        T1->>Map: put("hot-key", v1)
+        Map->>L: lock
+        L-->>T1: update
+    end
+    par overlapping
+        T2->>Map: put("hot-key", v2)
+        Map->>L: wait for lock
+    end
+    Note over Map: Same stripe as coarse — serializes hot key
+```
+
+### Build
+
+```bash
+cd Concurrent_HashMap_LLD && ./compile.sh && ./concurrent_hashmap_app
+```
+
+---
+
+## 24. Thread-Safe TTL Cache
+
+**Namespace:** `ttl_cache_lld`  
+**Path:** [`Thread_Safe_Cache_with_TTL_LLD/`](./Thread_Safe_Cache_with_TTL_LLD/)  
+**Core:** `ThreadSafeTTLCache`  
+**Patterns:** Reader-writer lock (`shared_mutex`), lazy expiration, capacity eviction
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    direction TB
+
+    class ThreadSafeTTLCache {
+        -shared_mutex mtx_
+        -map store_
+        -CacheStatistics stats_
+        -size_t max_entries_
+        +put(key, value, ttl_seconds)
+        +get(key) optional~string~
+        +contains(key) bool
+        +remove(key) bool
+        +cleanupExpired() int
+        +size() size_t
+        +printStatistics()
+        -lazyEraseAndMiss(key) optional~string~
+        -evictIfNeededLocked()
+    }
+
+    class CacheEntry {
+        +string value
+        +time_point expires_at
+        +isExpired() bool
+        +remainingMs() long long
+    }
+
+    class CacheStatistics {
+        -atomic hits_, misses_
+        -atomic expired_on_get_, evictions_
+        +recordHit()
+        +recordMiss()
+        +recordExpiredOnGet()
+        +recordEviction()
+        +print()
+    }
+
+    ThreadSafeTTLCache *-- CacheStatistics
+    ThreadSafeTTLCache o-- CacheEntry : map values
+```
+
+### Read/write lock paths
+
+```mermaid
+flowchart TB
+    subgraph readers [Readers — shared_lock]
+        G[get valid key]
+        C[contains]
+    end
+    subgraph writers [Writers — unique_lock]
+        P[put]
+        R[remove]
+        E[cleanupExpired]
+        L[lazyEraseAndMiss after expired read]
+        V[evictIfNeededLocked on put]
+    end
+    G --> H{expired?}
+    H -->|no| Hit[recordHit return value]
+    H -->|yes| L
+```
+
+### Sequence Diagram — put with TTL + capacity eviction
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant Cache as ThreadSafeTTLCache
+    participant Stats as CacheStatistics
+
+    Client->>Cache: put("session:42", data, ttl=60)
+    Cache->>Cache: unique_lock(mtx_)
+    Cache->>Cache: evictIfNeededLocked() if size >= max
+    Cache->>Cache: store_[key] = CacheEntry{value, expires_at}
+    Cache->>Stats: recordPut()
+    Cache-->>Client: ok
+```
+
+### Sequence Diagram — get (hit vs lazy expire)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant Cache as ThreadSafeTTLCache
+    participant Stats as CacheStatistics
+
+    Client->>Cache: get("session:42")
+    Cache->>Cache: shared_lock(mtx_)
+    alt key missing
+        Cache->>Stats: recordMiss()
+        Cache-->>Client: nullopt
+    else key valid not expired
+        Cache->>Stats: recordHit()
+        Cache-->>Client: value
+    else key expired
+        Cache->>Stats: recordExpiredOnGet()
+        Cache->>Cache: unlock shared → unique_lock lazyEraseAndMiss
+        Cache->>Cache: erase(key), recordMiss()
+        Cache-->>Client: nullopt
+    end
+```
+
+### Sequence Diagram — Concurrent readers + writer
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant R1 as Reader thread
+    participant R2 as Reader thread
+    participant W as Writer thread
+    participant Cache as ThreadSafeTTLCache
+
+    par parallel reads
+        R1->>Cache: get("config")
+        Cache->>Cache: shared_lock — read store_
+    and
+        R2->>Cache: contains("feature:x")
+        Cache->>Cache: shared_lock
+    end
+    W->>Cache: put("config", v2, ttl)
+    Note over W,Cache: unique_lock waits for readers to release
+    Cache->>Cache: exclusive write + maybe evict
+```
+
+### Build
+
+```bash
+cd Thread_Safe_Cache_with_TTL_LLD && ./compile.sh && ./cache_ttl_app
+```
+
+---
+
 ## Cross-Project Pattern Summary
 
 ### Animated facade → service drill-down
@@ -3260,6 +3789,9 @@ graph LR
         WA[WhatsAppSystem]
         LRU[CacheService LRU]
         LFU[CacheService LFU]
+        TTL[ThreadSafeTTLCache]
+        CHM[IConcurrentMap]
+        LOCKER[AmazonLockerService]
         LC[LeetCodeSystem]
         OYO[OYOHotelBookingSystem]
     end
@@ -3293,6 +3825,9 @@ graph LR
     WA --> Encrypt
     TS_LRU --> LRU
     TS_LFU --> LFU
+    TTL --> CacheEntry
+    CHM --> StripedHashMap
+    LOCKER --> ICompartmentAllocationStrategy
     LC --> Runner
     Runner --> MockCodeRunner
 ```
@@ -3320,6 +3855,9 @@ graph LR
 | LFU Cache | `CacheService` | Facade, Decorator, frequency buckets + `minFreq` |
 | LeetCode | `LeetCodeSystem` | Facade, Strategy (`ICodeRunner`), Judge pipeline |
 | OYO Hotel | `OYOHotelBookingSystem` | Facade, Strategy (pricing), Availability service |
+| Amazon Locker | `AmazonLockerService` | Facade, Strategy (allocation), OTP + notification services |
+| Concurrent HashMap | `IConcurrentMap` / `StripedHashMap` | Strategy (lock granularity), interface + statistics |
+| TTL Cache | `ThreadSafeTTLCache` | `shared_mutex` reader-writer, lazy expiry, eviction |
 
 ---
 
@@ -3444,6 +3982,54 @@ sequenceDiagram
 
 </details>
 
+<details>
+<summary><strong>§22 Amazon Locker</strong> — deposit → OTP → pickup · <a href="./Amazon_Locker_Service_LLD/">code</a></summary>
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Courier
+    participant S as AmazonLockerService
+    Courier->>S: depositPackage
+    S-->>Courier: packageId + OTP to customer
+    actor Customer
+    Customer->>S: pickupPackage(code)
+    S-->>Customer: compartment release
+```
+
+</details>
+
+<details>
+<summary><strong>§23 Concurrent HashMap</strong> — coarse vs striping · <a href="./Concurrent_HashMap_LLD/">code</a></summary>
+
+```mermaid
+flowchart LR
+    K1[key A] --> S1[stripe i]
+    K2[key B] --> S2[stripe j]
+    S1 --> P[parallel OK if i ≠ j]
+    S2 --> P
+```
+
+</details>
+
+<details>
+<summary><strong>§24 TTL Cache</strong> — shared read, lazy expire · <a href="./Thread_Safe_Cache_with_TTL_LLD/">code</a></summary>
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant T as ThreadSafeTTLCache
+    C->>T: get(key)
+    alt expired
+        T->>T: upgrade to unique_lock, erase
+        T-->>C: miss
+    else valid
+        T-->>C: hit
+    end
+```
+
+</details>
+
 ---
 
 ## Related Files
@@ -3459,6 +4045,9 @@ sequenceDiagram
 | [`LeetCode_LLD/README.md`](./LeetCode_LLD/README.md) | Online judge + HARD DP problem |
 | [`LeetCode_LLD/problems/MIN_COST_DIVIDE_ARRAY.md`](./LeetCode_LLD/problems/MIN_COST_DIVIDE_ARRAY.md) | Hard problem statement |
 | [`OYO_Hotel_Booking_LLD/README.md`](./OYO_Hotel_Booking_LLD/README.md) | OYO hotel booking guide |
+| [`Amazon_Locker_Service_LLD/README.md`](./Amazon_Locker_Service_LLD/README.md) | Hub locker deposit / pickup |
+| [`Concurrent_HashMap_LLD/README.md`](./Concurrent_HashMap_LLD/README.md) | Coarse vs striped concurrent map |
+| [`Thread_Safe_Cache_with_TTL_LLD/README.md`](./Thread_Safe_Cache_with_TTL_LLD/README.md) | TTL cache + `shared_mutex` |
 | [`Design_Pattern_types.md`](./Design_Pattern_types.md) | Pattern taxonomy |
 | Per-project `problem_statement.md` | Ground-truth requirements |
 
@@ -3469,6 +4058,6 @@ sequenceDiagram
 </p>
 
 <p align="center">
-  <b>21 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
+  <b>24 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
   <sub>Maintained alongside <code>README.md</code> and per-project headers</sub>
 </p>

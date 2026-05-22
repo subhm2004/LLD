@@ -1,0 +1,12 @@
+L2 OOPS_1 — Encapsulation + Abstraction
+
+GUIDE : OOPS_1_COMPLETE.md  (MAIN)
+CODE  : C++ Code/Encapsulation.cpp, Abstraction.cpp
+BUILD : ./compile.sh -> bin/
+
+Encapsulation = data+methods in class, private fields, public API
+Abstraction   = WHAT not HOW, abstract Car, concrete SportsCar
+pure virtual  = virtual void f() = 0;
+virtual ~Car() for safe delete
+
+Next: L3 Inheritance + Polymorphism

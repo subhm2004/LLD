@@ -1,0 +1,7 @@
+[
+  {
+    "directory": "/Users/shubham/Desktop/LLD/Concurrent_HashMap_LLD",
+    "command": "g++ -std=c++17 -Wall -Wextra -pthread -I/Users/shubham/Desktop/LLD/Concurrent_HashMap_LLD -c main.cpp",
+    "file": "/Users/shubham/Desktop/LLD/Concurrent_HashMap_LLD/main.cpp"
+  }
+]

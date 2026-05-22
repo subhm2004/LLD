@@ -444,7 +444,7 @@ flowchart TD
 | [`4.txt`](./4.txt) | Short Hindi notes |
 | [`INHERITANCE_AND_COMPOSITION.md`](./INHERITANCE_AND_COMPOSITION.md) | Full theory + all L4 cpp |
 | [`UML_DIAGRAMS_AND_NOTATION.md`](./UML_DIAGRAMS_AND_NOTATION.md) | Symbols `+` `#` `-`, arrows |
-| [`../SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](../SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | 21 system UML practice |
+| [`../SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](../docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | 21 system UML practice |
 
 ---
 

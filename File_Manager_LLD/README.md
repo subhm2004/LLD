@@ -39,7 +39,7 @@ File_Manager_LLD/
 ## Related docs
 
 - [`INHERITANCE_AND_COMPOSITION.md`](../L4%20UML_Diagrams/INHERITANCE_AND_COMPOSITION.md) — Composite theory
-- [`PROJECT_DESIGN_PATTERNS.md`](../PROJECT_DESIGN_PATTERNS.md) — pattern map
+- [`PROJECT_DESIGN_PATTERNS.md`](../docs/PROJECT_DESIGN_PATTERNS.md) — pattern map
 
 ## Interview extensions
 

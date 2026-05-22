@@ -49,4 +49,4 @@ cd Exception_Handling
 
 ## Related
 
-- [`SOLID.md`](../SOLID.md) · [`File_Manager_LLD`](../File_Manager_LLD/) · [L6 `ExceptionRule.cpp`](../L6%20SOLID_2/C++%20Code/LSP-Rules/SingatureRules/ExceptionRule.cpp)
+- [`SOLID.md`](../docs/SOLID.md) · [`File_Manager_LLD`](../File_Manager_LLD/) · [L6 `ExceptionRule.cpp`](../L6%20SOLID_2/C++%20Code/LSP-Rules/SingatureRules/ExceptionRule.cpp)

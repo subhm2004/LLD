@@ -848,7 +848,7 @@ C++17     → optional for expected miss
 |----------|------|
 | All demos | [`C++ Code/`](./C++%20Code/) |
 | Short README | [`README.md`](./README.md) |
-| LSP in SOLID | [`SOLID.md`](../SOLID.md) |
+| LSP in SOLID | [`SOLID.md`](../docs/SOLID.md) |
 | File Manager throws | [`File_Manager_LLD`](../File_Manager_LLD/) |
 | L6 Exception rule code | [`ExceptionRule.cpp`](../L6%20SOLID_2/C++%20Code/LSP-Rules/SingatureRules/ExceptionRule.cpp) |
 

@@ -2,7 +2,7 @@
 
 OYO-style **hotel booking** — search by city, room availability, booking lifecycle, Strategy-based pricing.
 
-> **UML diagrams:** [Class + Sequence — Section 21](../SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#21-oyo-hotel-booking)
+> **UML diagrams:** [Class + Sequence — Section 21](../docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#21-oyo-hotel-booking)
 
 ## Structure
 

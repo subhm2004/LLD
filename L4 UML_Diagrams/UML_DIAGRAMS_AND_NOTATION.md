@@ -12,7 +12,7 @@
 
 > **Folder:** [`L4 UML_Diagrams/`](./)  
 > **Relations deep dive:** [`INHERITANCE_AND_COMPOSITION.md`](./INHERITANCE_AND_COMPOSITION.md)  
-> **21 systems (practice):** [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](../SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md)  
+> **21 systems (practice):** [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](../docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md)  
 > **Short notes:** [`4.txt`](./4.txt)
 
 ---
@@ -211,7 +211,7 @@ visibility name(parameters): returnType
 | **Underlined** name | `static` member |
 | `$` prefix (kuch tools) | static — Mermaid me kabhi `<<static>>` |
 
-Repo class diagrams: [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](../SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) — har system ke section me same 3-box style.
+Repo class diagrams: [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](../docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) — har system ke section me same 3-box style.
 
 ---
 
@@ -559,7 +559,7 @@ sequenceDiagram
 
 Steps **1, 2, 3…** — interview me “step 4 par rollback” bolna easy.
 
-Repo me har system 2–3 sequences: [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](../SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md)
+Repo me har system 2–3 sequences: [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](../docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md)
 
 ### 8.5 Sequence vs Class — kya alag hai
 
@@ -582,7 +582,7 @@ Repo me har system 2–3 sequences: [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](..
 | Interface | Dashed △ | `<|..` |
 | Preview | Paper / Excalidraw | `Cmd+Shift+V` in Cursor |
 
-**Tip:** Interview me pehle **boxes + relations** (class), phir **1 main flow** (sequence) — repo [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](../SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) ka pattern copy karo.
+**Tip:** Interview me pehle **boxes + relations** (class), phir **1 main flow** (sequence) — repo [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](../docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) ka pattern copy karo.
 
 ---
 
@@ -590,10 +590,10 @@ Repo me har system 2–3 sequences: [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](..
 
 | Resource | Kya milega |
 |----------|------------|
-| [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](../SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | 21 systems × class + 2–3 sequences |
+| [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](../docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | 21 systems × class + 2–3 sequences |
 | [`INHERITANCE_AND_COMPOSITION.md`](./INHERITANCE_AND_COMPOSITION.md) | Is-a / has-a + L4 `.cpp` |
-| [`SOLID.md`](../SOLID.md) | LSP, ISP — class diagrams |
-| [`PROJECT_DESIGN_PATTERNS.md`](../PROJECT_DESIGN_PATTERNS.md) | Pattern → project map |
+| [`SOLID.md`](../docs/SOLID.md) | LSP, ISP — class diagrams |
+| [`PROJECT_DESIGN_PATTERNS.md`](../docs/PROJECT_DESIGN_PATTERNS.md) | Pattern → project map |
 | `L4 UML_Diagrams/*.cpp` | Runnable small examples |
 
 ```mermaid

@@ -1,7 +1,7 @@
 # Low-Level Design (LLD) — Complete Master Repository Guide
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2500&pause=800&color=2F81F7&center=true&vCenter=true&width=900&lines=Master+LLD+Guide+%E2%80%94+1800%2B+Lines;40+Lessons+%7C+20+System+Projects;Patterns+%2B+Interview+Deep+Dives" alt="Typing animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2500&pause=800&color=2F81F7&center=true&vCenter=true&width=900&lines=Master+LLD+Guide+%E2%80%94+1800%2B+Lines;40+Lessons+%7C+26+System+Projects;Patterns+%2B+Interview+Deep+Dives" alt="Typing animation" />
 </p>
 
 <p align="center">
@@ -73,7 +73,7 @@ cd Parking_lot_system_LLD
 ./parking_app
 ```
 
-**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (~2900+ lines Mermaid).
+**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (26 systems, ~4300+ lines Mermaid).
 
 ---
 
@@ -100,11 +100,11 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | ------------------------------------ | ----------------------- |
 | Total C++/header source files        | ~490+                   |
 | Lesson folders (L1–L40)              | 40                      |
-| Runnable system demos                | 20+                     |
-| Projects with dedicated `README.md`  | 20+                     |
+| Runnable system demos                | 26+                     |
+| Projects with dedicated `README.md`  | 24+                     |
 | Design patterns demonstrated         | 20+ (GoF + Null Object) |
-| Projects with `problem_statement.md` | 26+                     |
-| UML class + sequence diagrams        | [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) |
+| Projects with `problem_statement.md` | 28+                     |
+| UML class + sequence diagrams        | [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) |
 
 ---
 
@@ -116,7 +116,7 @@ Zyada tar LLD preparation in points par atak jaati hai:
 | ------------------------------------------------- | ---------------------------------------------------------------------- |
 | Theory samajh aata hai, code me convert nahi hota | Har concept ke saath runnable `.cpp` / modular headers                 |
 | Code likh lete hain, extensibility weak hoti hai  | SOLID + OCP-focused refactors (e.g. L7 Bad vs Good design)             |
-| Sirf 1–2 problems solve kiye                      | 20+ full systems + 10+ lesson-level LLDs                               |
+| Sirf 1–2 problems solve kiye                      | 26+ full systems + 10+ lesson-level LLDs                               |
 | Patterns yaad hain, use-case nahi                 | Har pattern ke saath real domain (ATM, Food Delivery, Payment Gateway) |
 | Interview me sirf code, design explain nahi       | Har project me assumptions, trade-offs, extension hooks                |
 
@@ -213,15 +213,14 @@ Priority interview list:
 
 ```
 LLD/
-├── L1 Introduction/ … L40 Null_object_pattern_and_Antipatterns/   # 40 lessons
-├── ATM_LLD/ … WhatsApp_LLD/ … LRU_Cache_LLD/ … LeetCode_LLD/        # 20 systems
-├── Multi_threading_C++/                                             # Concurrency labs
-├── Design_Pattern_types.md                                          # Pattern taxonomy (Hindi)
-├── Design_Pattern_Sheet_1.webp, Design_Pattern_Sheet_2.webp         # Cheat sheets
-├── Gang of Four.pdf                                                 # GoF reference
-├── Designing Data-Intensive Applications…pdf                        # DDIA (systems thinking)
-├── imp_design_patterns.png, imp_problems.png, Some_patterns.png     # Visual aids
-└── README.md                                                        # ← You are here
+├── README.md                     # ← You are here (repo hub)
+├── docs/                         # Theory + maps + UML (5 markdown files)
+├── assets/                       # Cheat sheets (.webp) + images (.png)
+├── books/                        # PDF references (GoF, DDIA)
+├── scripts/                      # build_all_systems.sh
+├── L1 Introduction/ … L40/       # 40 lessons
+├── ATM_LLD/ … GPay_LLD/ …      # 26+ system projects
+└── Multi_threading_C++/        # Concurrency labs + interview problems
 ```
 
 ---
@@ -902,6 +901,35 @@ cd Concurrent_HashMap_LLD && ./compile.sh && ./concurrent_hashmap_app
 
 ---
 
+### GPay_LLD
+
+|              |                                                                                         |
+| ------------ | --------------------------------------------------------------------------------------- |
+| **Path**     | [`GPay_LLD/`](./GPay_LLD/)                                                             |
+| **Patterns** | **Facade** (`GPaySystem`), **Strategy** (bank vs wallet rail), **Factory**              |
+| **Flow**     | Register UPI → link bank → P2P / QR pay / request money → transaction ledger            |
+| **Note**     | Consumer UPI app (P2P); differs from [`L23 Payment_gateway_system_LLD`](./L23%20Payment_gateway_system_LLD/) (merchant gateway) |
+
+```bash
+cd GPay_LLD && ./compile.sh && ./gpay_app
+```
+
+---
+
+### Truecaller_LLD
+
+|              |                                                                                    |
+| ------------ | ---------------------------------------------------------------------------------- |
+| **Path**     | [`Truecaller_LLD/`](./Truecaller_LLD/)                                             |
+| **Patterns** | **Facade**, **Strategy** (spam scoring), service layer                             |
+| **Flow**     | Contact sync → caller lookup → spam report → block → call log                      |
+
+```bash
+cd Truecaller_LLD && ./compile.sh && ./truecaller_app
+```
+
+---
+
 ### Amazon_Locker_Service_LLD
 
 |              |                                                                              |
@@ -1036,7 +1064,7 @@ cd Rate_Limiter_LLD && g++ -std=c++17 Main.cpp -o rate_limiter_app && ./rate_lim
 | **Patterns** | Facade (`CacheService`), Decorator (`ThreadSafeLRUCache`), `ICache` interface |
 | **Data structures** | `unordered_map` + `std::list` + `list::splice` for O(1) LRU |
 | **Thread safety** | `std::mutex` on all operations (get mutates recency) |
-| **Diagrams** | [Class + Sequence — Section 18](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#18-thread-safe-lru-cache) |
+| **Diagrams** | [Class + Sequence — Section 18](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#18-thread-safe-lru-cache) |
 
 ```bash
 cd LRU_Cache_LLD && g++ -std=c++17 -pthread main.cpp -o lru_cache_app && ./lru_cache_app
@@ -1067,7 +1095,7 @@ cd LFU_Cache_LLD && ./compile.sh && ./lfu_cache_app
 | **Path** | [`OYO_Hotel_Booking_LLD/`](./OYO_Hotel_Booking_LLD/) |
 | **Patterns** | Facade, Strategy (pricing), Service layer |
 | **Features** | Search by city, date-range availability, book/cancel, check-in/out |
-| **Diagrams** | [Section 21](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#21-oyo-hotel-booking) |
+| **Diagrams** | [Section 21](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#21-oyo-hotel-booking) |
 
 ```bash
 cd OYO_Hotel_Booking_LLD && ./compile.sh && ./oyo_hotel_app
@@ -1083,7 +1111,7 @@ cd OYO_Hotel_Booking_LLD && ./compile.sh && ./oyo_hotel_app
 | **Patterns** | Facade (`LeetCodeSystem`), Strategy (`ICodeRunner`), Service layer |
 | **Features** | Problem catalog, submit code, judge verdicts, leaderboard, acceptance rate |
 | **HARD problem** | [Minimum Cost to Divide Array](./LeetCode_LLD/problems/MIN_COST_DIVIDE_ARRAY.md) — O(n²) DP |
-| **Diagrams** | [Class + Sequence — Section 20](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#20-leetcode-online-judge) |
+| **Diagrams** | [Class + Sequence — Section 20](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#20-leetcode-online-judge) |
 
 **Core flow:** `registerUser` → browse/search problems → `submitSolution` → `JudgeService` + `MockCodeRunner` → update stats & leaderboard
 
@@ -1182,53 +1210,65 @@ Educational C++ concurrency — root-level `.cpp` labs **+** structured subfolde
 | Area | Folder | README | Deep guide (COMPLETE.md) |
 |------|--------|--------|--------------------------|
 | **Module index** | [`Multi_threading_C++/`](./Multi_threading_C%2B%2B/) | [README](./Multi_threading_C++/README.md) | — |
-| **Concurrency Patterns** | [`Concurrency_Patterns/`](./Multi_threading_C++/Concurrency_Patterns/) | [README](./Multi_threading_C++/Concurrency_Patterns/README.md) | per pattern below |
-| → Signaling | [`Signaling_Pattern/`](./Multi_threading_C++/Concurrency_Patterns/Signaling_Pattern/) | [README](./Multi_threading_C++/Concurrency_Patterns/Signaling_Pattern/README.md) | [COMPLETE](./Multi_threading_C++/Concurrency_Patterns/Signaling_Pattern/SIGNALING_PATTERN_COMPLETE.md) |
-| → Thread Pool | [`Thread_Pool_Pattern/`](./Multi_threading_C++/Concurrency_Patterns/Thread_Pool_Pattern/) | [README](./Multi_threading_C++/Concurrency_Patterns/Thread_Pool_Pattern/README.md) | [COMPLETE](./Multi_threading_C++/Concurrency_Patterns/Thread_Pool_Pattern/THREAD_POOL_PATTERN_COMPLETE.md) |
-| → Producer-Consumer | [`Producer_Consumer_Pattern/`](./Multi_threading_C++/Concurrency_Patterns/Producer_Consumer_Pattern/) | [README](./Multi_threading_C++/Concurrency_Patterns/Producer_Consumer_Pattern/README.md) | [COMPLETE](./Multi_threading_C++/Concurrency_Patterns/Producer_Consumer_Pattern/PRODUCER_CONSUMER_PATTERN_COMPLETE.md) |
-| → Reader-Writer | [`Reader_Writer_Pattern/`](./Multi_threading_C++/Concurrency_Patterns/Reader_Writer_Pattern/) | [README](./Multi_threading_C++/Concurrency_Patterns/Reader_Writer_Pattern/README.md) | [COMPLETE](./Multi_threading_C++/Concurrency_Patterns/Reader_Writer_Pattern/READER_WRITER_PATTERN_COMPLETE.md) |
-| **Concurrency Challenges** | [`Concurrency_Challenges/`](./Multi_threading_C++/Concurrency_Challenges/) | [README](./Multi_threading_C++/Concurrency_Challenges/README.md) | — |
-| → Deadlock | [`Deadlock/`](./Multi_threading_C++/Concurrency_Challenges/Deadlock/) | [README](./Multi_threading_C++/Concurrency_Challenges/Deadlock/README.md) | [COMPLETE](./Multi_threading_C++/Concurrency_Challenges/Deadlock/DEADLOCK_COMPLETE.md) |
-| → Livelock | [`Livelock/`](./Multi_threading_C++/Concurrency_Challenges/Livelock/) | [README](./Multi_threading_C++/Concurrency_Challenges/Livelock/README.md) | [COMPLETE](./Multi_threading_C++/Concurrency_Challenges/Livelock/LIVELOCK_COMPLETE.md) |
-| **Fizz Buzz (LC 411)** | [`FIZZ_BUZZ_Problem/`](./Multi_threading_C++/FIZZ_BUZZ_Problem/) | [README](./Multi_threading_C++/FIZZ_BUZZ_Problem/README.md) | [COMPLETE](./Multi_threading_C++/FIZZ_BUZZ_Problem/Fizz_Buzz_Multithreaded/FIZZ_BUZZ_MULTITHREADED_COMPLETE.md) |
-| → demos | [`Fizz_Buzz_Multithreaded/`](./Multi_threading_C++/FIZZ_BUZZ_Problem/Fizz_Buzz_Multithreaded/) | [README](./Multi_threading_C++/FIZZ_BUZZ_Problem/Fizz_Buzz_Multithreaded/README.md) | ↑ same |
-| **Multi-threaded Merge Sort** | [`Multi_threaded_Merge_Sort/`](./Multi_threading_C++/Multi_threaded_Merge_Sort/) | [README](./Multi_threading_C++/Multi_threaded_Merge_Sort/README.md) | [COMPLETE](./Multi_threading_C++/Multi_threaded_Merge_Sort/MULTI_THREADED_MERGE_SORT_COMPLETE.md) |
+| **Fundamentals** | [`01_Fundamentals/`](./Multi_threading_C++/01_Fundamentals/) | [README](./Multi_threading_C++/01_Fundamentals/README.md) | threads, mutex, locks, CV |
+| **Concurrency Patterns** | [`02_Concurrency_Patterns/`](./Multi_threading_C++/02_Concurrency_Patterns/) | [README](./Multi_threading_C++/02_Concurrency_Patterns/README.md) | per pattern below |
+| → Signaling | [`Signaling_Pattern/`](./Multi_threading_C++/02_Concurrency_Patterns/Signaling_Pattern/) | [README](./Multi_threading_C++/02_Concurrency_Patterns/Signaling_Pattern/README.md) | [COMPLETE](./Multi_threading_C++/02_Concurrency_Patterns/Signaling_Pattern/SIGNALING_PATTERN_COMPLETE.md) |
+| → Thread Pool | [`Thread_Pool_Pattern/`](./Multi_threading_C++/02_Concurrency_Patterns/Thread_Pool_Pattern/) | [README](./Multi_threading_C++/02_Concurrency_Patterns/Thread_Pool_Pattern/README.md) | [COMPLETE](./Multi_threading_C++/02_Concurrency_Patterns/Thread_Pool_Pattern/THREAD_POOL_PATTERN_COMPLETE.md) |
+| → Producer-Consumer | [`Producer_Consumer_Pattern/`](./Multi_threading_C++/02_Concurrency_Patterns/Producer_Consumer_Pattern/) | [README](./Multi_threading_C++/02_Concurrency_Patterns/Producer_Consumer_Pattern/README.md) | [COMPLETE](./Multi_threading_C++/02_Concurrency_Patterns/Producer_Consumer_Pattern/PRODUCER_CONSUMER_PATTERN_COMPLETE.md) |
+| → Reader-Writer | [`Reader_Writer_Pattern/`](./Multi_threading_C++/02_Concurrency_Patterns/Reader_Writer_Pattern/) | [README](./Multi_threading_C++/02_Concurrency_Patterns/Reader_Writer_Pattern/README.md) | [COMPLETE](./Multi_threading_C++/02_Concurrency_Patterns/Reader_Writer_Pattern/READER_WRITER_PATTERN_COMPLETE.md) |
+| **Lock-Free / CAS** | [`03_Lock_Free/Compare_And_Swap/`](./Multi_threading_C++/03_Lock_Free/Compare_And_Swap/) | [README](./Multi_threading_C++/03_Lock_Free/Compare_And_Swap/README.md) | [COMPLETE](./Multi_threading_C++/03_Lock_Free/Compare_And_Swap/COMPARE_AND_SWAP_COMPLETE.md) |
+| **Concurrency Challenges** | [`04_Concurrency_Challenges/`](./Multi_threading_C++/04_Concurrency_Challenges/) | [README](./Multi_threading_C++/04_Concurrency_Challenges/README.md) | — |
+| → Deadlock | [`Deadlock/`](./Multi_threading_C++/04_Concurrency_Challenges/Deadlock/) | [README](./Multi_threading_C++/04_Concurrency_Challenges/Deadlock/README.md) | [COMPLETE](./Multi_threading_C++/04_Concurrency_Challenges/Deadlock/DEADLOCK_COMPLETE.md) |
+| → Livelock | [`Livelock/`](./Multi_threading_C++/04_Concurrency_Challenges/Livelock/) | [README](./Multi_threading_C++/04_Concurrency_Challenges/Livelock/README.md) | [COMPLETE](./Multi_threading_C++/04_Concurrency_Challenges/Livelock/LIVELOCK_COMPLETE.md) |
+| **Interview Problems** | [`06_Interview_Problems/`](./Multi_threading_C++/06_Interview_Problems/) | [README](./Multi_threading_C++/06_Interview_Problems/README.md) · [INDEX](./Multi_threading_C++/06_Interview_Problems/INTERVIEW_PROBLEMS_COMPLETE.md) | LC 1114–1117, 411, barrier, queue, merge sort |
+| → Fizz Buzz (LC 411) | [`Fizz_Buzz/`](./Multi_threading_C++/06_Interview_Problems/Fizz_Buzz/) | [README](./Multi_threading_C++/06_Interview_Problems/Fizz_Buzz/README.md) | [COMPLETE](./Multi_threading_C++/06_Interview_Problems/Fizz_Buzz/FIZZ_BUZZ_MULTITHREADED_COMPLETE.md) |
+| → Print in Order (LC 1114) | [`Print_in_Order/`](./Multi_threading_C++/06_Interview_Problems/Print_in_Order/) | [README](./Multi_threading_C++/06_Interview_Problems/Print_in_Order/README.md) | — |
+| → Print FooBar (LC 1115) | [`Print_FooBar_Alternately/`](./Multi_threading_C++/06_Interview_Problems/Print_FooBar_Alternately/) | [README](./Multi_threading_C++/06_Interview_Problems/Print_FooBar_Alternately/README.md) | — |
+| → Zero Even Odd (LC 1116) | [`Print_Zero_Even_Odd/`](./Multi_threading_C++/06_Interview_Problems/Print_Zero_Even_Odd/) | [README](./Multi_threading_C++/06_Interview_Problems/Print_Zero_Even_Odd/README.md) | — |
+| → Building H2O (LC 1117) | [`Building_H2O/`](./Multi_threading_C++/06_Interview_Problems/Building_H2O/) | [README](./Multi_threading_C++/06_Interview_Problems/Building_H2O/README.md) | — |
+| → Barrier + Latch | [`Barrier_Synchronization/`](./Multi_threading_C++/06_Interview_Problems/Barrier_Synchronization/) | [README](./Multi_threading_C++/06_Interview_Problems/Barrier_Synchronization/README.md) | — |
+| → Bounded Queue | [`Bounded_Blocking_Queue/`](./Multi_threading_C++/06_Interview_Problems/Bounded_Blocking_Queue/) | [README](./Multi_threading_C++/06_Interview_Problems/Bounded_Blocking_Queue/README.md) | — |
+| → Dining Philosophers (LC 1226) | [`Dining_Philosophers_LC1226/`](./Multi_threading_C++/06_Interview_Problems/Dining_Philosophers_LC1226/) | [README](./Multi_threading_C++/06_Interview_Problems/Dining_Philosophers_LC1226/README.md) | — |
+| → Web Crawler (LC 1242) | [`Web_Crawler_Multithreaded_LC1242/`](./Multi_threading_C++/06_Interview_Problems/Web_Crawler_Multithreaded_LC1242/) | [README](./Multi_threading_C++/06_Interview_Problems/Web_Crawler_Multithreaded_LC1242/README.md) | — |
+| → Merge Sort | [`Merge_Sort/`](./Multi_threading_C++/06_Interview_Problems/Merge_Sort/) | [README](./Multi_threading_C++/06_Interview_Problems/Merge_Sort/README.md) | [COMPLETE](./Multi_threading_C++/06_Interview_Problems/Merge_Sort/MULTI_THREADED_MERGE_SORT_COMPLETE.md) |
 
 ### Quick build (subfolders)
 
 ```bash
 # Patterns
-cd Multi_threading_C++/Concurrency_Patterns/Signaling_Pattern && ./compile.sh && ./bin/01_condition_variable_basics
-cd Multi_threading_C++/Concurrency_Patterns/Thread_Pool_Pattern && ./compile.sh && ./bin/01_basic_thread_pool
-cd Multi_threading_C++/Concurrency_Patterns/Producer_Consumer_Pattern && ./compile.sh && ./bin/01_single_producer_single_consumer
-cd Multi_threading_C++/Concurrency_Patterns/Reader_Writer_Pattern && ./compile.sh && ./bin/01_std_shared_mutex_basics
+cd Multi_threading_C++/02_Concurrency_Patterns/Signaling_Pattern && ./compile.sh && ./bin/01_condition_variable_basics
+cd Multi_threading_C++/02_Concurrency_Patterns/Thread_Pool_Pattern && ./compile.sh && ./bin/01_basic_thread_pool
+cd Multi_threading_C++/02_Concurrency_Patterns/Producer_Consumer_Pattern && ./compile.sh && ./bin/01_single_producer_single_consumer
+cd Multi_threading_C++/02_Concurrency_Patterns/Reader_Writer_Pattern && ./compile.sh && ./bin/01_std_shared_mutex_basics
 
 # Challenges
-cd Multi_threading_C++/Concurrency_Challenges/Deadlock && ./compile.sh && ./bin/01_coffman_four_conditions
-cd Multi_threading_C++/Concurrency_Challenges/Livelock && ./compile.sh && ./bin/01_what_is_livelock
+cd Multi_threading_C++/04_Concurrency_Challenges/Deadlock && ./compile.sh && ./bin/01_coffman_four_conditions
+cd Multi_threading_C++/04_Concurrency_Challenges/Livelock && ./compile.sh && ./bin/01_what_is_livelock
 
 # Interview problems
-cd Multi_threading_C++/FIZZ_BUZZ_Problem/Fizz_Buzz_Multithreaded && ./compile.sh && ./bin/04_condition_variable
-cd Multi_threading_C++/Multi_threaded_Merge_Sort && ./compile.sh && ./bin/06_compare_timings
+cd Multi_threading_C++/01_Fundamentals && ./compile.sh && ./bin/lessson_1_join
+cd Multi_threading_C++/03_Lock_Free/Compare_And_Swap && ./compile.sh && ./bin/01_what_is_cas
+cd Multi_threading_C++/06_Interview_Problems/Fizz_Buzz && ./compile.sh && ./bin/04_condition_variable
+cd Multi_threading_C++/06_Interview_Problems/Merge_Sort && ./compile.sh && ./bin/06_compare_timings
 ```
 
 ### Root-level `.cpp` labs (folder root)
 
 | File | Topic |
 |------|-------|
-| [`lessson_1_join.cpp`](./Multi_threading_C++/lessson_1_join.cpp) | `std::thread`, `join` |
-| [`lesson_2_locks_and_mutex.cpp`](./Multi_threading_C++/lesson_2_locks_and_mutex.cpp) | Mutex basics |
-| [`lesson_3.cpp`](./Multi_threading_C++/lesson_3.cpp) | `condition_variable` |
-| [`race_condition_and_synchronization.cpp`](./Multi_threading_C++/race_condition_and_synchronization.cpp) | Race conditions & fixes |
-| [`lock_mechanism.cpp`](./Multi_threading_C++/lock_mechanism.cpp), [`types_of_locks.cpp`](./Multi_threading_C++/types_of_locks.cpp) | Lock varieties |
-| [`semaphor.cpp`](./Multi_threading_C++/semaphor.cpp) | Semaphores |
-| [`producer_consumer.cpp`](./Multi_threading_C++/producer_consumer.cpp) | Classic producer-consumer |
-| [`dining_philosophers.cpp`](./Multi_threading_C++/dining_philosophers.cpp) | Dining philosophers (4 solutions) |
-| [`thread_pool.cpp`](./Multi_threading_C++/thread_pool.cpp) | Custom thread pool |
-| [`deadlock_and_protection.cpp`](./Multi_threading_C++/deadlock_and_protection.cpp) | Deadlock scenarios |
-| [`DCLP.cpp`](./Multi_threading_C++/DCLP.cpp) | Double-checked locking |
-| [`Thread_Safe_Injection.cpp`](./Multi_threading_C++/Thread_Safe_Injection.cpp) | Thread-safe DI |
-| [`execution_time_of_code.cpp`](./Multi_threading_C++/execution_time_of_code.cpp) | Benchmarking |
+| [`lessson_1_join.cpp`](./Multi_threading_C++/01_Fundamentals/lessson_1_join.cpp) | `std::thread`, `join` |
+| [`lesson_2_locks_and_mutex.cpp`](./Multi_threading_C++/01_Fundamentals/lesson_2_locks_and_mutex.cpp) | Mutex basics |
+| [`lesson_3.cpp`](./Multi_threading_C++/01_Fundamentals/lesson_3.cpp) | `condition_variable` |
+| [`race_condition_and_synchronization.cpp`](./Multi_threading_C++/01_Fundamentals/race_condition_and_synchronization.cpp) | Race conditions & fixes |
+| [`lock_mechanism.cpp`](./Multi_threading_C++/01_Fundamentals/lock_mechanism.cpp), [`types_of_locks.cpp`](./Multi_threading_C++/01_Fundamentals/types_of_locks.cpp) | Lock varieties |
+| [`semaphor.cpp`](./Multi_threading_C++/01_Fundamentals/semaphor.cpp) | Semaphores |
+| [`producer_consumer.cpp`](./Multi_threading_C++/05_Classic_Problems/Producer_Consumer_Legacy/producer_consumer.cpp) | Classic producer-consumer |
+| [`dining_philosophers.cpp`](./Multi_threading_C++/05_Classic_Problems/Dining_Philosophers/dining_philosophers.cpp) | Dining philosophers (4 solutions) |
+| [`thread_pool.cpp`](./Multi_threading_C++/05_Classic_Problems/Thread_Pool_Legacy/thread_pool.cpp) | Custom thread pool |
+| [`deadlock_and_protection.cpp`](./Multi_threading_C++/05_Classic_Problems/Deadlock_Legacy/deadlock_and_protection.cpp) | Deadlock scenarios |
+| [`DCLP.cpp`](./Multi_threading_C++/05_Classic_Problems/Double_Checked_Locking/DCLP.cpp) | Double-checked locking |
+| [`Thread_Safe_Injection.cpp`](./Multi_threading_C++/01_Fundamentals/Thread_Safe_Injection.cpp) | Thread-safe DI |
+| [`execution_time_of_code.cpp`](./Multi_threading_C++/01_Fundamentals/execution_time_of_code.cpp) | Benchmarking |
 
 ```bash
 cd Multi_threading_C++
@@ -1247,12 +1287,12 @@ g++ -std=c++17 -pthread dining_philosophers.cpp -o dp && ./dp
 | Pattern                     | Primary lessons                  | System projects                                             |
 | --------------------------- | -------------------------------- | ----------------------------------------------------------- |
 | **Singleton**               | L10, L14, L23, L26               | Logger                                                      |
-| **Factory**                 | L9, L11, L23, L31, L33–34, L37   | Movie Ticket, Rate Limiter                                  |
-| **Strategy**                | L8, L11, L14, L18, L24, L31, L33 | Parking, Load Balancer, Rate Limiter, WhatsApp, LeetCode (`ICodeRunner`) |
+| **Factory**                 | L9, L11, L23, L31, L33–34, L37   | Movie Ticket, Rate Limiter, **GPay** (rail + transaction)   |
+| **Strategy**                | L8, L11, L14, L18, L24, L31, L33 | Parking, Load Balancer, Rate Limiter, WhatsApp, LeetCode, **GPay** (bank/wallet), **Truecaller** (spam) |
 | **Observer**                | L12, L14, L31, L33–34            | Logger (appenders)                                          |
 | **Decorator**               | L13, L14                         | WhatsApp (notification decorators), LRU (`ThreadSafeLRUCache`) |
 | **Adapter**                 | L16, L18                         | —                                                           |
-| **Facade**                  | L11, L17, L18, L27, L31          | Most `core/` classes, `CacheService`                          |
+| **Facade**                  | L11, L17, L18, L27, L31          | Most `core/` classes, `CacheService`, **GPay**, **Truecaller** |
 | **Command**                 | L15                              | —                                                           |
 | **Template Method**         | L20, L23                         | Rate Limiter (base)                                         |
 | **Chain of Responsibility** | L22, L24                         | Logger                                                      |
@@ -1388,7 +1428,7 @@ cd ATM_LLD
 g++ -std=c++17 -Wall -Wextra -pthread -I. main.cpp -o atm_app
 ```
 
-**Build all 20 systems from repo root:**
+**Build all standalone systems from repo root:**
 
 ```bash
 chmod +x scripts/build_all_systems.sh
@@ -1405,6 +1445,8 @@ chmod +x scripts/build_all_systems.sh
 | LFU_Cache_LLD    | `main.cpp` (`-pthread`)           | `lfu_cache_app`      |
 | Insta_reel_LLD   | `yt reel architecture/main.cpp` | `reels_app`          |
 | LeetCode_LLD     | `main.cpp`                        | `leetcode_app`       |
+| GPay_LLD         | `main.cpp`                        | `gpay_app`           |
+| Truecaller_LLD   | `main.cpp`                        | `truecaller_app`     |
 
 > Lesson folders (`L*`) me often header-only demos hain — unke liye specific `.cpp` file compile karo with `-std=c++17`.
 
@@ -1443,12 +1485,11 @@ chmod +x scripts/build_all_systems.sh
 
 | Asset                                                        | Purpose                                            |
 | ------------------------------------------------------------ | -------------------------------------------------- |
-| `Gang of Four.pdf`                                           | Original design patterns book                      |
-| `Designing Data-Intensive Applications…pdf`                  | Scalability, storage, distributed systems thinking |
-| `Design_Pattern_Sheet_1.webp`, `Design_Pattern_Sheet_2.webp` | Quick visual revision                              |
-| `Design_Pattern_types.md`                                    | Creational/Structural/Behavioral taxonomy (Hindi)  |
-| `imp_design_patterns.png`, `imp_problems.png`                | Important patterns & problems cheat sheet          |
-| `Some_patterns.png`, `Commonly Asked Questions.png`          | Interview aids                                     |
+| [`books/Gang of Four.pdf`](./books/Gang%20of%20Four.pdf)     | Original design patterns book                      |
+| [`books/`](./books/) DDIA PDF                                | Scalability, storage, distributed systems thinking |
+| [`assets/sheets/`](./assets/sheets/) `.webp` cheat sheets    | Quick visual revision                              |
+| [`docs/Design_Pattern_types.md`](./docs/Design_Pattern_types.md) | Creational/Structural/Behavioral taxonomy (Hindi) |
+| [`assets/images/`](./assets/images/) pattern/problem PNGs    | Interview aids                                     |
 | Per-lesson `Notes.pdf`, `UML.jpeg`                           | Lesson-specific diagrams                           |
 | [`Exception_Handling/`](./Exception_Handling/)               | [**Complete guide**](./Exception_Handling/EXCEPTION_HANDLING_COMPLETE.md) + 14 C++17 demos |
 
@@ -1540,6 +1581,8 @@ Har project complete karne ke baad yeh try karo:
 | Thread-Safe TTL Cache | [Thread_Safe_Cache_with_TTL_LLD](./Thread_Safe_Cache_with_TTL_LLD/) |
 | Concurrent HashMap | [Concurrent_HashMap_LLD](./Concurrent_HashMap_LLD/) |
 | Amazon Locker Service | [Amazon_Locker_Service_LLD](./Amazon_Locker_Service_LLD/) |
+| GPay (UPI P2P)       | [GPay_LLD](./GPay_LLD/)                                           |
+| Truecaller           | [Truecaller_LLD](./Truecaller_LLD/)                               |
 | Pub-Sub System       | [Pub_Sub_System_LLD](./Pub_Sub_System_LLD/)                       |
 | Airline Management   | [Airline_Management_System_LLD](./Airline_Management_System_LLD/) |
 | LinkedIn             | [Linkedin_LLD](./Linkedin_LLD/)                                   |
@@ -1558,13 +1601,64 @@ Har project complete karne ke baad yeh try karo:
 | Vending Machine      | [vending_machine_LLD](./vending_machine_LLD/)                     |
 | WhatsApp             | [WhatsApp_LLD](./WhatsApp_LLD/)                                   |
 | Insta/YouTube Reels  | [Insta_reel_LLD](./Insta_reel_LLD/yt%20reel%20architecture/)      |
-| Multi-threading      | [Multi_threading_C++](./Multi_threading_C%2B%2B/) — [Patterns](./Multi_threading_C++/Concurrency_Patterns/) · [Deadlock](./Multi_threading_C++/Concurrency_Challenges/Deadlock/) · [Fizz Buzz](./Multi_threading_C++/FIZZ_BUZZ_Problem/) · [Merge Sort](./Multi_threading_C++/Multi_threaded_Merge_Sort/) |
+| Multi-threading      | [Multi_threading_C++](./Multi_threading_C%2B%2B/) — [Patterns](./Multi_threading_C++/02_Concurrency_Patterns/) · [Deadlock](./Multi_threading_C++/04_Concurrency_Challenges/Deadlock/) · [Fizz Buzz](./Multi_threading_C++/06_Interview_Problems/Fizz_Buzz/) · [Merge Sort](./Multi_threading_C++/06_Interview_Problems/Merge_Sort/) |
 
 ---
 
 ## System Projects — Deep Dive & Interview Bank
 
 Har system ke liye **entities**, **main APIs**, **patterns**, aur **top interview questions** — revision ke liye one-stop.
+
+### GPay_LLD
+
+| Entities | `User`, `BankAccount`, `Wallet`, `Transaction`, `MoneyRequest`, `Beneficiary` |
+| -------- | ----------------------------------------------------------------------------- |
+| Enums | `PaymentRail`, `TransactionType`, `TransactionStatus` |
+| Services | `TransferService`, `PinAuthService`, `DailyLimitService`, `TransactionLedgerService`, `RequestMoneyService` |
+| Strategies | `BankAccountRailStrategy`, `WalletRailStrategy` |
+| Facade | `GPaySystem` |
+
+**Flow:** `registerUser` → `linkBankAccount` → `sendMoney` / `scanAndPay` / `requestMoney` → `fulfillMoneyRequest` → `getTransactionHistory`
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Idempotent payment? | `clientRequestId` dedup set before debit |
+| Bank vs wallet rail? | **Strategy** — same `TransferService`, different `IPaymentRailStrategy` |
+| vs L23 Payment Gateway? | GPay = consumer UPI P2P; L23 = merchant gateway (Paytm/Razorpay) |
+| Real NPCI integration? | Async callback, UPI switch, double-entry ledger (extension) |
+
+**UML:** [§25 GPay](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#25-gpay-upi-p2p) · **Patterns:** [GPay in PROJECT_DESIGN_PATTERNS](docs/PROJECT_DESIGN_PATTERNS.md#gpay-upi-p2p)
+
+```bash
+cd GPay_LLD && ./compile.sh && ./gpay_app
+```
+
+---
+
+### Truecaller_LLD
+
+| Entities | `User`, `PhoneProfile`, `ContactEntry`, `CallerLookupResult`, `CallLogEntry` |
+| -------- | ---------------------------------------------------------------------------- |
+| Enums | `CallerTag`, `ReportReason`, `CallType`, `AccountStatus` |
+| Services | `LookupService`, `ContactSyncService`, `SpamReportService`, `BlockService`, `SearchService`, `CallLogService` |
+| Strategy | `ISpamScoringStrategy` → `DefaultSpamScoringStrategy` |
+| Facade | `TruecallerSystem` |
+
+**Flow:** `registerUser` → `syncContacts` → `identifyCaller` → `reportSpam` / `blockNumber` → `logCall`
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Spam score kaise? | Crowd reports + strategy; threshold → `CallerTag::SPAM` |
+| Privacy / PII? | Phone normalize `+91…`; production me consent + encryption |
+| Global directory scale? | Sharded phone index, CDN for profile cache |
+
+**UML:** [§26 Truecaller](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#26-truecaller) · **Patterns:** [Truecaller in PROJECT_DESIGN_PATTERNS](docs/PROJECT_DESIGN_PATTERNS.md#truecaller)
+
+```bash
+cd Truecaller_LLD && ./compile.sh && ./truecaller_app
+```
+
+---
 
 ### ATM_LLD
 
@@ -1856,7 +1950,8 @@ Pair with **L32 State** pattern lesson for interview synergy.
 | Uber / Swiggy / Zomato | Ride, Food (L11), Movie Ticket | `Uber_LLD`, `L11 Food_Delivery`, `Movie_Ticket_Booking_System` |
 | Meta / Social | WhatsApp, LinkedIn, Reels | `WhatsApp_LLD`, `Linkedin_LLD`, `Insta_reel_LLD` |
 | Flipkart / E-commerce lessons | Payment Gateway L23, Coupon L24 | `L23`, `L24` |
-| Fintech | ATM, Payment Gateway, Splitwise | `ATM_LLD`, `L23`, `L31 Splitwise` |
+| Fintech | ATM, Payment Gateway, UPI P2P, Splitwise | `ATM_LLD`, `L23`, `GPay_LLD`, `L31 Splitwise` |
+| India mobile apps | UPI wallet, Caller ID / spam | `GPay_LLD`, `Truecaller_LLD` |
 | Startups (general) | URL Shortener, Vending Machine | `URL_Shortner_LLD`, `vending_machine_LLD` |
 
 > Yeh mapping **heuristic** hai — actual interviews company/team par vary karte hain. Repo se **pattern reuse** seekho, exact company list yaad karne ki zarurat nahi.
@@ -1920,7 +2015,7 @@ A: Dono — LRU zyada common; LFU CDN / cache warming scenarios me.
 A: **8–10 deep** + baaki skim. Priority: Parking, Movie, LRU, Rate Limiter, Splitwise, Logger, Uber/WhatsApp.
 
 **Q: Diagrams banana zaroori?**  
-A: Haan — [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) se practice, phir blank paper.
+A: Haan — [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) se practice, phir blank paper.
 
 **Q: Mock interview kaise?**  
 A: 45 min timer → requirements → classes → 2 patterns → code skeleton → trade-offs. Record yourself.
@@ -2000,17 +2095,19 @@ Need undo?                          → Command / Memento
 | Date | Change |
 | ---- | ------ |
 | 2025 | Initial 40 lessons + 18 system projects |
-| 2025 | Added `LRU_Cache_LLD`, `LFU_Cache_LLD`, `Multi_threading_C++/dining_philosophers.cpp` |
+| 2025 | Added `LRU_Cache_LLD`, `LFU_Cache_LLD`, `Multi_threading_C++/05_Classic_Problems/Dining_Philosophers/dining_philosophers.cpp` |
 | 2025 | Added `SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md` (Mermaid UML) |
 | 2025 | Per-project `compile.sh` + `.clangd` (C++17) |
 | 2025 | Master README expanded to 1500+ lines — deep dive + interview bank |
 | 2025 | Added `LeetCode_LLD` — online judge + HARD min-cost divide array DP |
+| 2026 | Added `GPay_LLD` (UPI P2P) + `Truecaller_LLD` — §25–§26 in diagrams, pattern map updated |
+| 2026 | Repo cleanup — `docs/`, `assets/`, `books/` (root ab sirf README + project folders) |
 
 **Maintainer checklist:**
 
 - [ ] Har naye project me `problem_statement.md`, `requirements.md`, `compile.sh`
 - [ ] Root README me project table update
-- [x] Diagram file me naya section add (§22–§24 Amazon Locker, Concurrent HashMap, TTL Cache)
+- [x] Diagram file me naya section add (§22–§26 incl. GPay, Truecaller)
 - [ ] `./scripts/build_all_systems.sh` green before push
 
 ---

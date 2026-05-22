@@ -335,7 +335,7 @@ Use **LFU** (or hybrid) if most are true:
 |----------|------|
 | LRU implementation (this repo) | [`cache/LRUCacheCore.h`](./cache/LRUCacheCore.h) |
 | LFU implementation (compare) | [`../LFU_Cache_LLD/cache/LFUCacheCore.h`](../LFU_Cache_LLD/cache/LFUCacheCore.h) |
-| UML diagrams | [Section 18 — LRU](../SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#18-thread-safe-lru-cache) · [Section 19 — LFU](../SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#19-thread-safe-lfu-cache) |
+| UML diagrams | [Section 18 — LRU](../docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#18-thread-safe-lru-cache) · [Section 19 — LFU](../docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#19-thread-safe-lfu-cache) |
 | Redis eviction policies | [Redis docs — eviction](https://redis.io/docs/reference/eviction/) |
 | Caffeine (W-TinyLFU) | [GitHub — ben-manes/caffeine](https://github.com/ben-manes/caffeine/wiki) |
 

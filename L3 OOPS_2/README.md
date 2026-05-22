@@ -37,4 +37,4 @@ cd "L3 OOPS_2"
 ## Previous / Next
 
 ⬅️ [L2 OOPS_1](../L2%20OOPS_1/OOPS_1_COMPLETE.md)  
-➡️ [L4 UML](../L4%20UML_Diagrams/UML_DIAGRAMS_AND_NOTATION.md) · [L5 SOLID](../SOLID.md)
+➡️ [L4 UML](../L4%20UML_Diagrams/UML_DIAGRAMS_AND_NOTATION.md) · [L5 SOLID](../docs/SOLID.md)

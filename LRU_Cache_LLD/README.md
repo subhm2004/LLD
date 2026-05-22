@@ -2,7 +2,7 @@
 
 Interview-grade **Least Recently Used (LRU) cache** in C++17 — modular headers, mutex-based thread safety, hit/miss statistics, and concurrency stress demo.
 
-> **UML diagrams:** [Class + Sequence diagrams (Section 18)](../SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#18-thread-safe-lru-cache)
+> **UML diagrams:** [Class + Sequence diagrams (Section 18)](../docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#18-thread-safe-lru-cache)
 
 ---
 
@@ -173,4 +173,4 @@ g++ -std=c++17 -pthread main.cpp -o lru_cache_app
 - [Requirements](./requirements.md)
 - [**Why LRU over LFU?** (detailed discussion)](./WHY_LRU_OVER_LFU.md)
 - [LFU Cache (compare)](../LFU_Cache_LLD/)
-- [All System Diagrams](../SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#18-thread-safe-lru-cache)
+- [All System Diagrams](../docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#18-thread-safe-lru-cache)

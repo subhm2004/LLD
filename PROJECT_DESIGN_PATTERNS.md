@@ -22,11 +22,12 @@
 2. [Master Table — Ek Nazar Mein](#1-master-table--ek-nazar-mein)
 3. [Lesson Projects (L7 – L40)](#2-lesson-projects-l7--l40)
 4. [Standalone System Projects](#3-standalone-system-projects)
-5. [Pattern → Projects (Reverse Index)](#4-pattern--projects-reverse-index)
-6. [Animated Flow Walkthroughs](#6-animated-flow-walkthroughs-top-projects)
-7. [Interview Quick Lines + Follow-ups](#7-interview-quick-lines)
-8. [Deep Dive — Kyun Kaunsa Pattern?](#8-deep-dive--kyun-kaunsa-pattern)
-9. [Pattern Combinations Matrix](#9-pattern-combinations-matrix)
+5. [Concurrency Modules — Multi_threading_C++](#31-concurrency-modules-multi_threading_c)
+6. [Pattern → Projects (Reverse Index)](#4-pattern--projects-reverse-index)
+7. [Animated Flow Walkthroughs](#6-animated-flow-walkthroughs-top-projects)
+8. [Interview Quick Lines + Follow-ups](#7-interview-quick-lines)
+9. [Deep Dive — Kyun Kaunsa Pattern?](#8-deep-dive--kyun-kaunsa-pattern)
+10. [Pattern Combinations Matrix](#9-pattern-combinations-matrix)
 
 ---
 
@@ -56,6 +57,7 @@ flowchart TB
         CORE[Parking Logger LoadBalancer]
         APP[OYO LeetCode WhatsApp LRU]
         DOMAIN[ATM Uber Movie Ticket]
+        INFRA[TTL Cache Concurrent HashMap Amazon Locker]
     end
 
     foundation --> lessons
@@ -102,6 +104,7 @@ mindmap
       Facade
         L17 L18 L31
         OYO LeetCode
+        Amazon Locker TTL Cache
       Decorator
         L13 L14 LRU WhatsApp
       Adapter L16 L18
@@ -112,6 +115,7 @@ mindmap
       Strategy
         L8 Parking OYO
         LoadBalancer WhatsApp
+        Locker HashMap
       Observer
         L12 L31 Logger
       Chain
@@ -219,6 +223,9 @@ flowchart LR
 | 53 | Vending Machine | [`vending_machine_LLD/`](./vending_machine_LLD/) | Composition (`Inventory` + `MoneyManager`) |
 | 54 | WhatsApp | [`WhatsApp_LLD/`](./WhatsApp_LLD/) | **Strategy** (encryption, notifications), **Null Object**, **Decorator**, **Observer** |
 | 55 | Rate / WhatsApp (L14 modular) | [`L14 Notification_Engine_LLD/notification_lld/`](./L14%20Notification_Engine_LLD/notification_lld/) | Same as L14 stack |
+| 56 | Amazon Locker Service | [`Amazon_Locker_Service_LLD/`](./Amazon_Locker_Service_LLD/) | **Facade**, **Strategy** (compartment allocation), **Service layer** (OTP, notify) |
+| 57 | Concurrent HashMap | [`Concurrent_HashMap_LLD/`](./Concurrent_HashMap_LLD/) | **Strategy** (coarse vs lock striping), **Interface** (`IConcurrentMap`) |
+| 58 | Thread-Safe TTL Cache | [`Thread_Safe_Cache_with_TTL_LLD/`](./Thread_Safe_Cache_with_TTL_LLD/) | **Facade-like** (`ThreadSafeTTLCache`), reader-writer concurrency (not GoF) |
 
 > **Note:** L1–L6 = OOP + SOLID foundation ([`L2 OOPS_1`](./L2%20OOPS_1/), [`L5 SOLID_1`](./L5%20SOLID_1/), [`L6 SOLID_2`](./L6%20SOLID_2/)) — design pattern **lessons** nahi, principles hain.
 
@@ -236,8 +243,8 @@ flowchart LR
 | Priority | Projects |
 |----------|----------|
 | ⭐⭐⭐ Must | Parking, Splitwise L31, Payment L23, BookMyShow, Logger, Spotify L18 |
-| ⭐⭐ Strong | OYO, LRU, LeetCode, WhatsApp, L24 Coupons, Load Balancer, Movie Ticket |
-| ⭐ Good | Baaki lessons L7–L40 (pattern demos), Car Rental, Uber, JSON Parser |
+| ⭐⭐ Strong | OYO, LRU, LeetCode, WhatsApp, L24 Coupons, Load Balancer, Movie Ticket, **Amazon Locker**, **Concurrent HashMap**, **TTL Cache** |
+| ⭐ Good | Baaki lessons L7–L40 (pattern demos), Car Rental, Uber, JSON Parser, **Multi_threading_C++** labs |
 
 ### 1.1 Lesson learning path (recommended order)
 
@@ -605,6 +612,15 @@ flowchart TB
         OYO[OYO Hotel]
         LRU[LRU Cache]
         LC[LeetCode LLD]
+        TTL[TTL Cache]
+        CHM[Concurrent HashMap]
+        LOCKER[Amazon Locker]
+    end
+
+    subgraph concurrency [Concurrency labs — Multi_threading_C++]
+        PAT[Signaling ThreadPool ProducerConsumer RW]
+        CHL[Deadlock Livelock]
+        INT[FizzBuzz MergeSort]
     end
 
     style must fill:#c8e6c9
@@ -753,6 +769,78 @@ cd Logger_LLD && g++ -std=c++17 Main.cpp -o logger_app && ./logger_app
 | **Observer** | `LoggerObserver`, notification observable |
 | Facade-like | `WhatsAppSystem` |
 
+### Amazon Locker Service
+
+| | |
+|---|---|
+| **Path** | [`Amazon_Locker_Service_LLD/`](./Amazon_Locker_Service_LLD/) |
+| **Priority** | ⭐⭐ |
+| **Problem** | Courier deposits package → customer picks up with OTP; finite compartments S/M/L |
+| **Patterns** | **Facade**, **Strategy**, **Service layer** |
+
+| Pattern | Kyun? | Class / file |
+|---------|-------|--------------|
+| **Facade** | Single API: `depositPackage`, `pickupPackage`, `registerStation` | `AmazonLockerService` |
+| **Strategy** | Swap compartment picker (First-Fit vs Best-Fit later) | `ICompartmentAllocationStrategy`, `FirstFitAllocationStrategy` |
+| **Service layer** | OTP generation/validation separate from notify | `AccessCodeService`, `NotificationService` |
+| Domain models | Station, compartment, package, access code state | `LockerStation`, `LockerCompartment`, `Package`, `AccessCode` |
+
+**Interview:** “Allocation strategy picks free compartment by size; facade orchestrates deposit → OTP → pickup without god class.”
+
+**UML:** [Section 22 — SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#22-amazon-locker-service)
+
+```bash
+cd Amazon_Locker_Service_LLD && ./compile.sh && ./amazon_locker_app
+```
+
+### Concurrent HashMap
+
+| | |
+|---|---|
+| **Path** | [`Concurrent_HashMap_LLD/`](./Concurrent_HashMap_LLD/) |
+| **Priority** | ⭐⭐ (concurrency + LLD combo) |
+| **Problem** | Thread-safe `put`/`get`/`remove` — compare coarse lock vs lock striping |
+| **Patterns** | **Strategy**, **Interface segregation** |
+
+| Pattern | Kyun? | Class / file |
+|---------|-------|--------------|
+| **Interface** | Pluggable map implementations | `IConcurrentMap` |
+| **Strategy** | Runtime choice: one global mutex vs per-stripe mutex | `CoarseGrainedHashMap`, `StripedHashMap` |
+| Alias / default | Production default = striped | `ConcurrentHashMap` = `StripedHashMap` |
+| Stats | Hits/misses for demos | `MapStatistics` |
+
+**Interview:** “Striping reduces contention when keys hash to different stripes; hot key still serializes on one stripe.”
+
+**UML:** [Section 23](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#23-concurrent-hashmap)
+
+```bash
+cd Concurrent_HashMap_LLD && ./compile.sh && ./concurrent_hashmap_app
+```
+
+### Thread-Safe TTL Cache
+
+| | |
+|---|---|
+| **Path** | [`Thread_Safe_Cache_with_TTL_LLD/`](./Thread_Safe_Cache_with_TTL_LLD/) |
+| **Priority** | ⭐⭐ |
+| **Problem** | In-memory cache with per-key TTL, lazy expiry, capacity eviction |
+| **Patterns** | **Facade-like** entry, **Decorator**-adjacent (compare LRU thread-safe wrapper) |
+
+| Pattern | Kyun? | Class / file |
+|---------|-------|--------------|
+| Facade-like | One class: `put`, `get`, `contains`, `cleanupExpired`, stats | `ThreadSafeTTLCache` |
+| Concurrency | `shared_mutex` — shared reads, exclusive writes | `get()` vs `put()` lock modes |
+| Model | Value + expiry timepoint | `CacheEntry` |
+| Stats | Hits, misses, evictions | `CacheStatistics` |
+
+**Related:** [`LRU_Cache_LLD/`](./LRU_Cache_LLD/) uses **Decorator** `ThreadSafeLRUCache` on core — TTL project is standalone eviction + expiry focus.
+
+**UML:** [Section 24](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#24-thread-safe-ttl-cache)
+
+```bash
+cd Thread_Safe_Cache_with_TTL_LLD && ./compile.sh && ./cache_ttl_app
+```
+
 ### ATM
 | Pattern | Where |
 |---------|-------|
@@ -780,6 +868,61 @@ cd Logger_LLD && g++ -std=c++17 Main.cpp -o logger_app && ./logger_app
 | [Vending Machine](./vending_machine_LLD/) | Machine | `Inventory` + `MoneyManager` | **Composition** |
 | [ATM](./ATM_LLD/) | `ATMSystem` | `AuthenticationService`, `CashDispenser` | **Facade** + services |
 | [JSON Parser](./JSON_Parser_LLD/) | `JsonParser` | Recursive descent tree | **Composite** |
+| [Amazon Locker](./Amazon_Locker_Service_LLD/) | `AmazonLockerService` | `AccessCodeService`, allocation strategy | **Facade** + **Strategy** |
+| [Concurrent HashMap](./Concurrent_HashMap_LLD/) | `IConcurrentMap` | `StripedHashMap`, `CoarseGrainedHashMap` | **Strategy** + interface |
+| [TTL Cache](./Thread_Safe_Cache_with_TTL_LLD/) | `ThreadSafeTTLCache` | Lazy TTL, `shared_mutex` | Facade-like |
+
+---
+
+## 3.1 Concurrency Modules (`Multi_threading_C++`)
+
+> **Yeh standalone LLD systems nahi** — learning labs + interview concurrency problems.  
+> **Full navigation:** [`Multi_threading_C++/README.md`](./Multi_threading_C++/README.md) · [Root README § Multi-Threading](./README.md#multi-threading-module)
+
+### Subfolder map
+
+| Module | Path | Pattern / topic | Deep guide |
+|--------|------|-----------------|------------|
+| **Signaling** | [`Concurrency_Patterns/Signaling_Pattern/`](./Multi_threading_C++/Concurrency_Patterns/Signaling_Pattern/) | `condition_variable`, notify/wait | [COMPLETE](./Multi_threading_C++/Concurrency_Patterns/Signaling_Pattern/SIGNALING_PATTERN_COMPLETE.md) |
+| **Thread Pool** | [`Concurrency_Patterns/Thread_Pool_Pattern/`](./Multi_threading_C++/Concurrency_Patterns/Thread_Pool_Pattern/) | **Object pool** + task queue (GoF-adjacent) | [COMPLETE](./Multi_threading_C++/Concurrency_Patterns/Thread_Pool_Pattern/THREAD_POOL_PATTERN_COMPLETE.md) |
+| **Producer-Consumer** | [`Concurrency_Patterns/Producer_Consumer_Pattern/`](./Multi_threading_C++/Concurrency_Patterns/Producer_Consumer_Pattern/) | Bounded buffer, backpressure | [COMPLETE](./Multi_threading_C++/Concurrency_Patterns/Producer_Consumer_Pattern/PRODUCER_CONSUMER_PATTERN_COMPLETE.md) |
+| **Reader-Writer** | [`Concurrency_Patterns/Reader_Writer_Pattern/`](./Multi_threading_C++/Concurrency_Patterns/Reader_Writer_Pattern/) | `shared_mutex`, custom RW lock | [COMPLETE](./Multi_threading_C++/Concurrency_Patterns/Reader_Writer_Pattern/READER_WRITER_PATTERN_COMPLETE.md) |
+| **Deadlock** | [`Concurrency_Challenges/Deadlock/`](./Multi_threading_C++/Concurrency_Challenges/Deadlock/) | Coffman, `std::lock`, `scoped_lock` | [COMPLETE](./Multi_threading_C++/Concurrency_Challenges/Deadlock/DEADLOCK_COMPLETE.md) |
+| **Livelock** | [`Concurrency_Challenges/Livelock/`](./Multi_threading_C++/Concurrency_Challenges/Livelock/) | `try_lock`, backoff | [COMPLETE](./Multi_threading_C++/Concurrency_Challenges/Livelock/LIVELOCK_COMPLETE.md) |
+| **Fizz Buzz** | [`FIZZ_BUZZ_Problem/Fizz_Buzz_Multithreaded/`](./Multi_threading_C++/FIZZ_BUZZ_Problem/Fizz_Buzz_Multithreaded/) | 4 threads, CV / semaphore / busy-wait | [COMPLETE](./Multi_threading_C++/FIZZ_BUZZ_Problem/Fizz_Buzz_Multithreaded/FIZZ_BUZZ_MULTITHREADED_COMPLETE.md) |
+| **Merge Sort** | [`Multi_threaded_Merge_Sort/`](./Multi_threading_C++/Multi_threaded_Merge_Sort/) | Fork-join, thread pool + threshold | [COMPLETE](./Multi_threading_C++/Multi_threaded_Merge_Sort/MULTI_THREADED_MERGE_SORT_COMPLETE.md) |
+
+### Concurrency pattern ↔ GoF mapping (interview)
+
+| Lab folder | Bolne ke liye pattern name | Repo tie-in |
+|------------|---------------------------|-------------|
+| Thread Pool | **Worker pool** / reuse threads | Same idea as `thread_pool.cpp`, richer in `Thread_Pool_Pattern/` |
+| Producer-Consumer | **Classic concurrency pattern** (not GoF) | `producer_consumer.cpp` + `BoundedBuffer.h` |
+| Reader-Writer | Maps to **shared lock** problem | Links to `ThreadSafeTTLCache` / LRU decorator |
+| Fizz Buzz | **Signaling** + turn-taking | LeetCode 411 — `condition_variable` answer |
+| Merge Sort | **Divide-and-conquer** + fork-join | Uses pool; watch pool deadlock (documented in COMPLETE) |
+
+```mermaid
+flowchart TB
+    MT[Multi_threading_C++]
+    MT --> CP[Concurrency_Patterns]
+    MT --> CC[Concurrency_Challenges]
+    MT --> FB[FIZZ_BUZZ_Problem]
+    MT --> MS[Multi_threaded_Merge_Sort]
+    MT --> ROOT[Root .cpp labs]
+
+    CP --> S[Signaling]
+    CP --> TP[Thread Pool]
+    CP --> PC[Producer Consumer]
+    CP --> RW[Reader Writer]
+
+    CC --> DL[Deadlock]
+    CC --> LL[Livelock]
+
+    style MT fill:#e3f2fd
+    style CP fill:#f3e8ff
+    style CC fill:#ffebee
+```
 
 ---
 
@@ -805,11 +948,15 @@ flowchart TB
     STR --> P3[OYO Hotel]
     STR --> P4[LeetCode]
     STR --> P5[WhatsApp]
+    STR --> P6[Amazon Locker allocation]
+    STR --> P7[Concurrent HashMap locking]
 
     FAC --> F1[Splitwise]
     FAC --> F2[Spotify]
     FAC --> F3[ATM]
     FAC --> F4[LRU Cache]
+    FAC --> F5[Amazon Locker]
+    FAC --> F6[TTL Cache]
 
     CHN --> C1[Logger]
     CHN --> C2[L24 Coupons]
@@ -828,11 +975,11 @@ flowchart TB
 |---------|-------------------|
 | **Singleton** | L10, L14, L18, L23, L24, L31, L37, **Logger** |
 | **Factory** | L9, L11, L18, L23, L24, L26, L31, L33, L34, L37, **Movie Ticket**, **Rate Limiter** |
-| **Strategy** | L8, L11, L14, L18, L24, L26, L31, L33, L34, L37, **Parking**, **Load Balancer**, **Rate Limiter**, **OYO**, **LeetCode**, **WhatsApp**, **Movie Ticket** |
+| **Strategy** | L8, L11, L14, L18, L24, L26, L31, L33, L34, L37, **Parking**, **Load Balancer**, **Rate Limiter**, **OYO**, **LeetCode**, **WhatsApp**, **Movie Ticket**, **Amazon Locker** (allocation), **Concurrent HashMap** (locking) |
 | **Observer** | L12, L14, L31, L33, L34, **Logger** (appenders), **WhatsApp** |
 | **Decorator** | L13, L14, **LRU**, **LFU**, **WhatsApp** |
 | **Adapter** | L16, L18 |
-| **Facade** | L11, L17, L18, L26, L27, L31, **ATM**, **OYO**, **LeetCode**, **LRU**, **LFU**, **Movie Ticket**, **WhatsApp** (`WhatsAppSystem`) |
+| **Facade** | L11, L17, L18, L26, L27, L31, **ATM**, **OYO**, **LeetCode**, **LRU**, **LFU**, **Movie Ticket**, **WhatsApp** (`WhatsAppSystem`), **Amazon Locker**, **TTL Cache** (facade-like) |
 | **Command** | L15 |
 | **Template Method** | L20, L23 |
 | **Chain of Responsibility** | L22, L24, **Logger** |
@@ -1192,6 +1339,9 @@ sequenceDiagram
 | **Chain + Strategy** | L24 Coupons | “Chain decides order of coupons; strategy computes discount amount.” |
 | **Decorator + Strategy + Observer** | WhatsApp, L14 | “Stack message decorators; strategy picks channel; observer logs events.” |
 | **Facade + Decorator + Interface** | LRU, LFU | “Facade for stats API; decorator adds thread safety on `ICache`.” |
+| **Facade + Strategy + Services** | Amazon Locker | “Facade deposit/pickup; strategy picks compartment; OTP/notify services.” |
+| **Strategy + Interface** | Concurrent HashMap | “`IConcurrentMap` — swap coarse vs striped locking strategy.” |
+| **Facade-like + shared_mutex** | TTL Cache | “Single cache API; readers shared, writers exclusive; lazy TTL.” |
 
 ```mermaid
 flowchart LR
@@ -1228,6 +1378,10 @@ flowchart LR
 | **LeetCode** | “Facade `LeetCodeSystem`; Strategy `ICodeRunner` for mock/real judge.” |
 | **Load Balancer** | “Strategy per algorithm — swap round-robin vs least-connections at runtime.” |
 | **Movie Ticket** | “Facade + Strategy pricing + Factory for bookings — BookMyShow style.” |
+| **Amazon Locker** | “`AmazonLockerService` facade; `FirstFitAllocationStrategy`; `AccessCodeService` for OTP lifecycle.” |
+| **Concurrent HashMap** | “`StripedHashMap` = Strategy over `IConcurrentMap`; stripe = less contention than coarse mutex.” |
+| **TTL Cache** | “`ThreadSafeTTLCache` with `shared_mutex`; lazy expire on get — like production session cache.” |
+| **Fizz Buzz / Merge Sort** | “Concurrency interview problems under `Multi_threading_C++` — CV + fork-join, not GoF catalog.” |
 
 ### 7.2 Common follow-up questions
 
@@ -1249,7 +1403,8 @@ flowchart LR
 | [`Design_Patterns.md`](./Design_Patterns.md) | Har pattern ki full theory + 3000+ lines |
 | [`SOLID.md`](./SOLID.md) | SOLID principles |
 | [`README.md`](./README.md) | Poora repo index |
-| [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | Full system UML (21 systems) |
+| [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | Full system UML (24 systems — §22–§24 new) |
+| [`Multi_threading_C++/README.md`](./Multi_threading_C++/README.md) | Concurrency labs + subfolder index |
 
 ### External animated references (browser)
 
@@ -1262,4 +1417,4 @@ flowchart LR
 
 ---
 
-*Last updated: matches repo projects L7–L40 + standalone system LLDs. Mermaid diagrams render on GitHub & VS Code Markdown preview.*
+*Last updated: L7–L40 + standalone LLDs (incl. Amazon Locker, Concurrent HashMap, TTL Cache) + `Multi_threading_C++` concurrency modules. Mermaid renders on GitHub & VS Code preview.*

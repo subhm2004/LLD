@@ -1,13 +1,11 @@
 <div align="center">
 
 <!-- ═══ HERO BANNER ═══ -->
-<img src="https://capsule-render.vercel.app/api?type=venom&height=260&gradientColor=0:0f0c29,25:302b63,55:24243e,85:0f4c75,100:00d4ff&text=🏗️%20LOW%20LEVEL%20DESIGN&fontSize=46&fontColor=ffffff&stroke=00d4ff" alt="LLD Hero" />
+<img src="https://capsule-render.vercel.app/api?type=venom&height=240&gradientColor=0:0f0c29,25:302b63,55:24243e,85:0f4c75,100:00d4ff&text=🏗️%20LOW%20LEVEL%20DESIGN&fontSize=44&fontColor=ffffff&stroke=00d4ff" alt="LLD Hero" />
 
-<img src="https://capsule-render.vercel.app/api?type=sliced&height=32&gradientColor=0:bc13fe,50:00d4ff,100:2ea043&section=header&reversal=true&textAlign=center&fontSize=0" alt="Divider" />
+<img src="https://capsule-render.vercel.app/api?type=soft&height=52&gradientColor=0:bc13fe,100:00d4ff&text=Complete+Master+Repository+Guide&fontSize=22&fontColor=ffffff" alt="Subtitle" />
 
-<h3>
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=26&duration=3200&pause=900&color=00D4FF&center=true&vCenter=true&width=980&lines=Complete+Master+Repository+Guide;40+Lessons+%E2%80%A2+27+Runnable+Systems;23%2B+GoF+Patterns+%E2%80%A2+C%2B%2B17+Code;4500%2B+Lines+UML+%E2%80%A2+Mermaid;From+OOP+to+GPay+%E2%80%A2+Truecaller+%E2%80%A2+Calendly&colors=00D4FF,BC8CFF,FFD166,2EA043,F85149,58A6FF" alt="Typing" />
-</h3>
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=3200&pause=900&color=00D4FF&center=true&vCenter=true&width=960&lines=40+Lessons+%E2%80%A2+27+Runnable+Systems;23%2B+GoF+Patterns+%E2%80%A2+C%2B%2B17;4500%2B+Lines+UML+%E2%80%A2+Mermaid;Interview+Ready+Deep+Dives&colors=00D4FF,BC8CFF,FFD166,2EA043,58A6FF" alt="Typing" />
 
 <br/>
 
@@ -46,23 +44,46 @@
 
 <br/>
 
-<!-- Glow badges -->
-<p>
-  <img src="https://img.shields.io/badge/C%2B%2B-17-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" />
-  <img src="https://img.shields.io/badge/GoF-23%2B_Patterns-BC8CFF?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Status-Interview_Ready-FF6F00?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Lines-2200%2B-2F81F7?style=for-the-badge" />
-</p>
+<h3>✨ Spotlight — Latest & Must-Run Systems</h3>
 
-<br/>
+<table>
+  <tr>
+    <th align="center">Project</th>
+    <th align="center">Pattern focus</th>
+    <th align="center">Quick run</th>
+  </tr>
+  <tr>
+    <td align="center">🅿️ <a href="Parking_lot_system_LLD/"><b>Parking Lot</b></a></td>
+    <td align="center"><code>Strategy</code> pricing</td>
+    <td align="center"><code>./parking_app</code></td>
+  </tr>
+  <tr>
+    <td align="center">💳 <a href="GPay_LLD/"><b>GPay</b></a></td>
+    <td align="center"><code>Facade</code> + rail <code>Strategy</code></td>
+    <td align="center"><code>./gpay_app</code></td>
+  </tr>
+  <tr>
+    <td align="center">📞 <a href="Truecaller_LLD/"><b>Truecaller</b></a></td>
+    <td align="center">Spam <code>Strategy</code></td>
+    <td align="center"><code>./truecaller_app</code></td>
+  </tr>
+  <tr>
+    <td align="center">📅 <a href="Meeting_Scheduler_LLD/"><b>Meeting Scheduler</b></a></td>
+    <td align="center"><code>Factory</code> + slot <code>Strategy</code></td>
+    <td align="center"><code>./meeting_scheduler_app</code></td>
+  </tr>
+  <tr>
+    <td align="center">⚡ <a href="LeetCode_LLD/"><b>LeetCode Judge</b></a></td>
+    <td align="center"><code>ICodeRunner</code> Strategy</td>
+    <td align="center"><code>./leetcode_app</code></td>
+  </tr>
+</table>
 
-<!-- Featured systems — pill style -->
-<p>
-  <img src="https://img.shields.io/badge/🅿️_Parking_Lot-Strategy-1f6feb?style=for-the-badge&labelColor=161b22" />
-  <img src="https://img.shields.io/badge/💳_GPay-UPI_P2P-2ea043?style=for-the-badge&labelColor=161b22" />
-  <img src="https://img.shields.io/badge/📞_Truecaller-Spam_ID-58a6ff?style=for-the-badge&labelColor=161b22" />
-  <img src="https://img.shields.io/badge/📅_Meeting_Scheduler-Calendly-f778ba?style=for-the-badge&labelColor=161b22" />
-  <img src="https://img.shields.io/badge/⚡_LeetCode-Judge-f0883e?style=for-the-badge&labelColor=161b22" />
+<p align="center">
+  <img src="https://img.shields.io/static/v1?style=for-the-badge&message=C%2B%2B17&labelColor=0d1117&color=00599C&logo=c%2B%2B&logoColor=white&label=C%2B%2B" />
+  <img src="https://img.shields.io/static/v1?style=for-the-badge&message=23%2B&labelColor=0d1117&color=BC8CFF&label=GoF" />
+  <img src="https://img.shields.io/static/v1?style=for-the-badge&message=Ready&labelColor=0d1117&color=FF6F00&label=Interview" />
+  <img src="https://img.shields.io/static/v1?style=for-the-badge&message=2200%2B&labelColor=0d1117&color=2F81F7&label=Lines" />
 </p>
 
 <br/>

@@ -5,7 +5,7 @@
 
 <img src="https://capsule-render.vercel.app/api?type=soft&height=52&gradientColor=0:bc13fe,100:00d4ff&text=Complete+Master+Repository+Guide&fontSize=22&fontColor=ffffff" alt="Subtitle" />
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=3200&pause=900&color=00D4FF&center=true&vCenter=true&width=960&lines=40+Lessons+%E2%80%A2+27+Runnable+Systems;23%2B+GoF+Patterns+%E2%80%A2+C%2B%2B17;4500%2B+Lines+UML+%E2%80%A2+Mermaid;Interview+Ready+Deep+Dives&colors=00D4FF,BC8CFF,FFD166,2EA043,58A6FF" alt="Typing" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=3200&pause=900&color=00D4FF&center=true&vCenter=true&width=960&lines=40+Lessons+%E2%80%A2+30+Runnable+Systems;23%2B+GoF+Patterns+%E2%80%A2+C%2B%2B17;4500%2B+Lines+UML+%E2%80%A2+Mermaid;Interview+Ready+Deep+Dives&colors=00D4FF,BC8CFF,FFD166,2EA043,58A6FF" alt="Typing" />
 
 <br/>
 
@@ -25,7 +25,7 @@
       <sub>OOP · SOLID · GoF · LLD</sub>
     </td>
     <td align="center" width="155">
-      <img src="https://img.shields.io/badge/🏢_SYSTEMS-27-2EA043?style=for-the-badge&labelColor=0d1117" alt="systems" /><br/>
+      <img src="https://img.shields.io/badge/🏢_SYSTEMS-30-2EA043?style=for-the-badge&labelColor=0d1117" alt="systems" /><br/>
       <b>Full LLD</b><br/>
       <sub>Parking · Uber · GPay…</sub>
     </td>
@@ -35,7 +35,7 @@
       <sub>LC · Pool · CAS</sub>
     </td>
     <td align="center" width="155">
-      <img src="https://img.shields.io/badge/📐_UML-27_§-FB8500?style=for-the-badge&labelColor=0d1117" alt="uml" /><br/>
+      <img src="https://img.shields.io/badge/📐_UML-30_§-FB8500?style=for-the-badge&labelColor=0d1117" alt="uml" /><br/>
       <b>Class + Seq</b><br/>
       <sub>Interview boards</sub>
     </td>
@@ -77,6 +77,21 @@
     <td align="center"><code>ICodeRunner</code> Strategy</td>
     <td align="center"><code>./leetcode_app</code></td>
   </tr>
+  <tr>
+    <td align="center">🚂 <a href="IRCTC_LLD/"><b>IRCTC</b></a></td>
+    <td align="center">Segment seats + <code>mutex</code></td>
+    <td align="center"><code>./irctc_app</code></td>
+  </tr>
+  <tr>
+    <td align="center">📈 <a href="Stock_Exchange_LLD/"><b>Stock Exchange</b></a></td>
+    <td align="center">Order book + price-time match</td>
+    <td align="center"><code>./stock_exchange_app</code></td>
+  </tr>
+  <tr>
+    <td align="center">⏱️ <a href="Task_Scheduler_LLD/"><b>Task Scheduler</b></a></td>
+    <td align="center"><code>Observer</code> + priority queue</td>
+    <td align="center"><code>./task_scheduler_app</code></td>
+  </tr>
 </table>
 
 <p align="center">
@@ -94,7 +109,7 @@
 %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#2F81F7', 'primaryTextColor': '#fff', 'lineColor': '#58a6ff', 'secondaryColor': '#6f42c1', 'tertiaryColor': '#161b22'}}}%%
 flowchart LR
     A([📖 L1-L6<br/>Foundations]) --> B([🧩 L7-L40<br/>Patterns])
-    B --> C([🏗️ 27 Systems<br/>Runnable C++])
+    B --> C([🏗️ 30 Systems<br/>Runnable C++])
     C --> D([🎯 Interview<br/>Ready])
     style A fill:#302b63,stroke:#00d4ff,color:#fff
     style B fill:#6f42c1,stroke:#bc8cff,color:#fff
@@ -109,10 +124,10 @@ flowchart LR
   <img src="https://img.shields.io/badge/🚀_QUICK_START-5_Min_Path-00d4ff?style=for-the-badge&labelColor=0d1117" />
 </a>
 <a href="docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md">
-  <img src="https://img.shields.io/badge/📊_UML_HUB-27_Diagrams-BC8CFF?style=for-the-badge&labelColor=0d1117" />
+  <img src="https://img.shields.io/badge/📊_UML_HUB-30_Diagrams-BC8CFF?style=for-the-badge&labelColor=0d1117" />
 </a>
 <a href="docs/PROJECT_DESIGN_PATTERNS.md">
-  <img src="https://img.shields.io/badge/🧩_PATTERN_MAP-57_Projects-2F81F7?style=for-the-badge&labelColor=0d1117" />
+  <img src="https://img.shields.io/badge/🧩_PATTERN_MAP-60_Projects-2F81F7?style=for-the-badge&labelColor=0d1117" />
 </a>
 <a href="docs/README.md">
   <img src="https://img.shields.io/badge/📚_DOCS-Theory_+_SOLID-FFD166?style=for-the-badge&labelColor=0d1117" />
@@ -200,7 +215,7 @@ cd Parking_lot_system_LLD
 ./parking_app
 ```
 
-**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (27 systems, ~4500+ lines Mermaid).
+**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (30 systems, ~4800+ lines Mermaid).
 
 ---
 
@@ -211,7 +226,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | Category               | Count        | Description                                                             |
 | ---------------------- | ------------ | ----------------------------------------------------------------------- |
 | **Lesson modules**     | L1 – L40     | OOP, SOLID, UML, har major design pattern, aur pattern + system hybrids |
-| **Standalone systems** | 27 projects  | Parking, GPay, Truecaller, Meeting Scheduler + more                     |
+| **Standalone systems** | 30 projects  | Parking, GPay, IRCTC, Stock Exchange, Task Scheduler + more               |
 | **Concurrency labs**   | 1 folder     | `Multi_threading_C++` — threads, mutex, semaphores, thread pool, DCLP   |
 | **Reference assets**   | PDFs, images | Gang of Four, DDIA, design pattern cheat sheets                         |
 
@@ -227,7 +242,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | ------------------------------------ | ------------------------------------------------------------------------------------- |
 | Total C++/header source files        | ~490+                                                                                 |
 | Lesson folders (L1–L40)              | 40                                                                                    |
-| Runnable system demos                | 26+                                                                                   |
+| Runnable system demos                | 30                                                                                    |
 | Projects with dedicated `README.md`  | 24+                                                                                   |
 | Design patterns demonstrated         | 20+ (GoF + Null Object)                                                               |
 | Projects with `problem_statement.md` | 28+                                                                                   |
@@ -243,7 +258,7 @@ Zyada tar LLD preparation in points par atak jaati hai:
 | ------------------------------------------------- | ---------------------------------------------------------------------- |
 | Theory samajh aata hai, code me convert nahi hota | Har concept ke saath runnable `.cpp` / modular headers                 |
 | Code likh lete hain, extensibility weak hoti hai  | SOLID + OCP-focused refactors (e.g. L7 Bad vs Good design)             |
-| Sirf 1–2 problems solve kiye                      | 26+ full systems + 10+ lesson-level LLDs                               |
+| Sirf 1–2 problems solve kiye                      | 30 full systems + 10+ lesson-level LLDs                               |
 | Patterns yaad hain, use-case nahi                 | Har pattern ke saath real domain (ATM, Food Delivery, Payment Gateway) |
 | Interview me sirf code, design explain nahi       | Har project me assumptions, trade-offs, extension hooks                |
 
@@ -1071,6 +1086,48 @@ cd Meeting_Scheduler_LLD && ./compile.sh && ./meeting_scheduler_app
 
 ---
 
+### Task_Scheduler_LLD
+
+|              |                                                                                    |
+| ------------ | ---------------------------------------------------------------------------------- |
+| **Path**     | [`Task_Scheduler_LLD/`](./Task_Scheduler_LLD/)                                     |
+| **Patterns** | **Facade**, **Strategy** (priority/FIFO scheduling), **Observer**, **Factory**       |
+| **Flow**     | Submit job → delayed queue → worker pool → retry on failure → cancel               |
+
+```bash
+cd Task_Scheduler_LLD && ./compile.sh && ./task_scheduler_app
+```
+
+---
+
+### IRCTC_LLD
+
+|              |                                                                                         |
+| ------------ | --------------------------------------------------------------------------------------- |
+| **Path**     | [`IRCTC_LLD/`](./IRCTC_LLD/)                                                             |
+| **Patterns** | **Facade**, **Factory**, **Service layer**, segment overlap + per-run `mutex`           |
+| **Flow**     | Search train → check seats → book segment (seat reuse) → concurrent booking → cancel    |
+
+```bash
+cd IRCTC_LLD && ./compile.sh && ./irctc_app
+```
+
+---
+
+### Stock_Exchange_LLD
+
+|              |                                                                                    |
+| ------------ | ---------------------------------------------------------------------------------- |
+| **Path**     | [`Stock_Exchange_LLD/`](./Stock_Exchange_LLD/)                                     |
+| **Patterns** | **Facade**, **Factory**, **Service layer** (order book + matching engine)          |
+| **Flow**     | List symbol → place LIMIT/MARKET order → price-time match → partial fill → cancel  |
+
+```bash
+cd Stock_Exchange_LLD && ./compile.sh && ./stock_exchange_app
+```
+
+---
+
 ### Amazon_Locker_Service_LLD
 
 |              |                                                                      |
@@ -1588,6 +1645,9 @@ chmod +x scripts/build_all_systems.sh
 | LeetCode_LLD     | `main.cpp`                        | `leetcode_app`     |
 | GPay_LLD         | `main.cpp`                        | `gpay_app`         |
 | Truecaller_LLD   | `main.cpp`                        | `truecaller_app`   |
+| Task_Scheduler_LLD | `main.cpp`                      | `task_scheduler_app` |
+| IRCTC_LLD        | `main.cpp`                        | `irctc_app`        |
+| Stock_Exchange_LLD | `main.cpp`                      | `stock_exchange_app` |
 
 > Lesson folders (`L*`) me often header-only demos hain — unke liye specific `.cpp` file compile karo with `-std=c++17`.
 
@@ -1725,6 +1785,9 @@ Har project complete karne ke baad yeh try karo:
 | GPay (UPI P2P)        | [GPay_LLD](./GPay_LLD/)                                                                                                                                                                                                                                                                                                              |
 | Truecaller            | [Truecaller_LLD](./Truecaller_LLD/)                                                                                                                                                                                                                                                                                                  |
 | Meeting Scheduler     | [Meeting_Scheduler_LLD](./Meeting_Scheduler_LLD/)                                                                                                                                                                                                                                                                                    |
+| Task Scheduler        | [Task_Scheduler_LLD](./Task_Scheduler_LLD/)                                                                                                                                                                                                                                                                                          |
+| IRCTC                 | [IRCTC_LLD](./IRCTC_LLD/)                                                                                                                                                                                                                                                                                                            |
+| Stock Exchange        | [Stock_Exchange_LLD](./Stock_Exchange_LLD/)                                                                                                                                                                                                                                                                                            |
 | Pub-Sub System        | [Pub_Sub_System_LLD](./Pub_Sub_System_LLD/)                                                                                                                                                                                                                                                                                          |
 | Airline Management    | [Airline_Management_System_LLD](./Airline_Management_System_LLD/)                                                                                                                                                                                                                                                                    |
 | LinkedIn              | [Linkedin_LLD](./Linkedin_LLD/)                                                                                                                                                                                                                                                                                                      |
@@ -1822,6 +1885,73 @@ cd Truecaller_LLD && ./compile.sh && ./truecaller_app
 
 ```bash
 cd Meeting_Scheduler_LLD && ./compile.sh && ./meeting_scheduler_app
+```
+
+---
+
+### Task_Scheduler_LLD
+
+| Entities | `Job`, priority/delay/retry policy |
+| -------- | ---------------------------------- |
+| Services | `SchedulerService`, `WorkerPoolService`, `RetryService`, `JobRegistryService` |
+| Patterns | **Observer** (`IJobObserver`), **Strategy** (`PrioritySchedulingStrategy`) |
+| Facade   | `TaskSchedulerSystem` |
+
+**Flow:** `submitJob` → `start(workers)` → delayed promotion → execute → retry → `cancelJob`
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| vs cron? | Cron = schedule by time expression; yahan job queue + worker pool + retry |
+| Fairness? | Priority queue for ready jobs; per-run delayed min-heap |
+
+**UML:** [§28 Task Scheduler](./docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#28-task--job-scheduler) · **Patterns:** [Task Scheduler](./docs/PROJECT_DESIGN_PATTERNS.md#task--job-scheduler)
+
+```bash
+cd Task_Scheduler_LLD && ./compile.sh && ./task_scheduler_app
+```
+
+---
+
+### IRCTC_LLD
+
+| Entities | `Train`, `TicketBooking`, `SegmentLedger` |
+| -------- | ----------------------------------------- |
+| Services | `TrainSearchService`, `SeatAllocationService`, `BookingService` |
+| Facade   | `IRCTCSystem` |
+
+**Flow:** `searchByRoute` → `getAvailableSeatCount` → `bookTicket` (segment) → `cancelTicket`
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Same seat, two users? | Half-open segments `[from,to)` — non-overlapping reuse allowed |
+| Concurrent book? | `mutex` per `trainNumber|date` in `BookingService` |
+
+**UML:** [§29 IRCTC](./docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#29-irctc-train-booking) · **Patterns:** [IRCTC](./docs/PROJECT_DESIGN_PATTERNS.md#irctc-train-booking)
+
+```bash
+cd IRCTC_LLD && ./compile.sh && ./irctc_app
+```
+
+---
+
+### Stock_Exchange_LLD
+
+| Entities | `Order`, `Trade`, `Symbol`, `OrderBookLevel` |
+| -------- | -------------------------------------------- |
+| Services | `OrderBookService`, `MatchingEngineService`, `TradeLedgerService` |
+| Facade   | `StockExchangeSystem` |
+
+**Flow:** `addSymbol` → `placeOrder` (LIMIT/MARKET) → match at maker price → `cancelOrder`
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Price-time priority? | Best ask/bid first; FIFO within same price level (`deque`) |
+| Trade price? | Resting (maker) order price |
+
+**UML:** [§30 Stock Exchange](./docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#30-stock-exchange-order-matching) · **Patterns:** [Stock Exchange](./docs/PROJECT_DESIGN_PATTERNS.md#stock-exchange-order-matching)
+
+```bash
+cd Stock_Exchange_LLD && ./compile.sh && ./stock_exchange_app
 ```
 
 ---
@@ -2110,14 +2240,14 @@ Pair with **L32 State** pattern lesson for interview synergy.
 
 | Company tier                  | Commonly asked LLD                             | Repo path                                                         |
 | ----------------------------- | ---------------------------------------------- | ----------------------------------------------------------------- |
-| FAANG / Big Tech              | LRU Cache, Rate Limiter, Logger, Online Judge  | `LRU_Cache_LLD`, `Rate_Limiter_LLD`, `Logger_LLD`, `LeetCode_LLD` |
-| Amazon                        | Parking Lot, Locker (extension), Load Balancer | `Parking_lot_system_LLD`, `LoadBalancer_LLD`                      |
+| FAANG / Big Tech              | LRU Cache, Rate Limiter, Logger, Job Scheduler | `LRU_Cache_LLD`, `Rate_Limiter_LLD`, `Logger_LLD`, `Task_Scheduler_LLD` |
+| Amazon                        | Parking Lot, Locker, Load Balancer             | `Parking_lot_system_LLD`, `LoadBalancer_LLD`, `Amazon_Locker_Service_LLD` |
 | Microsoft                     | Elevator, Logger, Cache                        | `Elevator_System_LLD`, `Logger_LLD`                               |
 | Uber / Swiggy / Zomato        | Ride, Food (L11), Movie Ticket                 | `Uber_LLD`, `L11 Food_Delivery`, `Movie_Ticket_Booking_System`    |
 | Meta / Social                 | WhatsApp, LinkedIn, Reels                      | `WhatsApp_LLD`, `Linkedin_LLD`, `Insta_reel_LLD`                  |
 | Flipkart / E-commerce lessons | Payment Gateway L23, Coupon L24                | `L23`, `L24`                                                      |
-| Fintech                       | ATM, Payment Gateway, UPI P2P, Splitwise       | `ATM_LLD`, `L23`, `GPay_LLD`, `L31 Splitwise`                     |
-| India mobile apps             | UPI wallet, Caller ID / spam                   | `GPay_LLD`, `Truecaller_LLD`                                      |
+| Fintech                       | ATM, Payment Gateway, UPI, Order matching      | `ATM_LLD`, `L23`, `GPay_LLD`, `L31 Splitwise`, `Stock_Exchange_LLD` |
+| India mobile apps             | IRCTC booking, UPI, Caller ID                  | `IRCTC_LLD`, `GPay_LLD`, `Truecaller_LLD`                         |
 | Startups (general)            | URL Shortener, Vending Machine                 | `URL_Shortner_LLD`, `vending_machine_LLD`                         |
 
 > Yeh mapping **heuristic** hai — actual interviews company/team par vary karte hain. Repo se **pattern reuse** seekho, exact company list yaad karne ki zarurat nahi.
@@ -2269,12 +2399,13 @@ Need undo?                          → Command / Memento
 | 2026 | Added `GPay_LLD` (UPI P2P) + `Truecaller_LLD` — §25–§26 in diagrams, pattern map updated                                      |
 | 2026 | Repo cleanup — `docs/`, `assets/`, `books/` (root ab sirf README + project folders)                                           |
 | 2026 | Added `Meeting_Scheduler_LLD` — §27 UML + pattern map                                                                         |
+| 2026 | Added `Task_Scheduler_LLD`, `IRCTC_LLD`, `Stock_Exchange_LLD` — §28–§30 UML + pattern map + README                          |
 
 **Maintainer checklist:**
 
-- [ ] Har naye project me `problem_statement.md`, `requirements.md`, `compile.sh`
-- [ ] Root README me project table update
-- [x] Diagram file me naya section add (§22–§26 incl. GPay, Truecaller)
+- [x] Har naye project me `problem_statement.md`, `requirements.md`, `compile.sh`
+- [x] Root README me project table update
+- [x] Diagram file me naya section add (§28–§30 Task Scheduler, IRCTC, Stock Exchange)
 - [ ] `./scripts/build_all_systems.sh` green before push
 
 ---

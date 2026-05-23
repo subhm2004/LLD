@@ -2,3 +2,10 @@ CompileFlags:
   Add:
     - -std=c++17
     - -pthread
+
+---
+# IRCTC_LLD headers are C++; use this folder's compile DB (run IRCTC_LLD/compile.sh once).
+If:
+  PathMatch: IRCTC_LLD/.*
+CompileFlags:
+  CompilationDatabase: IRCTC_LLD

@@ -1,11 +1,11 @@
 # Project ↔ Design Pattern Map
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=6F42C1&center=true&vCenter=true&width=920&lines=57+Projects+%C3%97+23+GoF+Patterns;Pattern+Map+%2B+Live+Diagrams;Interview-Ready+Visual+Guide" alt="Typing animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=6F42C1&center=true&vCenter=true&width=920&lines=60+Projects+%C3%97+23+GoF+Patterns;Pattern+Map+%2B+Live+Diagrams;Interview-Ready+Visual+Guide" alt="Typing animation" />
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Projects-57+-blue?style=for-the-badge" alt="Projects" />
+  <img src="https://img.shields.io/badge/Projects-60+-blue?style=for-the-badge" alt="Projects" />
   <img src="https://img.shields.io/badge/Patterns-23+GoF-purple?style=for-the-badge" alt="Patterns" />
   <img src="https://img.shields.io/badge/Diagrams-Mermaid-success?style=for-the-badge" alt="Mermaid" />
 </p>
@@ -229,6 +229,9 @@ flowchart LR
 | 59 | GPay (UPI P2P) | [`GPay_LLD/`](../GPay_LLD/) | **Facade** (`GPaySystem`), **Strategy** (bank vs wallet rail), **Factory** (rail + transaction) |
 | 60 | Truecaller | [`Truecaller_LLD/`](../Truecaller_LLD/) | **Facade** (`TruecallerSystem`), **Strategy** (spam scoring), **Service layer** |
 | 61 | Meeting Scheduler | [`Meeting_Scheduler_LLD/`](../Meeting_Scheduler_LLD/) | **Facade**, **Strategy** (free slots), **Factory**, **Service layer** |
+| 62 | Task / Job Scheduler | [`Task_Scheduler_LLD/`](../Task_Scheduler_LLD/) | **Facade**, **Strategy** (priority/FIFO), **Observer**, **Factory**, worker pool |
+| 63 | IRCTC Train Booking | [`IRCTC_LLD/`](../IRCTC_LLD/) | **Facade**, **Factory**, **Service layer**, segment ledger + `mutex` |
+| 64 | Stock Exchange | [`Stock_Exchange_LLD/`](../Stock_Exchange_LLD/) | **Facade**, **Factory**, **Service layer** (order book + matching) |
 
 > **Note:** L1–L6 = OOP + SOLID foundation ([`L2 OOPS_1`](../L2%20OOPS_1/), [`L5 SOLID_1`](../L5%20SOLID_1/), [`L6 SOLID_2`](../L6%20SOLID_2/)) — design pattern **lessons** nahi, principles hain.
 
@@ -246,7 +249,7 @@ flowchart LR
 | Priority | Projects |
 |----------|----------|
 | ⭐⭐⭐ Must | Parking, Splitwise L31, Payment L23, BookMyShow, Logger, Spotify L18 |
-| ⭐⭐ Strong | OYO, LRU, LeetCode, WhatsApp, L24 Coupons, Load Balancer, Movie Ticket, **Amazon Locker**, **Concurrent HashMap**, **TTL Cache**, **GPay**, **Truecaller** |
+| ⭐⭐ Strong | OYO, LRU, LeetCode, WhatsApp, L24 Coupons, Load Balancer, Movie Ticket, **Amazon Locker**, **Concurrent HashMap**, **TTL Cache**, **GPay**, **Truecaller**, **Task Scheduler**, **IRCTC**, **Stock Exchange** |
 | ⭐ Good | Baaki lessons L7–L40 (pattern demos), Car Rental, Uber, JSON Parser, **Multi_threading_C++** labs |
 
 ### 1.1 Lesson learning path (recommended order)
@@ -914,6 +917,71 @@ cd Truecaller_LLD && ./compile.sh && ./truecaller_app
 cd Meeting_Scheduler_LLD && ./compile.sh && ./meeting_scheduler_app
 ```
 
+### Task / Job Scheduler
+
+| | |
+|---|---|
+| **Path** | [`Task_Scheduler_LLD/`](../Task_Scheduler_LLD/) |
+| **Priority** | ⭐⭐ (Amazon/Google — background jobs, retries) |
+| **Problem** | Delayed jobs, worker pool, priority, retry, cancel |
+| **Patterns** | **Facade**, **Strategy**, **Observer**, **Factory** |
+
+| Pattern | Kyun? | Class / file |
+|---------|-------|--------------|
+| Facade | Submit/start/stop/cancel API | `TaskSchedulerSystem` |
+| Strategy | Priority vs FIFO ready queue | `PrioritySchedulingStrategy`, `FifoSchedulingStrategy` |
+| Observer | Job lifecycle notifications | `IJobObserver`, `ConsoleJobObserver` |
+| Factory | Validate + create `Job` | `JobFactory` |
+| Service layer | Delayed heap, workers, retry | `SchedulerService`, `WorkerPoolService`, `RetryService` |
+
+**UML:** [Section 28](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#28-task--job-scheduler)
+
+```bash
+cd Task_Scheduler_LLD && ./compile.sh && ./task_scheduler_app
+```
+
+### IRCTC Train Booking
+
+| | |
+|---|---|
+| **Path** | [`IRCTC_LLD/`](../IRCTC_LLD/) |
+| **Priority** | ⭐⭐⭐ (India — MakeMyTrip/IRCTC interviews) |
+| **Problem** | Train search, segment seats, concurrent book, cancel |
+| **Patterns** | **Facade**, **Factory**, **Service layer** |
+
+| Pattern | Kyun? | Class / file |
+|---------|-------|--------------|
+| Facade | One API for search/book/cancel | `IRCTCSystem` |
+| Factory | PNR / booking creation | `BookingFactory` |
+| Service layer | Catalog, allocation, booking mutex | `TrainCatalogService`, `SeatAllocationService`, `BookingService` |
+
+**UML:** [Section 29](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#29-irctc-train-booking)
+
+```bash
+cd IRCTC_LLD && ./compile.sh && ./irctc_app
+```
+
+### Stock Exchange Order Matching
+
+| | |
+|---|---|
+| **Path** | [`Stock_Exchange_LLD/`](../Stock_Exchange_LLD/) |
+| **Priority** | ⭐⭐⭐ (Fintech — order book + matching) |
+| **Problem** | LIMIT/MARKET orders, price-time match, partial fill |
+| **Patterns** | **Facade**, **Factory**, **Service layer** |
+
+| Pattern | Kyun? | Class / file |
+|---------|-------|--------------|
+| Facade | Register, place, cancel, book snapshot | `StockExchangeSystem` |
+| Factory | Order validation + id | `OrderFactory` |
+| Service layer | Book + match + ledger | `OrderBookService`, `MatchingEngineService`, `TradeLedgerService` |
+
+**UML:** [Section 30](./SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#30-stock-exchange-order-matching)
+
+```bash
+cd Stock_Exchange_LLD && ./compile.sh && ./stock_exchange_app
+```
+
 ### ATM
 | Pattern | Where |
 |---------|-------|
@@ -947,6 +1015,9 @@ cd Meeting_Scheduler_LLD && ./compile.sh && ./meeting_scheduler_app
 | [GPay](../GPay_LLD/) | `GPaySystem` | `TransferService`, `PinAuthService`, rail strategies | **Facade** + **Strategy** + **Factory** |
 | [Truecaller](../Truecaller_LLD/) | `TruecallerSystem` | `LookupService`, `SpamReportService`, `BlockService` | **Facade** + **Strategy** |
 | [Meeting Scheduler](../Meeting_Scheduler_LLD/) | `MeetingSchedulerSystem` | `BookingService`, `ConflictDetectionService`, slot strategy | **Facade** + **Strategy** + **Factory** |
+| [Task Scheduler](../Task_Scheduler_LLD/) | `TaskSchedulerSystem` | `WorkerPoolService`, `SchedulerService`, `RetryService` | **Facade** + **Strategy** + **Observer** |
+| [IRCTC](../IRCTC_LLD/) | `IRCTCSystem` | `SeatAllocationService`, `BookingService`, segment overlap | **Facade** + **Factory** + services |
+| [Stock Exchange](../Stock_Exchange_LLD/) | `StockExchangeSystem` | `MatchingEngineService`, `OrderBookService` | **Facade** + **Factory** + services |
 
 ---
 

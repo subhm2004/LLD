@@ -1,0 +1,21 @@
+classDiagram
+    class IRCTCSystem {
+        +searchByRoute()
+        +bookTicket()
+        +cancelTicket()
+    }
+    class TrainCatalogService
+    class TrainSearchService
+    class SeatInventoryService
+    class SeatAllocationService
+    class BookingService
+    class Train
+    class TicketBooking
+
+    IRCTCSystem --> TrainCatalogService
+    IRCTCSystem --> TrainSearchService
+    IRCTCSystem --> SeatInventoryService
+    IRCTCSystem --> BookingService
+    BookingService --> SeatAllocationService
+    SeatAllocationService --> TicketBooking
+    TrainCatalogService --> Train

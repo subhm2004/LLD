@@ -1,11 +1,11 @@
 # System Projects — Class Diagrams & Sequence Diagrams
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=6F42C1&center=true&vCenter=true&width=920&lines=UML+Reference+%E2%80%94+27+System+Projects;Class+Diagrams+%2B+Sequence+Flows;Mermaid+%7C+Code-Accurate+Names" alt="Typing animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=6F42C1&center=true&vCenter=true&width=920&lines=UML+Reference+%E2%80%94+30+System+Projects;Class+Diagrams+%2B+Sequence+Flows;Mermaid+%7C+Code-Accurate+Names" alt="Typing animation" />
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Systems-27-blue?style=for-the-badge" alt="27 systems" />
+  <img src="https://img.shields.io/badge/Systems-30-blue?style=for-the-badge" alt="30 systems" />
   <img src="https://img.shields.io/badge/Diagrams-Mermaid-6f42c1?style=for-the-badge" alt="Mermaid" />
   <img src="https://img.shields.io/badge/Lines-3100%2B-success?style=for-the-badge" alt="3100+ lines" />
   <img src="https://img.shields.io/badge/Synced-With%20Code-orange?style=for-the-badge" alt="Synced with code" />
@@ -17,7 +17,7 @@
   <img src="https://img.shields.io/badge/Preview-GitHub%20%7C%20VS%20Code%20%7C%20Cursor-informational?style=flat-square" alt="Preview" />
 </p>
 
-> **27 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
+> **30 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
 > GitHub / VS Code / Cursor me **Markdown Preview** se Mermaid diagrams render honge.
 
 ---
@@ -26,7 +26,10 @@
 
 | Item | Status |
 | ---- | ------ |
-| **Projects covered** | 27 / 27 standalone systems |
+| **Projects covered** | 30 / 30 standalone systems |
+| **Task Scheduler (§28)** | Delayed jobs, worker pool, retry, observer |
+| **IRCTC (§29)** | Segment seat booking, concurrent mutex |
+| **Stock Exchange (§30)** | Order book, price-time matching |
 | **Meeting Scheduler (§27)** | Availability, book, conflict, mutual slots |
 | **GPay (§25)** | P2P UPI, QR pay, request money, payment rail strategy |
 | **Truecaller (§26)** | Caller lookup, spam report, block, contact sync |
@@ -56,11 +59,11 @@ flowchart LR
 
 > Poora file scroll karne se pehle — **high-priority systems** aur **diagram types** yahan se pick karo.
 
-### 0.1 26 systems — category map
+### 0.1 30 systems — category map
 
 ```mermaid
 mindmap
-  root((26 Systems))
+  root((30 Systems))
     Infrastructure
       ATM
       Load Balancer
@@ -71,12 +74,16 @@ mindmap
       TTL Cache
       Concurrent HashMap
       Amazon Locker
+      Task Scheduler
     Booking Commerce
       Parking Lot
       Movie Ticket
       OYO Hotel
       Car Rental
       Vending Machine
+      IRCTC
+    Fintech
+      Stock Exchange
     Transport Social
       Uber
       Ride Sharing
@@ -90,6 +97,7 @@ mindmap
     Mobile Apps
       GPay UPI
       Truecaller
+      Meeting Scheduler
     Building
       Elevator
       Library
@@ -235,6 +243,9 @@ pie showData
 | 25 | [GPay (UPI P2P)](#25-gpay-upi-p2p) | `GPay_LLD/` |
 | 26 | [Truecaller](#26-truecaller) | `Truecaller_LLD/` |
 | 27 | [Meeting Scheduler](#27-meeting-scheduler) | `Meeting_Scheduler_LLD/` |
+| 28 | [Task / Job Scheduler](#28-task--job-scheduler) | `Task_Scheduler_LLD/` |
+| 29 | [IRCTC Train Booking](#29-irctc-train-booking) | `IRCTC_LLD/` |
+| 30 | [Stock Exchange](#30-stock-exchange-order-matching) | `Stock_Exchange_LLD/` |
 
 ---
 
@@ -4240,6 +4251,246 @@ cd Meeting_Scheduler_LLD && ./compile.sh && ./meeting_scheduler_app
 
 ---
 
+## 28. Task / Job Scheduler
+
+**Folder:** [`Task_Scheduler_LLD/`](../Task_Scheduler_LLD/) · **Facade:** `TaskSchedulerSystem` · **Patterns:** Strategy (priority), Observer, Factory, worker pool
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    direction TB
+
+    class TaskSchedulerSystem {
+        +submitJob(name, task, priority, delayMs, maxRetries) string
+        +start(workerCount)
+        +stop()
+        +cancelJob(jobId)
+        +advanceSimulatedTime(deltaMs)
+    }
+
+    class SchedulerService {
+        +schedule(job)
+        +promoteDueJobs()
+    }
+
+    class WorkerPoolService {
+        +start(workerCount)
+        +notifyWorkAvailable()
+    }
+
+    class RetryService {
+        +scheduleRetryIfEligible(job, error) bool
+    }
+
+    class PrioritySchedulingStrategy {
+        +enqueue(job)
+        +dequeueReady() Job
+    }
+
+    class IJobObserver {
+        <<interface>>
+        +onJobStatusChanged(jobId, status, detail)
+    }
+
+    class JobFactory {
+        +create(...) Job$
+    }
+
+    class Job {
+        +remainingQuantity() int
+        +isTerminal() bool
+    }
+
+    TaskSchedulerSystem --> SchedulerService
+    TaskSchedulerSystem --> WorkerPoolService
+    TaskSchedulerSystem --> RetryService
+    WorkerPoolService --> PrioritySchedulingStrategy
+    WorkerPoolService --> IJobObserver
+    SchedulerService --> PrioritySchedulingStrategy
+    TaskSchedulerSystem ..> JobFactory
+```
+
+### Sequence Diagram — submitJob with retry
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant TS as TaskSchedulerSystem
+    participant Sch as SchedulerService
+    participant Pool as WorkerPoolService
+    participant Retry as RetryService
+
+    Client->>TS: submitJob(task, maxRetries=3)
+    TS->>Sch: schedule(job)
+    TS->>Pool: notifyWorkAvailable()
+    Pool->>Pool: worker executes task
+    alt throws exception
+        Pool->>Retry: scheduleRetryIfEligible()
+        Retry->>Sch: reschedule with delay
+    else success
+        Pool-->>Client: COMPLETED (via observer)
+    end
+```
+
+### Build
+
+```bash
+cd Task_Scheduler_LLD && ./compile.sh && ./task_scheduler_app
+```
+
+---
+
+## 29. IRCTC Train Booking
+
+**Folder:** [`IRCTC_LLD/`](../IRCTC_LLD/) · **Facade:** `IRCTCSystem` · **Patterns:** Factory, Service layer, segment overlap + mutex
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    direction TB
+
+    class IRCTCSystem {
+        +registerUser(name) string
+        +addTrainRun(train, seatCount)
+        +searchByRoute(src, dest, date) Train[]
+        +getAvailableSeatCount(...) int
+        +bookTicket(user, train, src, dest, seat) TicketBooking
+        +cancelTicket(pnr, user)
+    }
+
+    class BookingService {
+        +bookTicket(train, user, src, dest, seat) TicketBooking
+        +cancelTicket(pnr, user)
+    }
+
+    class SeatAllocationService {
+        +countAvailableSeats(...) int
+        +isSeatFreeForSegment(...) bool
+    }
+
+    class TrainSearchService {
+        +searchByRoute(...) Train[]$
+    }
+
+    class SegmentLedger {
+        seatId -> segment bookings
+    }
+
+    IRCTCSystem --> BookingService
+    IRCTCSystem --> TrainSearchService
+    BookingService --> SeatAllocationService
+    BookingService --> SegmentLedger
+```
+
+### Sequence Diagram — bookTicket (segment reuse)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant IR as IRCTCSystem
+    participant Book as BookingService
+    participant Alloc as SeatAllocationService
+
+    User->>IR: bookTicket(BOM, BRC, seat S1)
+    IR->>Book: bookTicket (mutex per train run)
+    Book->>Alloc: isSeatFreeForSegment(S1, BOM-BRC)
+    Alloc-->>Book: free
+    Book-->>IR: PNR CONFIRMED
+    Note over User,Alloc: Later: another user may book S1 for RTM-NDLS if segments do not overlap
+```
+
+### Build
+
+```bash
+cd IRCTC_LLD && ./compile.sh && ./irctc_app
+```
+
+---
+
+## 30. Stock Exchange Order Matching
+
+**Folder:** [`Stock_Exchange_LLD/`](../Stock_Exchange_LLD/) · **Facade:** `StockExchangeSystem` · **Patterns:** Order book, price-time priority matching
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    direction TB
+
+    class StockExchangeSystem {
+        +registerUser(name) string
+        +addSymbol(ticker, name)
+        +placeOrder(user, symbol, side, type, price, qty) PlaceOrderResult
+        +cancelOrder(orderId, user)
+        +getBidBook(symbol) OrderBookLevel[]
+        +getAskBook(symbol) OrderBookLevel[]
+    }
+
+    class MatchingEngineService {
+        +matchOrder(incoming, ledger) Trade[]
+        +bookFor(symbol) OrderBookService
+    }
+
+    class OrderBookService {
+        +addRestingOrder(order)
+        +bestAsk() Order
+        +bestBid() Order
+        +snapshotAsks(depth) OrderBookLevel[]
+    }
+
+    class OrderFactory {
+        +create(...) Order$
+    }
+
+    class TradeLedgerService {
+        +record(trade)
+        +listBySymbol(symbol) Trade[]
+    }
+
+    class Order {
+        +remainingQuantity() int
+    }
+
+    StockExchangeSystem --> MatchingEngineService
+    MatchingEngineService --> OrderBookService
+    MatchingEngineService --> TradeLedgerService
+    StockExchangeSystem ..> OrderFactory
+```
+
+### Sequence Diagram — placeOrder (LIMIT buy matches asks)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Trader
+    participant SE as StockExchangeSystem
+    participant Match as MatchingEngineService
+    participant Book as OrderBookService
+    participant Ledger as TradeLedgerService
+
+    Trader->>SE: placeOrder(BUY LIMIT 2850, qty=7)
+    SE->>Match: matchOrder(incoming)
+    loop while incoming has qty and asks compatible
+        Match->>Book: bestAsk()
+        Book-->>Match: resting sell @ 2845
+        Match->>Ledger: record trade @ maker price
+    end
+    Match-->>SE: trades + updated order status
+    SE-->>Trader: FILLED / PARTIAL + trade list
+```
+
+### Build
+
+```bash
+cd Stock_Exchange_LLD && ./compile.sh && ./stock_exchange_app
+```
+
+---
+
 ## Cross-Project Pattern Summary
 
 ### Animated facade → service drill-down
@@ -4348,6 +4599,9 @@ graph LR
 | GPay | `GPaySystem` | Facade, Strategy (bank/wallet rail), Factory, transfer + ledger services |
 | Truecaller | `TruecallerSystem` | Facade, Strategy (spam scoring), lookup/sync/block services |
 | Meeting Scheduler | `MeetingSchedulerSystem` | Facade, Strategy (mutual slots), conflict + booking services |
+| Task Scheduler | `TaskSchedulerSystem` | Facade, Strategy (priority), Observer, worker pool + retry |
+| IRCTC | `IRCTCSystem` | Facade, segment ledger, mutex booking, search + allocation |
+| Stock Exchange | `StockExchangeSystem` | Facade, order book, price-time matching engine |
 
 ---
 
@@ -4580,6 +4834,6 @@ sequenceDiagram
 </p>
 
 <p align="center">
-  <b>27 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
+  <b>30 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
   <sub>Maintained alongside <code>README.md</code> and per-project headers</sub>
 </p>

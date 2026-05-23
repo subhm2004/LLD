@@ -1,0 +1,28 @@
+classDiagram
+    class TaskSchedulerSystem {
+        +submitJob()
+        +start()
+        +stop()
+        +cancelJob()
+    }
+    class JobRegistryService
+    class SchedulerService
+    class WorkerPoolService
+    class RetryService
+    class PrioritySchedulingStrategy
+    class ISchedulingStrategy
+    class IJobObserver
+    class Job
+    class IClock
+
+    TaskSchedulerSystem --> JobRegistryService
+    TaskSchedulerSystem --> SchedulerService
+    TaskSchedulerSystem --> WorkerPoolService
+    TaskSchedulerSystem --> RetryService
+    SchedulerService --> ISchedulingStrategy
+    WorkerPoolService --> ISchedulingStrategy
+    WorkerPoolService --> IJobObserver
+    PrioritySchedulingStrategy ..|> ISchedulingStrategy
+    SchedulerService --> IClock
+    RetryService --> IClock
+    JobRegistryService --> Job

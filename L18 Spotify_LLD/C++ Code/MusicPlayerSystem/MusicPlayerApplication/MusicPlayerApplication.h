@@ -1,96 +1,94 @@
 #ifndef MUSIC_PLAYER_APPLICATION_HPP
 #define MUSIC_PLAYER_APPLICATION_HPP
-#include "managers/PlaylistManager.h"
 #include "MusicPlayerFacade.h"
+#include "managers/PlaylistManager.h"
+#include <bits/stdc++.h>
 
 using namespace std;
 
 class MusicPlayerApplication {
 private:
-    static MusicPlayerApplication* instance;
-    vector<Song*> songLibrary;
-    MusicPlayerApplication() {}
+  inline static MusicPlayerApplication *instance = nullptr;
+  vector<Song *> songLibrary;
+  MusicPlayerApplication() {}
 
 public:
-    static MusicPlayerApplication* getInstance() {
-        if (!instance) {
-            instance = new MusicPlayerApplication();
-        }
-        return instance;
+  static MusicPlayerApplication *getInstance() {
+    if (!instance) {
+      instance = new MusicPlayerApplication();
     }
+    return instance;
+  }
 
-    void createSongInLibrary(const string& title, const string& artist,
-                                const string& path) {
-        Song* newSong = new Song(title, artist, path);
-        songLibrary.push_back(newSong);
-    }
+  void createSongInLibrary(const string &title, const string &artist,
+                           const string &path) {
+    Song *newSong = new Song(title, artist, path);
+    songLibrary.push_back(newSong);
+  }
 
-    Song* findSongByTitle(const string& title) {
-        for (Song* s : songLibrary) {
-            if (s->getTitle() == title) {
-                return s;
-            }
-        }
-        return nullptr;
+  Song *findSongByTitle(const string &title) {
+    for (Song *s : songLibrary) {
+      if (s->getTitle() == title) {
+        return s;
+      }
     }
-    void createPlaylist(const string& playlistName) {
-        PlaylistManager::getInstance()->createPlaylist(playlistName);
-    }
+    return nullptr;
+  }
+  void createPlaylist(const string &playlistName) {
+    PlaylistManager::getInstance()->createPlaylist(playlistName);
+  }
 
-    void addSongToPlaylist(const string& playlistName,
-                            const string& songTitle) {
-        Song* song = findSongByTitle(songTitle);
-        if (!song) {
-            throw runtime_error("Song \"" + songTitle + "\" not found in library.");
-        }
-        PlaylistManager::getInstance()
-            ->addSongToPlaylist(playlistName, song);
+  void addSongToPlaylist(const string &playlistName, const string &songTitle) {
+    Song *song = findSongByTitle(songTitle);
+    if (!song) {
+      throw runtime_error("Song \"" + songTitle + "\" not found in library.");
     }
+    PlaylistManager::getInstance()->addSongToPlaylist(playlistName, song);
+  }
 
-    void connectAudioDevice(DeviceType deviceType) {
-        MusicPlayerFacade::getInstance()->connectDevice(deviceType);
-    }
+  void connectAudioDevice(DeviceType deviceType) {
+    MusicPlayerFacade::getInstance()->connectDevice(deviceType);
+  }
 
-    void selectPlayStrategy(PlayStrategyType strategyType) {
-        MusicPlayerFacade::getInstance()->setPlayStrategy(strategyType);
-    }
+  void selectPlayStrategy(PlayStrategyType strategyType) {
+    MusicPlayerFacade::getInstance()->setPlayStrategy(strategyType);
+  }
 
-    void loadPlaylist(const string& playlistName) {
-        MusicPlayerFacade::getInstance()->loadPlaylist(playlistName);
-    }
+  void loadPlaylist(const string &playlistName) {
+    MusicPlayerFacade::getInstance()->loadPlaylist(playlistName);
+  }
 
-    void playSingleSong(const string& songTitle) {
-        Song* song = findSongByTitle(songTitle);
-        if (!song) {
-            throw runtime_error("Song \"" + songTitle + "\" not found.");
-        }
-        MusicPlayerFacade::getInstance()->playSong(song);
+  void playSingleSong(const string &songTitle) {
+    Song *song = findSongByTitle(songTitle);
+    if (!song) {
+      throw runtime_error("Song \"" + songTitle + "\" not found.");
     }
+    MusicPlayerFacade::getInstance()->playSong(song);
+  }
 
-    void pauseCurrentSong(const string& songTitle) {
-        Song* song = findSongByTitle(songTitle);
-        if (!song) {
-            throw runtime_error("Song \"" + songTitle + "\" not found.");
-        }
-        MusicPlayerFacade::getInstance()->pauseSong(song);
+  void pauseCurrentSong(const string &songTitle) {
+    Song *song = findSongByTitle(songTitle);
+    if (!song) {
+      throw runtime_error("Song \"" + songTitle + "\" not found.");
     }
+    MusicPlayerFacade::getInstance()->pauseSong(song);
+  }
 
-    void playAllTracksInPlaylist() {
-        MusicPlayerFacade::getInstance()->playAllTracks();
-    }
+  void playAllTracksInPlaylist() {
+    MusicPlayerFacade::getInstance()->playAllTracks();
+  }
 
-    void playPreviousTrackInPlaylist() {
-        MusicPlayerFacade::getInstance()->playPreviousTrack();
-    }
+  void playPreviousTrackInPlaylist() {
+    MusicPlayerFacade::getInstance()->playPreviousTrack();
+  }
 
-    void queueSongNext(const string& songTitle) {
-        Song* song = findSongByTitle(songTitle);
-        if (!song) {
-            throw runtime_error("Song \"" + songTitle + "\" not found.");
-        }
-        MusicPlayerFacade::getInstance()->enqueueNext(song);
+  void queueSongNext(const string &songTitle) {
+    Song *song = findSongByTitle(songTitle);
+    if (!song) {
+      throw runtime_error("Song \"" + songTitle + "\" not found.");
     }
+    MusicPlayerFacade::getInstance()->enqueueNext(song);
+  }
 };
 
-MusicPlayerApplication* MusicPlayerApplication::instance = nullptr;
 #endif // MUSIC_PLAYER_APPLICATION_HPP

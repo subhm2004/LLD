@@ -1,12 +1,12 @@
 # System Projects — Class Diagrams & Sequence Diagrams
 
 <p align="center">
-  <b>UML Reference — 34 System Projects</b><br/>
+  <b>UML Reference — 36 System Projects</b><br/>
   <sub>Class diagrams + sequence flows · code-accurate names · Mermaid</sub>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Systems-34-blue?style=for-the-badge" alt="34 systems" />
+  <img src="https://img.shields.io/badge/Systems-36-blue?style=for-the-badge" alt="36 systems" />
   <img src="https://img.shields.io/badge/Diagrams-Mermaid-6f42c1?style=for-the-badge" alt="Mermaid" />
   <img src="https://img.shields.io/badge/Lines-3100%2B-success?style=for-the-badge" alt="3100+ lines" />
   <img src="https://img.shields.io/badge/Synced-With%20Code-orange?style=for-the-badge" alt="Synced with code" />
@@ -18,7 +18,7 @@
   <img src="https://img.shields.io/badge/Preview-GitHub%20%7C%20VS%20Code%20%7C%20Cursor-informational?style=flat-square" alt="Preview" />
 </p>
 
-> **34 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
+> **36 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
 > GitHub / VS Code / Cursor me **Markdown Preview** se Mermaid diagrams render honge.
 
 ---
@@ -27,7 +27,10 @@
 
 | Item | Status |
 | ---- | ------ |
-| **Projects covered** | 34 / 34 standalone systems |
+| **Projects covered** | 36 / 36 standalone systems |
+| **WhatsApp (§16)** | Chat session encryption, delete-for-me / delete-for-everyone, per-user timeline |
+| **CricBuzz (§36)** | Live scoring, ball-by-ball, commentary Strategy, scoreboard + chase target |
+| **Collaborative Editor (§35)** | Share permissions, revision sync, Observer broadcast, cursor presence, undo |
 | **In-Memory SQL DB (§34)** | DDL (create/update/delete table), typed columns + constraints, insert, print all, filter |
 | **Razorpay (§33)** | Order → payment → capture → webhook signature → refund |
 | **Leave Request (§32)** | Multi-level approval chain (CoR), submit / approve / cancel |
@@ -64,11 +67,11 @@ flowchart LR
 
 > Poora file scroll karne se pehle — **high-priority systems** aur **diagram types** yahan se pick karo.
 
-### 0.1 34 systems — category map
+### 0.1 36 systems — category map
 
 ```mermaid
 mindmap
-  root((34 Systems))
+  root((36 Systems))
     Infrastructure
       ATM
       Load Balancer
@@ -102,6 +105,8 @@ mindmap
       LeetCode Judge
       Insta Reels
       In-Memory SQL DB
+      Google Docs Editor
+      CricBuzz Live Score
     Mobile Apps
       GPay UPI
       Truecaller
@@ -190,7 +195,7 @@ flowchart LR
 
 ```mermaid
 pie showData
-    title Most common patterns in 34 systems
+    title Most common patterns in 36 systems
     "Facade / System entry" : 19
     "Strategy" : 12
     "Service layer" : 16
@@ -263,6 +268,8 @@ pie showData
 | 32 | [Leave Request System](#32-leave-request-system) | `Leave_Request_System_LLD/` |
 | 33 | [Razorpay Payment Gateway](#33-razorpay-payment-gateway) | `Razorpay_LLD/` |
 | 34 | [In-Memory SQL-like Database](#34-in-memory-sql-like-database) | `In_Memory_SQL_Database_LLD/` |
+| 35 | [Google Docs / Collaborative Editor](#35-google-docs--collaborative-editor) | `Google_Docs_Collaborative_Editor_LLD/` |
+| 36 | [CricBuzz Live Cricket Scoring](#36-cricbuzz-live-cricket-scoring) | `CricBuzz_LLD/` |
 
 ---
 
@@ -2180,9 +2187,10 @@ sequenceDiagram
 
 ## 16. WhatsApp
 
+**Project:** [`WhatsApp_LLD/`](../WhatsApp_LLD/)  
 **Namespace:** `whatsapp_lld`  
 **Facade:** `WhatsAppSystem`  
-**Patterns:** Strategy (encryption), Decorator + Observer (notification engine)
+**Patterns:** Strategy (encryption + notifications), Decorator + Observer (notification engine), deletion service
 
 ### Class Diagram
 
@@ -2191,137 +2199,123 @@ classDiagram
     direction TB
 
     class WhatsAppSystem {
-        -map users
-        -ChatService chatService
-        -NotificationService notificationService
-        +registerUser(id, name, phone)
-        +createDirectChat(userA, userB)
-        +createGroup(name, adminId, members)
-        +sendDirectMessage(chatId, msg, receiverId)
-        +sendGroupMessage(chatId, msg)
-        +configureEncryption(service)
+        +registerUser()
+        +sendDirectMessage()
+        +sendGroupMessage()
+        +deleteDirectMessage()
+        +deleteGroupMessage()
+        +getDirectMessagesForUser()
+        +configureEncryption()
     }
 
     class ChatService {
-        -map directChats
-        -map groups
-        -EncryptionService* encryptionService
-        +createDirectChat(u1, u2)
-        +createGroup(name, admin, members)
-        +sendDirectMessage(chatId, msg)
-        +sendGroupMessage(chatId, msg)
-        -getEncryptedMessage(plain) string
+        +sendDirectMessage()
+        +deleteDirectMessage()
+        +getDirectMessagesForUser()
+        -encryptForStore()
+        -decryptVisibleMessages()
+    }
+
+    class MessageDeletionService {
+        +deleteMessage()
     }
 
     class Chat {
-        -string chatId
-        -vector participantIds
-        -vector~Message~ messages
-        -int nextSequenceNumber
-        +addMessage(message)
-    }
-
-    class Group {
-        -string groupName
-        -string adminId
-    }
-
-    class User {
-        -string userId, name, phone
-        -bool online
-        -time_t lastSeenAt
-        +setOnline(bool)
+        +addMessage()
+        +getVisibleMessagesForUser()
+        +findMessageById()
+        +hasParticipant()
     }
 
     class Message {
-        -string messageId, senderId, content
-        -int sequenceNumber
-        -MessageType type
-        -MessageStatus status
-        +assignSequenceNumber(n)
-        +updateStatus(status)
+        -deletedForEveryone_
+        -deletedForUserIds_
+        +markDeletedForMe()
+        +markDeletedForEveryone()
+        +getDisplayContent(viewerId)
+        +isHiddenForUser()
     }
 
     class EncryptionService {
-        <<abstract>>
-        +encrypt(plainText) string
-    }
-
-    class NoOpEncryptionService {
-        +encrypt(plainText)
-    }
-
-    class NotificationService {
-        +notifyUser(userId, message)
-    }
-
-    class NotificationHub {
-        <<Singleton>>
-        +getInstance()
-        +sendNotification(INotification)
-    }
-
-    class INotificationStrategy {
         <<interface>>
-        +send(notification)
+        +encrypt(plain, chatId)
+        +decrypt(cipher, chatId)
     }
 
-    class NotificationDecorator {
-        <<abstract>>
-        +send(notification)
+    class ChatSessionEncryptionService {
+        +encrypt()
+        +decrypt()
     }
 
-    Chat <|-- Group
-    EncryptionService <|-- NoOpEncryptionService
+    class ChatSessionCipher {
+        +deriveKey(master, chatId)$
+        +encrypt()$
+        +decrypt()$
+    }
+
+    class DeletionType {
+        <<enum>>
+        DELETE_FOR_ME
+        DELETE_FOR_EVERYONE
+    }
+
     WhatsAppSystem *-- ChatService
     WhatsAppSystem *-- NotificationService
-    ChatService o-- Chat
-    ChatService o-- Group
-    Chat o-- Message
+    ChatService --> MessageDeletionService
     ChatService --> EncryptionService
-    NotificationDecorator ..> INotificationStrategy
+    ChatSessionEncryptionService ..|> EncryptionService
+    ChatSessionEncryptionService --> ChatSessionCipher
+    ChatService o-- Chat
+    Chat o-- Message
+    MessageDeletionService --> Chat
+    MessageDeletionService --> DeletionType
 ```
 
-### Sequence Diagram — Send Direct Message
+### Sequence Diagram — Encrypt at rest, decrypt on read
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Sender
+    actor User
     participant WA as WhatsAppSystem
-    participant ChatSvc as ChatService
-    participant Encrypt as EncryptionService
+    participant CS as ChatService
+    participant ENC as ChatSessionEncryptionService
     participant Chat
-    participant Message
-    participant Notify as NotificationService
-    actor Receiver
 
-    Sender->>WA: sendDirectMessage(chatId, msg, receiverId)
-    WA->>ChatSvc: sendDirectMessage(chatId, msg)
-    ChatSvc->>Encrypt: encrypt(plainText)
-    Encrypt-->>ChatSvc: encryptedContent
-    ChatSvc->>Message: new Message(encrypted)
-    ChatSvc->>Chat: addMessage(message)
-    Chat->>Message: assignSequenceNumber(n++)
-    WA->>Notify: notifyUser(receiverId, preview)
-    Notify-->>Receiver: push notification
+    User->>WA: sendDirectMessage(c1, "Hi", u2)
+    WA->>CS: sendDirectMessage
+    CS->>ENC: encrypt(plain, chatId=c1)
+    ENC-->>CS: WA1:base64...
+    CS->>Chat: addMessage(ciphertext)
+
+    User->>WA: getDirectMessagesForUser(c1, u1)
+    WA->>CS: getDirectMessagesForUser
+    CS->>Chat: getVisibleMessagesForUser
+    CS->>ENC: decrypt(ciphertext, c1)
+    ENC-->>User: "Hi" (plain text in UI)
 ```
 
-### Sequence Diagram — Group Message
+### Sequence Diagram — Delete for me vs delete for everyone
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Sender
+    actor U2 as User u2
     participant WA as WhatsAppSystem
-    participant ChatSvc as ChatService
-    participant Group
+    participant CS as ChatService
+    participant DEL as MessageDeletionService
+    participant Msg as Message
 
-    Sender->>WA: sendGroupMessage(chatId, msg)
-    WA->>ChatSvc: sendGroupMessage(chatId, msg)
-    ChatSvc->>ChatSvc: getEncryptedMessage(msg)
-    ChatSvc->>Group: addMessage(message)
-    Note over Group: all members receive<br/>via group participant list
+    U2->>WA: deleteDirectMessage(m1, DELETE_FOR_ME)
+    WA->>CS: deleteDirectMessage
+    CS->>DEL: deleteMessage
+    DEL->>Msg: markDeletedForMe(u2)
+    Note over Msg: hidden only in u2 timeline
+
+    U2->>WA: deleteDirectMessage(m2, DELETE_FOR_EVERYONE)
+    CS->>DEL: deleteMessage (sender + 1h window)
+    DEL->>Msg: markDeletedForEveryone()
+    Note over Msg: tombstone for all participants
 ```
 
 ### Sequence Diagram — Notification Hub (Decorator + Observer)
@@ -5032,6 +5026,220 @@ cd In_Memory_SQL_Database_LLD && ./compile.sh && ./sql_database_app
 
 ---
 
+## 35. Google Docs / Collaborative Editor
+
+**Project:** [`Google_Docs_Collaborative_Editor_LLD/`](../Google_Docs_Collaborative_Editor_LLD/)
+
+**Problem:** Multi-user document editing with permissions, revision-checked edits, live broadcast to session peers, cursor presence, undo.
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    class CollaborativeEditorSystem {
+        +registerUser()
+        +createDocument()
+        +shareDocument()
+        +joinSession()
+        +insertText()
+        +deleteText()
+        +undoLastEdit()
+        +updateCursor()
+    }
+
+    class DocumentService {
+        +createDocument()
+        +getDocument()
+    }
+
+    class SharingService {
+        +share()
+        +resolvePermission()
+        +requireEdit()
+    }
+
+    class EditService {
+        +applyEdit()
+    }
+
+    class PresenceService {
+        +updateCursor()
+        +listCursors()
+    }
+
+    class UndoRedoService {
+        +pushSnapshot()
+        +undo()
+    }
+
+    class EditNotificationHub {
+        +subscribe()
+        +broadcast()
+    }
+
+    class IEditListener {
+        <<interface>>
+        +onRemoteEdit()
+    }
+
+    CollaborativeEditorSystem --> DocumentService
+    CollaborativeEditorSystem --> SharingService
+    CollaborativeEditorSystem --> EditService
+    CollaborativeEditorSystem --> PresenceService
+    CollaborativeEditorSystem --> UndoRedoService
+    CollaborativeEditorSystem --> EditNotificationHub
+    EditService --> EditNotificationHub
+    EditNotificationHub ..> IEditListener
+```
+
+### Sequence Diagram — share + collaborative edit
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Alice
+    actor Bob
+    participant CES as CollaborativeEditorSystem
+    participant SS as SharingService
+    participant ES as EditService
+    participant Hub as EditNotificationHub
+
+    Alice->>CES: createDocument("Sprint Notes")
+    Alice->>CES: shareDocument(doc, Bob, EDIT)
+    Alice->>CES: joinSession(doc, listenerA)
+    Bob->>CES: joinSession(doc, listenerB)
+
+    Alice->>CES: insertText(doc, "Hello ", rev=0)
+    CES->>ES: applyEdit
+    ES->>Hub: broadcast → listenerB
+    Bob->>CES: insertText(doc, "World!", rev=1)
+    ES->>Hub: broadcast → listenerA
+```
+
+### Sequence Diagram — stale revision + permission deny
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Alice
+    actor Charlie
+    participant CES as CollaborativeEditorSystem
+    participant ES as EditService
+    participant SS as SharingService
+
+    Charlie->>CES: shareDocument(VIEW)
+    Charlie->>ES: insertText (via CES)
+    SS-->>Charlie: EDIT permission required
+
+    Alice->>CES: insertText(expectedRevision=0)
+    ES-->>Alice: stale revision (doc at rev 2)
+```
+
+### Build
+
+```bash
+cd Google_Docs_Collaborative_Editor_LLD && ./compile.sh && ./collab_editor_app
+```
+
+---
+
+## 36. CricBuzz Live Cricket Scoring
+
+**Project:** [`CricBuzz_LLD/`](../CricBuzz_LLD/)
+
+**Problem:** Live cricket match scoring — schedule, toss, ball-by-ball, scoreboard, commentary feed, innings chase.
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    class CricBuzzSystem {
+        +registerTeam()
+        +scheduleMatch()
+        +conductToss()
+        +startMatch()
+        +recordBall()
+        +getLiveScore()
+        +getCommentaryFeed()
+    }
+
+    class MatchService {
+        +scheduleMatch()
+        +conductToss()
+        +startMatch()
+        +startSecondInnings()
+    }
+
+    class ScoringService {
+        +recordBall()
+        +getBallByBall()
+    }
+
+    class LiveScoreService {
+        +getScoreboard()
+        +listLiveMatchIds()
+    }
+
+    class ICommentaryGenerator {
+        <<interface>>
+        +generate()
+    }
+
+    class DefaultCommentaryGenerator {
+        +generate()
+    }
+
+    CricBuzzSystem --> MatchService
+    CricBuzzSystem --> ScoringService
+    CricBuzzSystem --> LiveScoreService
+    ScoringService --> ICommentaryGenerator
+    DefaultCommentaryGenerator ..|> ICommentaryGenerator
+```
+
+### Sequence Diagram — toss to first ball
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Fan
+    participant CB as CricBuzzSystem
+    participant MS as MatchService
+    participant SS as ScoringService
+
+    Fan->>CB: scheduleMatch(IND, AUS, T20)
+    Fan->>CB: conductToss(IND, BAT)
+    Fan->>CB: startMatch
+    Fan->>CB: recordBall(FOUR)
+    CB->>SS: recordBall
+    SS-->>CB: BallEvent + commentary
+    Fan->>CB: getLiveScore
+    CB-->>Fan: 4/0, RR 24.00
+```
+
+### Sequence Diagram — second innings chase
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CB as CricBuzzSystem
+    participant MS as MatchService
+    participant LS as LiveScoreService
+
+    CB->>MS: endInnings + startSecondInnings
+    CB->>CB: recordBall (chase runs)
+    CB->>LS: getScoreboard
+    LS-->>CB: Need N to win
+    CB->>MS: endMatch(result)
+```
+
+### Build
+
+```bash
+cd CricBuzz_LLD && ./compile.sh && ./cricbuzz_app
+```
+
+---
+
 ## Cross-Project Pattern Summary
 
 ### Animated facade → service drill-down
@@ -5130,7 +5338,7 @@ graph LR
 | Uber | `UberSystem` | Facade, Multi-Service |
 | URL Shortener | `UrlShortnerService` | Service, Encoder utility |
 | Vending Machine | `VendingMachine` | Composition |
-| WhatsApp | `WhatsAppSystem` | Strategy, Decorator, Observer |
+| WhatsApp | `WhatsAppSystem` | Strategy (encryption), `MessageDeletionService`, Decorator, Observer |
 | Reels | `ReelPlatformService` | Facade, Feed ranking |
 | LRU Cache | `CacheService` | Facade, Decorator, `ICache` interface |
 | LFU Cache | `CacheService` | Facade, Decorator, frequency buckets + `minFreq` |
@@ -5253,7 +5461,7 @@ sequenceDiagram
 </details>
 
 <details>
-<summary><strong>§16 WhatsApp</strong> — message + notify · <a href="./WhatsApp_LLD/">code</a></summary>
+<summary><strong>§16 WhatsApp</strong> — encryption, delete-for-me/everyone, notify · <a href="./WhatsApp_LLD/">code</a></summary>
 
 ```mermaid
 sequenceDiagram
@@ -5383,6 +5591,6 @@ sequenceDiagram
 </p>
 
 <p align="center">
-  <b>34 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
+  <b>36 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
   <sub>Maintained alongside <code>README.md</code> and per-project headers</sub>
 </p>

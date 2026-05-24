@@ -1,12 +1,12 @@
 # Project ↔ Design Pattern Map
 
 <p align="center">
-  <b>68+ Projects × 23+ GoF Patterns</b><br/>
+  <b>70+ Projects × 23+ GoF Patterns</b><br/>
   <sub>Pattern map · live Mermaid · interview quick lines</sub>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Projects-68+-blue?style=for-the-badge" alt="Projects" />
+  <img src="https://img.shields.io/badge/Projects-70+-blue?style=for-the-badge" alt="Projects" />
   <img src="https://img.shields.io/badge/Patterns-23+GoF-purple?style=for-the-badge" alt="Patterns" />
   <img src="https://img.shields.io/badge/Diagrams-Mermaid-success?style=for-the-badge" alt="Mermaid" />
 </p>
@@ -237,6 +237,8 @@ flowchart LR
 | 66 | Leave Request System | [`Leave_Request_System_LLD/`](../Leave_Request_System_LLD/) | **Chain of Responsibility** (approval chain), **Facade**, **Service layer** |
 | 67 | Razorpay Payment Gateway | [`Razorpay_LLD/`](../Razorpay_LLD/) | **Facade**, **Template Method**, **Strategy**, **Factory**, webhooks + idempotency |
 | 68 | In-Memory SQL-like Database | [`In_Memory_SQL_Database_LLD/`](../In_Memory_SQL_Database_LLD/) | **Facade**, **Service layer**, column validators |
+| 69 | Google Docs / Collaborative Editor | [`Google_Docs_Collaborative_Editor_LLD/`](../Google_Docs_Collaborative_Editor_LLD/) | **Facade**, **Observer**, **Memento**, revision sync |
+| 70 | CricBuzz Live Cricket Scoring | [`CricBuzz_LLD/`](../CricBuzz_LLD/) | **Facade**, **Strategy** (commentary), **Service layer** |
 
 > **Note:** L1–L6 = OOP + SOLID foundation ([`L2 OOPS_1`](../L2%20OOPS_1/), [`L5 SOLID_1`](../L5%20SOLID_1/), [`L6 SOLID_2`](../L6%20SOLID_2/)) — design pattern **lessons** nahi, principles hain.
 
@@ -1104,6 +1106,8 @@ cd Stock_Exchange_LLD && ./compile.sh && ./stock_exchange_app
 | [Leave Request](../Leave_Request_System_LLD/) | `LeaveRequestSystem` | `LeaveApprovalService`, `LeaveRegistryService`, approval handler chain | **Chain of Responsibility** + **Facade** |
 | [Razorpay](../Razorpay_LLD/) | `RazorpayPaymentSystem` | `OrderService`, `PaymentService`, `CaptureService`, `RefundService`, `WebhookService`, `IdempotencyService` | **Facade** + **Template Method** + **Strategy** |
 | [In-Memory SQL DB](../In_Memory_SQL_Database_LLD/) | `InMemoryDatabase` | `SchemaService`, `RecordService`, `QueryService` | **Facade** + validators |
+| [Collaborative Editor](../Google_Docs_Collaborative_Editor_LLD/) | `CollaborativeEditorSystem` | `DocumentService`, `EditService`, `SharingService`, `EditNotificationHub` | **Facade** + **Observer** + **Memento** |
+| [CricBuzz](../CricBuzz_LLD/) | `CricBuzzSystem` | `MatchService`, `ScoringService`, `LiveScoreService` | **Facade** + **Strategy** |
 
 ---
 
@@ -1649,7 +1653,7 @@ flowchart LR
 | [`Design_Patterns.md`](Design_Patterns.md) | Har pattern ki full theory + 3000+ lines |
 | [`SOLID.md`](SOLID.md) | SOLID principles |
 | [`README.md`](../README.md) | Poora repo index |
-| [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | Full system UML (34 systems — §34 In-Memory SQL DB) |
+| [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | Full system UML (36 systems — §36 CricBuzz) |
 | [`Multi_threading_C++/README.md`](../Multi_threading_C++/README.md) | Concurrency labs + subfolder index |
 
 ### External animated references (browser)

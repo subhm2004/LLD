@@ -1,0 +1,7 @@
+[
+  {
+    "directory": "/Users/shubham/Desktop/LLD/WhatsApp_LLD",
+    "command": "g++ -std=c++17 -Wall -Wextra -pthread -I. -c main.cpp -o main.o",
+    "file": "/Users/shubham/Desktop/LLD/WhatsApp_LLD/main.cpp"
+  }
+]

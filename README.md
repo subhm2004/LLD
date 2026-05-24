@@ -1,14 +1,14 @@
 # Low-Level Design (LLD) — Complete Master Repository Guide
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2500&pause=800&color=2F81F7&center=true&vCenter=true&width=900&lines=Master+LLD+Guide+%E2%80%94+2400%2B+Lines;40+Lessons+%7C+34+System+Projects;23%2B+GoF+Patterns+%7C+Interview+Deep+Dives" alt="Typing animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2500&pause=800&color=2F81F7&center=true&vCenter=true&width=900&lines=Master+LLD+Guide+%E2%80%94+2400%2B+Lines;40+Lessons+%7C+36+System+Projects;23%2B+GoF+Patterns+%7C+Interview+Deep+Dives" alt="Typing animation" />
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Language-C%2B%2B17-blue?style=for-the-badge" alt="C++ Badge" />
   <img src="https://img.shields.io/badge/Lessons-L0%E2%80%93L40-6f42c1?style=for-the-badge" alt="Lessons badge" />
-  <img src="https://img.shields.io/badge/System+Projects-34-success?style=for-the-badge" alt="Projects badge" />
-  <img src="https://img.shields.io/badge/UML-34+Systems-FB8500?style=for-the-badge" alt="UML badge" />
+  <img src="https://img.shields.io/badge/System+Projects-36-success?style=for-the-badge" alt="Projects badge" />
+  <img src="https://img.shields.io/badge/UML-36+Systems-FB8500?style=for-the-badge" alt="UML badge" />
   <img src="https://img.shields.io/badge/Focus-Interview%20Ready-orange?style=for-the-badge" alt="Interview badge" />
 </p>
 
@@ -17,8 +17,8 @@
 | Jump to | |
 |---------|---|
 | [5-min path](#quick-start-5-minutes) | First week roadmap |
-| [UML hub](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | 34 systems — class + sequence diagrams (Mermaid) |
-| [Pattern map](docs/PROJECT_DESIGN_PATTERNS.md) | 68+ projects × kaunsa pattern kahan |
+| [UML hub](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | 36 systems — class + sequence diagrams (Mermaid) |
+| [Pattern map](docs/PROJECT_DESIGN_PATTERNS.md) | 70+ projects × kaunsa pattern kahan |
 | [Design patterns](docs/Design_Patterns.md) | GoF complete guide + repo lesson links |
 | [Pattern types](docs/Design_Pattern_types.md) | Creational / Structural / Behavioral quick list |
 | [SOLID](docs/SOLID.md) | S · O · L · I · D — principles + violated vs fixed |
@@ -32,7 +32,7 @@ flowchart LR
         B[L7-L40 Patterns]
     end
     subgraph build [Build]
-        C[34 Systems]
+        C[36 Systems]
         D[main.cpp demos]
     end
     subgraph ship [Interview]
@@ -106,7 +106,7 @@ cd Parking_lot_system_LLD
 ./parking_app
 ```
 
-**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (34 systems, ~5000+ lines Mermaid).
+**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (36 systems, ~5000+ lines Mermaid).
 
 ---
 
@@ -117,7 +117,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | Category               | Count        | Description                                                             |
 | ---------------------- | ------------ | ----------------------------------------------------------------------- |
 | **Lesson modules**     | L0 – L40     | Intro, Has-A relationships, OOP, SOLID, UML, patterns, system hybrids |
-| **Standalone systems** | 34 projects  | In-Memory SQL DB, Razorpay, Leave Request, E-commerce Checkout, GPay, IRCTC + more   |
+| **Standalone systems** | 36 projects  | CricBuzz, Collaborative Editor, In-Memory SQL DB, Razorpay, GPay + more   |
 | **Concurrency labs**   | 1 folder     | `Multi_threading_C++` — threads, mutex, semaphores, thread pool, DCLP   |
 | **Reference assets**   | PDFs, images | Gang of Four, DDIA, design pattern cheat sheets                         |
 
@@ -133,7 +133,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | ------------------------------------ | ------------------------------------------------------------------------------------- |
 | Total C++/header source files        | ~490+                                                                                 |
 | Lesson folders (L0–L40)              | 41                                                                                    |
-| Runnable system demos                | 34                                                                                    |
+| Runnable system demos                | 36                                                                                    |
 | Projects with dedicated `README.md`  | 24+                                                                                   |
 | Design patterns demonstrated         | 20+ (GoF + Null Object)                                                               |
 | Projects with `problem_statement.md` | 28+                                                                                   |
@@ -149,7 +149,7 @@ Zyada tar LLD preparation in points par atak jaati hai:
 | ------------------------------------------------- | ---------------------------------------------------------------------- |
 | Theory samajh aata hai, code me convert nahi hota | Har concept ke saath runnable `.cpp` / modular headers                 |
 | Code likh lete hain, extensibility weak hoti hai  | SOLID + OCP-focused refactors (e.g. L7 Bad vs Good design)             |
-| Sirf 1–2 problems solve kiye                      | 34 full systems + 10+ lesson-level LLDs                               |
+| Sirf 1–2 problems solve kiye                      | 36 full systems + 10+ lesson-level LLDs                               |
 | Patterns yaad hain, use-case nahi                 | Har pattern ke saath real domain (ATM, Food Delivery, Payment Gateway) |
 | Interview me sirf code, design explain nahi       | Har project me assumptions, trade-offs, extension hooks                |
 
@@ -1058,6 +1058,37 @@ cd In_Memory_SQL_Database_LLD && ./compile.sh && ./sql_database_app
 
 ---
 
+### Google_Docs_Collaborative_Editor_LLD
+
+|              |                                                                                                                                  |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| **Path**     | [`Google_Docs_Collaborative_Editor_LLD/`](./Google_Docs_Collaborative_Editor_LLD/)                                               |
+| **Docs**     | [`requirements.md`](./Google_Docs_Collaborative_Editor_LLD/requirements.md) · [`problem_statement.md`](./Google_Docs_Collaborative_Editor_LLD/problem_statement.md) |
+| **Patterns** | **Facade**, **Observer** (`EditNotificationHub`), **Memento** (undo snapshots), **Service layer**                                |
+| **Flow**     | `createDocument` → `shareDocument` → `joinSession` → `insertText`/`deleteText` (revision) → live broadcast → `undoLastEdit`      |
+| **Note**     | Revision-lock for conflicts; interview extension = OT/CRDT + WebSocket transport                                                 |
+
+```bash
+cd Google_Docs_Collaborative_Editor_LLD && ./compile.sh && ./collab_editor_app
+```
+
+---
+
+### CricBuzz_LLD
+
+|              |                                                                                                                                  |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| **Path**     | [`CricBuzz_LLD/`](./CricBuzz_LLD/)                                                                                               |
+| **Docs**     | [`requirements.md`](./CricBuzz_LLD/requirements.md) · [`problem_statement.md`](./CricBuzz_LLD/problem_statement.md)             |
+| **Patterns** | **Facade** (`CricBuzzSystem`), **Strategy** (`ICommentaryGenerator`), **Service layer**                                        |
+| **Flow**     | Teams → schedule T20 → toss → `recordBall` → live scoreboard → commentary feed → 2nd innings chase → result                      |
+
+```bash
+cd CricBuzz_LLD && ./compile.sh && ./cricbuzz_app
+```
+
+---
+
 ### IRCTC_LLD
 
 |              |                                                                                         |
@@ -1343,18 +1374,23 @@ cd vending_machine_LLD && g++ -std=c++17 main.cpp -o vending_app && ./vending_ap
 
 ### WhatsApp_LLD
 
-|              |                                                                         |
-| ------------ | ----------------------------------------------------------------------- |
-| **Patterns** | Strategy (encryption), Null Object, Decorator, Observer                 |
-| **Features** | 1:1 + group chats, message types/status, encryption hook, notifications |
+|              |                                                                                                                                  |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| **Path**     | [`WhatsApp_LLD/`](./WhatsApp_LLD/)                                                                                               |
+| **Docs**     | [`requirements.md`](./WhatsApp_LLD/requirements.md) · [`problem_statement.md`](./WhatsApp_LLD/problem_statement.md)             |
+| **Patterns** | **Strategy** (encryption), **Decorator** + **Observer** (notifications), deletion service                                        |
+| **Features** | 1:1 + group chat, **chat session encryption** (at-rest), **delete-for-me / delete-for-everyone**, per-user timeline          |
+| **UML**      | [§16 WhatsApp](./docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#16-whatsapp)                                                       |
 
-**Services:** `ChatService`, `EncryptionService`, `NotificationService`, `NotificationEngine` (pattern demo)
+**Services:** `ChatService`, `MessageDeletionService`, `ChatSessionEncryptionService`, `NotificationService`, `NotificationEngine`
 
 ```bash
 cd WhatsApp_LLD && ./compile.sh && ./whatsapp_app
 ```
 
-**Encryption (LLD hook — real E2E nahi):** `EncryptionService` interface + `NoOpEncryptionService` (plain text) + demo `DemoEncryptionService` in `main.cpp` (`"Hello"` → `"enc(Hello)"`). `ChatService::getEncryptedMessage()` har send par encrypt karta hai. Interview me bolo: production me Signal-style key exchange + AES — yahan **Strategy pattern** dikhane ke liye stub hai.
+**Encryption:** `ChatSessionEncryptionService` — per-chat key (`masterSecret + chatId`), XOR + Base64 (`WA1:` prefix). Store encrypted; `getDirectMessagesForUser` decrypts for UI. Production = Signal/AES-GCM (interview me clarify).
+
+**Deletion:** `DELETE_FOR_ME` (hide for one user) vs `DELETE_FOR_EVERYONE` (tombstone, sender-only, 1h window).
 
 ---
 
@@ -1459,7 +1495,7 @@ g++ -std=c++17 -pthread dining_philosophers.cpp -o dp && ./dp
 | --------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | **Singleton**               | L10, L14, L23, L26               | Logger                                                                                                  |
 | **Factory**                 | L9, L11, L23, L31, L33–34, L37   | Movie Ticket, Rate Limiter, **GPay** (rail + transaction)                                               |
-| **Strategy**                | L8, L11, L14, L18, L24, L31, L33 | Parking, Load Balancer, Rate Limiter, WhatsApp, LeetCode, **GPay** (bank/wallet), **Truecaller** (spam) |
+| **Strategy**                | L8, L11, L14, L18, L24, L31, L33 | Parking, Load Balancer, Rate Limiter, **WhatsApp** (encryption), LeetCode, **GPay**, **Truecaller** |
 | **Observer**                | L12, L14, L31, L33–34            | Logger (appenders)                                                                                      |
 | **Decorator**               | L13, L14                         | WhatsApp (notification decorators), LRU (`ThreadSafeLRUCache`)                                          |
 | **Adapter**                 | L16, L18                         | —                                                                                                       |
@@ -1626,6 +1662,9 @@ chmod +x scripts/build_all_systems.sh
 | Leave_Request_System_LLD | `main.cpp`                | `leave_request_app` |
 | Razorpay_LLD     | `main.cpp`                        | `razorpay_app`     |
 | In_Memory_SQL_Database_LLD | `main.cpp`              | `sql_database_app` |
+| Google_Docs_Collaborative_Editor_LLD | `main.cpp`    | `collab_editor_app` |
+| CricBuzz_LLD | `main.cpp` | `cricbuzz_app` |
+| WhatsApp_LLD | `main.cpp` | `whatsapp_app` |
 | IRCTC_LLD        | `main.cpp`                        | `irctc_app`        |
 | Stock_Exchange_LLD | `main.cpp`                      | `stock_exchange_app` |
 
@@ -1691,7 +1730,7 @@ Har project complete karne ke baad yeh try karo:
 | LFU Cache                 | Frequency aging, window LFU, unified cache factory      |
 | LeetCode                  | Contests, editorial service, real sandbox `ICodeRunner` |
 | Splitwise                 | Currency conversion, recurring expenses                 |
-| WhatsApp                  | End-to-end encryption interface, read receipts sync     |
+| WhatsApp                  | Session encryption, delete-for-me/everyone, read receipts |
 | Elevator                  | SCAN algorithm, weight capacity                         |
 | Food Delivery (L11)       | Rating system, restaurant filters                       |
 | Chess (L37)               | Undo move (Memento), AI player (Strategy)               |
@@ -1771,6 +1810,8 @@ Har project complete karne ke baad yeh try karo:
 | Leave Request         | [Leave_Request_System_LLD](./Leave_Request_System_LLD/)                                                                                                                                                                                                                                                                              |
 | Razorpay Gateway      | [Razorpay_LLD](./Razorpay_LLD/)                                                                                                                                                                                                                                                                                                      |
 | In-Memory SQL DB      | [In_Memory_SQL_Database_LLD](./In_Memory_SQL_Database_LLD/)                                                                                                                                                                                                                                                                          |
+| Google Docs Editor    | [Google_Docs_Collaborative_Editor_LLD](./Google_Docs_Collaborative_Editor_LLD/)                                                                                                                                                                                                                                                      |
+| CricBuzz Live Score   | [CricBuzz_LLD](./CricBuzz_LLD/)                                                                                                                                                                                                                                                                                                      |
 | IRCTC                 | [IRCTC_LLD](./IRCTC_LLD/)                                                                                                                                                                                                                                                                                                            |
 | Stock Exchange        | [Stock_Exchange_LLD](./Stock_Exchange_LLD/)                                                                                                                                                                                                                                                                                            |
 | Pub-Sub System        | [Pub_Sub_System_LLD](./Pub_Sub_System_LLD/)                                                                                                                                                                                                                                                                                          |
@@ -2000,6 +2041,58 @@ cd In_Memory_SQL_Database_LLD && ./compile.sh && ./sql_database_app
 
 ---
 
+### Google_Docs_Collaborative_Editor_LLD
+
+| Entities | `Document`, `User`, `EditOperation`, `CollaboratorAccess`, `CursorPosition` |
+| -------- | --------------------------------------------------------------------------- |
+| Services | `DocumentService`, `SharingService`, `EditService`, `PresenceService`, `UndoRedoService` |
+| Collab   | `EditNotificationHub`, `IEditListener` |
+| Facade   | `CollaborativeEditorSystem` |
+
+**Spec:** [`requirements.md`](./Google_Docs_Collaborative_Editor_LLD/requirements.md)
+
+**Flow:** create → share (VIEW/COMMENT/EDIT) → join session → insert/delete at revision → Observer broadcast → cursor presence → undo
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Conflict handling? | **Revision lock** — stale client refreshes; production uses **OT** or **CRDT** |
+| Real-time sync? | `EditNotificationHub` = in-process Observer; prod = WebSocket fan-out |
+| Permissions? | Owner implicit EDIT; collaborators get explicit level |
+
+**UML:** [§35 Collaborative Editor](./docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#35-google-docs--collaborative-editor)
+
+```bash
+cd Google_Docs_Collaborative_Editor_LLD && ./compile.sh && ./collab_editor_app
+```
+
+---
+
+### CricBuzz_LLD
+
+| Entities | `Team`, `Player`, `Match`, `InningsScore`, `BallEvent`, `LiveScoreboard` |
+| -------- | ------------------------------------------------------------------------ |
+| Services | `TeamRegistryService`, `MatchService`, `ScoringService`, `LiveScoreService` |
+| Strategy | `ICommentaryGenerator` / `DefaultCommentaryGenerator` |
+| Facade   | `CricBuzzSystem` |
+
+**Spec:** [`requirements.md`](./CricBuzz_LLD/requirements.md)
+
+**Flow:** register teams → schedule match → toss → ball-by-ball → live score + commentary → chase → result
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Overs tracking? | Legal balls only; WIDE/NO_BALL extras don't increment ball count |
+| Commentary? | **Strategy** — swap `ICommentaryGenerator` for Hindi/ML versions |
+| Scale? | Observer + pub/sub per match; shard by `matchId` |
+
+**UML:** [§36 CricBuzz](./docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#36-cricbuzz-live-cricket-scoring)
+
+```bash
+cd CricBuzz_LLD && ./compile.sh && ./cricbuzz_app
+```
+
+---
+
 ### IRCTC_LLD
 
 | Entities | `Train`, `TicketBooking`, `SegmentLedger` |
@@ -2203,20 +2296,32 @@ cd Logger_LLD && ./compile.sh && ./logger_app
 
 ### WhatsApp_LLD
 
-| Feature        | Implementation                           |
-| -------------- | ---------------------------------------- |
-| 1:1 chat       | `Chat` in `ChatService`                  |
-| Groups         | `Group` + admin                          |
-| Message status | `MessageStatus` enum                     |
-| Encryption     | `EncryptionService` Strategy (demo stub) |
-| Notifications  | `NotificationEngine` + decorators        |
+| Entities | `User`, `Chat`, `Group`, `Message` (deletion state) |
+| -------- | --------------------------------------------------- |
+| Services | `ChatService`, `MessageDeletionService`, `ChatSessionEncryptionService` |
+| Crypto   | `ChatSessionCipher`, `Base64Codec` |
+| Facade   | `WhatsAppSystem` |
 
-| Interview Q       | Answer sketch                                      |
-| ----------------- | -------------------------------------------------- |
-| Message ordering? | Sequence number per chat (extension)               |
-| Read receipts?    | Observer on message status                         |
-| Real E2E?         | Key exchange + encrypt at client — not in this LLD |
-| Group add member? | Admin check on `Group`                             |
+| Feature | Implementation |
+| ------- | -------------- |
+| 1:1 + group | `ChatService` |
+| Encryption | Encrypt on send, decrypt on `get*MessagesForUser` |
+| Delete for me | `Message::markDeletedForMe` + filtered timeline |
+| Delete for everyone | Tombstone, sender-only, 1h window |
+| Notifications | `NotificationEngine` + decorators |
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Delete for me vs everyone? | Per-user hide vs global tombstone; only sender can delete-for-everyone |
+| Encryption real? | LLD: XOR+Base64 per-chat key; prod: Signal protocol |
+| Message ordering? | `sequenceNumber` per chat |
+| Read receipts? | Observer on `MessageStatus` (extension) |
+
+**UML:** [§16 WhatsApp](./docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#16-whatsapp)
+
+```bash
+cd WhatsApp_LLD && ./compile.sh && ./whatsapp_app
+```
 
 ---
 
@@ -2388,7 +2493,7 @@ A: L18 Spotify notes intentional mix. New code me `unique_ptr` / `shared_ptr` pr
 A: Nahi — sirf jahan demo hai (Rate Limiter, LRU/LFU, Multi_threading). Baaki me extension exercise.
 
 **Q: WhatsApp me real encryption hai?**  
-A: Nahi — `EncryptionService` Strategy stub; `enc(text)` demo. Real E2E = keys + Signal protocol (HLD/Security).
+A: LLD me **reversible** chat-session encryption hai (`ChatSessionEncryptionService`, per-chat key, ciphertext `WA1:...` at rest). Production WhatsApp = **Signal protocol** + true E2E — interview me dono alag bolo.
 
 **Q: LRU vs LFU interview me kaun puchega?**  
 A: Dono — LRU zyada common; LFU CDN / cache warming scenarios me.
@@ -2492,6 +2597,9 @@ Need undo?                          → Command / Memento
 | 2026 | Added `Leave_Request_System_LLD` — §32 UML + pattern map (Chain of Responsibility approval) + docs hub                        |
 | 2026 | Added `Razorpay_LLD` — §33 UML + pattern map (Razorpay-only order/capture/webhook/refund); distinct from L23 multi-gateway      |
 | 2026 | Added `In_Memory_SQL_Database_LLD` — §34 UML + pattern map (DDL, typed columns, constraints, insert, print, filter)               |
+| 2026 | Added `Google_Docs_Collaborative_Editor_LLD` — §35 UML + pattern map (share, revision sync, Observer, Memento undo)            |
+| 2026 | Added `CricBuzz_LLD` — §36 UML + pattern map (live scoring, ball-by-ball, commentary Strategy)                               |
+| 2026 | Updated `WhatsApp_LLD` — §16 UML + README: session encryption, delete-for-me / delete-for-everyone                          |
 | 2026 | **L0 Introduction** + **L1 Composition** (moved from `L2 OOPS_1/Composition/`); root README foundation track updated          |
 | 2026 | **L4 UML_Diagrams** reorganized — `C++ Code/`, `notes/`, `compile.sh`, `INHERITANCE_AND_COMPOSITION.md`                        |
 
@@ -2499,7 +2607,7 @@ Need undo?                          → Command / Memento
 
 - [x] Har naye project me `problem_statement.md`, `requirements.md`, `compile.sh`
 - [x] Root README me project table update
-- [x] Diagram file me naya section add (§34 In-Memory SQL DB; §33 Razorpay; §32 Leave Request; §31 E-commerce; §28–§30 Task Scheduler, IRCTC, Stock Exchange)
+- [x] Diagram file me naya section add (§36 CricBuzz; §35 Collaborative Editor; §34 In-Memory SQL DB; §33 Razorpay)
 - [ ] `./scripts/build_all_systems.sh` green before push
 
 ---

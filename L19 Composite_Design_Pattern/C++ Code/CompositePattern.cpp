@@ -12,7 +12,7 @@ public:
   virtual void ls(int indent = 0) = 0;
   virtual void openAll(int indent = 0) = 0;
   virtual int getSize() = 0;
-  virtual FileSystemItem *cd(const string &name) = 0;
+  virtual FileSystemItem *cd(const string &name) = 0; // change directory ye folder mein chala jayega lekin file mein nahi  chalega
   virtual string getName() = 0;
   virtual bool isFolder() = 0;
 };

@@ -14,46 +14,12 @@
 
 > Har folder, har lesson, har system project — structure, concepts, patterns, compile commands, aur interview tips — sab yahan detail me documented hai.
 
-<p align="center">
-
-<table>
-  <tr>
-    <td align="center"><h2>41</h2><sub>lessons · L0 intro → GoF</sub></td>
-    <td align="center"><h2>31</h2><sub>runnable systems</sub></td>
-    <td align="center"><h2>31</h2><sub>UML sections</sub></td>
-    <td align="center"><h2>65+</h2><sub>pattern-mapped projects</sub></td>
-  </tr>
-</table>
-
-<br/>
-
-**30-second start**
-
-```bash
-git clone <repo> && cd LLD/Ecommerce_Cart_Checkout_LLD
-./compile.sh && ./ecommerce_checkout_app   # cart → coupon → pay → order
-```
-
 | Jump to | |
 |---------|---|
 | [5-min path](#quick-start-5-minutes) | First week roadmap |
 | [UML hub](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | Class + sequence diagrams |
 | [Pattern map](docs/PROJECT_DESIGN_PATTERNS.md) | Which project uses which pattern |
 | [Concurrency](Multi_threading_C++/README.md) | Threads, pools, LC problems |
-
-<br/>
-
-#### 🔥 New & high-yield systems
-
-| Project | What you'll practice | Run |
-|---------|------------------------|-----|
-| 🛒 [**E-commerce Cart + Checkout**](Ecommerce_Cart_Checkout_LLD/) | Inventory hold, coupons, payment `Strategy`, idempotent checkout | `./ecommerce_checkout_app` |
-| 🚂 [**IRCTC**](IRCTC_LLD/) | Segment booking + `mutex` | `./irctc_app` |
-| 📈 [**Stock Exchange**](Stock_Exchange_LLD/) | Order book, price-time match | `./stock_exchange_app` |
-| 💳 [**GPay**](GPay_LLD/) | UPI P2P, payment rail `Strategy` | `./gpay_app` |
-| 🅿️ [**Parking Lot**](Parking_lot_system_LLD/) | Classic LLD warm-up | `./parking_app` |
-
-<br/>
 
 ```mermaid
 %%{init: {'theme': 'dark', 'themeVariables': { 'fontSize': '14px'}}}%%
@@ -73,8 +39,8 @@ flowchart LR
     A --> B --> C --> D --> E --> F
 ```
 
+<p align="center">
   <code>C++17</code> · <code>./compile.sh</code> per project · in-memory by design · ground truth = <code>problem_statement.md</code>
-
 </p>
 
 ---

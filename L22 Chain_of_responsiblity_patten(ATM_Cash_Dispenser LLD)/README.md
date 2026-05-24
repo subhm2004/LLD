@@ -546,7 +546,7 @@ flowchart TB
     end
 
     subgraph handler_layer["handlers/"]
-        MH["MoneyHandler"]
+        MH["MoneyHandler abstract"]
         T["ThousandHandler"]
         F["FiveHundredHandler"]
         W["TwoHundredHandler"]
@@ -570,13 +570,17 @@ flowchart TB
     SVC --> MGR
     SVC --> DS
     SVC --> REQ
-    MGR --> MH
     MGR --> INV
-    MGR --> T & F & W & H
+    MGR --> T
+    MH -.-> T
+    MH -.-> F
+    MH -.-> W
+    MH -.-> H
+    T -->|nextHandler| F
+    F -->|nextHandler| W
+    W -->|nextHandler| H
     INV --> CAS
     CAS --> ND
-    T & F & W & H --|extends| MH
-    MH -->|nextHandler| MH
 ```
 
 #### Full class diagram

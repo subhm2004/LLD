@@ -1,14 +1,14 @@
 # Low-Level Design (LLD) — Complete Master Repository Guide
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2500&pause=800&color=2F81F7&center=true&vCenter=true&width=900&lines=Master+LLD+Guide+%E2%80%94+2400%2B+Lines;40+Lessons+%7C+31+System+Projects;23%2B+GoF+Patterns+%7C+Interview+Deep+Dives" alt="Typing animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2500&pause=800&color=2F81F7&center=true&vCenter=true&width=900&lines=Master+LLD+Guide+%E2%80%94+2400%2B+Lines;40+Lessons+%7C+33+System+Projects;23%2B+GoF+Patterns+%7C+Interview+Deep+Dives" alt="Typing animation" />
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Language-C%2B%2B17-blue?style=for-the-badge" alt="C++ Badge" />
   <img src="https://img.shields.io/badge/Lessons-L0%E2%80%93L40-6f42c1?style=for-the-badge" alt="Lessons badge" />
-  <img src="https://img.shields.io/badge/System+Projects-31-success?style=for-the-badge" alt="Projects badge" />
-  <img src="https://img.shields.io/badge/UML-31+Systems-FB8500?style=for-the-badge" alt="UML badge" />
+  <img src="https://img.shields.io/badge/System+Projects-33-success?style=for-the-badge" alt="Projects badge" />
+  <img src="https://img.shields.io/badge/UML-33+Systems-FB8500?style=for-the-badge" alt="UML badge" />
   <img src="https://img.shields.io/badge/Focus-Interview%20Ready-orange?style=for-the-badge" alt="Interview badge" />
 </p>
 
@@ -17,8 +17,8 @@
 | Jump to | |
 |---------|---|
 | [5-min path](#quick-start-5-minutes) | First week roadmap |
-| [UML hub](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | 31 systems — class + sequence diagrams (Mermaid) |
-| [Pattern map](docs/PROJECT_DESIGN_PATTERNS.md) | 65+ projects × kaunsa pattern kahan |
+| [UML hub](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | 33 systems — class + sequence diagrams (Mermaid) |
+| [Pattern map](docs/PROJECT_DESIGN_PATTERNS.md) | 67+ projects × kaunsa pattern kahan |
 | [Design patterns](docs/Design_Patterns.md) | GoF complete guide + repo lesson links |
 | [Pattern types](docs/Design_Pattern_types.md) | Creational / Structural / Behavioral quick list |
 | [SOLID](docs/SOLID.md) | S · O · L · I · D — principles + violated vs fixed |
@@ -32,7 +32,7 @@ flowchart LR
         B[L7-L40 Patterns]
     end
     subgraph build [Build]
-        C[31 Systems]
+        C[33 Systems]
         D[main.cpp demos]
     end
     subgraph ship [Interview]
@@ -106,7 +106,7 @@ cd Parking_lot_system_LLD
 ./parking_app
 ```
 
-**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (31 systems, ~5000+ lines Mermaid).
+**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (33 systems, ~5000+ lines Mermaid).
 
 ---
 
@@ -117,7 +117,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | Category               | Count        | Description                                                             |
 | ---------------------- | ------------ | ----------------------------------------------------------------------- |
 | **Lesson modules**     | L0 – L40     | Intro, Has-A relationships, OOP, SOLID, UML, patterns, system hybrids |
-| **Standalone systems** | 31 projects  | E-commerce Checkout, GPay, IRCTC, Stock Exchange, Task Scheduler + more   |
+| **Standalone systems** | 33 projects  | Razorpay, Leave Request, E-commerce Checkout, GPay, IRCTC, Stock Exchange + more   |
 | **Concurrency labs**   | 1 folder     | `Multi_threading_C++` — threads, mutex, semaphores, thread pool, DCLP   |
 | **Reference assets**   | PDFs, images | Gang of Four, DDIA, design pattern cheat sheets                         |
 
@@ -133,7 +133,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | ------------------------------------ | ------------------------------------------------------------------------------------- |
 | Total C++/header source files        | ~490+                                                                                 |
 | Lesson folders (L0–L40)              | 41                                                                                    |
-| Runnable system demos                | 31                                                                                    |
+| Runnable system demos                | 33                                                                                    |
 | Projects with dedicated `README.md`  | 24+                                                                                   |
 | Design patterns demonstrated         | 20+ (GoF + Null Object)                                                               |
 | Projects with `problem_statement.md` | 28+                                                                                   |
@@ -149,7 +149,7 @@ Zyada tar LLD preparation in points par atak jaati hai:
 | ------------------------------------------------- | ---------------------------------------------------------------------- |
 | Theory samajh aata hai, code me convert nahi hota | Har concept ke saath runnable `.cpp` / modular headers                 |
 | Code likh lete hain, extensibility weak hoti hai  | SOLID + OCP-focused refactors (e.g. L7 Bad vs Good design)             |
-| Sirf 1–2 problems solve kiye                      | 31 full systems + 10+ lesson-level LLDs                               |
+| Sirf 1–2 problems solve kiye                      | 33 full systems + 10+ lesson-level LLDs                               |
 | Patterns yaad hain, use-case nahi                 | Har pattern ke saath real domain (ATM, Food Delivery, Payment Gateway) |
 | Interview me sirf code, design explain nahi       | Har project me assumptions, trade-offs, extension hooks                |
 
@@ -1010,6 +1010,38 @@ cd Task_Scheduler_LLD && ./compile.sh && ./task_scheduler_app
 
 ---
 
+### Leave_Request_System_LLD
+
+|              |                                                                                                                                    |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| **Path**     | [`Leave_Request_System_LLD/`](./Leave_Request_System_LLD/)                                                                         |
+| **Patterns** | **Chain of Responsibility** (Team Lead → Manager → HR → Director), **Facade**, service layer                                     |
+| **Flow**     | Register employee → `submitLeave` (PENDING) → `processApproval` (CoR chain) → APPROVED/REJECTED; `cancelLeave` while pending       |
+| **Note**     | Classic HR approval workflow — pairs with [L22 Chain (ATM)](./L22%20Chain_of_responsiblity_patten(ATM_Cash_Dispenser%20LLD)/) and [`Logger_LLD`](./Logger_LLD/) |
+
+```bash
+cd Leave_Request_System_LLD && ./compile.sh && ./leave_request_app
+```
+
+---
+
+### Razorpay_LLD
+
+|              |                                                                                                                                  |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| **Path**     | [`Razorpay_LLD/`](./Razorpay_LLD/)                                                                                               |
+| **Docs**     | [`requirements.md`](./Razorpay_LLD/requirements.md) · [`problem_statement.md`](./Razorpay_LLD/problem_statement.md)             |
+| **Patterns** | **Facade**, **Template Method**, **Strategy** (UPI/Card/Wallet), **Factory**, webhook signature + idempotency                  |
+| **Services** | `OrderService`, `PaymentService`, `CaptureService`, `RefundService`, `WebhookService`, `IdempotencyService`                      |
+| **Flow**     | `createOrder` → `initiatePayment` → `capturePayment` → `processWebhook` → `refundPayment` · `checkout()`                         |
+| **Note**     | **Razorpay-only** lifecycle; multi-gateway patterns → [`L23`](./L23%20Payment_gateway_system_LLD/)                             |
+
+```bash
+cd Razorpay_LLD && ./compile.sh && ./razorpay_app
+```
+
+---
+
 ### IRCTC_LLD
 
 |              |                                                                                         |
@@ -1417,8 +1449,8 @@ g++ -std=c++17 -pthread dining_philosophers.cpp -o dp && ./dp
 | **Adapter**                 | L16, L18                         | —                                                                                                       |
 | **Facade**                  | L11, L17, L18, L27, L31          | Most `core/` classes, `CacheService`, **GPay**, **Truecaller**                                          |
 | **Command**                 | L15                              | —                                                                                                       |
-| **Template Method**         | L20, L23                         | Rate Limiter (base)                                                                                     |
-| **Chain of Responsibility** | L22, L24                         | Logger                                                                                                  |
+| **Template Method**         | L20, L23, **Razorpay**           | Rate Limiter (base), `CheckoutFlowTemplate`                                                             |
+| **Chain of Responsibility** | L22, L24                         | Logger, **Leave Request** (approval chain)                                                            |
 | **State**                   | L32                              | (enum states in Blinkit, Car Rental)                                                                    |
 | **Bridge**                  | L25, L34                         | —                                                                                                       |
 | **Composite**               | L19, L7                          | JSON Parser                                                                                             |
@@ -1460,6 +1492,7 @@ g++ -std=c++17 -pthread dining_philosophers.cpp -o dp && ./dp
 | ⭐⭐⭐   | Parking Lot               | OOP basics, Strategy, state of spots            |
 | ⭐⭐⭐   | BookMyShow / Movie Ticket | Concurrency on seats, complex domain            |
 | ⭐⭐⭐   | E-commerce Cart + Checkout | Inventory reserve, coupon, payment Strategy     |
+| ⭐⭐⭐   | Razorpay Gateway           | Order, capture, webhook, refund (fintech)       |
 | ⭐⭐⭐   | Splitwise                 | Graph-like balances, algorithms                 |
 | ⭐⭐⭐   | LRU Cache                 | Hash map + DLL, `list::splice`, mutex decorator |
 | ⭐⭐     | LFU Cache                 | Frequency buckets + `minFreq`, tie-break LRU    |
@@ -1471,6 +1504,7 @@ g++ -std=c++17 -pthread dining_philosophers.cpp -o dp && ./dp
 | ⭐⭐     | Load Balancer             | Strategy pattern classic                        |
 | ⭐⭐     | LeetCode / Online Judge   | Submit → judge pipeline, Strategy runner        |
 | ⭐⭐     | Logger                    | Chain of Responsibility classic                 |
+| ⭐⭐     | Leave Request             | HR approval chain by duration (CoR)             |
 | ⭐       | URL Shortener             | Encoding, deduplication                         |
 | ⭐       | Vending Machine           | State pattern (also L32)                        |
 | ⭐       | JSON Parser               | Composite + parsing                             |
@@ -1573,6 +1607,8 @@ chmod +x scripts/build_all_systems.sh
 | Ecommerce_Cart_Checkout_LLD | `main.cpp`             | `ecommerce_checkout_app` |
 | Truecaller_LLD   | `main.cpp`                        | `truecaller_app`   |
 | Task_Scheduler_LLD | `main.cpp`                      | `task_scheduler_app` |
+| Leave_Request_System_LLD | `main.cpp`                | `leave_request_app` |
+| Razorpay_LLD     | `main.cpp`                        | `razorpay_app`     |
 | IRCTC_LLD        | `main.cpp`                        | `irctc_app`        |
 | Stock_Exchange_LLD | `main.cpp`                      | `stock_exchange_app` |
 
@@ -1715,6 +1751,8 @@ Har project complete karne ke baad yeh try karo:
 | Truecaller            | [Truecaller_LLD](./Truecaller_LLD/)                                                                                                                                                                                                                                                                                                  |
 | Meeting Scheduler     | [Meeting_Scheduler_LLD](./Meeting_Scheduler_LLD/)                                                                                                                                                                                                                                                                                    |
 | Task Scheduler        | [Task_Scheduler_LLD](./Task_Scheduler_LLD/)                                                                                                                                                                                                                                                                                          |
+| Leave Request         | [Leave_Request_System_LLD](./Leave_Request_System_LLD/)                                                                                                                                                                                                                                                                              |
+| Razorpay Gateway      | [Razorpay_LLD](./Razorpay_LLD/)                                                                                                                                                                                                                                                                                                      |
 | IRCTC                 | [IRCTC_LLD](./IRCTC_LLD/)                                                                                                                                                                                                                                                                                                            |
 | Stock Exchange        | [Stock_Exchange_LLD](./Stock_Exchange_LLD/)                                                                                                                                                                                                                                                                                            |
 | Pub-Sub System        | [Pub_Sub_System_LLD](./Pub_Sub_System_LLD/)                                                                                                                                                                                                                                                                                          |
@@ -1862,6 +1900,57 @@ cd Meeting_Scheduler_LLD && ./compile.sh && ./meeting_scheduler_app
 
 ```bash
 cd Task_Scheduler_LLD && ./compile.sh && ./task_scheduler_app
+```
+
+---
+
+### Leave_Request_System_LLD
+
+| Entities | `Employee`, `LeaveRequest` |
+| -------- | -------------------------- |
+| Handlers | `TeamLeadHandler`, `ManagerHandler`, `HRHandler`, `DirectorHandler` (CoR chain) |
+| Services | `LeaveRegistryService`, `LeaveApprovalService` |
+| Facade   | `LeaveRequestSystem` |
+
+**Flow:** `registerEmployee` → `submitLeave` → `processApproval` → cancel pending before approval
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| CoR vs if-else approvers? | New level = new handler + chain link; open/closed without touching `LeaveRequestSystem` |
+| Why split submit vs approve? | Real HR: draft leave, cancel before manager sees; async approval later |
+| vs L22 ATM chain? | Same pattern: partial handle + forward remainder; ATM = notes, Leave = authority by days |
+
+**UML:** [§32 Leave Request](./docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#32-leave-request-system) · **Patterns:** [Leave Request in PROJECT_DESIGN_PATTERNS](./docs/PROJECT_DESIGN_PATTERNS.md#leave-request-system)
+
+```bash
+cd Leave_Request_System_LLD && ./compile.sh && ./leave_request_app
+```
+
+---
+
+### Razorpay_LLD
+
+| Entities | `RazorpayOrder`, `RazorpayPayment`, `Refund`, `MerchantConfig`, `CheckoutInput` |
+| -------- | ------------------------------------------------------------------------------- |
+| Services | `OrderService`, `PaymentService`, `CaptureService`, `RefundService`, `WebhookService`, `IdempotencyService` |
+| Flow     | `CheckoutFlowTemplate` (validate → order → pay → capture) |
+| Facade   | `RazorpayPaymentSystem` |
+
+**Spec:** [`requirements.md`](./Razorpay_LLD/requirements.md) (8 functional + 11 non-functional sections)
+
+**Flow:** `createOrder` → `initiatePayment` / `checkout` → `capturePayment` → `processWebhook` → `refundPayment`
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| vs L23? | L23 = multi-gateway CoR/Template demo; Razorpay_LLD = **only Razorpay** APIs (order, capture, webhook, refund) |
+| Amount unit? | **Paise** (₹1 = 100) — Razorpay convention |
+| Webhook security? | Verify `X-Razorpay-Signature` before state change |
+| Idempotency? | Same `Idempotency-Key` → same `order_` / `pay_` id |
+
+**UML:** [§33 Razorpay](./docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#33-razorpay-payment-gateway) · **Patterns:** [Razorpay](./docs/PROJECT_DESIGN_PATTERNS.md#razorpay-payment-gateway)
+
+```bash
+cd Razorpay_LLD && ./compile.sh && ./razorpay_app
 ```
 
 ---
@@ -2200,7 +2289,7 @@ Pair with **L32 State** pattern lesson for interview synergy.
 | Uber / Swiggy / Zomato        | Ride, Food (L11), Movie Ticket                 | `Uber_LLD`, `L11 Food_Delivery`, `Movie_Ticket_Booking_System`    |
 | Meta / Social                 | WhatsApp, LinkedIn, Reels                      | `WhatsApp_LLD`, `Linkedin_LLD`, `Insta_reel_LLD`                  |
 | Flipkart / E-commerce         | Cart + Checkout, Payment, Coupons              | `Ecommerce_Cart_Checkout_LLD`, `L23`, `L24`                       |
-| Fintech                       | ATM, Payment Gateway, UPI, Order matching      | `ATM_LLD`, `L23`, `GPay_LLD`, `L31 Splitwise`, `Stock_Exchange_LLD` |
+| Fintech                       | ATM, Payment Gateway, Razorpay, UPI, Order matching | `ATM_LLD`, `L23`, `Razorpay_LLD`, `GPay_LLD`, `L31 Splitwise`, `Stock_Exchange_LLD` |
 | India mobile apps             | IRCTC booking, UPI, Caller ID                  | `IRCTC_LLD`, `GPay_LLD`, `Truecaller_LLD`                         |
 | Startups (general)            | URL Shortener, Vending Machine                 | `URL_Shortner_LLD`, `vending_machine_LLD`                         |
 
@@ -2355,6 +2444,8 @@ Need undo?                          → Command / Memento
 | 2026 | Added `Meeting_Scheduler_LLD` — §27 UML + pattern map                                                                         |
 | 2026 | Added `Task_Scheduler_LLD`, `IRCTC_LLD`, `Stock_Exchange_LLD` — §28–§30 UML + pattern map + README                          |
 | 2026 | Added `Ecommerce_Cart_Checkout_LLD` — §31 UML + pattern map; README hero refresh                                              |
+| 2026 | Added `Leave_Request_System_LLD` — §32 UML + pattern map (Chain of Responsibility approval) + docs hub                        |
+| 2026 | Added `Razorpay_LLD` — §33 UML + pattern map (Razorpay-only order/capture/webhook/refund); distinct from L23 multi-gateway      |
 | 2026 | **L0 Introduction** + **L1 Composition** (moved from `L2 OOPS_1/Composition/`); root README foundation track updated          |
 | 2026 | **L4 UML_Diagrams** reorganized — `C++ Code/`, `notes/`, `compile.sh`, `INHERITANCE_AND_COMPOSITION.md`                        |
 
@@ -2362,7 +2453,7 @@ Need undo?                          → Command / Memento
 
 - [x] Har naye project me `problem_statement.md`, `requirements.md`, `compile.sh`
 - [x] Root README me project table update
-- [x] Diagram file me naya section add (§31 E-commerce Cart + Checkout; §28–§30 Task Scheduler, IRCTC, Stock Exchange)
+- [x] Diagram file me naya section add (§33 Razorpay; §32 Leave Request; §31 E-commerce; §28–§30 Task Scheduler, IRCTC, Stock Exchange)
 - [ ] `./scripts/build_all_systems.sh` green before push
 
 ---

@@ -1,12 +1,12 @@
 # Project ↔ Design Pattern Map
 
 <p align="center">
-  <b>65+ Projects × 23+ GoF Patterns</b><br/>
+  <b>67+ Projects × 23+ GoF Patterns</b><br/>
   <sub>Pattern map · live Mermaid · interview quick lines</sub>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Projects-65+-blue?style=for-the-badge" alt="Projects" />
+  <img src="https://img.shields.io/badge/Projects-67+-blue?style=for-the-badge" alt="Projects" />
   <img src="https://img.shields.io/badge/Patterns-23+GoF-purple?style=for-the-badge" alt="Patterns" />
   <img src="https://img.shields.io/badge/Diagrams-Mermaid-success?style=for-the-badge" alt="Mermaid" />
 </p>
@@ -81,7 +81,7 @@ pie showData
     "Observer" : 8
     "Decorator" : 5
     "Service Layer" : 10
-    "Chain of Responsibility" : 4
+    "Chain of Responsibility" : 5
     "Template Method" : 3
     "State" : 4
     "Others (Bridge Proxy Command...)" : 12
@@ -120,7 +120,7 @@ mindmap
       Observer
         L12 L31 Logger
       Chain
-        L22 L24 Logger
+        L22 L24 Logger LeaveRequest
       State L32 Blinkit
       Command L15
       Mediator L35 L37
@@ -234,6 +234,8 @@ flowchart LR
 | 63 | IRCTC Train Booking | [`IRCTC_LLD/`](../IRCTC_LLD/) | **Facade**, **Factory**, **Service layer**, segment ledger + `mutex` |
 | 64 | Stock Exchange | [`Stock_Exchange_LLD/`](../Stock_Exchange_LLD/) | **Facade**, **Factory**, **Service layer** (order book + matching) |
 | 65 | E-commerce Cart + Checkout | [`Ecommerce_Cart_Checkout_LLD/`](../Ecommerce_Cart_Checkout_LLD/) | **Facade**, **Strategy** (discount + payment), **Factory** (payment rails), **Service layer**, inventory reservation |
+| 66 | Leave Request System | [`Leave_Request_System_LLD/`](../Leave_Request_System_LLD/) | **Chain of Responsibility** (approval chain), **Facade**, **Service layer** |
+| 67 | Razorpay Payment Gateway | [`Razorpay_LLD/`](../Razorpay_LLD/) | **Facade**, **Template Method**, **Strategy**, **Factory**, webhooks + idempotency |
 
 > **Note:** L1–L6 = OOP + SOLID foundation ([`L2 OOPS_1`](../L2%20OOPS_1/), [`L5 SOLID_1`](../L5%20SOLID_1/), [`L6 SOLID_2`](../L6%20SOLID_2/)) — design pattern **lessons** nahi, principles hain.
 
@@ -250,7 +252,7 @@ flowchart LR
 
 | Priority | Projects |
 |----------|----------|
-| ⭐⭐⭐ Must | Parking, Splitwise L31, Payment L23, BookMyShow, Logger, Spotify L18 |
+| ⭐⭐⭐ Must | Parking, Splitwise L31, Payment L23, **Razorpay**, BookMyShow, Logger, **Leave Request** (CoR), Spotify L18 |
 | ⭐⭐ Strong | OYO, LRU, LeetCode, WhatsApp, L24 Coupons, Load Balancer, Movie Ticket, **Amazon Locker**, **Concurrent HashMap**, **TTL Cache**, **GPay**, **E-commerce Checkout**, **Truecaller**, **Task Scheduler**, **IRCTC**, **Stock Exchange** |
 | ⭐ Good | Baaki lessons L7–L40 (pattern demos), Car Rental, Uber, JSON Parser, **Multi_threading_C++** labs |
 
@@ -470,6 +472,8 @@ graph TB
 **Main flow:** `PaymentController` → `GatewayFactory` → proxied gateway → template steps → banking strategy.
 
 **Extension bolna:** “Add Stripe = `StripeGateway` subclass + factory branch — `processPayment` skeleton same.”
+
+**Razorpay-only lifecycle:** [`Razorpay_LLD/`](../Razorpay_LLD/) — orders, capture, webhooks, refunds (not a second gateway in L23).
 
 ### L24 — Discount Coupon Engine
 
@@ -878,6 +882,55 @@ cd Thread_Safe_Cache_with_TTL_LLD && ./compile.sh && ./cache_ttl_app
 cd Ecommerce_Cart_Checkout_LLD && ./compile.sh && ./ecommerce_checkout_app
 ```
 
+### Leave Request System
+
+| | |
+|---|---|
+| **Path** | [`Leave_Request_System_LLD/`](../Leave_Request_System_LLD/) |
+| **Priority** | ⭐⭐⭐ (HR / workforce — approval workflow; classic **Chain of Responsibility** demo) |
+| **Problem** | Submit leave, multi-level approval by duration, cancel pending, query history |
+| **Patterns** | **Chain of Responsibility**, **Facade**, **Service layer** |
+
+| Pattern | Kyun? | Class / file |
+|---------|-------|--------------|
+| **Chain of Responsibility** | Team Lead → Manager → HR → Director; first handler with authority approves | `LeaveApprovalHandler`, `TeamLeadHandler`, `ManagerHandler`, `HRHandler`, `DirectorHandler` |
+| **Facade** | Single API for register, submit, approve, cancel | `LeaveRequestSystem` |
+| Service layer | Registry + run approval chain | `LeaveRegistryService`, `LeaveApprovalService` |
+| Manager | Wire handler chain at startup | `LeaveApprovalChainManager` |
+
+**Note:** Pairs with [`L22 Chain (ATM)`](../L22%20Chain_of_responsiblity_patten(ATM_Cash_Dispenser%20LLD)/) (dispense notes) and [`Logger_LLD`](../Logger_LLD/) (log level chain) — same CoR pattern, different domain.
+
+**UML:** [Section 32](SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#32-leave-request-system)
+
+```bash
+cd Leave_Request_System_LLD && ./compile.sh && ./leave_request_app
+```
+
+### Razorpay Payment Gateway
+
+| | |
+|---|---|
+| **Path** | [`Razorpay_LLD/`](../Razorpay_LLD/) |
+| **Priority** | ⭐⭐⭐ (Fintech — **dedicated Razorpay** order → pay → capture → webhook → refund) |
+| **Problem** | Merchant Razorpay integration: orders (paise), payments, capture, signature verify, refunds |
+| **Patterns** | **Facade**, **Template Method**, **Strategy**, **Factory**, **Service layer** |
+
+| Pattern | Kyun? | Class / file |
+|---------|-------|--------------|
+| **Facade** | Single merchant API | `RazorpayPaymentSystem` |
+| **Template Method** | Fixed checkout skeleton with hooks | `CheckoutFlowTemplate` |
+| **Strategy** | UPI / Card / Wallet validation | `IPaymentMethodValidator`, `*Validator` |
+| **Factory** | `order_` / `pay_` / `rfnd_` ids, validator pick | `EntityIdFactory`, `PaymentMethodValidatorFactory` |
+| Service layer | Order, payment, capture, refund, webhook, idempotency | `OrderService`, `PaymentService`, `CaptureService`, `RefundService`, `WebhookService`, `IdempotencyService` |
+
+**Note:** [`L23`](../L23%20Payment_gateway_system_LLD/) = multi-gateway **patterns** demo (Paytm + Razorpay). **Razorpay_LLD** = Razorpay-only production-shaped lifecycle.
+
+**UML:** [Section 33](SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#33-razorpay-payment-gateway)
+
+```bash
+cd Razorpay_LLD && ./compile.sh && ./razorpay_app
+```
+
 ### GPay (UPI P2P)
 
 | | |
@@ -1047,6 +1100,8 @@ cd Stock_Exchange_LLD && ./compile.sh && ./stock_exchange_app
 | [IRCTC](../IRCTC_LLD/) | `IRCTCSystem` | `SeatAllocationService`, `BookingService`, segment overlap | **Facade** + **Factory** + services |
 | [Stock Exchange](../Stock_Exchange_LLD/) | `StockExchangeSystem` | `MatchingEngineService`, `OrderBookService` | **Facade** + **Factory** + services |
 | [E-commerce Checkout](../Ecommerce_Cart_Checkout_LLD/) | `EcommerceCheckoutSystem` | `CheckoutService`, `InventoryService`, payment/discount strategies | **Facade** + **Strategy** + **Factory** |
+| [Leave Request](../Leave_Request_System_LLD/) | `LeaveRequestSystem` | `LeaveApprovalService`, `LeaveRegistryService`, approval handler chain | **Chain of Responsibility** + **Facade** |
+| [Razorpay](../Razorpay_LLD/) | `RazorpayPaymentSystem` | `OrderService`, `PaymentService`, `CaptureService`, `RefundService`, `WebhookService`, `IdempotencyService` | **Facade** + **Template Method** + **Strategy** |
 
 ---
 
@@ -1142,6 +1197,7 @@ flowchart TB
     CHN --> C1[Logger]
     CHN --> C2[L24 Coupons]
     CHN --> C3[L22 ATM demo]
+    CHN --> C4[Leave Request]
 
     TMP --> T1[L23 Payment]
     DEC --> D1[LRU ThreadSafe]
@@ -1160,10 +1216,10 @@ flowchart TB
 | **Observer** | L12, L14, L31, L33, L34, **Logger** (appenders), **WhatsApp** |
 | **Decorator** | L13, L14, **LRU**, **LFU**, **WhatsApp** |
 | **Adapter** | L16, L18 |
-| **Facade** | L11, L17, L18, L26, L27, L31, **ATM**, **OYO**, **LeetCode**, **LRU**, **LFU**, **Movie Ticket**, **WhatsApp** (`WhatsAppSystem`), **Amazon Locker**, **TTL Cache** (facade-like), **GPay**, **Truecaller**, **Meeting Scheduler** |
+| **Facade** | L11, L17, L18, L26, L27, L31, **ATM**, **OYO**, **LeetCode**, **LRU**, **LFU**, **Movie Ticket**, **WhatsApp** (`WhatsAppSystem`), **Amazon Locker**, **TTL Cache** (facade-like), **GPay**, **Truecaller**, **Meeting Scheduler**, **Leave Request**, **Razorpay** |
 | **Command** | L15 |
-| **Template Method** | L20, L23 |
-| **Chain of Responsibility** | L22, L24, **Logger** |
+| **Template Method** | L20, L23, **Razorpay** |
+| **Chain of Responsibility** | L22, L24, **Logger**, **Leave Request** |
 | **State** | L32 (+ order/vehicle **enum** states in L26, Car Rental, Uber) |
 | **Bridge** | L25, L34 |
 | **Composite** | L7, L19, **JSON Parser** |
@@ -1492,7 +1548,7 @@ sequenceDiagram
 | Hide complex subsystem | **Facade** | Splitwise, OYO, LeetCode, TomatoApp |
 | One instance global | **Singleton** | Logger (careful use) |
 | Notify many on event | **Observer** | L12, Splitwise group, Logger appenders |
-| Pipeline of handlers | **Chain** | Logger levels, ATM notes, coupons |
+| Pipeline of handlers | **Chain** | Logger levels, ATM notes, coupons, leave approval |
 | Incompatible legacy API | **Adapter** | XML→JSON L16, Headphones L18 |
 | Lazy / retry / access control | **Proxy** | L21 image, Payment retry |
 | Part-whole tree | **Composite** | File system L19, JSON parser |
@@ -1565,6 +1621,8 @@ flowchart LR
 | **Concurrent HashMap** | “`StripedHashMap` = Strategy over `IConcurrentMap`; stripe = less contention than coarse mutex.” |
 | **TTL Cache** | “`ThreadSafeTTLCache` with `shared_mutex`; lazy expire on get — like production session cache.” |
 | **E-commerce Checkout** | “`EcommerceCheckoutSystem` facade; reserve inventory before pay; `IDiscountStrategy` + `IPaymentStrategy`; rollback on failure; idempotent `clientRequestId`.” |
+| **Leave Request** | “`LeaveRequestSystem` facade; `TeamLead → Manager → HR → Director` chain by leave days; first handler with authority approves and stops; >30 days rejected.” |
+| **Razorpay** | “`RazorpayPaymentSystem`: order in paise → authorize payment → capture; webhook HMAC verify; idempotency keys; refund on captured — not multi-gateway L23.” |
 | **GPay** | “`GPaySystem` facade; `TransferService` + `IPaymentRailStrategy` for bank vs wallet; idempotent `clientRequestId`.” |
 | **Truecaller** | “`TruecallerSystem` facade; `ISpamScoringStrategy` for crowd spam; `LookupService` + block list on incoming call.” |
 | **Fizz Buzz / Merge Sort** | “Concurrency interview problems under `Multi_threading_C++` — CV + fork-join, not GoF catalog.” |
@@ -1589,7 +1647,7 @@ flowchart LR
 | [`Design_Patterns.md`](Design_Patterns.md) | Har pattern ki full theory + 3000+ lines |
 | [`SOLID.md`](SOLID.md) | SOLID principles |
 | [`README.md`](../README.md) | Poora repo index |
-| [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | Full system UML (31 systems — §31 E-commerce Checkout) |
+| [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | Full system UML (33 systems — §33 Razorpay) |
 | [`Multi_threading_C++/README.md`](../Multi_threading_C++/README.md) | Concurrency labs + subfolder index |
 
 ### External animated references (browser)

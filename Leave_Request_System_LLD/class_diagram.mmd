@@ -1,0 +1,49 @@
+classDiagram
+    class LeaveRequestSystem {
+        +registerEmployee(name, team) string
+        +submitLeave(...) string
+        +processApproval(requestId)
+        +cancelLeave(requestId)
+        +getLeaveRequest(requestId) LeaveRequest
+    }
+
+    class LeaveApprovalHandler {
+        <<abstract>>
+        #setNext(handler)
+        +process(request)
+        #canApprove(request)* bool
+        #approve(request)*
+        #role()* ApproverRole
+        #maxDays()* int
+    }
+
+    class TeamLeadHandler
+    class ManagerHandler
+    class HRHandler
+    class DirectorHandler
+
+    class LeaveApprovalChainManager {
+        +buildChain() LeaveApprovalHandler
+    }
+
+    class LeaveApprovalService {
+        +runApprovalChain(request)
+    }
+
+    class LeaveRegistryService {
+        +registerEmployee(employee)
+        +saveRequest(request)
+        +getRequest(requestId)
+    }
+
+    LeaveRequestSystem --> LeaveRegistryService
+    LeaveRequestSystem --> LeaveApprovalService
+    LeaveApprovalService --> LeaveApprovalChainManager
+    LeaveApprovalChainManager --> LeaveApprovalHandler
+    LeaveApprovalHandler <|-- TeamLeadHandler
+    LeaveApprovalHandler <|-- ManagerHandler
+    LeaveApprovalHandler <|-- HRHandler
+    LeaveApprovalHandler <|-- DirectorHandler
+    TeamLeadHandler --> ManagerHandler : next
+    ManagerHandler --> HRHandler : next
+    HRHandler --> DirectorHandler : next

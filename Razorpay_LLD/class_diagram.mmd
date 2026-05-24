@@ -1,0 +1,44 @@
+classDiagram
+    class RazorpayPaymentSystem {
+        <<facade>>
+        +createOrder()
+        +initiatePayment()
+        +capturePayment()
+        +checkout()
+        +processWebhook()
+        +refundPayment()
+        +getOrder()
+        +getPayment()
+        +getRefund()
+    }
+
+    class CheckoutFlowTemplate
+    class OrderService
+    class PaymentService
+    class CaptureService
+    class RefundService
+    class WebhookService
+    class IdempotencyService
+    class EntityIdFactory
+    class RazorpayApiClient
+    class IPaymentMethodValidator
+
+    RazorpayPaymentSystem --> OrderService
+    RazorpayPaymentSystem --> PaymentService
+    RazorpayPaymentSystem --> CaptureService
+    RazorpayPaymentSystem --> RefundService
+    RazorpayPaymentSystem --> WebhookService
+    RazorpayPaymentSystem --> CheckoutFlowTemplate
+    CheckoutFlowTemplate --> OrderService
+    CheckoutFlowTemplate --> PaymentService
+    CheckoutFlowTemplate --> CaptureService
+    CaptureService --> PaymentService
+    CaptureService --> OrderService
+    OrderService --> IdempotencyService
+    PaymentService --> IdempotencyService
+    OrderService --> RazorpayApiClient
+    PaymentService --> RazorpayApiClient
+    CaptureService --> RazorpayApiClient
+    RefundService --> RazorpayApiClient
+    PaymentService ..> IPaymentMethodValidator
+    WebhookService --> CaptureService

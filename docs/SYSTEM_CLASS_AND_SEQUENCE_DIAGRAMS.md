@@ -1,12 +1,12 @@
 # System Projects — Class Diagrams & Sequence Diagrams
 
 <p align="center">
-  <b>UML Reference — 31 System Projects</b><br/>
+  <b>UML Reference — 33 System Projects</b><br/>
   <sub>Class diagrams + sequence flows · code-accurate names · Mermaid</sub>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Systems-31-blue?style=for-the-badge" alt="31 systems" />
+  <img src="https://img.shields.io/badge/Systems-33-blue?style=for-the-badge" alt="33 systems" />
   <img src="https://img.shields.io/badge/Diagrams-Mermaid-6f42c1?style=for-the-badge" alt="Mermaid" />
   <img src="https://img.shields.io/badge/Lines-3100%2B-success?style=for-the-badge" alt="3100+ lines" />
   <img src="https://img.shields.io/badge/Synced-With%20Code-orange?style=for-the-badge" alt="Synced with code" />
@@ -18,7 +18,7 @@
   <img src="https://img.shields.io/badge/Preview-GitHub%20%7C%20VS%20Code%20%7C%20Cursor-informational?style=flat-square" alt="Preview" />
 </p>
 
-> **31 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
+> **33 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
 > GitHub / VS Code / Cursor me **Markdown Preview** se Mermaid diagrams render honge.
 
 ---
@@ -27,7 +27,9 @@
 
 | Item | Status |
 | ---- | ------ |
-| **Projects covered** | 31 / 31 standalone systems |
+| **Projects covered** | 33 / 33 standalone systems |
+| **Razorpay (§33)** | Order → payment → capture → webhook signature → refund |
+| **Leave Request (§32)** | Multi-level approval chain (CoR), submit / approve / cancel |
 | **E-commerce Checkout (§31)** | Cart, inventory reserve, coupon, payment Strategy, idempotent checkout |
 | **Task Scheduler (§28)** | Delayed jobs, worker pool, retry, observer |
 | **IRCTC (§29)** | Segment seat booking, concurrent mutex |
@@ -61,11 +63,11 @@ flowchart LR
 
 > Poora file scroll karne se pehle — **high-priority systems** aur **diagram types** yahan se pick karo.
 
-### 0.1 31 systems — category map
+### 0.1 33 systems — category map
 
 ```mermaid
 mindmap
-  root((31 Systems))
+  root((33 Systems))
     Infrastructure
       ATM
       Load Balancer
@@ -87,6 +89,7 @@ mindmap
       IRCTC
     Fintech
       Stock Exchange
+      Razorpay Gateway
     Transport Social
       Uber
       Ride Sharing
@@ -101,6 +104,8 @@ mindmap
       GPay UPI
       Truecaller
       Meeting Scheduler
+    HR Workforce
+      Leave Request
     Building
       Elevator
       Library
@@ -183,11 +188,11 @@ flowchart LR
 
 ```mermaid
 pie showData
-    title Most common patterns in 26 systems
-    "Facade / System entry" : 18
+    title Most common patterns in 33 systems
+    "Facade / System entry" : 19
     "Strategy" : 12
-    "Service layer" : 15
-    "Chain of Responsibility" : 2
+    "Service layer" : 16
+    "Chain of Responsibility" : 3
     "Decorator" : 3
     "Composite" : 2
     "Other" : 8
@@ -209,6 +214,8 @@ pie showData
 | UPI send money | [§25](#25-gpay-upi-p2p) | PIN → rail strategy → debit/credit → ledger |
 | Incoming call ID | [§26](#26-truecaller) | lookup → spam score → block check |
 | Checkout cart | [§31](#31-e-commerce-cart--checkout) | cart → reserve → coupon → pay → order |
+| Leave approval | [§32](#32-leave-request-system) | submit → CoR chain → approve / reject |
+| Razorpay pay | [§33](#33-razorpay-payment-gateway) | order → pay → capture → webhook |
 
 ---
 
@@ -251,6 +258,8 @@ pie showData
 | 29 | [IRCTC Train Booking](#29-irctc-train-booking) | `IRCTC_LLD/` |
 | 30 | [Stock Exchange](#30-stock-exchange-order-matching) | `Stock_Exchange_LLD/` |
 | 31 | [E-commerce Cart + Checkout](#31-e-commerce-cart--checkout) | `Ecommerce_Cart_Checkout_LLD/` |
+| 32 | [Leave Request System](#32-leave-request-system) | `Leave_Request_System_LLD/` |
+| 33 | [Razorpay Payment Gateway](#33-razorpay-payment-gateway) | `Razorpay_LLD/` |
 
 ---
 
@@ -4628,6 +4637,272 @@ cd Ecommerce_Cart_Checkout_LLD && ./compile.sh && ./ecommerce_checkout_app
 
 ---
 
+## 32. Leave Request System
+
+**Folder:** [`Leave_Request_System_LLD/`](../Leave_Request_System_LLD/) · **Facade:** `LeaveRequestSystem` · **Patterns:** **Chain of Responsibility** (approval), Facade, Service layer
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    direction TB
+
+    class LeaveRequestSystem {
+        +registerEmployee(name, team) string
+        +submitLeave(employeeId, type, dates, days) string
+        +processApproval(requestId)
+        +cancelLeave(requestId)
+        +getLeaveRequest(requestId) LeaveRequest
+    }
+
+    class LeaveApprovalHandler {
+        <<abstract>>
+        +setNext(handler)
+        +process(request)
+        #canApprove(request)* bool
+        #approve(request)*
+    }
+
+    class TeamLeadHandler
+    class ManagerHandler
+    class HRHandler
+    class DirectorHandler
+
+    class LeaveApprovalChainManager {
+        +buildChain() LeaveApprovalHandler
+    }
+
+    class LeaveApprovalService {
+        +runApprovalChain(request)
+    }
+
+    class LeaveRegistryService {
+        +registerEmployee(employee)
+        +saveRequest(request)
+        +getRequest(requestId)
+    }
+
+    class LeaveRequest {
+        +requestId
+        +workingDays
+        +status
+        +approvedBy
+    }
+
+    LeaveRequestSystem --> LeaveRegistryService
+    LeaveRequestSystem --> LeaveApprovalService
+    LeaveApprovalService --> LeaveApprovalChainManager
+    LeaveApprovalChainManager --> LeaveApprovalHandler
+    LeaveApprovalHandler <|-- TeamLeadHandler
+    LeaveApprovalHandler <|-- ManagerHandler
+    LeaveApprovalHandler <|-- HRHandler
+    LeaveApprovalHandler <|-- DirectorHandler
+    TeamLeadHandler --> ManagerHandler : next
+    ManagerHandler --> HRHandler : next
+    HRHandler --> DirectorHandler : next
+```
+
+### Sequence Diagram — processApproval (3 days → Manager)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Emp as Employee
+    participant Sys as LeaveRequestSystem
+    participant Reg as LeaveRegistryService
+    participant Appr as LeaveApprovalService
+    participant TL as TeamLeadHandler
+    participant Mgr as ManagerHandler
+
+    Emp->>Sys: submitLeave(..., 3 days)
+    Sys->>Reg: saveRequest(PENDING)
+    Sys-->>Emp: LR_2
+    Emp->>Sys: processApproval(LR_2)
+    Sys->>Appr: runApprovalChain(request)
+    Appr->>TL: process(request)
+    Note over TL: 3 > 1 → cannot approve
+    TL->>Mgr: process(request)
+    Mgr->>Mgr: approve (≤3 days)
+    Mgr-->>Sys: status APPROVED
+    Sys-->>Emp: approved by MANAGER
+```
+
+### Sequence Diagram — reject (>30 days) + cancel pending
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Emp as Employee
+    participant Sys as LeaveRequestSystem
+    participant Chain as LeaveApprovalHandler chain
+
+    Emp->>Sys: submitLeave(..., 45 days)
+    Sys->>Sys: processApproval
+    Sys->>Chain: TeamLead → Manager → HR → Director
+    Note over Chain: each handler passes; Director cap 30
+    Chain-->>Sys: REJECTED — no authority
+    Sys-->>Emp: remarks
+
+    Emp->>Sys: submitLeave(..., 2 days) → LR_6 PENDING
+    Emp->>Sys: cancelLeave(LR_6)
+    Sys-->>Emp: CANCELLED (chain not run)
+```
+
+### Build
+
+```bash
+cd Leave_Request_System_LLD && ./compile.sh && ./leave_request_app
+```
+
+---
+
+## 33. Razorpay Payment Gateway
+
+**Folder:** [`Razorpay_LLD/`](../Razorpay_LLD/) · **Facade:** `RazorpayPaymentSystem` · **Patterns:** Template Method, Strategy, Facade, Factory · **Note:** Razorpay-only (vs multi-gateway [`L23`](../L23%20Payment_gateway_system_LLD/))
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    direction TB
+
+    class RazorpayPaymentSystem {
+        +createOrder(amountPaise, receipt) RazorpayOrder
+        +createPayment(orderId, method, instrument) RazorpayPayment
+        +capturePayment(paymentId, amountPaise) RazorpayPayment
+        +checkout(...) RazorpayPayment
+        +processWebhook(payload, signature)
+        +refundPayment(paymentId, amountPaise) Refund
+    }
+
+    class CheckoutFlowTemplate {
+        +runCheckout()
+        #createOrderStep()
+        #createPaymentStep()
+        #captureStep()
+    }
+
+    class OrderService {
+        +createOrder()
+        +markPaid()
+    }
+
+    class PaymentService {
+        +createPayment()
+        +capture()
+    }
+
+    class WebhookService {
+        +handle(payload, signature)
+    }
+
+    class CaptureService {
+        +capture(paymentId, amountPaise)
+    }
+
+    class RefundService {
+        +createRefund()
+    }
+
+    class IdempotencyService {
+        +store(key, resourceId)
+        +exists(key)
+    }
+
+    class RazorpayApiClient {
+        +postOrder()
+        +postCapture()
+        +postRefund()
+    }
+
+    class SignatureVerifier {
+        +verify() bool
+    }
+
+    class IPaymentMethodValidator {
+        <<interface>>
+    }
+
+    RazorpayPaymentSystem --> OrderService
+    RazorpayPaymentSystem --> PaymentService
+    RazorpayPaymentSystem --> CaptureService
+    RazorpayPaymentSystem --> WebhookService
+    RazorpayPaymentSystem --> RefundService
+    RazorpayPaymentSystem --> CheckoutFlowTemplate
+    CheckoutFlowTemplate --> OrderService
+    CheckoutFlowTemplate --> PaymentService
+    CheckoutFlowTemplate --> CaptureService
+    CaptureService --> PaymentService
+    CaptureService --> OrderService
+    OrderService --> IdempotencyService
+    PaymentService --> IdempotencyService
+    OrderService --> RazorpayApiClient
+    PaymentService --> RazorpayApiClient
+    CaptureService --> RazorpayApiClient
+    PaymentService ..> IPaymentMethodValidator
+    WebhookService --> SignatureVerifier
+    WebhookService --> CaptureService
+    RefundService --> PaymentService
+```
+
+### Sequence Diagram — order → UPI pay → capture
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Merchant
+    participant RPS as RazorpayPaymentSystem
+    participant OS as OrderService
+    participant PS as PaymentService
+    participant API as RazorpayApiClient
+
+    Merchant->>RPS: createOrder(49900 paise, receipt)
+    RPS->>OS: createOrder
+    OS->>API: POST /v1/orders
+    OS-->>RPS: order_1 created
+
+    Merchant->>RPS: createPayment(order_1, UPI, vpa)
+    RPS->>PS: createPayment
+    PS->>API: POST /v1/payments
+    PS-->>RPS: pay_1 authorized
+
+    Merchant->>RPS: capturePayment(pay_1, 49900)
+    RPS->>PS: capture
+    PS->>API: POST /v1/payments/pay_1/capture
+    PS-->>RPS: captured, order paid
+```
+
+### Sequence Diagram — webhook verify + refund
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant RZP as Razorpay
+    participant WH as WebhookService
+    participant PS as PaymentService
+    participant RF as RefundService
+
+    RZP->>WH: POST webhook + X-Razorpay-Signature
+    WH->>WH: SignatureVerifier.verify
+    alt invalid
+        WH-->>RZP: 400 rejected
+    else payment.captured
+        WH->>PS: capture(pay_id)
+    end
+
+    Note over RF: Merchant-initiated refund
+    RF->>RF: createRefund(pay_id, amount)
+    RF-->>RZP: rfnd_1 processed
+```
+
+### Build
+
+```bash
+cd Razorpay_LLD && ./compile.sh && ./razorpay_app
+```
+
+---
+
 ## Cross-Project Pattern Summary
 
 ### Animated facade → service drill-down
@@ -4678,6 +4953,7 @@ graph LR
 
     subgraph CoR
         Logger[LogHandler Chain]
+        Leave[Leave Approval Chain]
     end
 
     subgraph Composite
@@ -4740,6 +5016,9 @@ graph LR
 | Task Scheduler | `TaskSchedulerSystem` | Facade, Strategy (priority), Observer, worker pool + retry |
 | IRCTC | `IRCTCSystem` | Facade, segment ledger, mutex booking, search + allocation |
 | Stock Exchange | `StockExchangeSystem` | Facade, order book, price-time matching engine |
+| E-commerce Checkout | `EcommerceCheckoutSystem` | Facade, Strategy (discount + payment), inventory reserve |
+| Leave Request | `LeaveRequestSystem` | **Chain of Responsibility**, Facade, approval by duration |
+| Razorpay | `RazorpayPaymentSystem` | Facade, Template Method checkout, webhook HMAC, idempotency |
 
 ---
 
@@ -4962,6 +5241,9 @@ sequenceDiagram
 | [`Thread_Safe_Cache_with_TTL_LLD/README.md`](../Thread_Safe_Cache_with_TTL_LLD/README.md) | TTL cache + `shared_mutex` |
 | [`GPay_LLD/README.md`](../GPay_LLD/README.md) | UPI P2P, QR pay, request money |
 | [`Truecaller_LLD/README.md`](../Truecaller_LLD/README.md) | Caller ID, spam, block, contact sync |
+| [`Leave_Request_System_LLD/README.md`](../Leave_Request_System_LLD/README.md) | Leave approval chain (CoR) |
+| [`Razorpay_LLD/README.md`](../Razorpay_LLD/README.md) | Razorpay order / capture / webhook / refund |
+| [`Razorpay_LLD/requirements.md`](../Razorpay_LLD/requirements.md) | FR / NFR (Spotify-style spec) |
 | [`Design_Pattern_types.md`](Design_Pattern_types.md) | Pattern taxonomy |
 | Per-project `problem_statement.md` | Ground-truth requirements |
 
@@ -4972,6 +5254,6 @@ sequenceDiagram
 </p>
 
 <p align="center">
-  <b>31 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
+  <b>33 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
   <sub>Maintained alongside <code>README.md</code> and per-project headers</sub>
 </p>

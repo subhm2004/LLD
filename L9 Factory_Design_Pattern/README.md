@@ -8,6 +8,18 @@
 
 ---
 
+## Detailed topic notes (har pattern alag file)
+
+| Topic | Notes |
+|-------|-------|
+| **Index** | [`notes/00_INDEX.md`](./notes/00_INDEX.md) |
+| Simple Factory | [`notes/01_Simple_Factory.md`](./notes/01_Simple_Factory.md) |
+| Factory Method | [`notes/02_Factory_Method.md`](./notes/02_Factory_Method.md) |
+| Abstract Factory | [`notes/03_Abstract_Factory.md`](./notes/03_Abstract_Factory.md) |
+| Comparison + SOLID + Interview | [`notes/04_Comparison_SOLID_Interview.md`](./notes/04_Comparison_SOLID_Interview.md) |
+
+---
+
 ## Table of Contents
 
 1. [Problem kya hai? (Direct `new` / Bina Factory)](#1-problem-kya-hai-direct-new--bina-factory)
@@ -242,11 +254,18 @@ Creation logic `main` se hata kar **Factory** class — `main` sirf use/orchestr
 ```
 L9 Factory_Design_Pattern/
 ├── README.md                              ← Ye file — complete guide
+├── compile.sh                             ← Build all 3 demos
+├── notes/
+│   ├── 00_INDEX.md
+│   ├── 01_Simple_Factory.md               ← Detailed per topic
+│   ├── 02_Factory_Method.md
+│   ├── 03_Abstract_Factory.md
+│   └── 04_Comparison_SOLID_Interview.md
 └── C++ Code/
-    ├── SimpleFactory.cpp                  ← Central if-else creation
-    ├── FactoryMethod.cpp                  ← SinghBurger vs KingBurger
-    ├── AbstractFactory.cpp                ← Burger + GarlicBread families
-    └── Markdown.md                        ← Comparison + SOLID (Hindi/English)
+    ├── SimpleFactory.cpp
+    ├── FactoryMethod.cpp
+    ├── AbstractFactory.cpp
+    └── Markdown.md                        ← Quick cheat sheet
 ```
 
 ---
@@ -459,15 +478,15 @@ SinghBurger / KingBurger
 
 ## 13. Build & Run
 
-Har file alag compile karo (duplicate class names — ek saath link mat karo):
-
 ```bash
-cd "L9 Factory_Design_Pattern/C++ Code"
+cd "L9 Factory_Design_Pattern" && chmod +x compile.sh && ./compile.sh
 
-g++ -std=c++17 -o simple_factory_demo SimpleFactory.cpp && ./simple_factory_demo
-g++ -std=c++17 -o factory_method_demo FactoryMethod.cpp && ./factory_method_demo
-g++ -std=c++17 -o abstract_factory_demo AbstractFactory.cpp && ./abstract_factory_demo
+./C++\ Code/simple_factory_demo
+./C++\ Code/factory_method_demo
+./C++\ Code/abstract_factory_demo
 ```
+
+Har file alag compile hoti hai (duplicate class names — ek saath link mat karo).
 
 ---
 

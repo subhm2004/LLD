@@ -1,6 +1,6 @@
-# Polymorphism — Static & Dynamic (बहुरूपता)
+# Polymorphism — Static & Dynamic  
 
-> **EN:** Same name, different behaviour — overload at compile time, override at runtime. **HI:** Static = compile par choose; Dynamic = runtime par sahi override.
+> **EN:** Same name, different behaviour — overload at compile time, override at runtime.
 
 > **Runnable demo:** [`02_Static_Polymorphism.cpp`](../C++ Code/02_Static_Polymorphism.cpp)
 > **Runnable demo:** [`03_Dynamic_Polymorphism.cpp`](../C++ Code/03_Dynamic_Polymorphism.cpp)
@@ -72,7 +72,7 @@ sequenceDiagram
 
 <a id="6-04-both"></a>
 
-`04_Static_And_Dynamic_Polymorphism.cpp` — base declares **two virtual** `accelerate` overloads; derived must **override both**.
+Full walkthrough: **[`04_static_and_dynamic_polymorphism.md`](04_static_and_dynamic_polymorphism.md)** — [`04_Static_And_Dynamic_Polymorphism.cpp`](../C++%20Code/04_Static_And_Dynamic_Polymorphism.cpp).
 ## 7. Compare
 
 <a id="7-compare"></a>
@@ -93,7 +93,6 @@ sequenceDiagram
 
 Static=overload/templates compile-time; dynamic=virtual override runtime.
 
-**हिंदी:** Static compile; dynamic runtime.
 
 </details>
 
@@ -102,7 +101,6 @@ Static=overload/templates compile-time; dynamic=virtual override runtime.
 
 Overload: same class, diff signature. Override: derived replaces virtual.
 
-**हिंदी:** Overload signature; override virtual.
 
 </details>
 
@@ -111,7 +109,6 @@ Overload: same class, diff signature. Override: derived replaces virtual.
 
 Makes class abstract — force derived implementation.
 
-**हिंदी:** Abstract class.
 
 </details>
 
@@ -120,7 +117,6 @@ Makes class abstract — force derived implementation.
 
 No — overloading never uses vtable.
 
-**हिंदी:** Overload runtime nahi.
 
 </details>
 
@@ -129,7 +125,6 @@ No — overloading never uses vtable.
 
 Yes for true runtime dispatch through base interface.
 
-**हिंदी:** Base* / Base&.
 
 </details>
 
@@ -138,7 +133,6 @@ Yes for true runtime dispatch through base interface.
 
 Correct cleanup when delete base pointer.
 
-**हिंदी:** virtual ~Base.
 
 </details>
 
@@ -147,7 +141,6 @@ Correct cleanup when delete base pointer.
 
 04 demo — each overload overridden separately in child.
 
-**हिंदी:** Dono override karo.
 
 </details>
 
@@ -156,7 +149,6 @@ Correct cleanup when delete base pointer.
 
 Yes in `-Werror` / abstract — unimplemented pure virtual.
 
-**हिंदी:** Pure virtual implement karo.
 
 </details>
 
@@ -517,4 +509,3 @@ Each overload is separate virtual — override all you need.
 ### Trap: hide not override
 
 Without `virtual`, derived function **hides** base — not polymorphic.
-

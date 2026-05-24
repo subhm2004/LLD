@@ -1,7 +1,6 @@
-# Inheritance — Complete Guide (विरासत)
+# Inheritance — Complete Guide  
 
 > **EN:** Derived classes extend a base (IS-A), reuse code, add specialization.
-> **HI:** Child parent se inherit karti hai — code reuse + extra behaviour.
 
 > **Demo:** [`01_Inheritance.cpp`](../C++%20Code/01_Inheritance.cpp)
 > **Guides:** [OOPS_2_COMPLETE](../OOPS_2_COMPLETE.md) · [OOPS_ADVANCED_INHERITANCE](../OOPS_ADVANCED_INHERITANCE.md)
@@ -36,7 +35,6 @@ classDiagram
     Car <|-- ElectricCar
 ```
 
-**हिंदी:** IS-A sahi ho to public inherit; HAS-A ke liye composition.
 
 ---
 
@@ -209,7 +207,6 @@ flowchart LR
 
 Derived gets base members/behaviour; extends or specializes.
 
-**हिंदी:** Child parent se inherit.
 
 </details>
 
@@ -219,7 +216,6 @@ Derived gets base members/behaviour; extends or specializes.
 
 Inheritance vs composition.
 
-**हिंदी:** IS-A inherit; HAS-A part.
 
 </details>
 
@@ -229,7 +225,6 @@ Inheritance vs composition.
 
 Preserves IS-A and upcasting.
 
-**हिंदी:** Default public.
 
 </details>
 
@@ -239,7 +234,6 @@ Preserves IS-A and upcasting.
 
 Child yes, outside no.
 
-**हिंदी:** Sirf child access.
 
 </details>
 
@@ -249,7 +243,6 @@ Child yes, outside no.
 
 Base before derived body.
 
-**हिंदी:** Pehle Base.
 
 </details>
 
@@ -259,7 +252,6 @@ Base before derived body.
 
 Derived then base.
 
-**हिंदी:** Pehle ~Derived.
 
 </details>
 
@@ -269,7 +261,6 @@ Derived then base.
 
 No.
 
-**हिंदी:** private nahi.
 
 </details>
 
@@ -279,7 +270,6 @@ No.
 
 Single,multilevel,multiple,hierarchical,hybrid.
 
-**हिंदी:** Paanch types.
 
 </details>
 
@@ -289,7 +279,6 @@ Single,multilevel,multiple,hierarchical,hybrid.
 
 Safe delete via Car*.
 
-**हिंदी:** Base* delete.
 
 </details>
 
@@ -299,7 +288,6 @@ Safe delete via Car*.
 
 class D:public A,public B
 
-**हिंदी:** Do bases.
 
 </details>
 
@@ -309,7 +297,6 @@ class D:public A,public B
 
 Two A subobjects in MI.
 
-**हिंदी:** Do copies.
 
 </details>
 
@@ -319,7 +306,6 @@ Two A subobjects in MI.
 
 virtual public Base.
 
-**हिंदी:** Ek shared base.
 
 </details>
 
@@ -329,7 +315,6 @@ virtual public Base.
 
 No.
 
-**हिंदी:** Ctor virtual nahi.
 
 </details>
 
@@ -339,7 +324,6 @@ No.
 
 Subtype substitutable for base.
 
-**हिंदी:** Child base ki jagah.
 
 </details>
 
@@ -349,7 +333,6 @@ Subtype substitutable for base.
 
 Derived to base by value loses part.
 
-**हिंदी:** Value slice.
 
 </details>
 
@@ -359,7 +342,6 @@ Derived to base by value loses part.
 
 >= sizeof base.
 
-**हिंदी:** Barabar ya bada.
 
 </details>
 
@@ -369,7 +351,6 @@ Derived to base by value loses part.
 
 HAS-A or wrong IS-A.
 
-**हिंदी:** Galat IS-A avoid.
 
 </details>
 
@@ -379,7 +360,6 @@ HAS-A or wrong IS-A.
 
 Friends access private/protected.
 
-**हिंदी:** friend special.
 
 </details>
 
@@ -389,7 +369,6 @@ Friends access private/protected.
 
 Also polymorphism; prefer composition if only reuse.
 
-**हिंदी:** Sirf reuse mat karo.
 
 </details>
 
@@ -399,10 +378,8 @@ Also polymorphism; prefer composition if only reuse.
 
 11_Constructor_Chaining.cpp
 
-**हिंदी:** Chain demo.
 
 </details>
-
 
 
 ---
@@ -428,145 +405,143 @@ cd "L3 OOPS_2" && ./compile.sh && ./bin/01_Inheritance
 ### Revision drill — 01_inheritance.md #1
 
 **EN:** Re-run the linked .cpp, predict output before executing.
-**HI:** Demo chalao, output likh ke match karo.
+
 
 ### Whiteboard — 01_inheritance.md #2
 
 **EN:** Draw class diagram and ctor order without looking at notes.
-**HI:** Diagram +attached class + ctor order banao.
+
 
 ### Compare EN/HI — 01_inheritance.md #3
 
 **EN:** State the rule in one English sentence and one Hindi mnemonic.
-**HI:** Ek EN + ek HI line yaad karo.
+
 
 ### Interview twist — 01_inheritance.md #4
 
 **EN:** Interviewer asks 'what if' — answer using the demo code path.
-**HI:** 'What if' ke liye demo code trace karo.
+
 
 ### Link forward — 01_inheritance.md #5
 
 **EN:** Note which next file in L3 OOPS_2 builds on this topic.
-**HI:** Agla lesson ka link dekho.
+
 
 ### Revision drill — 01_inheritance.md #6
 
 **EN:** Re-run the linked .cpp, predict output before executing.
-**HI:** Demo chalao, output likh ke match karo.
+
 
 ### Whiteboard — 01_inheritance.md #7
 
 **EN:** Draw class diagram and ctor order without looking at notes.
-**HI:** Diagram +attached class + ctor order banao.
+
 
 ### Compare EN/HI — 01_inheritance.md #8
 
 **EN:** State the rule in one English sentence and one Hindi mnemonic.
-**HI:** Ek EN + ek HI line yaad karo.
+
 
 ### Interview twist — 01_inheritance.md #9
 
 **EN:** Interviewer asks 'what if' — answer using the demo code path.
-**HI:** 'What if' ke liye demo code trace karo.
+
 
 ### Link forward — 01_inheritance.md #10
 
 **EN:** Note which next file in L3 OOPS_2 builds on this topic.
-**HI:** Agla lesson ka link dekho.
+
 
 ### Revision drill — 01_inheritance.md #11
 
 **EN:** Re-run the linked .cpp, predict output before executing.
-**HI:** Demo chalao, output likh ke match karo.
+
 
 ### Whiteboard — 01_inheritance.md #12
 
 **EN:** Draw class diagram and ctor order without looking at notes.
-**HI:** Diagram +attached class + ctor order banao.
+
 
 ### Compare EN/HI — 01_inheritance.md #13
 
 **EN:** State the rule in one English sentence and one Hindi mnemonic.
-**HI:** Ek EN + ek HI line yaad karo.
+
 
 ### Interview twist — 01_inheritance.md #14
 
 **EN:** Interviewer asks 'what if' — answer using the demo code path.
-**HI:** 'What if' ke liye demo code trace karo.
+
 
 ### Link forward — 01_inheritance.md #15
 
 **EN:** Note which next file in L3 OOPS_2 builds on this topic.
-**HI:** Agla lesson ka link dekho.
+
 
 ### Revision drill — 01_inheritance.md #16
 
 **EN:** Re-run the linked .cpp, predict output before executing.
-**HI:** Demo chalao, output likh ke match karo.
+
 
 ### Whiteboard — 01_inheritance.md #17
 
 **EN:** Draw class diagram and ctor order without looking at notes.
-**HI:** Diagram +attached class + ctor order banao.
+
 
 ### Compare EN/HI — 01_inheritance.md #18
 
 **EN:** State the rule in one English sentence and one Hindi mnemonic.
-**HI:** Ek EN + ek HI line yaad karo.
+
 
 ### Interview twist — 01_inheritance.md #19
 
 **EN:** Interviewer asks 'what if' — answer using the demo code path.
-**HI:** 'What if' ke liye demo code trace karo.
+
 
 ### Link forward — 01_inheritance.md #20
 
 **EN:** Note which next file in L3 OOPS_2 builds on this topic.
-**HI:** Agla lesson ka link dekho.
+
 
 ### Revision drill — 01_inheritance.md #21
 
 **EN:** Re-run the linked .cpp, predict output before executing.
-**HI:** Demo chalao, output likh ke match karo.
+
 
 ### Whiteboard — 01_inheritance.md #22
 
 **EN:** Draw class diagram and ctor order without looking at notes.
-**HI:** Diagram +attached class + ctor order banao.
+
 
 ### Compare EN/HI — 01_inheritance.md #23
 
 **EN:** State the rule in one English sentence and one Hindi mnemonic.
-**HI:** Ek EN + ek HI line yaad karo.
+
 
 ### Interview twist — 01_inheritance.md #24
 
 **EN:** Interviewer asks 'what if' — answer using the demo code path.
-**HI:** 'What if' ke liye demo code trace karo.
+
 
 ### Link forward — 01_inheritance.md #25
 
 **EN:** Note which next file in L3 OOPS_2 builds on this topic.
-**HI:** Agla lesson ka link dekho.
+
 
 ### Revision drill — 01_inheritance.md #26
 
 **EN:** Re-run the linked .cpp, predict output before executing.
-**HI:** Demo chalao, output likh ke match karo.
+
 
 ### Whiteboard — 01_inheritance.md #27
 
 **EN:** Draw class diagram and ctor order without looking at notes.
-**HI:** Diagram +attached class + ctor order banao.
+
 
 ### Compare EN/HI — 01_inheritance.md #28
 
 **EN:** State the rule in one English sentence and one Hindi mnemonic.
-**HI:** Ek EN + ek HI line yaad karo.
+
 
 ### Interview twist — 01_inheritance.md #29
 
 **EN:** Interviewer asks 'what if' — answer using the demo code path.
-**HI:** 'What if' ke liye demo code trace karo.
-

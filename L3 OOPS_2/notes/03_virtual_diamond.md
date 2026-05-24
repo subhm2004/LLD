@@ -1,6 +1,6 @@
 # Virtual Functions, vtable & Diamond Problem
 
-> **EN:** `virtual` → runtime dispatch & virtual dtor; diamond needs `virtual` inheritance. **HI:** virtual = runtime; diamond me virtual base class.
+> **EN:** `virtual` → runtime dispatch & virtual dtor; diamond needs `virtual` inheritance.
 
 > **Runnable demo:** [`06_Virtual_Destructor.cpp`](../C++ Code/06_Virtual_Destructor.cpp)
 > **Runnable demo:** [`07_Virtual_Table_Demo.cpp`](../C++ Code/07_Virtual_Table_Demo.cpp)
@@ -86,7 +86,6 @@ One shared base subobject.
 
 Array of function pointers for virtual methods per class.
 
-**हिंदी:** Virtual functions ki table.
 
 </details>
 
@@ -95,7 +94,6 @@ Array of function pointers for virtual methods per class.
 
 Hidden pointer in each polymorphic object.
 
-**हिंदी:** Object ke andar hidden.
 
 </details>
 
@@ -104,7 +102,6 @@ Hidden pointer in each polymorphic object.
 
 Two paths to same base → duplicate subobjects.
 
-**हिंदी:** Do A base copies.
 
 </details>
 
@@ -113,7 +110,6 @@ Two paths to same base → duplicate subobjects.
 
 `virtual` inheritance on middle classes.
 
-**हिंदी:** virtual public Base.
 
 </details>
 
@@ -122,7 +118,6 @@ Two paths to same base → duplicate subobjects.
 
 Deleting derived via base pointer.
 
-**हिंदी:** Base* delete.
 
 </details>
 
@@ -131,7 +126,6 @@ Deleting derived via base pointer.
 
 Larger without virtual — duplicate bases.
 
-**हिंदी:** virtual se ek base.
 
 </details>
 
@@ -514,4 +508,3 @@ virtual ~Base | vptr→vtable | diamond→virtual inheritance
 ### Run
 
 `./bin/06_Virtual_Destructor` `07_Virtual_Table_Demo` `08_Diamond_Problem`
-

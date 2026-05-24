@@ -100,7 +100,6 @@ flowchart LR
 
 public preserves IS-A externally; protected tightens to protected in child.
 
-**हिंदी:** public default.
 
 </details>
 
@@ -109,7 +108,6 @@ public preserves IS-A externally; protected tightens to protected in child.
 
 Base then derived; destroy reverse.
 
-**हिंदी:** Base pehle.
 
 </details>
 
@@ -118,7 +116,6 @@ Base then derived; destroy reverse.
 
 Base b = derivedObj by value.
 
-**हिंदी:** Value assign slice.
 
 </details>
 
@@ -127,7 +124,6 @@ Base b = derivedObj by value.
 
 dynamic_cast + null check.
 
-**हिंदी:** dynamic_cast.
 
 </details>
 
@@ -136,7 +132,6 @@ dynamic_cast + null check.
 
 Within vs between modules; want high/low.
 
-**हिंदी:** Andar zyada bahar kam.
 
 </details>
 
@@ -145,7 +140,6 @@ Within vs between modules; want high/low.
 
 One reason to change per class.
 
-**हिंदी:** Ek class ek kaam.
 
 </details>
 
@@ -154,7 +148,6 @@ One reason to change per class.
 
 virtual inheritance shares one base.
 
-**हिंदी:** virtual base.
 
 </details>
 
@@ -163,7 +156,6 @@ virtual inheritance shares one base.
 
 -fno-rtti — no dynamic_cast on poly types.
 
-**हिंदी:** embedded builds.
 
 </details>
 
@@ -184,7 +176,6 @@ DESIGN: high cohesion, low coupling, SRP
 
 Open `06_access_and_chaining.md` section 1; explain aloud in Hindi then English.
 
-**हिंदी:** `06_access_and_chaining.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -193,7 +184,6 @@ Open `06_access_and_chaining.md` section 1; explain aloud in Hindi then English.
 
 Open `06_access_and_chaining.md` section 2; explain aloud in Hindi then English.
 
-**हिंदी:** `06_access_and_chaining.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -202,7 +192,6 @@ Open `06_access_and_chaining.md` section 2; explain aloud in Hindi then English.
 
 Open `06_access_and_chaining.md` section 3; explain aloud in Hindi then English.
 
-**हिंदी:** `06_access_and_chaining.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -211,7 +200,6 @@ Open `06_access_and_chaining.md` section 3; explain aloud in Hindi then English.
 
 Open `06_access_and_chaining.md` section 4; explain aloud in Hindi then English.
 
-**हिंदी:** `06_access_and_chaining.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -220,7 +208,6 @@ Open `06_access_and_chaining.md` section 4; explain aloud in Hindi then English.
 
 Open `06_access_and_chaining.md` section 5; explain aloud in Hindi then English.
 
-**हिंदी:** `06_access_and_chaining.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -229,7 +216,6 @@ Open `06_access_and_chaining.md` section 5; explain aloud in Hindi then English.
 
 Open `06_access_and_chaining.md` section 6; explain aloud in Hindi then English.
 
-**हिंदी:** `06_access_and_chaining.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -238,7 +224,6 @@ Open `06_access_and_chaining.md` section 6; explain aloud in Hindi then English.
 
 Open `06_access_and_chaining.md` section 7; explain aloud in Hindi then English.
 
-**हिंदी:** `06_access_and_chaining.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -247,7 +232,6 @@ Open `06_access_and_chaining.md` section 7; explain aloud in Hindi then English.
 
 Open `06_access_and_chaining.md` section 8; explain aloud in Hindi then English.
 
-**हिंदी:** `06_access_and_chaining.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -256,7 +240,6 @@ Open `06_access_and_chaining.md` section 8; explain aloud in Hindi then English.
 
 Open `06_access_and_chaining.md` section 1; explain aloud in Hindi then English.
 
-**हिंदी:** `06_access_and_chaining.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -265,7 +248,6 @@ Open `06_access_and_chaining.md` section 1; explain aloud in Hindi then English.
 
 Open `06_access_and_chaining.md` section 2; explain aloud in Hindi then English.
 
-**हिंदी:** `06_access_and_chaining.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -274,7 +256,6 @@ Open `06_access_and_chaining.md` section 2; explain aloud in Hindi then English.
 
 Open `06_access_and_chaining.md` section 3; explain aloud in Hindi then English.
 
-**हिंदी:** `06_access_and_chaining.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -283,7 +264,6 @@ Open `06_access_and_chaining.md` section 3; explain aloud in Hindi then English.
 
 Open `06_access_and_chaining.md` section 4; explain aloud in Hindi then English.
 
-**हिंदी:** `06_access_and_chaining.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -292,7 +272,6 @@ Open `06_access_and_chaining.md` section 4; explain aloud in Hindi then English.
 
 Open `06_access_and_chaining.md` section 5; explain aloud in Hindi then English.
 
-**हिंदी:** `06_access_and_chaining.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -301,7 +280,6 @@ Open `06_access_and_chaining.md` section 5; explain aloud in Hindi then English.
 
 Open `06_access_and_chaining.md` section 6; explain aloud in Hindi then English.
 
-**हिंदी:** `06_access_and_chaining.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -310,7 +288,6 @@ Open `06_access_and_chaining.md` section 6; explain aloud in Hindi then English.
 
 Open `06_access_and_chaining.md` section 7; explain aloud in Hindi then English.
 
-**हिंदी:** `06_access_and_chaining.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -319,7 +296,6 @@ Open `06_access_and_chaining.md` section 7; explain aloud in Hindi then English.
 
 Open `06_access_and_chaining.md` section 8; explain aloud in Hindi then English.
 
-**हिंदी:** `06_access_and_chaining.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -328,7 +304,6 @@ Open `06_access_and_chaining.md` section 8; explain aloud in Hindi then English.
 
 Open `07_slicing_and_casting.md` section 1; explain aloud in Hindi then English.
 
-**हिंदी:** `07_slicing_and_casting.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -337,7 +312,6 @@ Open `07_slicing_and_casting.md` section 1; explain aloud in Hindi then English.
 
 Open `07_slicing_and_casting.md` section 2; explain aloud in Hindi then English.
 
-**हिंदी:** `07_slicing_and_casting.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -346,7 +320,6 @@ Open `07_slicing_and_casting.md` section 2; explain aloud in Hindi then English.
 
 Open `07_slicing_and_casting.md` section 3; explain aloud in Hindi then English.
 
-**हिंदी:** `07_slicing_and_casting.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -355,7 +328,6 @@ Open `07_slicing_and_casting.md` section 3; explain aloud in Hindi then English.
 
 Open `07_slicing_and_casting.md` section 4; explain aloud in Hindi then English.
 
-**हिंदी:** `07_slicing_and_casting.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -364,7 +336,6 @@ Open `07_slicing_and_casting.md` section 4; explain aloud in Hindi then English.
 
 Open `07_slicing_and_casting.md` section 5; explain aloud in Hindi then English.
 
-**हिंदी:** `07_slicing_and_casting.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -373,7 +344,6 @@ Open `07_slicing_and_casting.md` section 5; explain aloud in Hindi then English.
 
 Open `07_slicing_and_casting.md` section 6; explain aloud in Hindi then English.
 
-**हिंदी:** `07_slicing_and_casting.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -382,7 +352,6 @@ Open `07_slicing_and_casting.md` section 6; explain aloud in Hindi then English.
 
 Open `07_slicing_and_casting.md` section 7; explain aloud in Hindi then English.
 
-**हिंदी:** `07_slicing_and_casting.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -391,7 +360,6 @@ Open `07_slicing_and_casting.md` section 7; explain aloud in Hindi then English.
 
 Open `07_slicing_and_casting.md` section 8; explain aloud in Hindi then English.
 
-**हिंदी:** `07_slicing_and_casting.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -400,7 +368,6 @@ Open `07_slicing_and_casting.md` section 8; explain aloud in Hindi then English.
 
 Open `07_slicing_and_casting.md` section 1; explain aloud in Hindi then English.
 
-**हिंदी:** `07_slicing_and_casting.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -409,7 +376,6 @@ Open `07_slicing_and_casting.md` section 1; explain aloud in Hindi then English.
 
 Open `07_slicing_and_casting.md` section 2; explain aloud in Hindi then English.
 
-**हिंदी:** `07_slicing_and_casting.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -418,7 +384,6 @@ Open `07_slicing_and_casting.md` section 2; explain aloud in Hindi then English.
 
 Open `07_slicing_and_casting.md` section 3; explain aloud in Hindi then English.
 
-**हिंदी:** `07_slicing_and_casting.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -427,7 +392,6 @@ Open `07_slicing_and_casting.md` section 3; explain aloud in Hindi then English.
 
 Open `07_slicing_and_casting.md` section 4; explain aloud in Hindi then English.
 
-**हिंदी:** `07_slicing_and_casting.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -436,7 +400,6 @@ Open `07_slicing_and_casting.md` section 4; explain aloud in Hindi then English.
 
 Open `07_slicing_and_casting.md` section 5; explain aloud in Hindi then English.
 
-**हिंदी:** `07_slicing_and_casting.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -445,7 +408,6 @@ Open `07_slicing_and_casting.md` section 5; explain aloud in Hindi then English.
 
 Open `07_slicing_and_casting.md` section 6; explain aloud in Hindi then English.
 
-**हिंदी:** `07_slicing_and_casting.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -454,7 +416,6 @@ Open `07_slicing_and_casting.md` section 6; explain aloud in Hindi then English.
 
 Open `07_slicing_and_casting.md` section 7; explain aloud in Hindi then English.
 
-**हिंदी:** `07_slicing_and_casting.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -463,7 +424,6 @@ Open `07_slicing_and_casting.md` section 7; explain aloud in Hindi then English.
 
 Open `07_slicing_and_casting.md` section 8; explain aloud in Hindi then English.
 
-**हिंदी:** `07_slicing_and_casting.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -472,7 +432,6 @@ Open `07_slicing_and_casting.md` section 8; explain aloud in Hindi then English.
 
 Open `08_cohesion_coupling.md` section 1; explain aloud in Hindi then English.
 
-**हिंदी:** `08_cohesion_coupling.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -481,7 +440,6 @@ Open `08_cohesion_coupling.md` section 1; explain aloud in Hindi then English.
 
 Open `08_cohesion_coupling.md` section 2; explain aloud in Hindi then English.
 
-**हिंदी:** `08_cohesion_coupling.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -490,7 +448,6 @@ Open `08_cohesion_coupling.md` section 2; explain aloud in Hindi then English.
 
 Open `08_cohesion_coupling.md` section 3; explain aloud in Hindi then English.
 
-**हिंदी:** `08_cohesion_coupling.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -499,7 +456,6 @@ Open `08_cohesion_coupling.md` section 3; explain aloud in Hindi then English.
 
 Open `08_cohesion_coupling.md` section 4; explain aloud in Hindi then English.
 
-**हिंदी:** `08_cohesion_coupling.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -508,7 +464,6 @@ Open `08_cohesion_coupling.md` section 4; explain aloud in Hindi then English.
 
 Open `08_cohesion_coupling.md` section 5; explain aloud in Hindi then English.
 
-**हिंदी:** `08_cohesion_coupling.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -517,7 +472,6 @@ Open `08_cohesion_coupling.md` section 5; explain aloud in Hindi then English.
 
 Open `08_cohesion_coupling.md` section 6; explain aloud in Hindi then English.
 
-**हिंदी:** `08_cohesion_coupling.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -526,7 +480,6 @@ Open `08_cohesion_coupling.md` section 6; explain aloud in Hindi then English.
 
 Open `08_cohesion_coupling.md` section 7; explain aloud in Hindi then English.
 
-**हिंदी:** `08_cohesion_coupling.md` padho — pehle Hindi phir English.
 
 </details>
 
@@ -535,7 +488,5 @@ Open `08_cohesion_coupling.md` section 7; explain aloud in Hindi then English.
 
 Open `08_cohesion_coupling.md` section 8; explain aloud in Hindi then English.
 
-**हिंदी:** `08_cohesion_coupling.md` padho — pehle Hindi phir English.
 
 </details>
-

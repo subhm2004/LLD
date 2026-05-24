@@ -378,11 +378,13 @@ cd "L3 OOPS_2"
 | [`RTTI_COMPLETE.md`](./RTTI_COMPLETE.md) | typeid, dynamic_cast, static_cast vs dynamic_cast, -fno-rtti |
 | [`VIRTUAL_BASE_CLASS_ADVANCED.md`](./VIRTUAL_BASE_CLASS_ADVANCED.md) | vbptr, most-derived ctor initializes virtual base |
 | [`COVARIANT_RETURN_TYPES.md`](./COVARIANT_RETURN_TYPES.md) | Override return type Derived* when base returns Base* |
-| [`notes/Virtual_Destructor_Kyun.md`](./notes/Virtual_Destructor_Kyun.md) | Hindi/English — delete Base* pointing to Derived |
+| [`notes/Virtual_Destructor_Kyun.md`](./notes/Virtual_Destructor_Kyun.md) | Why `virtual ~Base()` when deleting via base pointer |
 | [`notes/OOPS_INHERITANCE_INTERVIEW_TOPICS.md`](./notes/OOPS_INHERITANCE_INTERVIEW_TOPICS.md) | Access specifiers, ctor chain, slicing, casting |
 | [`notes/01_inheritance.md`](./notes/01_inheritance.md) | Quick revision — IS-A, protected |
 | [`notes/02_polymorphism.md`](./notes/02_polymorphism.md) | Overloading vs overriding summary |
 | [`notes/03_virtual_diamond.md`](./notes/03_virtual_diamond.md) | Virtual keyword + diamond sketch |
+| [`notes/04_static_and_dynamic_polymorphism.md`](./notes/04_static_and_dynamic_polymorphism.md) | Both virtual overloads on base — `04_Static_And_Dynamic_Polymorphism.cpp` |
+| [`notes/05_composition_vs_inheritance.md`](./notes/05_composition_vs_inheritance.md) | HAS-A vs IS-A — `05_Composition_Vs_Inheritance.cpp` |
 | [`notes/06_access_and_chaining.md`](./notes/06_access_and_chaining.md) | public/protected/private inheritance |
 | [`notes/07_slicing_and_casting.md`](./notes/07_slicing_and_casting.md) | Object slicing + upcast/downcast |
 | [`notes/08_cohesion_coupling.md`](./notes/08_cohesion_coupling.md) | Design quality metrics |

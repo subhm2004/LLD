@@ -1,6 +1,6 @@
 # Object Slicing, Upcasting & Downcasting
 
-> **EN:** Value-copy slices derived; upcast safe; downcast with dynamic_cast. **HI:** `Animal a = dog` slice; upcast safe; downcast dynamic_cast.
+> **EN:** Value-copy slices derived; upcast safe; downcast with dynamic_cast.
 
 > **Runnable demo:** [`12_Object_Slicing.cpp`](../C++ Code/12_Object_Slicing.cpp)
 > **Runnable demo:** [`13_Upcasting_Downcasting.cpp`](../C++ Code/13_Upcasting_Downcasting.cpp)
@@ -67,7 +67,6 @@ Shape array polymorphic draw; downcast for `Circle::area()` only when type match
 
 Copy derived into base by value — derived part dropped.
 
-**हिंदी:** Value copy = slice.
 
 </details>
 
@@ -76,7 +75,6 @@ Copy derived into base by value — derived part dropped.
 
 Use pointer, reference, or smart pointer to base.
 
-**हिंदी:** *& use karo.
 
 </details>
 
@@ -85,7 +83,6 @@ Use pointer, reference, or smart pointer to base.
 
 Always — implicit public inheritance.
 
-**हिंदी:** Hamesha safe.
 
 </details>
 
@@ -94,7 +91,6 @@ Always — implicit public inheritance.
 
 No runtime check — UB if wrong.
 
-**हिंदी:** Galat type = UB.
 
 </details>
 
@@ -103,7 +99,6 @@ No runtime check — UB if wrong.
 
 Polymorphic base (≥1 virtual).
 
-**हिंदी:** virtual chahiye.
 
 </details>
 
@@ -512,4 +507,3 @@ catch (exception e) by value also slices — catch by const&.
 ### Exception
 
 catch (exception e) by value also slices — catch by const&.
-

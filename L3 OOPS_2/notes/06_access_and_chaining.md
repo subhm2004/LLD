@@ -1,6 +1,6 @@
 # Access Specifiers in Inheritance & Constructor Chaining
 
-> **EN:** Inheritance mode changes effective access; ctors chain Base→Derived. **HI:** public inherit default; ctor list me Base pehle.
+> **EN:** Inheritance mode changes effective access; ctors chain Base→Derived.
 
 > **Runnable demo:** [`10_Access_Specifiers_Inheritance.cpp`](../C++ Code/10_Access_Specifiers_Inheritance.cpp)
 > **Runnable demo:** [`11_Constructor_Chaining.cpp`](../C++ Code/11_Constructor_Chaining.cpp)
@@ -41,7 +41,6 @@
 | **protected** | protected | protected | private |
 | **private** | NA | NA | NA |
 
-**हिंदी:**
 
 | Base | Public inherit | Protected inherit | Private inherit |
 |------|----------------|-------------------|-----------------|
@@ -115,7 +114,6 @@ sequenceDiagram
 
 public: IS-A visible outside; protected: base public→protected in child.
 
-**हिंदी:** public = bahar IS-A.
 
 </details>
 
@@ -124,7 +122,6 @@ public: IS-A visible outside; protected: base public→protected in child.
 
 No access — they exist in base subobject only.
 
-**हिंदी:** private inherit nahi touch.
 
 </details>
 
@@ -133,7 +130,6 @@ No access — they exist in base subobject only.
 
 Direct child in initializer list.
 
-**हिंदी:** Child : Base(args).
 
 </details>
 
@@ -142,7 +138,6 @@ Direct child in initializer list.
 
 No — only direct parent `Derived(...)`.
 
-**हिंदी:** Sirf direct parent.
 
 </details>
 
@@ -558,4 +553,3 @@ Also `01_Inheritance.cpp` line 72 `: Car(b,m)`.
 ### Link
 
 Also `01_Inheritance.cpp` line 72 `: Car(b,m)`.
-

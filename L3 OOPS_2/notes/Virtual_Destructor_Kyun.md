@@ -97,7 +97,6 @@ cd "L3 OOPS_2" && ./compile.sh && ./bin/06_Virtual_Destructor
 
 Destructor declared virtual for runtime dispatch on delete.
 
-**हिंदी:** virtual ~Base().
 
 </details>
 
@@ -106,7 +105,6 @@ Destructor declared virtual for runtime dispatch on delete.
 
 Only ~Base runs — derived resources leak.
 
-**हिंदी:** Derived skip.
 
 </details>
 
@@ -115,7 +113,6 @@ Only ~Base runs — derived resources leak.
 
 Class already polymorphic — add virtual ~Base too.
 
-**हिंदी:** vtable me dtor.
 
 </details>
 
@@ -124,7 +121,6 @@ Class already polymorphic — add virtual ~Base too.
 
 Yes — still dispatches to ~Derived.
 
-**हिंदी:** default OK.
 
 </details>
 
@@ -133,7 +129,6 @@ Yes — still dispatches to ~Derived.
 
 vptr if not already; usually already have vtable.
 
-**हिंदी:** Thoda overhead.
 
 </details>
 
@@ -142,7 +137,6 @@ vptr if not already; usually already have vtable.
 
 If stored as unique_ptr<Derived> only — OK; as Base* deleter needs virtual.
 
-**हिंदी:** Type erasure case.
 
 </details>
 
@@ -514,4 +508,3 @@ Virtual destructor ensures derived cleanup when deleting through base pointer.
 ### One-liner HI
 
 Base* se delete par derived ka destructor chale — virtual ~Base zaroori.
-

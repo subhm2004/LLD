@@ -1,6 +1,6 @@
 # Cohesion, Coupling & SOLID SRP
 
-> **EN:** High cohesion inside; low coupling between; SRP splits responsibilities. **HI:** Ek class ek kaam; classes kam dependent.
+> **EN:** High cohesion inside; low coupling between; SRP splits responsibilities.
 
 > **Runnable demo:** [`14_Cohesion_Coupling.cpp`](../C++ Code/14_Cohesion_Coupling.cpp)
 > **Parent guides:** [OOPS_COMPLETE_GUIDE](../OOPS_COMPLETE_GUIDE.md)
@@ -63,7 +63,6 @@ flowchart LR
 
 Cohesion within class; coupling between classes.
 
-**हिंदी:** Andar unity; bahar dependence.
 
 </details>
 
@@ -72,7 +71,6 @@ Cohesion within class; coupling between classes.
 
 Yes — focused class.
 
-**हिंदी:** Haan focused.
 
 </details>
 
@@ -81,7 +79,6 @@ Yes — focused class.
 
 Yes — easier change/test.
 
-**हिंदी:** Haan maintainable.
 
 </details>
 
@@ -90,7 +87,6 @@ Yes — easier change/test.
 
 One class one job → cohesion up, coupling down.
 
-**हिंदी:** SRP = ek kaam.
 
 </details>
 
@@ -99,7 +95,6 @@ One class one job → cohesion up, coupling down.
 
 Low cohesion high coupling anti-pattern — 14 demo.
 
-**हिंदी:** Sab ek class me mat karo.
 
 </details>
 
@@ -516,4 +511,3 @@ Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
 ### DI
 
 Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-

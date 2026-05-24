@@ -1,6 +1,6 @@
 # Multiple Inheritance, RTTI, Virtual Base & Covariant Returns
 
-> **EN:** MI scope resolution, RTTI casts, virtual base construction, covariant `clone()`. **HI:** MI me qualify; RTTI dynamic_cast; covariant derived* return.
+> **EN:** MI scope resolution, RTTI casts, virtual base construction, covariant `clone()`.
 
 > **Runnable demo:** [`15_Multiple_Inheritance_Ambiguity.cpp`](../C++ Code/15_Multiple_Inheritance_Ambiguity.cpp)
 > **Runnable demo:** [`16_RTTI_Typeid_Dynamic_Cast.cpp`](../C++ Code/16_RTTI_Typeid_Dynamic_Cast.cpp)
@@ -70,7 +70,6 @@ Factory `clone()` returns derived pointer without cast — `18_Covariant_Return_
 
 Qualifier: `Base1::foo()` vs `Base2::foo()`.
 
-**हिंदी:** Scope resolution.
 
 </details>
 
@@ -79,7 +78,6 @@ Qualifier: `Base1::foo()` vs `Base2::foo()`.
 
 Most derived class initializes virtual base.
 
-**हिंदी:** Sabse neeche wala class.
 
 </details>
 
@@ -88,7 +86,6 @@ Most derived class initializes virtual base.
 
 typeid(p) static pointer type; typeid(*p) dynamic object.
 
-**हिंदी:** *p = dynamic type.
 
 </details>
 
@@ -97,7 +94,6 @@ typeid(p) static pointer type; typeid(*p) dynamic object.
 
 Override may return pointer/ref to **derived** type.
 
-**हिंदी:** Derived* return OK.
 
 </details>
 
@@ -508,4 +504,3 @@ Printer::print() | virtual public Base | dynamic_cast | PdfDocument* clone()
 ### Run
 
 ./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-

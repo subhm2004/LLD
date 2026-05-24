@@ -1,14 +1,14 @@
 # Low-Level Design (LLD) — Complete Master Repository Guide
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2500&pause=800&color=2F81F7&center=true&vCenter=true&width=900&lines=Master+LLD+Guide+%E2%80%94+2400%2B+Lines;40+Lessons+%7C+33+System+Projects;23%2B+GoF+Patterns+%7C+Interview+Deep+Dives" alt="Typing animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2500&pause=800&color=2F81F7&center=true&vCenter=true&width=900&lines=Master+LLD+Guide+%E2%80%94+2400%2B+Lines;40+Lessons+%7C+34+System+Projects;23%2B+GoF+Patterns+%7C+Interview+Deep+Dives" alt="Typing animation" />
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Language-C%2B%2B17-blue?style=for-the-badge" alt="C++ Badge" />
   <img src="https://img.shields.io/badge/Lessons-L0%E2%80%93L40-6f42c1?style=for-the-badge" alt="Lessons badge" />
-  <img src="https://img.shields.io/badge/System+Projects-33-success?style=for-the-badge" alt="Projects badge" />
-  <img src="https://img.shields.io/badge/UML-33+Systems-FB8500?style=for-the-badge" alt="UML badge" />
+  <img src="https://img.shields.io/badge/System+Projects-34-success?style=for-the-badge" alt="Projects badge" />
+  <img src="https://img.shields.io/badge/UML-34+Systems-FB8500?style=for-the-badge" alt="UML badge" />
   <img src="https://img.shields.io/badge/Focus-Interview%20Ready-orange?style=for-the-badge" alt="Interview badge" />
 </p>
 
@@ -17,8 +17,8 @@
 | Jump to | |
 |---------|---|
 | [5-min path](#quick-start-5-minutes) | First week roadmap |
-| [UML hub](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | 33 systems — class + sequence diagrams (Mermaid) |
-| [Pattern map](docs/PROJECT_DESIGN_PATTERNS.md) | 67+ projects × kaunsa pattern kahan |
+| [UML hub](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | 34 systems — class + sequence diagrams (Mermaid) |
+| [Pattern map](docs/PROJECT_DESIGN_PATTERNS.md) | 68+ projects × kaunsa pattern kahan |
 | [Design patterns](docs/Design_Patterns.md) | GoF complete guide + repo lesson links |
 | [Pattern types](docs/Design_Pattern_types.md) | Creational / Structural / Behavioral quick list |
 | [SOLID](docs/SOLID.md) | S · O · L · I · D — principles + violated vs fixed |
@@ -32,7 +32,7 @@ flowchart LR
         B[L7-L40 Patterns]
     end
     subgraph build [Build]
-        C[33 Systems]
+        C[34 Systems]
         D[main.cpp demos]
     end
     subgraph ship [Interview]
@@ -106,7 +106,7 @@ cd Parking_lot_system_LLD
 ./parking_app
 ```
 
-**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (33 systems, ~5000+ lines Mermaid).
+**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (34 systems, ~5000+ lines Mermaid).
 
 ---
 
@@ -117,7 +117,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | Category               | Count        | Description                                                             |
 | ---------------------- | ------------ | ----------------------------------------------------------------------- |
 | **Lesson modules**     | L0 – L40     | Intro, Has-A relationships, OOP, SOLID, UML, patterns, system hybrids |
-| **Standalone systems** | 33 projects  | Razorpay, Leave Request, E-commerce Checkout, GPay, IRCTC, Stock Exchange + more   |
+| **Standalone systems** | 34 projects  | In-Memory SQL DB, Razorpay, Leave Request, E-commerce Checkout, GPay, IRCTC + more   |
 | **Concurrency labs**   | 1 folder     | `Multi_threading_C++` — threads, mutex, semaphores, thread pool, DCLP   |
 | **Reference assets**   | PDFs, images | Gang of Four, DDIA, design pattern cheat sheets                         |
 
@@ -133,7 +133,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | ------------------------------------ | ------------------------------------------------------------------------------------- |
 | Total C++/header source files        | ~490+                                                                                 |
 | Lesson folders (L0–L40)              | 41                                                                                    |
-| Runnable system demos                | 33                                                                                    |
+| Runnable system demos                | 34                                                                                    |
 | Projects with dedicated `README.md`  | 24+                                                                                   |
 | Design patterns demonstrated         | 20+ (GoF + Null Object)                                                               |
 | Projects with `problem_statement.md` | 28+                                                                                   |
@@ -149,7 +149,7 @@ Zyada tar LLD preparation in points par atak jaati hai:
 | ------------------------------------------------- | ---------------------------------------------------------------------- |
 | Theory samajh aata hai, code me convert nahi hota | Har concept ke saath runnable `.cpp` / modular headers                 |
 | Code likh lete hain, extensibility weak hoti hai  | SOLID + OCP-focused refactors (e.g. L7 Bad vs Good design)             |
-| Sirf 1–2 problems solve kiye                      | 33 full systems + 10+ lesson-level LLDs                               |
+| Sirf 1–2 problems solve kiye                      | 34 full systems + 10+ lesson-level LLDs                               |
 | Patterns yaad hain, use-case nahi                 | Har pattern ke saath real domain (ATM, Food Delivery, Payment Gateway) |
 | Interview me sirf code, design explain nahi       | Har project me assumptions, trade-offs, extension hooks                |
 
@@ -1042,6 +1042,22 @@ cd Razorpay_LLD && ./compile.sh && ./razorpay_app
 
 ---
 
+### In_Memory_SQL_Database_LLD
+
+|              |                                                                                                                                  |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| **Path**     | [`In_Memory_SQL_Database_LLD/`](./In_Memory_SQL_Database_LLD/)                                                                   |
+| **Docs**     | [`requirements.md`](./In_Memory_SQL_Database_LLD/requirements.md) · [`problem_statement.md`](./In_Memory_SQL_Database_LLD/problem_statement.md) |
+| **Patterns** | **Facade** (`InMemoryDatabase`), **Service layer** (schema / record / query), column validators                                |
+| **Flow**     | `createTable` → `insert` (validate types + constraints) → `printAll` / `printWhere` · `updateTable` / `deleteTable`              |
+| **Note**     | `string` max length + `int` min value + required columns; in-memory rows only (no persistence)                                  |
+
+```bash
+cd In_Memory_SQL_Database_LLD && ./compile.sh && ./sql_database_app
+```
+
+---
+
 ### IRCTC_LLD
 
 |              |                                                                                         |
@@ -1609,6 +1625,7 @@ chmod +x scripts/build_all_systems.sh
 | Task_Scheduler_LLD | `main.cpp`                      | `task_scheduler_app` |
 | Leave_Request_System_LLD | `main.cpp`                | `leave_request_app` |
 | Razorpay_LLD     | `main.cpp`                        | `razorpay_app`     |
+| In_Memory_SQL_Database_LLD | `main.cpp`              | `sql_database_app` |
 | IRCTC_LLD        | `main.cpp`                        | `irctc_app`        |
 | Stock_Exchange_LLD | `main.cpp`                      | `stock_exchange_app` |
 
@@ -1753,6 +1770,7 @@ Har project complete karne ke baad yeh try karo:
 | Task Scheduler        | [Task_Scheduler_LLD](./Task_Scheduler_LLD/)                                                                                                                                                                                                                                                                                          |
 | Leave Request         | [Leave_Request_System_LLD](./Leave_Request_System_LLD/)                                                                                                                                                                                                                                                                              |
 | Razorpay Gateway      | [Razorpay_LLD](./Razorpay_LLD/)                                                                                                                                                                                                                                                                                                      |
+| In-Memory SQL DB      | [In_Memory_SQL_Database_LLD](./In_Memory_SQL_Database_LLD/)                                                                                                                                                                                                                                                                          |
 | IRCTC                 | [IRCTC_LLD](./IRCTC_LLD/)                                                                                                                                                                                                                                                                                                            |
 | Stock Exchange        | [Stock_Exchange_LLD](./Stock_Exchange_LLD/)                                                                                                                                                                                                                                                                                            |
 | Pub-Sub System        | [Pub_Sub_System_LLD](./Pub_Sub_System_LLD/)                                                                                                                                                                                                                                                                                          |
@@ -1951,6 +1969,33 @@ cd Leave_Request_System_LLD && ./compile.sh && ./leave_request_app
 
 ```bash
 cd Razorpay_LLD && ./compile.sh && ./razorpay_app
+```
+
+---
+
+### In_Memory_SQL_Database_LLD
+
+| Entities | `Table`, `ColumnDefinition`, `CellValue`, `Row` |
+| -------- | ----------------------------------------------- |
+| Services | `SchemaService`, `RecordService`, `QueryService` |
+| Validator | `ColumnValueValidator` (type + max length + min int + required) |
+| Facade   | `InMemoryDatabase` |
+
+**Spec:** [`requirements.md`](./In_Memory_SQL_Database_LLD/requirements.md)
+
+**Flow:** `createTable` → `insert` → `printAll` / `printWhere` · schema `updateTable` / `deleteTable`
+
+| Interview Q | Answer sketch |
+| ----------- | ------------- |
+| Types? | `string`, `int` only — validate on insert |
+| Constraints? | Optional `maxStringLength`, `minIntValue`; column can be `required` |
+| Filter? | Equality match on one column (`printWhere` / `selectWhere`) |
+| Persistence? | None — all tables/rows in `unordered_map` + vectors |
+
+**UML:** [§34 In-Memory SQL DB](./docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#34-in-memory-sql-like-database) · **Patterns:** [In-Memory SQL DB](./docs/PROJECT_DESIGN_PATTERNS.md)
+
+```bash
+cd In_Memory_SQL_Database_LLD && ./compile.sh && ./sql_database_app
 ```
 
 ---
@@ -2446,6 +2491,7 @@ Need undo?                          → Command / Memento
 | 2026 | Added `Ecommerce_Cart_Checkout_LLD` — §31 UML + pattern map; README hero refresh                                              |
 | 2026 | Added `Leave_Request_System_LLD` — §32 UML + pattern map (Chain of Responsibility approval) + docs hub                        |
 | 2026 | Added `Razorpay_LLD` — §33 UML + pattern map (Razorpay-only order/capture/webhook/refund); distinct from L23 multi-gateway      |
+| 2026 | Added `In_Memory_SQL_Database_LLD` — §34 UML + pattern map (DDL, typed columns, constraints, insert, print, filter)               |
 | 2026 | **L0 Introduction** + **L1 Composition** (moved from `L2 OOPS_1/Composition/`); root README foundation track updated          |
 | 2026 | **L4 UML_Diagrams** reorganized — `C++ Code/`, `notes/`, `compile.sh`, `INHERITANCE_AND_COMPOSITION.md`                        |
 
@@ -2453,7 +2499,7 @@ Need undo?                          → Command / Memento
 
 - [x] Har naye project me `problem_statement.md`, `requirements.md`, `compile.sh`
 - [x] Root README me project table update
-- [x] Diagram file me naya section add (§33 Razorpay; §32 Leave Request; §31 E-commerce; §28–§30 Task Scheduler, IRCTC, Stock Exchange)
+- [x] Diagram file me naya section add (§34 In-Memory SQL DB; §33 Razorpay; §32 Leave Request; §31 E-commerce; §28–§30 Task Scheduler, IRCTC, Stock Exchange)
 - [ ] `./scripts/build_all_systems.sh` green before push
 
 ---

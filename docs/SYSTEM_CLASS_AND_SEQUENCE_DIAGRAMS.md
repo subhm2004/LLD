@@ -1,12 +1,12 @@
 # System Projects — Class Diagrams & Sequence Diagrams
 
 <p align="center">
-  <b>UML Reference — 33 System Projects</b><br/>
+  <b>UML Reference — 34 System Projects</b><br/>
   <sub>Class diagrams + sequence flows · code-accurate names · Mermaid</sub>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Systems-33-blue?style=for-the-badge" alt="33 systems" />
+  <img src="https://img.shields.io/badge/Systems-34-blue?style=for-the-badge" alt="34 systems" />
   <img src="https://img.shields.io/badge/Diagrams-Mermaid-6f42c1?style=for-the-badge" alt="Mermaid" />
   <img src="https://img.shields.io/badge/Lines-3100%2B-success?style=for-the-badge" alt="3100+ lines" />
   <img src="https://img.shields.io/badge/Synced-With%20Code-orange?style=for-the-badge" alt="Synced with code" />
@@ -18,7 +18,7 @@
   <img src="https://img.shields.io/badge/Preview-GitHub%20%7C%20VS%20Code%20%7C%20Cursor-informational?style=flat-square" alt="Preview" />
 </p>
 
-> **33 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
+> **34 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
 > GitHub / VS Code / Cursor me **Markdown Preview** se Mermaid diagrams render honge.
 
 ---
@@ -27,7 +27,8 @@
 
 | Item | Status |
 | ---- | ------ |
-| **Projects covered** | 33 / 33 standalone systems |
+| **Projects covered** | 34 / 34 standalone systems |
+| **In-Memory SQL DB (§34)** | DDL (create/update/delete table), typed columns + constraints, insert, print all, filter |
 | **Razorpay (§33)** | Order → payment → capture → webhook signature → refund |
 | **Leave Request (§32)** | Multi-level approval chain (CoR), submit / approve / cancel |
 | **E-commerce Checkout (§31)** | Cart, inventory reserve, coupon, payment Strategy, idempotent checkout |
@@ -63,11 +64,11 @@ flowchart LR
 
 > Poora file scroll karne se pehle — **high-priority systems** aur **diagram types** yahan se pick karo.
 
-### 0.1 33 systems — category map
+### 0.1 34 systems — category map
 
 ```mermaid
 mindmap
-  root((33 Systems))
+  root((34 Systems))
     Infrastructure
       ATM
       Load Balancer
@@ -100,6 +101,7 @@ mindmap
       JSON Parser
       LeetCode Judge
       Insta Reels
+      In-Memory SQL DB
     Mobile Apps
       GPay UPI
       Truecaller
@@ -188,7 +190,7 @@ flowchart LR
 
 ```mermaid
 pie showData
-    title Most common patterns in 33 systems
+    title Most common patterns in 34 systems
     "Facade / System entry" : 19
     "Strategy" : 12
     "Service layer" : 16
@@ -260,6 +262,7 @@ pie showData
 | 31 | [E-commerce Cart + Checkout](#31-e-commerce-cart--checkout) | `Ecommerce_Cart_Checkout_LLD/` |
 | 32 | [Leave Request System](#32-leave-request-system) | `Leave_Request_System_LLD/` |
 | 33 | [Razorpay Payment Gateway](#33-razorpay-payment-gateway) | `Razorpay_LLD/` |
+| 34 | [In-Memory SQL-like Database](#34-in-memory-sql-like-database) | `In_Memory_SQL_Database_LLD/` |
 
 ---
 
@@ -4903,6 +4906,132 @@ cd Razorpay_LLD && ./compile.sh && ./razorpay_app
 
 ---
 
+## 34. In-Memory SQL-like Database
+
+**Project:** [`In_Memory_SQL_Database_LLD/`](../In_Memory_SQL_Database_LLD/)
+
+**Problem:** In-memory database with DDL (create/update/delete tables), typed columns (`string`, `int`), constraints (string max length, int min value), required columns, insert rows, print all, filter by column equality.
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    class InMemoryDatabase {
+        +createTable(name, columns)
+        +updateTable(name, columns)
+        +deleteTable(name)
+        +insert(table, row)
+        +printAll(table)
+        +printWhere(table, col, value)
+        +selectWhere(table, col, value)
+    }
+
+    class SchemaService {
+        +createTable()
+        +updateTable()
+        +deleteTable()
+        +getTable(name)
+    }
+
+    class RecordService {
+        +insert(table, row)
+    }
+
+    class QueryService {
+        +printAll(table)
+        +printFilter(table, col, value)
+        +filterEquals(table, col, value)
+    }
+
+    class ColumnValueValidator {
+        +validate(column, value)$
+    }
+
+    class Table {
+        +name
+        +columns
+        +rows
+    }
+
+    class ColumnDefinition {
+        +name
+        +type
+        +required
+        +maxStringLength
+        +minIntValue
+    }
+
+    class CellValue {
+        +fromString(s)$
+        +fromInt(i)$
+        +asString()
+        +asInt()
+    }
+
+    InMemoryDatabase --> SchemaService
+    InMemoryDatabase --> RecordService
+    InMemoryDatabase --> QueryService
+    RecordService --> SchemaService
+    RecordService --> ColumnValueValidator
+    QueryService --> SchemaService
+    SchemaService --> Table
+    Table --> ColumnDefinition
+    Table --> CellValue
+```
+
+### Sequence Diagram — create table + insert with validation
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant DB as InMemoryDatabase
+    participant SS as SchemaService
+    participant RS as RecordService
+    participant V as ColumnValueValidator
+
+    Client->>DB: createTable("users", columns)
+    DB->>SS: createTable
+    SS-->>DB: Table registered
+
+    Client->>DB: insert("users", row)
+    DB->>RS: insert
+    RS->>SS: getTable("users")
+    loop each column in row
+        RS->>V: validate(colDef, cellValue)
+        alt constraint fail
+            V-->>RS: throw invalid_argument
+        end
+    end
+    RS->>SS: append row
+    RS-->>DB: ok
+```
+
+### Sequence Diagram — filter records
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant DB as InMemoryDatabase
+    participant QS as QueryService
+    participant SS as SchemaService
+
+    Client->>DB: printWhere("users", "city", "Delhi")
+    DB->>QS: printFilter
+    QS->>SS: getTable("users")
+    QS->>QS: filter rows where city == Delhi
+    QS-->>Client: formatted rows printed
+```
+
+### Build
+
+```bash
+cd In_Memory_SQL_Database_LLD && ./compile.sh && ./sql_database_app
+```
+
+---
+
 ## Cross-Project Pattern Summary
 
 ### Animated facade → service drill-down
@@ -5254,6 +5383,6 @@ sequenceDiagram
 </p>
 
 <p align="center">
-  <b>33 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
+  <b>34 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
   <sub>Maintained alongside <code>README.md</code> and per-project headers</sub>
 </p>

@@ -2,6 +2,8 @@
 
 Design a payment gateway platform that can route payment requests through multiple providers (for example, Paytm and Razorpay) while keeping the checkout API unified for clients.
 
+> **Razorpay-only lifecycle** (orders, capture, webhooks, refunds): see [`Razorpay_LLD/`](../Razorpay_LLD/).
+
 The system should support:
 
 - A common payment request model (`sender`, `receiver`, `amount`, `currency`).

@@ -9,3 +9,12 @@ If:
   PathMatch: IRCTC_LLD/.*
 CompileFlags:
   CompilationDatabase: IRCTC_LLD
+
+---
+If:
+  PathMatch: Ecommerce_Cart_Checkout_LLD/.*
+CompileFlags:
+  Add:
+    - -std=c++17
+    - -pthread
+    - -IEcommerce_Cart_Checkout_LLD

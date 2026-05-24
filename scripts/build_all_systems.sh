@@ -19,6 +19,7 @@ declare -a PROJECTS=(
   Thread_Safe_Cache_with_TTL_LLD
   Concurrent_HashMap_LLD
   Amazon_Locker_Service_LLD
+  Ecommerce_Cart_Checkout_LLD
   "L24 Discount_coupon_engine_LLD"
 )
 

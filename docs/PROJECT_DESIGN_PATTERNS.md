@@ -1,11 +1,12 @@
 # Project ↔ Design Pattern Map
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=6F42C1&center=true&vCenter=true&width=920&lines=60+Projects+%C3%97+23+GoF+Patterns;Pattern+Map+%2B+Live+Diagrams;Interview-Ready+Visual+Guide" alt="Typing animation" />
+  <b>65+ Projects × 23+ GoF Patterns</b><br/>
+  <sub>Pattern map · live Mermaid · interview quick lines</sub>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Projects-60+-blue?style=for-the-badge" alt="Projects" />
+  <img src="https://img.shields.io/badge/Projects-65+-blue?style=for-the-badge" alt="Projects" />
   <img src="https://img.shields.io/badge/Patterns-23+GoF-purple?style=for-the-badge" alt="Patterns" />
   <img src="https://img.shields.io/badge/Diagrams-Mermaid-success?style=for-the-badge" alt="Mermaid" />
 </p>
@@ -56,7 +57,7 @@ flowchart TB
     subgraph systems [Standalone Systems]
         CORE[Parking Logger LoadBalancer]
         APP[OYO LeetCode WhatsApp LRU]
-        DOMAIN[ATM Uber Movie Ticket GPay Truecaller]
+        DOMAIN[ATM Uber Movie Ticket GPay E-commerce Truecaller]
         INFRA[TTL Cache Concurrent HashMap Amazon Locker]
     end
 
@@ -232,6 +233,7 @@ flowchart LR
 | 62 | Task / Job Scheduler | [`Task_Scheduler_LLD/`](../Task_Scheduler_LLD/) | **Facade**, **Strategy** (priority/FIFO), **Observer**, **Factory**, worker pool |
 | 63 | IRCTC Train Booking | [`IRCTC_LLD/`](../IRCTC_LLD/) | **Facade**, **Factory**, **Service layer**, segment ledger + `mutex` |
 | 64 | Stock Exchange | [`Stock_Exchange_LLD/`](../Stock_Exchange_LLD/) | **Facade**, **Factory**, **Service layer** (order book + matching) |
+| 65 | E-commerce Cart + Checkout | [`Ecommerce_Cart_Checkout_LLD/`](../Ecommerce_Cart_Checkout_LLD/) | **Facade**, **Strategy** (discount + payment), **Factory** (payment rails), **Service layer**, inventory reservation |
 
 > **Note:** L1–L6 = OOP + SOLID foundation ([`L2 OOPS_1`](../L2%20OOPS_1/), [`L5 SOLID_1`](../L5%20SOLID_1/), [`L6 SOLID_2`](../L6%20SOLID_2/)) — design pattern **lessons** nahi, principles hain.
 
@@ -249,7 +251,7 @@ flowchart LR
 | Priority | Projects |
 |----------|----------|
 | ⭐⭐⭐ Must | Parking, Splitwise L31, Payment L23, BookMyShow, Logger, Spotify L18 |
-| ⭐⭐ Strong | OYO, LRU, LeetCode, WhatsApp, L24 Coupons, Load Balancer, Movie Ticket, **Amazon Locker**, **Concurrent HashMap**, **TTL Cache**, **GPay**, **Truecaller**, **Task Scheduler**, **IRCTC**, **Stock Exchange** |
+| ⭐⭐ Strong | OYO, LRU, LeetCode, WhatsApp, L24 Coupons, Load Balancer, Movie Ticket, **Amazon Locker**, **Concurrent HashMap**, **TTL Cache**, **GPay**, **E-commerce Checkout**, **Truecaller**, **Task Scheduler**, **IRCTC**, **Stock Exchange** |
 | ⭐ Good | Baaki lessons L7–L40 (pattern demos), Car Rental, Uber, JSON Parser, **Multi_threading_C++** labs |
 
 ### 1.1 Lesson learning path (recommended order)
@@ -622,6 +624,7 @@ flowchart TB
         CHM[Concurrent HashMap]
         LOCKER[Amazon Locker]
         GPAY[GPay UPI]
+        ECOMM[E-commerce Checkout]
         TC[Truecaller]
         MSCH[Meeting Scheduler]
     end
@@ -850,6 +853,31 @@ cd Concurrent_HashMap_LLD && ./compile.sh && ./concurrent_hashmap_app
 cd Thread_Safe_Cache_with_TTL_LLD && ./compile.sh && ./cache_ttl_app
 ```
 
+### E-commerce Cart + Checkout
+
+| | |
+|---|---|
+| **Path** | [`Ecommerce_Cart_Checkout_LLD/`](../Ecommerce_Cart_Checkout_LLD/) |
+| **Priority** | ⭐⭐⭐ (Flipkart / Amazon — cart, coupon, pay, order) |
+| **Problem** | Add to cart, reserve inventory, apply coupon, compute shipping, pay via UPI/Card/COD, confirm or rollback |
+| **Patterns** | **Facade**, **Strategy** (discount + payment), **Factory** (payment rails), **Service layer** |
+
+| Pattern | Kyun? | Class / file |
+|---------|-------|--------------|
+| Facade | Single checkout API for client | `EcommerceCheckoutSystem` |
+| Strategy | Pluggable discount rules (`SAVE10`, `FLAT100`) | `IDiscountStrategy`, `PercentageDiscountStrategy`, `FlatDiscountStrategy` |
+| Strategy | UPI / Card / COD without `if` chains | `IPaymentStrategy`, `UpiPaymentStrategy`, `CardPaymentStrategy`, `CodPaymentStrategy` |
+| Factory | Create payment strategy by enum | `PaymentStrategyFactory` |
+| Service layer | Cart, inventory hold, pricing, checkout orchestration | `CartService`, `InventoryService`, `CheckoutService`, `PricingService`, `CouponService` |
+
+**Note:** End-to-end checkout slice — pairs with [`L24 Discount_coupon_engine_LLD`](../L24%20Discount_coupon_engine_LLD/) (coupon math only) and [`L23`](../L23%20Payment_gateway_system_LLD/) (merchant gateway).
+
+**UML:** [Section 31](SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#31-e-commerce-cart--checkout)
+
+```bash
+cd Ecommerce_Cart_Checkout_LLD && ./compile.sh && ./ecommerce_checkout_app
+```
+
 ### GPay (UPI P2P)
 
 | | |
@@ -1018,6 +1046,7 @@ cd Stock_Exchange_LLD && ./compile.sh && ./stock_exchange_app
 | [Task Scheduler](../Task_Scheduler_LLD/) | `TaskSchedulerSystem` | `WorkerPoolService`, `SchedulerService`, `RetryService` | **Facade** + **Strategy** + **Observer** |
 | [IRCTC](../IRCTC_LLD/) | `IRCTCSystem` | `SeatAllocationService`, `BookingService`, segment overlap | **Facade** + **Factory** + services |
 | [Stock Exchange](../Stock_Exchange_LLD/) | `StockExchangeSystem` | `MatchingEngineService`, `OrderBookService` | **Facade** + **Factory** + services |
+| [E-commerce Checkout](../Ecommerce_Cart_Checkout_LLD/) | `EcommerceCheckoutSystem` | `CheckoutService`, `InventoryService`, payment/discount strategies | **Facade** + **Strategy** + **Factory** |
 
 ---
 
@@ -1535,6 +1564,7 @@ flowchart LR
 | **Amazon Locker** | “`AmazonLockerService` facade; `FirstFitAllocationStrategy`; `AccessCodeService` for OTP lifecycle.” |
 | **Concurrent HashMap** | “`StripedHashMap` = Strategy over `IConcurrentMap`; stripe = less contention than coarse mutex.” |
 | **TTL Cache** | “`ThreadSafeTTLCache` with `shared_mutex`; lazy expire on get — like production session cache.” |
+| **E-commerce Checkout** | “`EcommerceCheckoutSystem` facade; reserve inventory before pay; `IDiscountStrategy` + `IPaymentStrategy`; rollback on failure; idempotent `clientRequestId`.” |
 | **GPay** | “`GPaySystem` facade; `TransferService` + `IPaymentRailStrategy` for bank vs wallet; idempotent `clientRequestId`.” |
 | **Truecaller** | “`TruecallerSystem` facade; `ISpamScoringStrategy` for crowd spam; `LookupService` + block list on incoming call.” |
 | **Fizz Buzz / Merge Sort** | “Concurrency interview problems under `Multi_threading_C++` — CV + fork-join, not GoF catalog.” |
@@ -1559,7 +1589,7 @@ flowchart LR
 | [`Design_Patterns.md`](Design_Patterns.md) | Har pattern ki full theory + 3000+ lines |
 | [`SOLID.md`](SOLID.md) | SOLID principles |
 | [`README.md`](../README.md) | Poora repo index |
-| [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | Full system UML (26 systems — §25 GPay, §26 Truecaller) |
+| [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | Full system UML (31 systems — §31 E-commerce Checkout) |
 | [`Multi_threading_C++/README.md`](../Multi_threading_C++/README.md) | Concurrency labs + subfolder index |
 
 ### External animated references (browser)
@@ -1573,4 +1603,4 @@ flowchart LR
 
 ---
 
-*Last updated: L7–L40 + standalone LLDs (incl. GPay, Truecaller, Amazon Locker, Concurrent HashMap, TTL Cache) + `Multi_threading_C++` concurrency modules. Mermaid renders on GitHub & VS Code preview.*
+*Last updated: L7–L40 + standalone LLDs (incl. E-commerce Cart + Checkout, GPay, Truecaller, Task Scheduler, IRCTC, Stock Exchange) + `Multi_threading_C++` concurrency modules. Mermaid renders on GitHub & VS Code preview.*

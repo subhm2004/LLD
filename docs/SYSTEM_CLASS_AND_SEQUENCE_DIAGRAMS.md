@@ -1,11 +1,12 @@
 # System Projects — Class Diagrams & Sequence Diagrams
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=6F42C1&center=true&vCenter=true&width=920&lines=UML+Reference+%E2%80%94+30+System+Projects;Class+Diagrams+%2B+Sequence+Flows;Mermaid+%7C+Code-Accurate+Names" alt="Typing animation" />
+  <b>UML Reference — 31 System Projects</b><br/>
+  <sub>Class diagrams + sequence flows · code-accurate names · Mermaid</sub>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Systems-30-blue?style=for-the-badge" alt="30 systems" />
+  <img src="https://img.shields.io/badge/Systems-31-blue?style=for-the-badge" alt="31 systems" />
   <img src="https://img.shields.io/badge/Diagrams-Mermaid-6f42c1?style=for-the-badge" alt="Mermaid" />
   <img src="https://img.shields.io/badge/Lines-3100%2B-success?style=for-the-badge" alt="3100+ lines" />
   <img src="https://img.shields.io/badge/Synced-With%20Code-orange?style=for-the-badge" alt="Synced with code" />
@@ -17,7 +18,7 @@
   <img src="https://img.shields.io/badge/Preview-GitHub%20%7C%20VS%20Code%20%7C%20Cursor-informational?style=flat-square" alt="Preview" />
 </p>
 
-> **30 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
+> **31 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
 > GitHub / VS Code / Cursor me **Markdown Preview** se Mermaid diagrams render honge.
 
 ---
@@ -26,7 +27,8 @@
 
 | Item | Status |
 | ---- | ------ |
-| **Projects covered** | 30 / 30 standalone systems |
+| **Projects covered** | 31 / 31 standalone systems |
+| **E-commerce Checkout (§31)** | Cart, inventory reserve, coupon, payment Strategy, idempotent checkout |
 | **Task Scheduler (§28)** | Delayed jobs, worker pool, retry, observer |
 | **IRCTC (§29)** | Segment seat booking, concurrent mutex |
 | **Stock Exchange (§30)** | Order book, price-time matching |
@@ -59,11 +61,11 @@ flowchart LR
 
 > Poora file scroll karne se pehle — **high-priority systems** aur **diagram types** yahan se pick karo.
 
-### 0.1 30 systems — category map
+### 0.1 31 systems — category map
 
 ```mermaid
 mindmap
-  root((30 Systems))
+  root((31 Systems))
     Infrastructure
       ATM
       Load Balancer
@@ -79,6 +81,7 @@ mindmap
       Parking Lot
       Movie Ticket
       OYO Hotel
+      E-commerce Checkout
       Car Rental
       Vending Machine
       IRCTC
@@ -205,6 +208,7 @@ pie showData
 | Send message | [§16](#16-whatsapp) | chat → encrypt → notify |
 | UPI send money | [§25](#25-gpay-upi-p2p) | PIN → rail strategy → debit/credit → ledger |
 | Incoming call ID | [§26](#26-truecaller) | lookup → spam score → block check |
+| Checkout cart | [§31](#31-e-commerce-cart--checkout) | cart → reserve → coupon → pay → order |
 
 ---
 
@@ -246,6 +250,7 @@ pie showData
 | 28 | [Task / Job Scheduler](#28-task--job-scheduler) | `Task_Scheduler_LLD/` |
 | 29 | [IRCTC Train Booking](#29-irctc-train-booking) | `IRCTC_LLD/` |
 | 30 | [Stock Exchange](#30-stock-exchange-order-matching) | `Stock_Exchange_LLD/` |
+| 31 | [E-commerce Cart + Checkout](#31-e-commerce-cart--checkout) | `Ecommerce_Cart_Checkout_LLD/` |
 
 ---
 
@@ -4491,6 +4496,138 @@ cd Stock_Exchange_LLD && ./compile.sh && ./stock_exchange_app
 
 ---
 
+## 31. E-commerce Cart + Checkout
+
+**Folder:** [`Ecommerce_Cart_Checkout_LLD/`](../Ecommerce_Cart_Checkout_LLD/) · **Facade:** `EcommerceCheckoutSystem` · **Patterns:** Strategy (discount + payment), Factory (payment rails), inventory reservation
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    direction TB
+
+    class EcommerceCheckoutSystem {
+        +registerUser()
+        +addProduct()
+        +addToCart()
+        +checkout()
+        +printCart()
+        +printOrder()
+    }
+
+    class CheckoutService {
+        +checkout()
+    }
+    class CartService {
+        +addToCart()
+        +toQuantityMap()
+    }
+    class InventoryService {
+        +reserveItems()
+        +commitReservation()
+        +releaseReservation()
+    }
+    class CouponService {
+        +applyCouponOrThrow()
+    }
+    class PricingService {
+        +calculate()
+    }
+    class PaymentService {
+        +processPayment()
+    }
+    class PaymentStrategyFactory {
+        +create()
+    }
+
+    class IDiscountStrategy {
+        <<interface>>
+        +calculate()
+    }
+    class IPaymentStrategy {
+        <<interface>>
+        +pay()
+    }
+    class UpiPaymentStrategy
+    class CardPaymentStrategy
+    class CodPaymentStrategy
+
+    class Cart
+    class Order
+    class Coupon
+    class Product
+
+    EcommerceCheckoutSystem --> CheckoutService
+    EcommerceCheckoutSystem --> CartService
+    CheckoutService --> InventoryService
+    CheckoutService --> CouponService
+    CheckoutService --> PricingService
+    CheckoutService --> PaymentService
+    PaymentService --> PaymentStrategyFactory
+    PaymentStrategyFactory ..> IPaymentStrategy
+    IPaymentStrategy <|-- UpiPaymentStrategy
+    IPaymentStrategy <|-- CardPaymentStrategy
+    IPaymentStrategy <|-- CodPaymentStrategy
+    Coupon --> IDiscountStrategy
+    CartService --> Cart
+    CheckoutService --> Order
+```
+
+### Sequence Diagram — checkout (success path)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant Sys as EcommerceCheckoutSystem
+    participant CS as CheckoutService
+    participant Cart as CartService
+    participant Inv as InventoryService
+    participant Cpn as CouponService
+    participant Price as PricingService
+    participant Pay as PaymentService
+
+    User->>Sys: checkout(userId, addressId, UPI, coupon)
+    Sys->>CS: checkout(...)
+    CS->>Cart: getCartOrThrow + toQuantityMap
+    CS->>Inv: reserveItems(userId, items)
+    CS->>Cpn: applyCouponOrThrow(code, subtotal)
+    CS->>Price: calculate(subtotal, discount)
+    CS->>Pay: processPayment(UPI, payable)
+    Pay-->>CS: PaymentResult SUCCESS
+    CS->>Inv: commitReservation()
+    CS->>Cart: clearCart()
+    CS-->>Sys: Order CONFIRMED
+    Sys-->>User: orderId + email notification
+```
+
+### Sequence Diagram — payment failure (rollback)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant CS as CheckoutService
+    participant Inv as InventoryService
+    participant Pay as PaymentService
+
+    User->>CS: checkout(..., card ending 0000)
+    CS->>Inv: reserveItems()
+    CS->>Pay: processPayment(CREDIT_CARD, ...)
+    Pay-->>CS: FAILED declined
+    CS->>Inv: releaseReservation()
+    CS-->>User: throw Payment failed
+    Note over Inv: stock restored to available pool
+```
+
+### Build
+
+```bash
+cd Ecommerce_Cart_Checkout_LLD && ./compile.sh && ./ecommerce_checkout_app
+```
+
+---
+
 ## Cross-Project Pattern Summary
 
 ### Animated facade → service drill-down
@@ -4523,6 +4660,7 @@ graph LR
         LOCKER[AmazonLockerService]
         LC[LeetCodeSystem]
         OYO[OYOHotelBookingSystem]
+        EC[EcommerceCheckoutSystem]
         GPAY[GPaySystem]
         TC[TruecallerSystem]
     end
@@ -4834,6 +4972,6 @@ sequenceDiagram
 </p>
 
 <p align="center">
-  <b>30 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
+  <b>31 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
   <sub>Maintained alongside <code>README.md</code> and per-project headers</sub>
 </p>

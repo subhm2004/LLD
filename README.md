@@ -1,159 +1,81 @@
-<div align="center">
-
-<!-- ═══ HERO BANNER ═══ -->
-<img src="https://capsule-render.vercel.app/api?type=venom&height=240&gradientColor=0:0f0c29,25:302b63,55:24243e,85:0f4c75,100:00d4ff&text=🏗️%20LOW%20LEVEL%20DESIGN&fontSize=44&fontColor=ffffff&stroke=00d4ff" alt="LLD Hero" />
-
-<img src="https://capsule-render.vercel.app/api?type=soft&height=52&gradientColor=0:bc13fe,100:00d4ff&text=Complete+Master+Repository+Guide&fontSize=22&fontColor=ffffff" alt="Subtitle" />
-
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=3200&pause=900&color=00D4FF&center=true&vCenter=true&width=960&lines=40+Lessons+%E2%80%A2+30+Runnable+Systems;23%2B+GoF+Patterns+%E2%80%A2+C%2B%2B17;4500%2B+Lines+UML+%E2%80%A2+Mermaid;Interview+Ready+Deep+Dives&colors=00D4FF,BC8CFF,FFD166,2EA043,58A6FF" alt="Typing" />
-
-<br/>
-
-<!-- Tech stack icons (animated on hover at skillicons.dev) -->
-<a href="https://skillicons.dev">
-  <img src="https://skillicons.dev/icons?i=cpp,cmake,linux,github,vscode,git&perline=6&theme=dark" alt="Tech stack" />
-</a>
-
-<br/><br/>
-
-<!-- ═══ METRIC CARDS ═══ -->
-<table>
-  <tr>
-    <td align="center" width="155">
-      <img src="https://img.shields.io/badge/📚_LESSONS-40-8A2BE2?style=for-the-badge&labelColor=0d1117" alt="lessons" /><br/>
-      <b>L1 → L40</b><br/>
-      <sub>OOP · SOLID · GoF · LLD</sub>
-    </td>
-    <td align="center" width="155">
-      <img src="https://img.shields.io/badge/🏢_SYSTEMS-30-2EA043?style=for-the-badge&labelColor=0d1117" alt="systems" /><br/>
-      <b>Full LLD</b><br/>
-      <sub>Parking · Uber · GPay…</sub>
-    </td>
-    <td align="center" width="155">
-      <img src="https://img.shields.io/badge/🧵_THREADS-Labs-0078D4?style=for-the-badge&labelColor=0d1117" alt="threads" /><br/>
-      <b>06 Module</b><br/>
-      <sub>LC · Pool · CAS</sub>
-    </td>
-    <td align="center" width="155">
-      <img src="https://img.shields.io/badge/📐_UML-30_§-FB8500?style=for-the-badge&labelColor=0d1117" alt="uml" /><br/>
-      <b>Class + Seq</b><br/>
-      <sub>Interview boards</sub>
-    </td>
-  </tr>
-</table>
-
-<br/>
-
-<h3>✨ Spotlight — Latest & Must-Run Systems</h3>
-
-<table>
-  <tr>
-    <th align="center">Project</th>
-    <th align="center">Pattern focus</th>
-    <th align="center">Quick run</th>
-  </tr>
-  <tr>
-    <td align="center">🅿️ <a href="Parking_lot_system_LLD/"><b>Parking Lot</b></a></td>
-    <td align="center"><code>Strategy</code> pricing</td>
-    <td align="center"><code>./parking_app</code></td>
-  </tr>
-  <tr>
-    <td align="center">💳 <a href="GPay_LLD/"><b>GPay</b></a></td>
-    <td align="center"><code>Facade</code> + rail <code>Strategy</code></td>
-    <td align="center"><code>./gpay_app</code></td>
-  </tr>
-  <tr>
-    <td align="center">📞 <a href="Truecaller_LLD/"><b>Truecaller</b></a></td>
-    <td align="center">Spam <code>Strategy</code></td>
-    <td align="center"><code>./truecaller_app</code></td>
-  </tr>
-  <tr>
-    <td align="center">📅 <a href="Meeting_Scheduler_LLD/"><b>Meeting Scheduler</b></a></td>
-    <td align="center"><code>Factory</code> + slot <code>Strategy</code></td>
-    <td align="center"><code>./meeting_scheduler_app</code></td>
-  </tr>
-  <tr>
-    <td align="center">⚡ <a href="LeetCode_LLD/"><b>LeetCode Judge</b></a></td>
-    <td align="center"><code>ICodeRunner</code> Strategy</td>
-    <td align="center"><code>./leetcode_app</code></td>
-  </tr>
-  <tr>
-    <td align="center">🚂 <a href="IRCTC_LLD/"><b>IRCTC</b></a></td>
-    <td align="center">Segment seats + <code>mutex</code></td>
-    <td align="center"><code>./irctc_app</code></td>
-  </tr>
-  <tr>
-    <td align="center">📈 <a href="Stock_Exchange_LLD/"><b>Stock Exchange</b></a></td>
-    <td align="center">Order book + price-time match</td>
-    <td align="center"><code>./stock_exchange_app</code></td>
-  </tr>
-  <tr>
-    <td align="center">⏱️ <a href="Task_Scheduler_LLD/"><b>Task Scheduler</b></a></td>
-    <td align="center"><code>Observer</code> + priority queue</td>
-    <td align="center"><code>./task_scheduler_app</code></td>
-  </tr>
-</table>
+# Low-Level Design (LLD) — Complete Master Repository Guide
 
 <p align="center">
-  <img src="https://img.shields.io/static/v1?style=for-the-badge&message=C%2B%2B17&labelColor=0d1117&color=00599C&logo=c%2B%2B&logoColor=white&label=C%2B%2B" />
-  <img src="https://img.shields.io/static/v1?style=for-the-badge&message=23%2B&labelColor=0d1117&color=BC8CFF&label=GoF" />
-  <img src="https://img.shields.io/static/v1?style=for-the-badge&message=Ready&labelColor=0d1117&color=FF6F00&label=Interview" />
-  <img src="https://img.shields.io/static/v1?style=for-the-badge&message=2200%2B&labelColor=0d1117&color=2F81F7&label=Lines" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2500&pause=800&color=2F81F7&center=true&vCenter=true&width=900&lines=Master+LLD+Guide+%E2%80%94+2400%2B+Lines;40+Lessons+%7C+31+System+Projects;23%2B+GoF+Patterns+%7C+Interview+Deep+Dives" alt="Typing animation" />
 </p>
 
-<br/>
+<p align="center">
+  <img src="https://img.shields.io/badge/Language-C%2B%2B17-blue?style=for-the-badge" alt="C++ Badge" />
+  <img src="https://img.shields.io/badge/Lessons-L1%E2%80%93L40-6f42c1?style=for-the-badge" alt="Lessons badge" />
+  <img src="https://img.shields.io/badge/System+Projects-31-success?style=for-the-badge" alt="Projects badge" />
+  <img src="https://img.shields.io/badge/UML-31+Systems-FB8500?style=for-the-badge" alt="UML badge" />
+  <img src="https://img.shields.io/badge/Focus-Interview%20Ready-orange?style=for-the-badge" alt="Interview badge" />
+</p>
 
-<!-- Learning path mini diagram -->
+> Har folder, har lesson, har system project — structure, concepts, patterns, compile commands, aur interview tips — sab yahan detail me documented hai.
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#2F81F7', 'primaryTextColor': '#fff', 'lineColor': '#58a6ff', 'secondaryColor': '#6f42c1', 'tertiaryColor': '#161b22'}}}%%
-flowchart LR
-    A([📖 L1-L6<br/>Foundations]) --> B([🧩 L7-L40<br/>Patterns])
-    B --> C([🏗️ 30 Systems<br/>Runnable C++])
-    C --> D([🎯 Interview<br/>Ready])
-    style A fill:#302b63,stroke:#00d4ff,color:#fff
-    style B fill:#6f42c1,stroke:#bc8cff,color:#fff
-    style C fill:#0f4c75,stroke:#2ea043,color:#fff
-    style D fill:#bc13fe,stroke:#ffd166,color:#fff
-```
+<p align="center">
 
-<br/>
-
-<!-- CTA buttons -->
-<a href="#quick-start-5-minutes">
-  <img src="https://img.shields.io/badge/🚀_QUICK_START-5_Min_Path-00d4ff?style=for-the-badge&labelColor=0d1117" />
-</a>
-<a href="docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md">
-  <img src="https://img.shields.io/badge/📊_UML_HUB-30_Diagrams-BC8CFF?style=for-the-badge&labelColor=0d1117" />
-</a>
-<a href="docs/PROJECT_DESIGN_PATTERNS.md">
-  <img src="https://img.shields.io/badge/🧩_PATTERN_MAP-60_Projects-2F81F7?style=for-the-badge&labelColor=0d1117" />
-</a>
-<a href="docs/README.md">
-  <img src="https://img.shields.io/badge/📚_DOCS-Theory_+_SOLID-FFD166?style=for-the-badge&labelColor=0d1117" />
-</a>
-<a href="Multi_threading_C++/README.md">
-  <img src="https://img.shields.io/badge/🧵_CONCURRENCY-Full_Module-2EA043?style=for-the-badge&labelColor=0d1117" />
-</a>
-
-<br/><br/>
-
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,14,19,24,30&height=100&section=footer&text=★%20Code+First%20·%20Design+Always%20·%20Whiteboard+Second%20★&fontSize=18&fontColor=fff&animation=twinkling" alt="Footer wave" />
-
-</div>
-
-<table width="100%">
+<table>
   <tr>
-    <td>
-      <blockquote>
-        <p align="center">
-          <b>Har folder · har lesson · har system</b> — patterns, <code>compile.sh</code>, UML, interview Q&A.<br/>
-          <i>Ground truth → har project ka <code>problem_statement.md</code></i>
-        </p>
-      </blockquote>
-    </td>
+    <td align="center"><h2>40</h2><sub>lessons · OOP → GoF</sub></td>
+    <td align="center"><h2>31</h2><sub>runnable systems</sub></td>
+    <td align="center"><h2>31</h2><sub>UML sections</sub></td>
+    <td align="center"><h2>65+</h2><sub>pattern-mapped projects</sub></td>
   </tr>
 </table>
+
+<br/>
+
+**30-second start**
+
+```bash
+git clone <repo> && cd LLD/Ecommerce_Cart_Checkout_LLD
+./compile.sh && ./ecommerce_checkout_app   # cart → coupon → pay → order
+```
+
+| Jump to | |
+|---------|---|
+| [5-min path](#quick-start-5-minutes) | First week roadmap |
+| [UML hub](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | Class + sequence diagrams |
+| [Pattern map](docs/PROJECT_DESIGN_PATTERNS.md) | Which project uses which pattern |
+| [Concurrency](Multi_threading_C++/README.md) | Threads, pools, LC problems |
+
+<br/>
+
+#### 🔥 New & high-yield systems
+
+| Project | What you'll practice | Run |
+|---------|------------------------|-----|
+| 🛒 [**E-commerce Cart + Checkout**](Ecommerce_Cart_Checkout_LLD/) | Inventory hold, coupons, payment `Strategy`, idempotent checkout | `./ecommerce_checkout_app` |
+| 🚂 [**IRCTC**](IRCTC_LLD/) | Segment booking + `mutex` | `./irctc_app` |
+| 📈 [**Stock Exchange**](Stock_Exchange_LLD/) | Order book, price-time match | `./stock_exchange_app` |
+| 💳 [**GPay**](GPay_LLD/) | UPI P2P, payment rail `Strategy` | `./gpay_app` |
+| 🅿️ [**Parking Lot**](Parking_lot_system_LLD/) | Classic LLD warm-up | `./parking_app` |
+
+<br/>
+
+```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'fontSize': '14px'}}}%%
+flowchart LR
+    subgraph learn [Learn]
+        A[L1-L6 Foundations]
+        B[L7-L40 Patterns]
+    end
+    subgraph build [Build]
+        C[31 Systems]
+        D[main.cpp demos]
+    end
+    subgraph ship [Interview]
+        E[UML from docs]
+        F[Whiteboard + trade-offs]
+    end
+    A --> B --> C --> D --> E --> F
+```
+
+  <code>C++17</code> · <code>./compile.sh</code> per project · in-memory by design · ground truth = <code>problem_statement.md</code>
+
+</p>
 
 ---
 
@@ -215,7 +137,7 @@ cd Parking_lot_system_LLD
 ./parking_app
 ```
 
-**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (30 systems, ~4800+ lines Mermaid).
+**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (31 systems, ~5000+ lines Mermaid).
 
 ---
 
@@ -226,7 +148,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | Category               | Count        | Description                                                             |
 | ---------------------- | ------------ | ----------------------------------------------------------------------- |
 | **Lesson modules**     | L1 – L40     | OOP, SOLID, UML, har major design pattern, aur pattern + system hybrids |
-| **Standalone systems** | 30 projects  | Parking, GPay, IRCTC, Stock Exchange, Task Scheduler + more               |
+| **Standalone systems** | 31 projects  | E-commerce Checkout, GPay, IRCTC, Stock Exchange, Task Scheduler + more   |
 | **Concurrency labs**   | 1 folder     | `Multi_threading_C++` — threads, mutex, semaphores, thread pool, DCLP   |
 | **Reference assets**   | PDFs, images | Gang of Four, DDIA, design pattern cheat sheets                         |
 
@@ -242,7 +164,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | ------------------------------------ | ------------------------------------------------------------------------------------- |
 | Total C++/header source files        | ~490+                                                                                 |
 | Lesson folders (L1–L40)              | 40                                                                                    |
-| Runnable system demos                | 30                                                                                    |
+| Runnable system demos                | 31                                                                                    |
 | Projects with dedicated `README.md`  | 24+                                                                                   |
 | Design patterns demonstrated         | 20+ (GoF + Null Object)                                                               |
 | Projects with `problem_statement.md` | 28+                                                                                   |
@@ -258,7 +180,7 @@ Zyada tar LLD preparation in points par atak jaati hai:
 | ------------------------------------------------- | ---------------------------------------------------------------------- |
 | Theory samajh aata hai, code me convert nahi hota | Har concept ke saath runnable `.cpp` / modular headers                 |
 | Code likh lete hain, extensibility weak hoti hai  | SOLID + OCP-focused refactors (e.g. L7 Bad vs Good design)             |
-| Sirf 1–2 problems solve kiye                      | 30 full systems + 10+ lesson-level LLDs                               |
+| Sirf 1–2 problems solve kiye                      | 31 full systems + 10+ lesson-level LLDs                               |
 | Patterns yaad hain, use-case nahi                 | Har pattern ke saath real domain (ATM, Food Delivery, Payment Gateway) |
 | Interview me sirf code, design explain nahi       | Har project me assumptions, trade-offs, extension hooks                |
 
@@ -1114,6 +1036,21 @@ cd IRCTC_LLD && ./compile.sh && ./irctc_app
 
 ---
 
+### Ecommerce_Cart_Checkout_LLD
+
+|              |                                                                                                                              |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| **Path**     | [`Ecommerce_Cart_Checkout_LLD/`](./Ecommerce_Cart_Checkout_LLD/)                                                           |
+| **Patterns** | **Facade**, **Strategy** (discount + payment), **Factory** (payment rails), **Service layer**                                |
+| **Flow**     | Cart → reserve stock → apply coupon → price breakup → pay (UPI/Card/COD) → confirm order / rollback on failure               |
+| **Note**     | Composes ideas from [`L24`](./L24%20Discount_coupon_engine_LLD/) (coupons) + payment flow; full Flipkart/Amazon checkout slice |
+
+```bash
+cd Ecommerce_Cart_Checkout_LLD && ./compile.sh && ./ecommerce_checkout_app
+```
+
+---
+
 ### Stock_Exchange_LLD
 
 |              |                                                                                    |
@@ -1534,6 +1471,7 @@ g++ -std=c++17 -pthread dining_philosophers.cpp -o dp && ./dp
 | -------- | ------------------------- | ----------------------------------------------- |
 | ⭐⭐⭐   | Parking Lot               | OOP basics, Strategy, state of spots            |
 | ⭐⭐⭐   | BookMyShow / Movie Ticket | Concurrency on seats, complex domain            |
+| ⭐⭐⭐   | E-commerce Cart + Checkout | Inventory reserve, coupon, payment Strategy     |
 | ⭐⭐⭐   | Splitwise                 | Graph-like balances, algorithms                 |
 | ⭐⭐⭐   | LRU Cache                 | Hash map + DLL, `list::splice`, mutex decorator |
 | ⭐⭐     | LFU Cache                 | Frequency buckets + `minFreq`, tie-break LRU    |
@@ -1644,6 +1582,7 @@ chmod +x scripts/build_all_systems.sh
 | Insta_reel_LLD   | `yt reel architecture/main.cpp`   | `reels_app`        |
 | LeetCode_LLD     | `main.cpp`                        | `leetcode_app`     |
 | GPay_LLD         | `main.cpp`                        | `gpay_app`         |
+| Ecommerce_Cart_Checkout_LLD | `main.cpp`             | `ecommerce_checkout_app` |
 | Truecaller_LLD   | `main.cpp`                        | `truecaller_app`   |
 | Task_Scheduler_LLD | `main.cpp`                      | `task_scheduler_app` |
 | IRCTC_LLD        | `main.cpp`                        | `irctc_app`        |
@@ -1782,6 +1721,7 @@ Har project complete karne ke baad yeh try karo:
 | Thread-Safe TTL Cache | [Thread_Safe_Cache_with_TTL_LLD](./Thread_Safe_Cache_with_TTL_LLD/)                                                                                                                                                                                                                                                                  |
 | Concurrent HashMap    | [Concurrent_HashMap_LLD](./Concurrent_HashMap_LLD/)                                                                                                                                                                                                                                                                                  |
 | Amazon Locker Service | [Amazon_Locker_Service_LLD](./Amazon_Locker_Service_LLD/)                                                                                                                                                                                                                                                                            |
+| E-commerce Checkout   | [Ecommerce_Cart_Checkout_LLD](./Ecommerce_Cart_Checkout_LLD/)                                                                                                                                                                                                                                                                        |
 | GPay (UPI P2P)        | [GPay_LLD](./GPay_LLD/)                                                                                                                                                                                                                                                                                                              |
 | Truecaller            | [Truecaller_LLD](./Truecaller_LLD/)                                                                                                                                                                                                                                                                                                  |
 | Meeting Scheduler     | [Meeting_Scheduler_LLD](./Meeting_Scheduler_LLD/)                                                                                                                                                                                                                                                                                    |
@@ -1813,6 +1753,31 @@ Har project complete karne ke baad yeh try karo:
 ## System Projects — Deep Dive & Interview Bank
 
 Har system ke liye **entities**, **main APIs**, **patterns**, aur **top interview questions** — revision ke liye one-stop.
+
+### Ecommerce_Cart_Checkout_LLD
+
+| Entities   | `Product`, `Cart`, `CartItem`, `Order`, `Coupon`, `User`, `Address`                                              |
+| ---------- | ------------------------------------------------------------------------------------------------------------------ |
+| Services   | `CartService`, `InventoryService`, `CheckoutService`, `PricingService`, `CouponService`, `PaymentService`          |
+| Strategies | `IDiscountStrategy`, `IPaymentStrategy` (UPI / Card / COD)                                                         |
+| Facade     | `EcommerceCheckoutSystem`                                                                                          |
+
+**Flow:** `addToCart` → `checkout` → reserve inventory → coupon + shipping → payment → confirm or rollback
+
+| Interview Q              | Answer sketch                                                              |
+| ------------------------ | -------------------------------------------------------------------------- |
+| Why reserve before pay?  | Avoid overselling during checkout window; release on payment failure       |
+| Idempotent checkout?     | `clientRequestId` dedup — safe mobile/web retries                            |
+| vs L24 coupon engine?    | L24 = discount rules only; this = full cart → pay → order lifecycle          |
+| COD vs prepaid?          | Order `CONFIRMED`, payment `PENDING` until delivery                        |
+
+**UML:** [§31 E-commerce Checkout](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#31-e-commerce-cart--checkout) · **Patterns:** [E-commerce in PROJECT_DESIGN_PATTERNS](docs/PROJECT_DESIGN_PATTERNS.md#e-commerce-cart--checkout)
+
+```bash
+cd Ecommerce_Cart_Checkout_LLD && ./compile.sh && ./ecommerce_checkout_app
+```
+
+---
 
 ### GPay_LLD
 
@@ -2245,7 +2210,7 @@ Pair with **L32 State** pattern lesson for interview synergy.
 | Microsoft                     | Elevator, Logger, Cache                        | `Elevator_System_LLD`, `Logger_LLD`                               |
 | Uber / Swiggy / Zomato        | Ride, Food (L11), Movie Ticket                 | `Uber_LLD`, `L11 Food_Delivery`, `Movie_Ticket_Booking_System`    |
 | Meta / Social                 | WhatsApp, LinkedIn, Reels                      | `WhatsApp_LLD`, `Linkedin_LLD`, `Insta_reel_LLD`                  |
-| Flipkart / E-commerce lessons | Payment Gateway L23, Coupon L24                | `L23`, `L24`                                                      |
+| Flipkart / E-commerce         | Cart + Checkout, Payment, Coupons              | `Ecommerce_Cart_Checkout_LLD`, `L23`, `L24`                       |
 | Fintech                       | ATM, Payment Gateway, UPI, Order matching      | `ATM_LLD`, `L23`, `GPay_LLD`, `L31 Splitwise`, `Stock_Exchange_LLD` |
 | India mobile apps             | IRCTC booking, UPI, Caller ID                  | `IRCTC_LLD`, `GPay_LLD`, `Truecaller_LLD`                         |
 | Startups (general)            | URL Shortener, Vending Machine                 | `URL_Shortner_LLD`, `vending_machine_LLD`                         |
@@ -2400,12 +2365,13 @@ Need undo?                          → Command / Memento
 | 2026 | Repo cleanup — `docs/`, `assets/`, `books/` (root ab sirf README + project folders)                                           |
 | 2026 | Added `Meeting_Scheduler_LLD` — §27 UML + pattern map                                                                         |
 | 2026 | Added `Task_Scheduler_LLD`, `IRCTC_LLD`, `Stock_Exchange_LLD` — §28–§30 UML + pattern map + README                          |
+| 2026 | Added `Ecommerce_Cart_Checkout_LLD` — §31 UML + pattern map; README hero refresh                                              |
 
 **Maintainer checklist:**
 
 - [x] Har naye project me `problem_statement.md`, `requirements.md`, `compile.sh`
 - [x] Root README me project table update
-- [x] Diagram file me naya section add (§28–§30 Task Scheduler, IRCTC, Stock Exchange)
+- [x] Diagram file me naya section add (§31 E-commerce Cart + Checkout; §28–§30 Task Scheduler, IRCTC, Stock Exchange)
 - [ ] `./scripts/build_all_systems.sh` green before push
 
 ---

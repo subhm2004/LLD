@@ -17,8 +17,11 @@
 | Jump to | |
 |---------|---|
 | [5-min path](#quick-start-5-minutes) | First week roadmap |
-| [UML hub](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | Class + sequence diagrams |
-| [Pattern map](docs/PROJECT_DESIGN_PATTERNS.md) | Which project uses which pattern |
+| [UML hub](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | 31 systems — class + sequence diagrams (Mermaid) |
+| [Pattern map](docs/PROJECT_DESIGN_PATTERNS.md) | 65+ projects × kaunsa pattern kahan |
+| [Design patterns](docs/Design_Patterns.md) | GoF complete guide + repo lesson links |
+| [Pattern types](docs/Design_Pattern_types.md) | Creational / Structural / Behavioral quick list |
+| [SOLID](docs/SOLID.md) | S · O · L · I · D — principles + violated vs fixed |
 | [Concurrency](Multi_threading_C++/README.md) | Threads, pools, LC problems |
 
 ```mermaid

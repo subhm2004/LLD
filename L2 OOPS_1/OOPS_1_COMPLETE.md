@@ -1,5 +1,8 @@
 # L2 — OOP Part 1: Encapsulation & Abstraction (Complete Guide)
 
+> **📌 Expanded master (recommended):** [`OOPS_COMPLETE_GUIDE.md`](./OOPS_COMPLETE_GUIDE.md) — class, ctor/dtor, static, inline, friend, const + pillars.  
+> **Part 2:** [`L3 OOPS_COMPLETE_GUIDE`](../L3%20OOPS_2/OOPS_COMPLETE_GUIDE.md)
+
 <p align="center">
   <img src="https://img.shields.io/badge/Lesson-L2-blue?style=for-the-badge" alt="L2" />
   <img src="https://img.shields.io/badge/Pillars-2%2F4-orange?style=for-the-badge" alt="2 pillars" />
@@ -7,7 +10,7 @@
 </p>
 
 > **Master doc** — Encapsulation + Abstraction detail me  
-> **Code:** [`C++ Code/Encapsulation.cpp`](./C++%20Code/Encapsulation.cpp) · [`C++ Code/Abstraction.cpp`](./C++%20Code/Abstraction.cpp)
+> **Code:** [`C++ Code/08_Encapsulation.cpp`](./C++%20Code/08_Encapsulation.cpp) · [`C++ Code/09_Abstraction.cpp`](./C++%20Code/09_Abstraction.cpp)
 
 ---
 
@@ -53,7 +56,7 @@ flowchart LR
 
 ### 2.1 Definition (2 rules from repo code)
 
-`Encapsulation.cpp` ke comments se:
+`08_Encapsulation.cpp` ke comments se:
 
 | # | Rule (English) | Hindi |
 |---|----------------|-------|
@@ -181,7 +184,7 @@ Current object ka address — parameter name clash resolve.
 | Pedals / steering — **WHAT** you do | `Car` abstract class methods |
 | Engine, gearbox — **HOW** (under hood) | `SportsCar` implementation |
 
-`Abstraction.cpp` comments:
+`09_Abstraction.cpp` comments:
 
 1. Interface for outside world  
 2. Tells **WHAT**, not **HOW**  
@@ -295,7 +298,7 @@ flowchart TB
 
 ## 9. Repo Code Walkthrough
 
-### 9.1 `Encapsulation.cpp` — line of thought
+### 9.1 `08_Encapsulation.cpp` — line of thought
 
 | Lines / block | Concept |
 |---------------|---------|
@@ -310,11 +313,11 @@ flowchart TB
 
 ```bash
 cd "L2 OOPS_1"
-g++ -std=c++17 -Wall -Wextra "C++ Code/Encapsulation.cpp" -o bin/Encapsulation
-./bin/Encapsulation
+g++ -std=c++17 -Wall -Wextra "C++ Code/08_Encapsulation.cpp" -o bin/08_Encapsulation
+./bin/08_Encapsulation
 ```
 
-### 9.2 `Abstraction.cpp` — line of thought
+### 9.2 `09_Abstraction.cpp` — line of thought
 
 | Block | Concept |
 |-------|---------|
@@ -324,8 +327,8 @@ g++ -std=c++17 -Wall -Wextra "C++ Code/Encapsulation.cpp" -o bin/Encapsulation
 | `virtual ~Car()` | Safe delete via base pointer |
 
 ```bash
-g++ -std=c++17 -Wall -Wextra "C++ Code/Abstraction.cpp" -o bin/Abstraction
-./bin/Abstraction
+g++ -std=c++17 -Wall -Wextra "C++ Code/09_Abstraction.cpp" -o bin/09_Abstraction
+./bin/09_Abstraction
 ```
 
 ---

@@ -78,9 +78,9 @@ Client → Proxy (IImage*) → [optional] RealImage
 
 | Variant | File | Kya control karta hai |
 | ------- | ---- | --------------------- |
-| **Virtual Proxy** | `VirtualProxy.cpp` | **Lazy loading** — RealImage tab create jab `display()` |
-| **Protection Proxy** | `ProtectionProxy.cpp` | **Access control** — premium user check before unlock |
-| **Remote Proxy** | `RemoteProxy.cpp` | **Remote stand-in** — client local proxy, real service "remote" |
+| **Virtual Proxy** | [`VirtualProxy.cpp`](./C%20%2B%2B%20Code/VirtualProxy.cpp) · [**`VirtualProxy.md`**](./C%20%2B%2B%20Code/VirtualProxy.md) | **Lazy loading** — RealImage tab create jab `display()` |
+| **Protection Proxy** | [`ProtectionProxy.cpp`](./C%20%2B%2B%20Code/ProtectionProxy.cpp) · [**`ProtectionProxy.md`**](./C%20%2B%2B%20Code/ProtectionProxy.md) | **Access control** — premium user check before unlock |
+| **Remote Proxy** | [`RemoteProxy.cpp`](./C%20%2B%2B%20Code/RemoteProxy.cpp) · [**`RemoteProxy.md`**](./C%20%2B%2B%20Code/RemoteProxy.md) | **Remote stand-in** — client local proxy, real service "remote" |
 
 ```
 Virtual     →  defer expensive RealImage construction
@@ -211,9 +211,9 @@ Decorator **adds** responsibilities; Proxy **controls access** to one real objec
 L21 Proxy_Design_Pattern/
 ├── README.md                              ← Ye file — complete guide
 └── C++ Code/
-    ├── VirtualProxy.cpp                   ← Lazy image loading
-    ├── ProtectionProxy.cpp                ← Premium PDF access
-    └── RemoteProxy.cpp                    ← Remote data service
+    ├── VirtualProxy.cpp    + VirtualProxy.md       ← Lazy image loading
+    ├── ProtectionProxy.cpp + ProtectionProxy.md  ← Premium PDF access
+    └── RemoteProxy.cpp     + RemoteProxy.md      ← Remote data service
 ```
 
 ---
@@ -222,6 +222,7 @@ L21 Proxy_Design_Pattern/
 
 ### 10.1 Virtual Proxy — `VirtualProxy.cpp`
 
+**Detailed guide:** [`C++ Code/VirtualProxy.md`](./C%20%2B%2B%20Code/VirtualProxy.md)  
 Source: [`C++ Code/VirtualProxy.cpp`](./C%20%2B%2B%20Code/VirtualProxy.cpp)
 
 ```cpp
@@ -255,6 +256,7 @@ public:
 
 ### 10.2 Protection Proxy — `ProtectionProxy.cpp`
 
+**Detailed guide:** [`C++ Code/ProtectionProxy.md`](./C%20%2B%2B%20Code/ProtectionProxy.md)  
 Source: [`C++ Code/ProtectionProxy.cpp`](./C%20%2B%2B%20Code/ProtectionProxy.cpp)
 
 ```cpp
@@ -278,6 +280,7 @@ public:
 
 ### 10.3 Remote Proxy — `RemoteProxy.cpp`
 
+**Detailed guide:** [`C++ Code/RemoteProxy.md`](./C%20%2B%2B%20Code/RemoteProxy.md)  
 Source: [`C++ Code/RemoteProxy.cpp`](./C%20%2B%2B%20Code/RemoteProxy.cpp)
 
 ```cpp

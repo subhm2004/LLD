@@ -13,4 +13,5 @@ for src in "$CODE"/*.cpp; do
   echo "  $base.cpp -> bin/$base"
   "$CXX" "${FLAGS[@]}" "$src" -o "$BIN/$base"
 done
-echo "Run: $BIN/Inheritance  |  $BIN/DynamicPolymorphism"
+echo ""
+echo "Examples: $BIN/01_Inheritance  |  $BIN/03_Dynamic_Polymorphism  |  $BIN/08_Diamond_Problem"

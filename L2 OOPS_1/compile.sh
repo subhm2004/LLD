@@ -13,4 +13,8 @@ for src in "$CODE"/*.cpp; do
   echo "  $base.cpp -> bin/$base"
   "$CXX" "${FLAGS[@]}" "$src" -o "$BIN/$base"
 done
-echo "Run: $BIN/Encapsulation  |  $BIN/Abstraction"
+echo ""
+echo "Done. Examples:"
+echo "  $BIN/08_Encapsulation"
+echo "  $BIN/04_Static_Members"
+echo "  $BIN/06_Friend_Function"

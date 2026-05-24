@@ -13,7 +13,7 @@
 > **Folder:** [`L4 UML_Diagrams/`](./)  
 > **Relations deep dive:** [`INHERITANCE_AND_COMPOSITION.md`](./INHERITANCE_AND_COMPOSITION.md)  
 > **21 systems (practice):** [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](../docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md)  
-> **Short notes:** [`4.txt`](./4.txt)
+> **Short notes:** [`notes/01_lesson_quick_notes.md`](./notes/01_lesson_quick_notes.md)
 
 ---
 
@@ -21,7 +21,7 @@
 
 0. [Visual Map — Kaunsa Diagram Kab](#0-visual-map--kaunsa-diagram-kab)
 1. [UML Do Parivar — Structural vs Behavioral](#1-uml-do-parivar--structural-vs-behavioral)
-1.5. [`4.txt` — Lesson Notes (Line-by-Line, Expanded)](#15-4txt--lesson-notes-line-by-line-expanded)
+1.5. [Lesson quick notes (expanded)](#15-lesson-quick-notes-expanded)
 2. [14 Diagram Types (Overview)](#2-14-diagram-types-overview)
 3. [Class Diagram — Box & Members](#3-class-diagram--box--members)
 4. [Visibility & Modifiers (`+` `#` `-`)](#4-visibility--modifiers)
@@ -59,7 +59,7 @@ mindmap
       Timing
 ```
 
-**`4.txt` rule for this repo:**
+**Lesson notes rule for this repo:**
 
 | Type | Padhna hai? | Kyun |
 |------|-------------|------|
@@ -93,9 +93,11 @@ flowchart LR
 
 ---
 
-## 1.5 `4.txt` — Lesson Notes (Line-by-Line, Expanded)
+## 1.5 Lesson quick notes (expanded)
 
-Tumhari original file [`4.txt`](./4.txt) — poori + har line ka **detail explanation** isi guide me. (Relations + code examples: [`INHERITANCE_AND_COMPOSITION.md`](./INHERITANCE_AND_COMPOSITION.md))
+<a id="15-lesson-quick-notes-expanded"></a>
+
+Tumhari original file [`notes/01_lesson_quick_notes.md`](./notes/01_lesson_quick_notes.md) — poori + har line ka **detail explanation** isi guide me. (Relations + code examples: [`INHERITANCE_AND_COMPOSITION.md`](./INHERITANCE_AND_COMPOSITION.md))
 
 <details>
 <summary><strong>📄 Poora raw text — <code>4.txt</code> (click to expand)</strong></summary>
@@ -136,7 +138,7 @@ composition me has a realtion hota h
 | Simple Association (L14) | [§6.0](#60-from-4txt--simple-association-aggregation-composition) | Ownership nahi |
 | Aggregation (L16) | [§6.0](#60-from-4txt--simple-association-aggregation-composition) | Pointer, independent life |
 | Composition (L17) | [§6.0](#60-from-4txt--simple-association-aggregation-composition) | Object / `unique_ptr`, tied life |
-| Inheritance = is-a (L19) | [§6.0](#60-from-4txt--simple-association-aggregation-composition), [§6.1](#61-summary-table) | Full types: `inheritance.cpp` |
+| Inheritance = is-a (L19) | [§6.0](#60-from-4txt--simple-association-aggregation-composition), [§6.1](#61-summary-table) | Full types: `01_Inheritance_Five_Types.cpp` |
 | Composition = has-a (L20) | [§6.0](#60-from-4txt--simple-association-aggregation-composition) | Chair example in other MD |
 
 ---
@@ -217,7 +219,7 @@ Repo class diagrams: [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](../docs/SYSTEM_CL
 
 ## 4. Visibility & Modifiers (`+` `#` `-`)
 
-Source: [`4.txt`](./4.txt)
+Source: [`notes/01_lesson_quick_notes.md`](./notes/01_lesson_quick_notes.md)
 
 | Symbol | Keyword | Kaun access kare |
 |--------|---------|------------------|
@@ -250,7 +252,7 @@ private:   //    -
 
 ## 5. Abstract vs Concrete Class
 
-From [`4.txt`](./4.txt):
+From [`notes/01_lesson_quick_notes.md`](./notes/01_lesson_quick_notes.md):
 
 > *abstract class — jisme at least ek virtual method jiski definition nahi; child define kare*
 
@@ -302,9 +304,9 @@ classDiagram
 
 **Ye section sabse important hai** — whiteboard par galat arrow = interviewer notice karta hai.
 
-### 6.0 From `4.txt` — Simple Association, Aggregation, Composition
+### 6.0 From lesson notes — Simple Association, Aggregation, Composition
 
-Neeche **`4.txt` ki exact baat** + detail. (Typo in notes: *aggrigaton* → **aggregation**.)
+Neeche **class notes ki exact baat** + detail. (Typo in notes: *aggrigaton* → **aggregation**.)
 
 ---
 
@@ -360,7 +362,7 @@ classDiagram
 | **UML** | Filled diamond **◆** owner side |
 | **Mermaid** | `*--` |
 | **C++** | `Seat seat;` ya `unique_ptr<Seat> seat = make_unique<Seat>();` in `Chair()` |
-| **Repo code** | [`example_of_composition.cpp`](./example_of_composition.cpp), [`composition.cpp`](./composition.cpp) |
+| **Repo code** | [`04_Composition_Chair_Example.cpp`](./C%20%2B%2B%20Code/04_Composition_Chair_Example.cpp), [`02_Composition_UniquePtr.cpp`](./C%20%2B%2B%20Code/02_Composition_UniquePtr.cpp) |
 
 ```mermaid
 classDiagram
@@ -387,7 +389,7 @@ flowchart LR
     end
 ```
 
-> **Note:** `4.txt` me sirf **composition** ke liye “has-a” likha hai; **aggregation** bhi has-a family hai lekin **weak**. Teeno compare: [`INHERITANCE_AND_COMPOSITION.md` §5](./INHERITANCE_AND_COMPOSITION.md#5-composition-aggregation-association-has-a).
+> **Note:** `4.txt` me sirf **composition** ke liye “has-a” likha hai; **aggregation** bhi has-a family hai lekin **weak**. Teeno compare: [`L1 Composition`](../%20L1%20Composition/) · [`INHERITANCE_AND_COMPOSITION.md`](./INHERITANCE_AND_COMPOSITION.md).
 
 ---
 
@@ -682,11 +684,11 @@ sequenceDiagram
 
 | File | Role |
 |------|------|
-| [`4.txt`](./4.txt) | Short Hindi notes |
-| [`inheritance.cpp`](./inheritance.cpp) | 5 inheritance types demo |
-| [`example_of_composition.cpp`](./example_of_composition.cpp) | Chair–parts composition |
-| [`composition.cpp`](./composition.cpp) | `unique_ptr` ownership |
-| [`composition_old_style_ptr.cpp`](./composition_old_style_ptr.cpp) | Raw pointer + manual delete |
+| [`notes/01_lesson_quick_notes.md`](./notes/01_lesson_quick_notes.md) | Short Hindi notes |
+| [`01_Inheritance_Five_Types.cpp`](./C%20%2B%2B%20Code/01_Inheritance_Five_Types.cpp) | 5 inheritance types demo |
+| [`04_Composition_Chair_Example.cpp`](./C%20%2B%2B%20Code/04_Composition_Chair_Example.cpp) | Chair–parts composition |
+| [`02_Composition_UniquePtr.cpp`](./C%20%2B%2B%20Code/02_Composition_UniquePtr.cpp) | `unique_ptr` ownership |
+| [`03_Composition_OldStyle_Ptr.cpp`](./C%20%2B%2B%20Code/03_Composition_OldStyle_Ptr.cpp) | Raw pointer + manual delete |
 | [`INHERITANCE_AND_COMPOSITION.md`](./INHERITANCE_AND_COMPOSITION.md) | Is-a / has-a deep dive |
 
 ---

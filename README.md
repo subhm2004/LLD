@@ -6,7 +6,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Language-C%2B%2B17-blue?style=for-the-badge" alt="C++ Badge" />
-  <img src="https://img.shields.io/badge/Lessons-L1%E2%80%93L40-6f42c1?style=for-the-badge" alt="Lessons badge" />
+  <img src="https://img.shields.io/badge/Lessons-L0%E2%80%93L40-6f42c1?style=for-the-badge" alt="Lessons badge" />
   <img src="https://img.shields.io/badge/System+Projects-31-success?style=for-the-badge" alt="Projects badge" />
   <img src="https://img.shields.io/badge/UML-31+Systems-FB8500?style=for-the-badge" alt="UML badge" />
   <img src="https://img.shields.io/badge/Focus-Interview%20Ready-orange?style=for-the-badge" alt="Interview badge" />
@@ -18,7 +18,7 @@
 
 <table>
   <tr>
-    <td align="center"><h2>40</h2><sub>lessons · OOP → GoF</sub></td>
+    <td align="center"><h2>41</h2><sub>lessons · L0 intro → GoF</sub></td>
     <td align="center"><h2>31</h2><sub>runnable systems</sub></td>
     <td align="center"><h2>31</h2><sub>UML sections</sub></td>
     <td align="center"><h2>65+</h2><sub>pattern-mapped projects</sub></td>
@@ -59,7 +59,7 @@ git clone <repo> && cd LLD/Ecommerce_Cart_Checkout_LLD
 %%{init: {'theme': 'dark', 'themeVariables': { 'fontSize': '14px'}}}%%
 flowchart LR
     subgraph learn [Learn]
-        A[L1-L6 Foundations]
+        A[L0-L6 Foundations]
         B[L7-L40 Patterns]
     end
     subgraph build [Build]
@@ -87,7 +87,7 @@ flowchart LR
 4. [How To Use This Repository](#how-to-use-this-repository)
 5. [Recommended Learning Roadmap](#recommended-learning-roadmap)
 6. [Repository Layout At Root](#repository-layout-at-root)
-7. [Foundation Track — L1 to L6](#foundation-track--l1-to-l6)
+7. [Foundation Track — L0 to L6](#foundation-track--l0-to-l6)
 8. [Pattern & System Track — L7 to L20](#pattern--system-track--l7-to-l20)
 9. [Advanced Patterns & Systems — L21 to L40](#advanced-patterns--systems--l21-to-l40)
 10. [Standalone System Implementations](#standalone-system-implementations)
@@ -115,7 +115,7 @@ Agar tum **abhi** start kar rahe ho, yeh minimal path follow karo:
 
 ```mermaid
 flowchart LR
-    A[README skim] --> B[L1-L6 Foundations]
+    A[README skim] --> B[L0-L6 Foundations]
     B --> C[L8 Strategy + L9 Factory]
     C --> D[1 System Project]
     D --> E[Whiteboard + main.cpp run]
@@ -147,7 +147,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 
 | Category               | Count        | Description                                                             |
 | ---------------------- | ------------ | ----------------------------------------------------------------------- |
-| **Lesson modules**     | L1 – L40     | OOP, SOLID, UML, har major design pattern, aur pattern + system hybrids |
+| **Lesson modules**     | L0 – L40     | Intro, Has-A relationships, OOP, SOLID, UML, patterns, system hybrids |
 | **Standalone systems** | 31 projects  | E-commerce Checkout, GPay, IRCTC, Stock Exchange, Task Scheduler + more   |
 | **Concurrency labs**   | 1 folder     | `Multi_threading_C++` — threads, mutex, semaphores, thread pool, DCLP   |
 | **Reference assets**   | PDFs, images | Gang of Four, DDIA, design pattern cheat sheets                         |
@@ -163,7 +163,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | Metric                               | Approximate value                                                                     |
 | ------------------------------------ | ------------------------------------------------------------------------------------- |
 | Total C++/header source files        | ~490+                                                                                 |
-| Lesson folders (L1–L40)              | 40                                                                                    |
+| Lesson folders (L0–L40)              | 41                                                                                    |
 | Runnable system demos                | 31                                                                                    |
 | Projects with dedicated `README.md`  | 24+                                                                                   |
 | Design patterns demonstrated         | 20+ (GoF + Null Object)                                                               |
@@ -232,14 +232,15 @@ Zyada tar LLD preparation in points par atak jaati hai:
 
 ### Phase 1 — Foundations (Week 1–2)
 
-| Order | Module                              | Focus                           |
-| ----- | ----------------------------------- | ------------------------------- |
-| 1     | [L1 Introduction](#l1-introduction) | LLD mindset, course orientation |
-| 2     | [L2 OOPS_1](#l2-oops_1)             | Encapsulation, Abstraction      |
-| 3     | [L3 OOPS_2](#l3-oops_2)             | Inheritance, Polymorphism       |
-| 4     | [L4 UML_Diagrams](#l4-uml_diagrams) | Class diagrams, relationships   |
-| 5     | [L5 SOLID_1](#l5-solid_1)           | SRP, OCP, LSP                   |
-| 6     | [L6 SOLID_2](#l6-solid_2)           | ISP, DIP, LSP rules deep-dive   |
+| Order | Module                              | Focus                                              |
+| ----- | ----------------------------------- | -------------------------------------------------- |
+| 0     | [L0 Introduction](#l0-introduction) | LLD mindset, course orientation (`Notes.pdf`)      |
+| 1     | [L1 Composition](#l1-composition)   | Association, Aggregation, Composition, Dependency |
+| 2     | [L2 OOPS_1](#l2-oops_1)             | Encapsulation, Abstraction, OOP fundamentals       |
+| 3     | [L3 OOPS_2](#l3-oops_2)             | Inheritance, Polymorphism                          |
+| 4     | [L4 UML_Diagrams](#l4-uml_diagrams) | Class diagrams, relationships                      |
+| 5     | [L5 SOLID_1](#l5-solid_1)           | SRP, OCP, LSP                                      |
+| 6     | [L6 SOLID_2](#l6-solid_2)           | ISP, DIP, LSP rules deep-dive                      |
 
 ### Phase 2 — Core Patterns (Week 3–5)
 
@@ -282,20 +283,22 @@ LLD/
 ├── assets/                       # Cheat sheets (.webp) + images (.png)
 ├── books/                        # PDF references (GoF, DDIA)
 ├── scripts/                      # build_all_systems.sh
-├── L1 Introduction/ … L40/       # 40 lessons
+├── L0 Introduction/              # course intro (Notes.pdf)
+├── L1 Composition/               # Has-A: Association → Composition (4 demos)
+├── L2 OOPS_1/ … L40/             # OOP through advanced patterns
 ├── ATM_LLD/ … GPay_LLD/ …      # 26+ system projects
 └── Multi_threading_C++/        # Concurrency labs + interview problems
 ```
 
 ---
 
-## Foundation Track — L1 to L6
+## Foundation Track — L0 to L6
 
-### L1 Introduction
+### L0 Introduction
 
 |                   |                                                                    |
 | ----------------- | ------------------------------------------------------------------ |
-| **Path**          | [`L1 Introduction/`](./L1%20Introduction/)                         |
+| **Path**          | [`L0 Introduction/`](./L0%20Introduction/)                         |
 | **Files**         | `Notes.pdf`                                                        |
 | **Concepts**      | LLD introduction, interview expectations, design thinking overview |
 | **Code**          | None — theory/notes only                                           |
@@ -303,20 +306,36 @@ LLD/
 
 ---
 
+### L1 Composition
+
+|              |                                                                                         |
+| ------------ | --------------------------------------------------------------------------------------- |
+| **Path**     | [`L1 Composition/`](./%20L1%20Composition/) *(folder name may have leading space)*     |
+| **Guide**    | [`OBJECT_RELATIONSHIPS_GUIDE.md`](./%20L1%20Composition/OBJECT_RELATIONSHIPS_GUIDE.md) |
+| **README**   | [`L1 Composition/README.md`](./%20L1%20Composition/README.md)                           |
+| **Code**     | `C++ Code/` **01–04** — Association, Aggregation, Composition, Dependency               |
+| **Notes**    | [`notes/`](./%20L1%20Composition/notes/) — per-relationship revision                    |
+| **Build**    | `cd " L1 Composition" && ./compile.sh` → `./bin/01_Association` … `04_Dependency`      |
+| **Topics**   | Teacher–Student, Car–Engine, House–Room, OrderService–Logger                              |
+| **Key takeaway** | Has-A **before** IS-A — composition vs inheritance clear in L3 `05_Composition_Vs_Inheritance.cpp` |
+
+```mermaid
+flowchart LR
+    D[Dependency] --> A[Association] --> AG[Aggregation] --> CO[Composition]
+```
+
+---
+
 ### L2 OOPS_1
 
-|                    |                                                                                                   |
-| ------------------ | ------------------------------------------------------------------------------------------------- |
-| **Path**           | [`L2 OOPS_1/`](./L2%20OOPS_1/)                                                                    |
-| **Complete guide** | [**`OOPS_1_COMPLETE.md`**](./L2%20OOPS_1/OOPS_1_COMPLETE.md) — Encapsulation + Abstraction detail |
-| **Files**          | `C++ Code/Abstraction.cpp`, `Encapsulation.cpp`                                                   |
-| **Concepts**       | Data hiding, getters/setters, abstract classes, pure virtual functions                            |
-| **Example domain** | `Car` / `SportsCar` hierarchy                                                                     |
-| **Key takeaway**   | Abstraction = _what_; implementation = _how_ (hidden)                                             |
-
-**Encapsulation demo:** `SportsCar` with private `brand`, `speed`, `tyreCompany` — public methods se controlled access.
-
-**Abstraction demo:** Abstract `Car` with `startEngine()`, `accelerate()` — `SportsCar` implements; base pointer se polymorphic use.
+|                    |                                                                                                                                 |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| **Path**           | [`L2 OOPS_1/`](./L2%20OOPS_1/)                                                                                                  |
+| **Master guide**   | [**`OOPS_COMPLETE_GUIDE.md`**](./L2%20OOPS_1/OOPS_COMPLETE_GUIDE.md) — full OOP fundamentals + Encapsulation + Abstraction       |
+| **Also**           | [`OOPS_1_COMPLETE.md`](./L2%20OOPS_1/OOPS_1_COMPLETE.md) · [`OOPS_ADVANCED_CPP.md`](./L2%20OOPS_1/OOPS_ADVANCED_CPP.md) · [`notes/`](./L2%20OOPS_1/notes/) |
+| **Code**           | `C++ Code/` **01–19** — fundamentals, pillars, memory, RAII, smart ptr, object pool                                            |
+| **Has-A (moved)**  | Ab [`L1 Composition`](#l1-composition) — pehle `L2 OOPS_1/Composition/` tha                                                  |
+| **Key takeaway**   | OOP fundamentals — phir L3 inheritance                                                                                         |
 
 ---
 
@@ -325,26 +344,26 @@ LLD/
 |                    |                                                                                                            |
 | ------------------ | ---------------------------------------------------------------------------------------------------------- |
 | **Path**           | [`L3 OOPS_2/`](./L3%20OOPS_2/)                                                                             |
-| **Complete guide** | [**`OOPS_2_COMPLETE.md`**](./L3%20OOPS_2/OOPS_2_COMPLETE.md) — Inheritance + Static/Dynamic polymorphism   |
-| **Files**          | `Inheritance.cpp`, `StaticPolymorphism.cpp`, `DynamicPolymorphism.cpp`, `StaticAndDynamicPolymorphism.cpp` |
-| **Concepts**       | IS-A relationships, method overloading (compile-time), virtual overrides (runtime)                         |
-| **Key takeaway**   | Static = compile-time binding; Dynamic = vtable/runtime dispatch                                           |
+| **Master guide**   | [**`OOPS_COMPLETE_GUIDE.md`**](./L3%20OOPS_2/OOPS_COMPLETE_GUIDE.md) — Inheritance + Polymorphism + composition |
+| **Also**           | [`OOPS_2_COMPLETE.md`](./L3%20OOPS_2/OOPS_2_COMPLETE.md) · [`notes/`](./L3%20OOPS_2/notes/)               |
+| **Files**          | `01_Inheritance.cpp`, `02_Static_Polymorphism.cpp`, `03_Dynamic_Polymorphism.cpp`, `04_Static_And_Dynamic_Polymorphism.cpp`, `05_Composition_Vs_Inheritance.cpp` |
+| **Key takeaway**   | 4 pillars complete — static overload vs virtual override, `virtual ~Base()`                                |
 
 ---
 
 ### L4 UML_Diagrams
 
-|                |                                                                                                                                                                             |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Path**       | [`L4 UML_Diagrams/`](./L4%20UML_Diagrams/)                                                                                                                                  |
-| **Guides**     | [`UML_DIAGRAMS_AND_NOTATION.md`](./L4%20UML_Diagrams/UML_DIAGRAMS_AND_NOTATION.md) · [`INHERITANCE_AND_COMPOSITION.md`](./L4%20UML_Diagrams/INHERITANCE_AND_COMPOSITION.md) |
-| **Cpp README** | [`L4 README`](./L4%20UML_Diagrams/README.md) — `inheritance.cpp` + `composition.cpp` deep dive                                                                              |
-| **Files**      | `4.txt`, `inheritance.cpp`, `composition.cpp`, `composition_old_style_ptr.cpp`, `example_of_composition.cpp`                                                                |
-| **Concepts**   | Structural vs behavioral UML; `+` `#` `-` visibility; association, aggregation, composition, inheritance                                                                    |
-| **Modern C++** | Composition with `std::unique_ptr` (RAII, exception safety)                                                                                                                 |
-| **Examples**   | `Chair` composed of `Seat`, `Arms`, `Wheels`; multiple inheritance types in `inheritance.cpp`                                                                               |
+|              |                                                                                                                                 |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| **Path**     | [`L4 UML_Diagrams/`](./L4%20UML_Diagrams/)                                                                                    |
+| **Hub**      | [`README.md`](./L4%20UML_Diagrams/README.md) — folder layout, build, learning path                                              |
+| **Guides**   | [`UML_DIAGRAMS_AND_NOTATION.md`](./L4%20UML_Diagrams/UML_DIAGRAMS_AND_NOTATION.md) · [`INHERITANCE_AND_COMPOSITION.md`](./L4%20UML_Diagrams/INHERITANCE_AND_COMPOSITION.md) |
+| **Notes**    | [`notes/01_lesson_quick_notes.md`](./L4%20UML_Diagrams/notes/01_lesson_quick_notes.md) · `notes.pdf`                          |
+| **Code**     | `C++ Code/` **01–04** — 5 inheritance types, `unique_ptr` composition, old ptr style, Chair example                             |
+| **Build**    | `cd "L4 UML_Diagrams" && ./compile.sh` → `./bin/01_Inheritance_Five_Types` …                                                  |
+| **Concepts** | Class + sequence diagrams; `+` `#` `-`; Is-A vs Has-A; links to [`L1 Composition`](./%20L1%20Composition/)                    |
 
-**Interview tip:** Composition > inheritance jab "has-a" ho aur lifetime dependent ho.
+**Interview tip:** Class diagram = structure; sequence = communication order; composition > inheritance for swappable behaviour.
 
 ---
 
@@ -1662,11 +1681,12 @@ Har project complete karne ke baad yeh try karo:
 
 ## Quick Navigation Index
 
-### All lesson modules (L1–L40)
+### All lesson modules (L0–L40)
 
 | #   | Module                        | Link                                                         |
 | --- | ----------------------------- | ------------------------------------------------------------ |
-| L1  | Introduction                  | [L1 Introduction](./L1%20Introduction/)                      |
+| L0  | Introduction                  | [L0 Introduction](./L0%20Introduction/)                    |
+| L1  | Composition (Has-A)           | [L1 Composition](./%20L1%20Composition/)                     |
 | L2  | OOPS_1                        | [L2 OOPS_1](./L2%20OOPS_1/)                                  |
 | L3  | OOPS_2                        | [L3 OOPS_2](./L3%20OOPS_2/)                                  |
 | L4  | UML_Diagrams                  | [L4 UML_Diagrams](./L4%20UML_Diagrams/)                      |
@@ -1687,7 +1707,7 @@ Har project complete karne ke baad yeh try karo:
 | L19 | Composite                     | [L19](./L19%20Composite_Design_Pattern/)                     |
 | L20 | Template Method               | [L20](./L20%20Template_Method_Pattern/)                      |
 | L21 | Proxy                         | [L21](./L21%20Proxy_Design_Pattern/)                         |
-| L22 | Chain of Responsibility (ATM) | [L22](./L22%20Chain_of_responsiblity_patten%28ATM%20LLD%29/) |
+| L22 | Chain of Responsibility (ATM Cash Dispenser) | [L22](./L22%20Chain_of_responsiblity_patten%28ATM_Cash_Dispenser%20LLD%29/) |
 | L23 | Payment Gateway LLD           | [L23](./L23%20Payment_gateway_system_LLD/)                   |
 | L24 | Discount Coupon Engine        | [L24](./L24%20Discount_coupon_engine_LLD/)                   |
 | L25 | Bridge                        | [L25](./L25%20Bridge_design_pattern/)                        |
@@ -2223,7 +2243,7 @@ Pair with **L32 State** pattern lesson for interview synergy.
 
 | Week | Focus                                         | Deliverable                               |
 | ---- | --------------------------------------------- | ----------------------------------------- |
-| 1    | L1–L4 OOP + UML                               | Draw 3 class diagrams from memory         |
+| 1    | L0–L1 intro + Has-A, then L2–L4 OOP + UML     | Draw 3 class diagrams from memory         |
 | 2    | L5–L6 SOLID                                   | Refactor one violated example verbally    |
 | 3    | L8–L10 Strategy, Factory, Singleton           | Implement Strategy for new domain (5 min) |
 | 4    | L11–L14 Food + Notification                   | Explain Facade vs God class               |
@@ -2366,6 +2386,8 @@ Need undo?                          → Command / Memento
 | 2026 | Added `Meeting_Scheduler_LLD` — §27 UML + pattern map                                                                         |
 | 2026 | Added `Task_Scheduler_LLD`, `IRCTC_LLD`, `Stock_Exchange_LLD` — §28–§30 UML + pattern map + README                          |
 | 2026 | Added `Ecommerce_Cart_Checkout_LLD` — §31 UML + pattern map; README hero refresh                                              |
+| 2026 | **L0 Introduction** + **L1 Composition** (moved from `L2 OOPS_1/Composition/`); root README foundation track updated          |
+| 2026 | **L4 UML_Diagrams** reorganized — `C++ Code/`, `notes/`, `compile.sh`, `INHERITANCE_AND_COMPOSITION.md`                        |
 
 **Maintainer checklist:**
 

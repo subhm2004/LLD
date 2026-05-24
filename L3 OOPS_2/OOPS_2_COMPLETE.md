@@ -1,5 +1,8 @@
 # L3 — OOP Part 2: Inheritance & Polymorphism (Complete Guide)
 
+> **📌 Expanded master (recommended):** [`OOPS_COMPLETE_GUIDE.md`](./OOPS_COMPLETE_GUIDE.md) — inheritance, composition, static/dynamic poly, interview bank.  
+> **Part 1:** [`L2 OOPS_COMPLETE_GUIDE`](../L2%20OOPS_1/OOPS_COMPLETE_GUIDE.md)
+
 <p align="center">
   <img src="https://img.shields.io/badge/Lesson-L3-purple?style=for-the-badge" alt="L3" />
   <img src="https://img.shields.io/badge/Pillars-4%2F4-success?style=for-the-badge" alt="4 pillars complete" />
@@ -54,7 +57,7 @@ flowchart TB
 
 ## 2. Inheritance — Poori Detail
 
-### 2.1 Definition (`Inheritance.cpp` comments)
+### 2.1 Definition (`01_Inheritance.cpp` comments)
 
 > Child object has **all** parent characteristics + behaviours **plus** own specific ones.  
 > Code **reusability** — common code parent me, special child me.
@@ -118,7 +121,7 @@ Repo L4 me 5 types demo: [`inheritance.cpp`](../L4%20UML_Diagrams/inheritance.cp
 | **Hierarchical** | A → B, A → C | `ManualCar`, `ElectricCar` : `Car` |
 | **Hybrid** | Mix | — |
 
-**L3 `Inheritance.cpp`:** **Hierarchical** — ek `Car`, do children.
+**L3 `01_Inheritance.cpp`:** **Hierarchical** — ek `Car`, do children.
 
 ```mermaid
 classDiagram
@@ -173,7 +176,7 @@ class ManualCar : public Car    // ✅ 99% LLD / interviews
 
 **C++ mechanism:** **Function overloading** — same name, different signature.
 
-### 5.2 `StaticPolymorphism.cpp`
+### 5.2 `02_Static_Polymorphism.cpp`
 
 ```cpp
 void accelerate();           // +20 km/h
@@ -203,7 +206,7 @@ void accelerate(int speed);  // +speed km/h
 
 ## 6. Dynamic Polymorphism (Runtime)
 
-### 6.1 Definition (`DynamicPolymorphism.cpp`)
+### 6.1 Definition (`03_Dynamic_Polymorphism.cpp`)
 
 > Same family ke 2 objects, **same stimulus** (`accelerate()`), **different response** — Manual vs Electric.
 
@@ -267,7 +270,7 @@ p->accelerate();  // ❌ Car version if exists — NOT electric behaviour
 | **Mechanism** | Same name, different args | `virtual` + child override |
 | **Inheritance needed?** | No (same class OK) | Yes (IS-A) |
 | **Base pointer** | Not used for dispatch | `Car*` → correct child |
-| **Repo file** | `StaticPolymorphism.cpp` | `DynamicPolymorphism.cpp` |
+| **Repo file** | `02_Static_Polymorphism.cpp` | `03_Dynamic_Polymorphism.cpp` |
 | **Performance** | Slightly faster (no vtable) | vtable indirection |
 | **LLD use** | Multiple operation variants | Strategy / plugin behaviour |
 
@@ -332,7 +335,7 @@ virtual ~Car() {}
 | **Keyword** | None | `virtual` / `override` |
 | **Example** | `accelerate()` + `accelerate(int)` | `Car::accelerate` vs `ElectricCar::accelerate` |
 
-### Both together — `StaticAndDynamicPolymorphism.cpp`
+### Both together — `04_Static_And_Dynamic_Polymorphism.cpp`
 
 ```cpp
 class Car {
@@ -349,14 +352,17 @@ Child **dono** implement kare — static overload + dynamic override **combined*
 
 ---
 
-## 10. Repo Code Walkthrough (4 Files)
+## 10. Repo Code Walkthrough
 
 | File | Padho kya seekhna hai |
 |------|----------------------|
-| [`Inheritance.cpp`](./C++%20Code/Inheritance.cpp) | `protected`, `: Car(b,m)`, child-only methods, reuse `startEngine` |
-| [`StaticPolymorphism.cpp`](./C++%20Code/StaticPolymorphism.cpp) | `accelerate()` vs `accelerate(int)` same class |
-| [`DynamicPolymorphism.cpp`](./C++%20Code/DynamicPolymorphism.cpp) | `virtual = 0`, `Car*` to Manual/Electric, different `accelerate` |
-| [`StaticAndDynamicPolymorphism.cpp`](./C++%20Code/StaticAndDynamicPolymorphism.cpp) | Virtual overload in base + override in children |
+| [`01_Inheritance.cpp`](./C++%20Code/01_Inheritance.cpp) | `protected`, `: Car(b,m)`, child-only methods, reuse `startEngine` |
+| [`02_Static_Polymorphism.cpp`](./C++%20Code/02_Static_Polymorphism.cpp) | `accelerate()` vs `accelerate(int)` same class |
+| [`03_Dynamic_Polymorphism.cpp`](./C++%20Code/03_Dynamic_Polymorphism.cpp) | `virtual = 0`, `Car*` to Manual/Electric, different `accelerate` |
+| [`04_Static_And_Dynamic_Polymorphism.cpp`](./C++%20Code/04_Static_And_Dynamic_Polymorphism.cpp) | Virtual overload in base + override in children |
+| [`10`–`14` + guide](./notes/OOPS_INHERITANCE_INTERVIEW_TOPICS.md) | Access inheritance, ctor chain, slicing, casting, cohesion |
+
+**Full interview doc:** [`notes/OOPS_INHERITANCE_INTERVIEW_TOPICS.md`](./notes/OOPS_INHERITANCE_INTERVIEW_TOPICS.md)
 
 ### Compile & run (C++17)
 
@@ -364,19 +370,19 @@ Child **dono** implement kare — static overload + dynamic override **combined*
 cd "L3 OOPS_2"
 ./compile.sh
 
-./bin/Inheritance
-./bin/StaticPolymorphism
-./bin/DynamicPolymorphism
-./bin/StaticAndDynamicPolymorphism
+./bin/01_Inheritance
+./bin/02_Static_Polymorphism
+./bin/03_Dynamic_Polymorphism
+./bin/04_Static_And_Dynamic_Polymorphism
 ```
 
 **Single file:**
 
 ```bash
-g++ -std=c++17 -Wall -Wextra "C++ Code/DynamicPolymorphism.cpp" -o bin/DynamicPolymorphism
+g++ -std=c++17 -Wall -Wextra "C++ Code/03_Dynamic_Polymorphism.cpp" -o bin/03_Dynamic_Polymorphism
 ```
 
-### Expected behaviour highlight (`DynamicPolymorphism`)
+### Expected behaviour highlight (`03_Dynamic_Polymorphism`)
 
 | Car type | `accelerate()` behaviour |
 |----------|--------------------------|

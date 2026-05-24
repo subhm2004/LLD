@@ -24,11 +24,11 @@ public:
 class User {
 public:
     string name;
-    bool premiumMembership;
+    bool premium_Membership;
     
     User(string name, bool isPremium) {
         this->name = name;
-        this->premiumMembership = isPremium;
+        this->premium_Membership = isPremium;
     }
 };
 
@@ -44,7 +44,7 @@ public:
     }
 
     void unlockPDF(string filePath, string password) override {
-        if (!user->premiumMembership) {
+        if (!user->premium_Membership) {
             cout << "[DocumentProxy] Access denied. Only premium members can unlock PDFs.\n";
             return;
         }

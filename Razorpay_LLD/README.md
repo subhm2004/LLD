@@ -17,7 +17,6 @@ Razorpay-only **merchant** integration: orders, payments, capture, signed webhoo
 |------|---------|
 | [`problem_statement.md`](./problem_statement.md) | Scope + goals |
 | [`requirements.md`](./requirements.md) | Functional + non-functional requirements |
-| [`class_diagram.mmd`](./class_diagram.mmd) | Mermaid class diagram |
 
 ## Architecture
 

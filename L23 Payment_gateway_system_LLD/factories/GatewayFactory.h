@@ -4,9 +4,11 @@
 #include <bits/stdc++.h>
 
 #include "../enums/GatewayType.h"
+#include "../enums/RetryStrategyType.h"
 #include "../gateways/PaytmGateway.h"
 #include "../gateways/RazorpayGateway.h"
 #include "../proxy/PaymentGatewayProxy.h"
+#include "../retry/RetryStrategyFactory.h"
 
 using namespace std;
 
@@ -18,16 +20,27 @@ private:
     GatewayFactory(const GatewayFactory &) = delete;
     GatewayFactory &operator=(const GatewayFactory &) = delete;
 
+    static pair<int, int> defaultRetryConfig(GatewayType type) {
+        if (type == GatewayType::PAYTM) return {3, 200};
+        return {3, 100};
+    }
+
 public:
     static GatewayFactory &getInstance() { return instance; }
 
-    PaymentGateway *getGateway(GatewayType type) {
+    PaymentGateway *getGateway(GatewayType type,
+                               RetryStrategyType retryType = RetryStrategyType::LINEAR) {
+        auto config = defaultRetryConfig(type);
+        RetryStrategy *strategy =
+            RetryStrategyFactory::create(retryType, config.first, config.second);
         if (type == GatewayType::PAYTM) {
-            return new PaymentGatewayProxy(new PaytmGateway(), 3);
+            return new PaymentGatewayProxy(new PaytmGateway(), strategy);
         }
-        return new PaymentGatewayProxy(new RazorpayGateway(), 1);
+        return new PaymentGatewayProxy(new RazorpayGateway(), strategy);
     }
 };
+
+inline GatewayFactory GatewayFactory::instance;
 }
 
 #endif

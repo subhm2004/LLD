@@ -3,12 +3,28 @@
 
 #include <bits/stdc++.h>
 
+#include "../utils/RazorpayTransactionUtil.h"
 #include "PaymentGateway.h"
 
 using namespace std;
 
 namespace payment_gateway_lld {
 class RazorpayGateway : public PaymentGateway {
+    void printTransactionReceipt(PaymentRequest *request) const {
+        string fromAccount = RazorpayTransactionUtil::toRazorpayAccount(request->sender);
+        string toAccount = RazorpayTransactionUtil::toRazorpayAccount(request->reciever);
+        string paymentId = RazorpayTransactionUtil::generatePaymentId();
+        string completedAt = RazorpayTransactionUtil::formatCompletedAt();
+
+        cout << "[Razorpay] Payment receipt\n";
+        cout << "[Razorpay]   Payer   : " << request->sender << " (A/C " << fromAccount << ")\n";
+        cout << "[Razorpay]   Payee   : " << request->reciever << " (A/C " << toAccount << ")\n";
+        cout << "[Razorpay]   Transfer: A/C " << fromAccount << " -> A/C " << toAccount << "\n";
+        cout << "[Razorpay]   Amount  : " << request->amount << " " << request->currency << "\n";
+        cout << "[Razorpay]   Completed at: " << completedAt << "\n";
+        cout << "[Razorpay]   Payment ID: " << paymentId << "\n";
+    }
+
 public:
     RazorpayGateway() { bankingSystem = new RazorpayBankingSystem(); }
 
@@ -23,6 +39,7 @@ public:
     }
     bool confirmPayment(PaymentRequest *request) override {
         cout << "[Razorpay] Confirming payment for " << request->sender << ".\n";
+        printTransactionReceipt(request);
         return true;
     }
 };

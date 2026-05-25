@@ -3,12 +3,28 @@
 
 #include <bits/stdc++.h>
 
+#include "../utils/PaytmTransactionUtil.h"
 #include "PaymentGateway.h"
 
 using namespace std;
 
 namespace payment_gateway_lld {
 class PaytmGateway : public PaymentGateway {
+    void printTransactionReceipt(PaymentRequest *request) const {
+        string fromUpi = PaytmTransactionUtil::toPaytmUpi(request->sender);
+        string toUpi = PaytmTransactionUtil::toPaytmUpi(request->reciever);
+        string reference = PaytmTransactionUtil::generateReferenceNumber();
+        string timestamp = PaytmTransactionUtil::formatTimestamp();
+
+        cout << "[Paytm] Payment receipt\n";
+        cout << "[Paytm]   Payer   : " << request->sender << " (" << fromUpi << ")\n";
+        cout << "[Paytm]   Payee   : " << request->reciever << " (" << toUpi << ")\n";
+        cout << "[Paytm]   UPI flow: " << fromUpi << " -> " << toUpi << "\n";
+        cout << "[Paytm]   Amount  : " << request->amount << " " << request->currency << "\n";
+        cout << "[Paytm]   Time    : " << timestamp << "\n";
+        cout << "[Paytm]   Ref no. : " << reference << "\n";
+    }
+
 public:
     PaytmGateway() { bankingSystem = new PaytmBankingSystem(); }
 
@@ -23,6 +39,7 @@ public:
     }
     bool confirmPayment(PaymentRequest *request) override {
         cout << "[Paytm] Confirming payment for " << request->sender << ".\n";
+        printTransactionReceipt(request);
         return true;
     }
 };

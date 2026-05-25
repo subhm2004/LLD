@@ -34,6 +34,8 @@ public:
         return gateway->processPayment(request);
     }
 };
+
+inline PaymentService PaymentService::instance;
 }
 
 #endif

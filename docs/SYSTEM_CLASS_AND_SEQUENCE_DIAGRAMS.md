@@ -1,12 +1,12 @@
 # System Projects — Class Diagrams & Sequence Diagrams
 
 <p align="center">
-  <b>UML Reference — 36 System Projects</b><br/>
+  <b>UML Reference — 37 System Projects</b><br/>
   <sub>Class diagrams + sequence flows · code-accurate names · Mermaid</sub>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Systems-36-blue?style=for-the-badge" alt="36 systems" />
+  <img src="https://img.shields.io/badge/Systems-37-blue?style=for-the-badge" alt="37 systems" />
   <img src="https://img.shields.io/badge/Diagrams-Mermaid-6f42c1?style=for-the-badge" alt="Mermaid" />
   <img src="https://img.shields.io/badge/Lines-3100%2B-success?style=for-the-badge" alt="3100+ lines" />
   <img src="https://img.shields.io/badge/Synced-With%20Code-orange?style=for-the-badge" alt="Synced with code" />
@@ -18,7 +18,7 @@
   <img src="https://img.shields.io/badge/Preview-GitHub%20%7C%20VS%20Code%20%7C%20Cursor-informational?style=flat-square" alt="Preview" />
 </p>
 
-> **36 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
+> **37 LLD system projects** ka complete UML reference — har project ke liye **Class Diagram** aur **2–3 Sequence Diagrams** (actual code ke class/method names ke saath).  
 > GitHub / VS Code / Cursor me **Markdown Preview** se Mermaid diagrams render honge.
 
 ---
@@ -27,7 +27,8 @@
 
 | Item | Status |
 | ---- | ------ |
-| **Projects covered** | 36 / 36 standalone systems |
+| **Projects covered** | 37 / 37 standalone systems |
+| **Payment Gateway L23 (§37)** | Paytm + Razorpay, retry strategies, subscriptions, UPI/account receipts |
 | **WhatsApp (§16)** | Chat session encryption, delete-for-me / delete-for-everyone, per-user timeline |
 | **CricBuzz (§36)** | Live scoring, ball-by-ball, commentary Strategy, scoreboard + chase target |
 | **Collaborative Editor (§35)** | Share permissions, revision sync, Observer broadcast, cursor presence, undo |
@@ -67,11 +68,11 @@ flowchart LR
 
 > Poora file scroll karne se pehle — **high-priority systems** aur **diagram types** yahan se pick karo.
 
-### 0.1 36 systems — category map
+### 0.1 37 systems — category map
 
 ```mermaid
 mindmap
-  root((36 Systems))
+  root((37 Systems))
     Infrastructure
       ATM
       Load Balancer
@@ -92,6 +93,7 @@ mindmap
       Vending Machine
       IRCTC
     Fintech
+      Payment Gateway L23
       Stock Exchange
       Razorpay Gateway
     Transport Social
@@ -223,6 +225,7 @@ pie showData
 | Checkout cart | [§31](#31-e-commerce-cart--checkout) | cart → reserve → coupon → pay → order |
 | Leave approval | [§32](#32-leave-request-system) | submit → CoR chain → approve / reject |
 | Razorpay pay | [§33](#33-razorpay-payment-gateway) | order → pay → capture → webhook |
+| Multi-gateway pay | [§37](#37-payment-gateway-multi-gateway--l23) | controller → factory → proxy → gateway receipt |
 
 ---
 
@@ -270,6 +273,7 @@ pie showData
 | 34 | [In-Memory SQL-like Database](#34-in-memory-sql-like-database) | `In_Memory_SQL_Database_LLD/` |
 | 35 | [Google Docs / Collaborative Editor](#35-google-docs--collaborative-editor) | `Google_Docs_Collaborative_Editor_LLD/` |
 | 36 | [CricBuzz Live Cricket Scoring](#36-cricbuzz-live-cricket-scoring) | `CricBuzz_LLD/` |
+| 37 | [Payment Gateway (Multi-Gateway — L23)](#37-payment-gateway-multi-gateway--l23) | `L23 Payment_gateway_system_LLD/` |
 
 ---
 
@@ -4755,7 +4759,7 @@ cd Leave_Request_System_LLD && ./compile.sh && ./leave_request_app
 
 ## 33. Razorpay Payment Gateway
 
-**Folder:** [`Razorpay_LLD/`](../Razorpay_LLD/) · **Facade:** `RazorpayPaymentSystem` · **Patterns:** Template Method, Strategy, Facade, Factory · **Note:** Razorpay-only (vs multi-gateway [`L23`](../L23%20Payment_gateway_system_LLD/))
+**Folder:** [`Razorpay_LLD/`](../Razorpay_LLD/) · **Facade:** `RazorpayPaymentSystem` · **Patterns:** Template Method, Strategy, Facade, Factory · **Note:** Razorpay-only lifecycle (orders/webhooks/refunds). Multi-gateway Paytm+Razorpay demo → [§37](#37-payment-gateway-multi-gateway--l23) [`L23`](../L23%20Payment_gateway_system_LLD/)
 
 ### Class Diagram
 
@@ -5560,6 +5564,247 @@ sequenceDiagram
 
 ---
 
+## 37. Payment Gateway (Multi-Gateway — L23)
+
+**Folder:** [`L23 Payment_gateway_system_LLD/`](../L23%20Payment_gateway_system_LLD/) · **Entry:** `PaymentController` · **Patterns:** Template Method, Strategy (banking + retry), Proxy, Factory, Singleton · **Note:** Merchant-side multi-gateway (Paytm UPI + Razorpay bank transfer). Razorpay-only PSP lifecycle → [§33](#33-razorpay-payment-gateway).
+
+**Functional scope (code-accurate):** one-time `PaymentRequest`; `GatewayFactory` + `PaymentGatewayProxy` with `LinearRetryStrategy` / `ExponentialBackoffRetryStrategy`; `RecurringPaymentService` subscriptions; Paytm receipt (UPI flow, timestamp, ref no.); Razorpay receipt (account transfer, completed at, payment ID).
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    direction TB
+
+    class PaymentController {
+        +getInstance() PaymentController
+        +handlePayment(type, request, retryType) bool
+        +createSubscription(...) string
+        +cancelSubscription(subscriptionId) bool
+        +processRecurringBilling(retryType) int
+    }
+
+    class PaymentService {
+        +getInstance() PaymentService
+        +setGateway(gateway)
+        +processPayment(request) bool
+    }
+
+    class RecurringPaymentService {
+        +getInstance() RecurringPaymentService
+        +registerSubscription(...) string
+        +cancelSubscription(subscriptionId) bool
+        +processBillingCycle(retryType) int
+    }
+
+    class GatewayFactory {
+        +getInstance() GatewayFactory
+        +getGateway(type, retryType) PaymentGateway
+    }
+
+    class PaymentGatewayProxy {
+        -realGateway PaymentGateway
+        -retryStrategy RetryStrategy
+        +processPayment(request) bool
+    }
+
+    class PaymentGateway {
+        <<abstract>>
+        #bankingSystem BankingSystem
+        +processPayment(request) bool
+        +validatePayment(request) bool
+        +initiatePayment(request) bool
+        +confirmPayment(request) bool
+    }
+
+    class PaytmGateway {
+        +validatePayment(request) bool
+        +initiatePayment(request) bool
+        +confirmPayment(request) bool
+    }
+
+    class RazorpayGateway {
+        +validatePayment(request) bool
+        +initiatePayment(request) bool
+        +confirmPayment(request) bool
+    }
+
+    class BankingSystem {
+        <<interface>>
+        +processPayment(amount) bool
+    }
+
+    class PaytmBankingSystem
+    class RazorpayBankingSystem
+
+    class RetryStrategy {
+        <<interface>>
+        +getMaxRetries() int
+        +getDelayMs(attempt) int
+        +getName() string
+    }
+
+    class LinearRetryStrategy
+    class ExponentialBackoffRetryStrategy
+    class RetryStrategyFactory {
+        +create(type, maxRetries, delayMs)$ RetryStrategy
+    }
+
+    class PaymentRequest {
+        +sender string
+        +reciever string
+        +amount double
+        +currency string
+    }
+
+    class Subscription {
+        +subscriptionId string
+        +subscriber string
+        +receiver string
+        +amount double
+        +gateway GatewayType
+        +interval BillingInterval
+        +active bool
+    }
+
+    class PaytmTransactionUtil {
+        +toPaytmUpi(name)$ string
+        +formatTimestamp()$ string
+        +generateReferenceNumber()$ string
+    }
+
+    class RazorpayTransactionUtil {
+        +toRazorpayAccount(name)$ string
+        +formatCompletedAt()$ string
+        +generatePaymentId()$ string
+    }
+
+    PaymentController --> GatewayFactory
+    PaymentController --> PaymentService
+    PaymentController --> RecurringPaymentService
+    GatewayFactory --> PaymentGatewayProxy
+    GatewayFactory --> RetryStrategyFactory
+    PaymentGatewayProxy --|> PaymentGateway
+    PaymentGatewayProxy --> RetryStrategy
+    PaymentGatewayProxy o-- PaytmGateway
+    PaymentGatewayProxy o-- RazorpayGateway
+    PaytmGateway --|> PaymentGateway
+    RazorpayGateway --|> PaymentGateway
+    PaytmGateway --> PaytmBankingSystem
+    RazorpayGateway --> RazorpayBankingSystem
+    PaytmBankingSystem --|> BankingSystem
+    RazorpayBankingSystem --|> BankingSystem
+    LinearRetryStrategy --|> RetryStrategy
+    ExponentialBackoffRetryStrategy --|> RetryStrategy
+    RecurringPaymentService --> Subscription
+    RecurringPaymentService --> PaymentService
+    PaytmGateway ..> PaytmTransactionUtil
+    RazorpayGateway ..> RazorpayTransactionUtil
+```
+
+### Sequence Diagram — one-time payment (Paytm UPI receipt)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant PC as PaymentController
+    participant GF as GatewayFactory
+    participant Proxy as PaymentGatewayProxy
+    participant PG as PaytmGateway
+    participant Bank as PaytmBankingSystem
+    participant Util as PaytmTransactionUtil
+
+    Client->>PC: handlePayment(PAYTM, PaymentRequest)
+    PC->>GF: getGateway(PAYTM, LINEAR)
+    GF->>Proxy: new PaymentGatewayProxy(PaytmGateway, LinearRetryStrategy)
+    PC->>PC: PaymentService.setGateway(proxy)
+
+    PC->>Proxy: processPayment(request)
+    Proxy->>PG: processPayment(request)
+    PG->>PG: validatePayment (INR, amount > 0)
+    PG->>Bank: processPayment(amount)
+    Bank-->>PG: success / fail
+    alt banking fail
+        Proxy->>Proxy: getDelayMs + retry loop
+        Proxy->>PG: processPayment (retry)
+    end
+    PG->>PG: confirmPayment
+    PG->>Util: toPaytmUpi, formatTimestamp, generateReferenceNumber
+    PG-->>Proxy: true + receipt log
+    Proxy-->>PC: true
+    PC-->>Client: SUCCESS
+```
+
+### Sequence Diagram — Razorpay with exponential back-off
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant PC as PaymentController
+    participant GF as GatewayFactory
+    participant Proxy as PaymentGatewayProxy
+    participant RG as RazorpayGateway
+    participant RS as ExponentialBackoffRetryStrategy
+    participant Util as RazorpayTransactionUtil
+
+    Client->>PC: handlePayment(RAZORPAY, request, EXPONENTIAL_BACKOFF)
+    GF->>Proxy: PaymentGatewayProxy(RazorpayGateway, ExponentialBackoffRetryStrategy)
+    PC->>Proxy: processPayment(request)
+
+    loop attempt < maxRetries
+        Proxy->>RG: validate → initiate → confirm
+        alt fail on initiate
+            Proxy->>RS: getDelayMs(attempt)
+            Note over Proxy: sleep(base × 2^(attempt-1))
+        else success
+            RG->>Util: account numbers, completed at, payment ID
+            Proxy-->>PC: true
+        end
+    end
+```
+
+### Sequence Diagram — subscription billing cycle
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant PC as PaymentController
+    participant RPS as RecurringPaymentService
+    participant PS as PaymentService
+    participant GF as GatewayFactory
+    participant Proxy as PaymentGatewayProxy
+
+    Client->>PC: createSubscription(subscriber, receiver, amount, PAYTM, MONTHLY)
+    PC->>RPS: registerSubscription
+    RPS-->>PC: SUB-1
+
+    Client->>PC: processRecurringBilling(LINEAR)
+    RPS->>RPS: for each active Subscription
+    RPS->>RPS: build PaymentRequest from subscription
+    RPS->>GF: getGateway(sub.gateway, LINEAR)
+    RPS->>PS: setGateway + processPayment
+    PS->>Proxy: processPayment (retry + Paytm receipt)
+
+    Client->>PC: cancelSubscription(SUB-1)
+    RPS->>RPS: sub.active = false
+
+    Client->>PC: processRecurringBilling
+    Note over RPS: cancelled subs skipped
+```
+
+### Build
+
+```bash
+cd "L23 Payment_gateway_system_LLD" && g++ -std=c++17 main.cpp -o payment_gateway_app && ./payment_gateway_app
+# or
+./compile.sh && ./payment_gateway_app
+```
+
+---
+
 ## Related Files
 
 | File | Purpose |
@@ -5581,6 +5826,7 @@ sequenceDiagram
 | [`Leave_Request_System_LLD/README.md`](../Leave_Request_System_LLD/README.md) | Leave approval chain (CoR) |
 | [`Razorpay_LLD/README.md`](../Razorpay_LLD/README.md) | Razorpay order / capture / webhook / refund |
 | [`Razorpay_LLD/requirements.md`](../Razorpay_LLD/requirements.md) | FR / NFR (Spotify-style spec) |
+| [`L23 Payment_gateway_system_LLD/requirements.md`](../L23%20Payment_gateway_system_LLD/requirements.md) | Multi-gateway FR (retry, subscriptions, receipts) |
 | [`Design_Pattern_types.md`](Design_Pattern_types.md) | Pattern taxonomy |
 | Per-project `problem_statement.md` | Ground-truth requirements |
 
@@ -5591,6 +5837,6 @@ sequenceDiagram
 </p>
 
 <p align="center">
-  <b>36 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
+  <b>37 Systems × Class + Sequence Diagrams — Code-Accurate UML Reference</b><br/>
   <sub>Maintained alongside <code>README.md</code> and per-project headers</sub>
 </p>

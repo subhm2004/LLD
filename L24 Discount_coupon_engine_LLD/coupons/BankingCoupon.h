@@ -29,9 +29,11 @@ public:
 
     double getDiscount(Cart *cart) override { return strategy->calculate(cart->getCurrentTotal()); }
 
+    bool isCombinable() override { return false; }
+
     std::string name() override {
         return bank + " Bank " + std::to_string(static_cast<int>(percent)) + "% off upto " +
-               std::to_string(static_cast<int>(offCap));
+               std::to_string(static_cast<int>(offCap)) + " (exclusive)";
     }
 };
 

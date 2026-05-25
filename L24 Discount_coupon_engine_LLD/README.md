@@ -2,7 +2,9 @@
 
 E-commerce discount engine — **Strategy** (flat / percent / capped), **Chain of Responsibility** (coupon chain), thread-safe **CouponManager**.
 
-> Original single-file version kept in [`C++ Code/DiscountCoupon.cpp`](./C%20%2B%2B%20Code/DiscountCoupon.cpp).
+> Original single-file version kept in [`C++ Original Code/DiscountCoupon.cpp`](./C%20%2B%2B%20Original%20Code/DiscountCoupon.cpp).
+
+**Full file map:** [`PROJECT_STRUCTURE.md`](./PROJECT_STRUCTURE.md)
 
 ---
 

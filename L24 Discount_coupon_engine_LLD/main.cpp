@@ -13,6 +13,7 @@ using namespace discount_coupon_lld;
 
 int main() {
     CouponManager &mgr = CouponManager::getInstance();
+    // Chain order: combinable first, exclusive Banking last (stops further coupons)
     mgr.registerCoupon(new SeasonalOffer(10, "Clothing"));
     mgr.registerCoupon(new LoyaltyDiscount(5));
     mgr.registerCoupon(new BulkPurchaseDiscount(1000, 100));
@@ -39,6 +40,7 @@ int main() {
         cout << " - " << couponName << '\n';
     }
 
+    cout << "\nApplying coupon chain (Banking is exclusive if applicable):\n";
     double finalTotal = mgr.applyAll(&cart);
     cout << "Final Cart Total after discounts: " << finalTotal << " Rs\n";
 

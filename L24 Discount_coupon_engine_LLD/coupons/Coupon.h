@@ -25,6 +25,7 @@ public:
             cart->applyDiscount(discount);
             std::cout << name() << " applied: " << discount << '\n';
             if (!isCombinable()) {
+                std::cout << name() << " is exclusive — stopping coupon chain.\n";
                 return;
             }
         }

@@ -37,9 +37,9 @@ class PaytmBankingSystem : public BankingSystem {
 public:
   PaytmBankingSystem() {}
   bool processPayment(double amount) override {
-    // Simulate 20% success
+    // Simulate 70% success
     int r = rand() % 100;
-    return r < 80;
+    return r < 70;
   }
 };
 
@@ -49,9 +49,9 @@ public:
   bool processPayment(double amount) override {
     cout << "[BankingSystem-Razorpay] Processing payment of " << amount
          << "...\n";
-    // Simulate 90% success
+    // Simulate 80% success
     int r = rand() % 100;
-    return r < 90;
+    return r < 80;
   }
 };
 
@@ -163,7 +163,7 @@ public:
   ~PaymentGatewayProxy() { delete realGateway; }
   bool processPayment(PaymentRequest *request) override {
     bool result = false;
-    for (int attempt = 0; attempt < retries; ++attempt) {
+    for (int attempt = 0; attempt < retries; attempt++) {
       if (attempt > 0) {
         cout << "[Proxy] Retrying payment (attempt " << (attempt + 1)
              << ") for " << request->sender << ".\n";
@@ -208,10 +208,12 @@ public:
   PaymentGateway *getGateway(GatewayType type) {
     if (type == GatewayType::PAYTM) {
       PaymentGateway *paymentGateway = new PaytmGateway();
+      // 3 retries for Paytm if payment fails
       return new PaymentGatewayProxy(paymentGateway, 3);
     } else {
       PaymentGateway *paymentGateway = new RazorpayGateway();
-      return new PaymentGatewayProxy(paymentGateway, 1);
+      // 5 retries for Razorpay if payment fails
+      return new PaymentGatewayProxy(paymentGateway, 5);
     }
   }
 };
@@ -287,7 +289,7 @@ int main() {
 
   srand(static_cast<unsigned>(time(nullptr)));
 
-  PaymentRequest *req1 = new PaymentRequest("Aditya", "Shubham", 1000.0, "INR");
+  PaymentRequest *req1 = new PaymentRequest("Hardik", "Shubham", 1000.0, "INR");
 
   cout << "Processing via Paytm\n";
   cout << "------------------------------\n";

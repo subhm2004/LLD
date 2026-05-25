@@ -7,35 +7,37 @@ using namespace std;
 namespace payment_gateway_lld {
 class BankingSystem {
 public:
-    virtual bool processPayment(double amount) = 0;
-    virtual ~BankingSystem() {}
+  virtual bool processPayment(double amount) = 0;
+  virtual ~BankingSystem() {}
 };
 
 class PaytmBankingSystem : public BankingSystem {
 public:
-    bool processPayment(double) override {
-        int r = rand() % 100;
-        return r < 80;
-    }
+  bool processPayment(double) override {
+    int r = rand() % 100;
+    return r < 80;
+  }
 };
 
 class RazorpayBankingSystem : public BankingSystem {
 public:
-    bool processPayment(double amount) override {
-        cout << "[BankingSystem-Razorpay] Processing payment of " << amount << "...\n";
-        int r = rand() % 100;
-        return r < 90;
-    }
+  bool processPayment(double amount) override {
+    cout << "[BankingSystem-Razorpay] Processing payment of " << amount
+         << "...\n";
+    int r = rand() % 100;
+    return r < 90;
+  }
 };
 
 class PayPalBankingSystem : public BankingSystem {
 public:
-    bool processPayment(double amount) override {
-        cout << "[BankingSystem-PayPal] Processing international payment of " << amount << "...\n";
-        int r = rand() % 100;
-        return r < 85;
-    }
+  bool processPayment(double amount) override {
+    cout << "[BankingSystem-PayPal] Processing international payment of "
+         << amount << "...\n";
+    int r = rand() % 100;
+    return r < 85;
+  }
 };
-}
+} // namespace payment_gateway_lld
 
 #endif

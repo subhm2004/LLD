@@ -26,6 +26,13 @@ int main() {
   cout << "Result: " << (res2 ? "SUCCESS" : "FAIL") << "\n";
   cout << "------------------------------\n\n";
 
+  PaymentRequest *reqPayPal = new PaymentRequest("Hardik", "Shubham", 75.0, "USD");
+  cout << "Processing via PayPal\n";
+  cout << "------------------------------\n";
+  bool resPayPal = PaymentController::getInstance().handlePayment(GatewayType::PAYPAL, reqPayPal);
+  cout << "Result: " << (resPayPal ? "SUCCESS" : "FAIL") << "\n";
+  cout << "------------------------------\n\n";
+
   PaymentRequest *req3 = new PaymentRequest("Hardik", "Shubham", 1000.0, "INR");
   cout << "Processing via Paytm (Linear retry)\n";
   cout << "------------------------------\n";
@@ -59,6 +66,7 @@ int main() {
 
   delete req1;
   delete req2;
+  delete reqPayPal;
   delete req3;
   delete req4;
   return 0;

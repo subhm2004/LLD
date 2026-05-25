@@ -3,7 +3,7 @@
 ## Functional Requirements
 
 1. System should accept a payment request with sender, receiver, amount, and currency.
-2. System should support multiple payment gateways (Paytm, Razorpay).
+2. System should support multiple payment gateways (Paytm, Razorpay, PayPal).
 3. Each gateway should run its own validation rules.
 4. System should process payment via provider-specific banking integration.
 5. System should confirm payment after successful initiation.
@@ -21,6 +21,10 @@
 17. For Razorpay payments, the system should show payer and payee **names** along with **source and destination bank account numbers** (which account sent to which account).
 18. Razorpay should display the **transaction completion timestamp** when the payment is confirmed.
 19. Razorpay should generate a **unique payment ID** for each confirmed transaction.
+20. For PayPal payments, the system should show payer and payee **names** along with **source and destination PayPal emails** (which wallet sent to which wallet).
+21. PayPal should display the **transaction timestamp** when the payment is confirmed.
+22. PayPal should generate a **unique transaction ID** for each confirmed payment.
+23. PayPal should validate **international currencies** (USD, EUR, GBP) with amount greater than zero.
 
 ## Non-Functional Requirements
 

@@ -27,6 +27,15 @@ public:
         return r < 90;
     }
 };
+
+class PayPalBankingSystem : public BankingSystem {
+public:
+    bool processPayment(double amount) override {
+        cout << "[BankingSystem-PayPal] Processing international payment of " << amount << "...\n";
+        int r = rand() % 100;
+        return r < 85;
+    }
+};
 }
 
 #endif

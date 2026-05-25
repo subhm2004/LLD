@@ -5,6 +5,7 @@
 
 #include "../enums/GatewayType.h"
 #include "../enums/RetryStrategyType.h"
+#include "../gateways/PayPalGateway.h"
 #include "../gateways/PaytmGateway.h"
 #include "../gateways/RazorpayGateway.h"
 #include "../proxy/PaymentGatewayProxy.h"
@@ -22,6 +23,7 @@ private:
 
     static pair<int, int> defaultRetryConfig(GatewayType type) {
         if (type == GatewayType::PAYTM) return {3, 200};
+        if (type == GatewayType::PAYPAL) return {3, 150};
         return {3, 100};
     }
 
@@ -35,6 +37,9 @@ public:
             RetryStrategyFactory::create(retryType, config.first, config.second);
         if (type == GatewayType::PAYTM) {
             return new PaymentGatewayProxy(new PaytmGateway(), strategy);
+        }
+        if (type == GatewayType::PAYPAL) {
+            return new PaymentGatewayProxy(new PayPalGateway(), strategy);
         }
         return new PaymentGatewayProxy(new RazorpayGateway(), strategy);
     }

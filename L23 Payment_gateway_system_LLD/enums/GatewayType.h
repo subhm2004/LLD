@@ -5,7 +5,7 @@
 using namespace std;
 
 namespace payment_gateway_lld {
-enum class GatewayType { PAYTM, RAZORPAY };
+enum class GatewayType { PAYTM, RAZORPAY, PAYPAL };
 }
 
 #endif

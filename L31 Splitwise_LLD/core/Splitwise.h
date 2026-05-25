@@ -142,6 +142,8 @@ public:
     void showGroupBalances(string groupId) { if (Group *group = getGroup(groupId)) group->showGroupBalances(); }
     void simplifyGroupDebts(string groupId) { if (Group *group = getGroup(groupId)) group->simplifyGroupDebts(); }
 };
+
+inline Splitwise *Splitwise::instance = nullptr;
 }
 
 #endif

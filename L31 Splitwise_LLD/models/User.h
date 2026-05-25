@@ -40,6 +40,8 @@ public:
         return total;
     }
 };
+
+inline int User::nextUserId = 0;
 }
 
 #endif

@@ -24,6 +24,8 @@ public:
         expenseId = "expense" + to_string(++nextExpenseId);
     }
 };
+
+inline int Expense::nextExpenseId = 0;
 }
 
 #endif

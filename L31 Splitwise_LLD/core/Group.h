@@ -170,6 +170,8 @@ public:
         cout << "\nDebts have been simplified for group: " << name << endl;
     }
 };
+
+inline int Group::nextGroupId = 0;
 }
 
 #endif

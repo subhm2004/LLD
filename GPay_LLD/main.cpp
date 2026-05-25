@@ -38,7 +38,7 @@ static string typeToString(TransactionType type) {
 }
 
 int main() {
-  cout << "====== GPay LLD Demo ======\n\n";
+  cout << "====== GPay LLD ======\n\n";
 
   GPaySystem gpay;
 

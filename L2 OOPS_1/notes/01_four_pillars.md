@@ -566,7 +566,7 @@ Links:
 | L2 complete guide       | [`../OOPS_COMPLETE_GUIDE.md`](../OOPS_COMPLETE_GUIDE.md)                                       |
 | L2 advanced             | [`../OOPS_ADVANCED_CPP.md`](../OOPS_ADVANCED_CPP.md)                                           |
 | L3 complete guide       | [`../../L3 OOPS_2/OOPS_COMPLETE_GUIDE.md`](../../L3%20OOPS_2/OOPS_COMPLETE_GUIDE.md)           |
-| Composition (HAS-A)     | [`../Composition/OBJECT_RELATIONSHIPS_GUIDE.md`](../Composition/OBJECT_RELATIONSHIPS_GUIDE.md) |
+| Composition (HAS-A)     | [`../../ L1 Composition/OBJECT_RELATIONSHIPS_GUIDE.md`](../../%20L1%20Composition/OBJECT_RELATIONSHIPS_GUIDE.md) |
 | Encapsulation deep dive | [`02_encapsulation.md`](02_encapsulation.md)                                                   |
 | Abstraction deep dive   | [`03_abstraction.md`](03_abstraction.md)                                                       |
 
@@ -731,7 +731,7 @@ graph LR
 | # | Q | Short A |
 |---|---|---------|
 | 28 | UML inheritance arrow? | Hollow triangle to base |
-| 29 | HAS-A folder? | [`../Composition/`](../Composition/) |
+| 29 | HAS-A folder? | [`../../ L1 Composition/`](../../%20L1%20Composition/) |
 | 30 | Draw 2×2 pillars? | Encap/Abstr/Inher/Poly |
 | 31 | Revision run order? | 08 → 09 → L3 01 → 03 → 06 |
 | 32 | Abstract without inheritance? | APIs, PIMPL — yes |

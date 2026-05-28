@@ -1,506 +1,113 @@
-# Multiple Inheritance, RTTI, Virtual Base & Covariant Returns
+# Multiple Inheritance, RTTI, Virtual Base, Covariant Return
 
-> **EN:** MI scope resolution, RTTI casts, virtual base construction, covariant `clone()`.
+> L3 ke advanced interview topics ek place par: ambiguity resolution, runtime casting, virtual base construction, and covariant clone pattern.
 
-> **Runnable demo:** [`15_Multiple_Inheritance_Ambiguity.cpp`](../C++ Code/15_Multiple_Inheritance_Ambiguity.cpp)
-> **Runnable demo:** [`16_RTTI_Typeid_Dynamic_Cast.cpp`](../C++ Code/16_RTTI_Typeid_Dynamic_Cast.cpp)
-> **Runnable demo:** [`17_Virtual_Base_Class_Advanced.cpp`](../C++ Code/17_Virtual_Base_Class_Advanced.cpp)
-> **Runnable demo:** [`18_Covariant_Return_Types.cpp`](../C++ Code/18_Covariant_Return_Types.cpp)
-> **Parent guides:** [MULTIPLE_INHERITANCE_AMBIGUITY](../MULTIPLE_INHERITANCE_AMBIGUITY.md) · [RTTI_COMPLETE](../RTTI_COMPLETE.md) · [VIRTUAL_BASE_CLASS_ADVANCED](../VIRTUAL_BASE_CLASS_ADVANCED.md) · [COVARIANT_RETURN_TYPES](../COVARIANT_RETURN_TYPES.md)
+**Demos:**  
+[`15_Multiple_Inheritance_Ambiguity.cpp`](../C++%20Code/15_Multiple_Inheritance_Ambiguity.cpp)  
+[`16_RTTI_Typeid_Dynamic_Cast.cpp`](../C++%20Code/16_RTTI_Typeid_Dynamic_Cast.cpp)  
+[`17_Virtual_Base_Class_Advanced.cpp`](../C++%20Code/17_Virtual_Base_Class_Advanced.cpp)  
+[`18_Covariant_Return_Types.cpp`](../C++%20Code/18_Covariant_Return_Types.cpp)
 
 ---
 
-## Table of Contents
+## 1) Multiple Inheritance Ambiguity
 
-1. [MI ambiguity](#1-mi)
-2. [Diamond fix](#2-diamond)
-3. [RTTI](#3-rtti)
-4. [Virtual base advanced](#4-vbase)
-5. [Covariant](#5-cov)
-6. [Parent guides](#6-guides)
-7. [Interview Q&A](#7-qa)
-8. [Cheat sheet](#8-cheat)
-
-## 1. MI ambiguity
-
-<a id="1-mi-ambiguity"></a>
-
-`AllInOne : Printer, Scanner` — `print()` ambiguous → `Printer::print()`.
-## 2. Diamond fix
-
-<a id="2-diamond-fix"></a>
-
-`TeachingAssistant` — two `Person` without virtual; `TAVirtual` — one `PersonV` with `virtual` inheritance.
-## 3. RTTI
-
-<a id="3-rtti"></a>
-
-`typeid(*pDog)` dynamic type; `dynamic_cast<Dog*>` in loop — see `16_RTTI_Typeid_Dynamic_Cast.cpp`. `-fno-rtti` disables for embedded.
-## 4. Virtual base advanced
-
-<a id="4-virtual-base-advanced"></a>
-
-`MultiFunction` must init shared `Device` — most-derived rule in `17_Virtual_Base_Class_Advanced.cpp`.
-## 5. Covariant
-
-<a id="5-covariant"></a>
+Same method name do base classes me ho to call ambiguous hoti hai.
 
 ```cpp
-PdfDocument* clone() const override;  // from Document*
+AllInOne aio;
+aio.Printer::print();
+aio.Scanner::print();
 ```
 
-Factory `clone()` returns derived pointer without cast — `18_Covariant_Return_Types.cpp`.
-## 6. Parent guides
+Fix: scope resolution operator use karo.
 
-<a id="6-parent-guides"></a>
+---
 
-| Topic | Deep guide |
-|---|---|
-| MI | ../MULTIPLE_INHERITANCE_AMBIGUITY.md |
-| RTTI | ../RTTI_COMPLETE.md |
-| Virtual base | ../VIRTUAL_BASE_CLASS_ADVANCED.md |
-| Covariant | ../COVARIANT_RETURN_TYPES.md |
+## 2) Diamond and Virtual Inheritance
 
-## 7. Interview Q&A
+Diamond me duplicate base subobjects problem aata hai.
 
-<a id="7-interview-q-a"></a>
-
-<details>
-<summary><strong>Resolve MI same name?</strong></summary>
-
-Qualifier: `Base1::foo()` vs `Base2::foo()`.
-
-
-</details>
-
-<details>
-<summary><strong>virtual base who constructs?</strong></summary>
-
-Most derived class initializes virtual base.
-
-
-</details>
-
-<details>
-<summary><strong>typeid *p vs *p?</strong></summary>
-
-typeid(p) static pointer type; typeid(*p) dynamic object.
-
-
-</details>
-
-<details>
-<summary><strong>Covariant return rule?</strong></summary>
-
-Override may return pointer/ref to **derived** type.
-
-
-</details>
-
-## 8. Cheat sheet
-
-<a id="8-cheat-sheet"></a>
-
-```text
-Printer::print() | virtual public Base | dynamic_cast | PdfDocument* clone()
+```cpp
+class B : public virtual A {};
+class C : public virtual A {};
+class D : public B, public C {};
 ```
 
-### Run
+`virtual` inheritance ke baad `D` me `A` ka single shared subobject hota hai.
 
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
+---
 
-### Run
+## 3) RTTI: `typeid` and `dynamic_cast`
 
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
+- `typeid(*basePtr)` dynamic object type deta hai (polymorphic base required).
+- `dynamic_cast<Derived*>(basePtr)` safe downcast deta hai.
+- Failed pointer cast -> `nullptr`; failed reference cast -> `std::bad_cast`.
 
-### Run
+```cpp
+if (Dog* d = dynamic_cast<Dog*>(animal)) {
+    d->bark();
+}
+```
 
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
+---
 
-### Run
+## 4) Virtual Base Construction Rule
 
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
+Virtual inheritance case me shared virtual base ko **most-derived class** construct karta hai.
 
-### Run
+```cpp
+class MultiFunction : public virtual Device {
+public:
+    MultiFunction(string id) : Device(id) {}
+};
+```
 
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
+---
 
-### Run
+## 5) Covariant Return Type
 
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
+Base pointer/ref return method ko derived override me more specific return type diya ja sakta hai.
 
-### Run
+```cpp
+class Document {
+public:
+    virtual Document* clone() const = 0;
+};
 
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
+class PdfDocument : public Document {
+public:
+    PdfDocument* clone() const override;
+};
+```
 
-### Run
+Isse callers ko unnecessary casts kam lagte hain.
 
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
+---
 
-### Run
+## 6) Quick Interview Drill
 
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
+- MI ambiguity resolve kaise karoge?
+- `dynamic_cast` aur `static_cast` me safety difference?
+- `typeid(p)` vs `typeid(*p)`?
+- Virtual base constructor ka owner kaun?
+- Covariant return kaha useful hai (clone/factory APIs)?
 
-### Run
+---
 
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
+## 7) Run
 
-### Run
+```bash
+cd "L3 OOPS_2"
+./compile.sh
+./bin/15_Multiple_Inheritance_Ambiguity
+./bin/16_RTTI_Typeid_Dynamic_Cast
+./bin/17_Virtual_Base_Class_Advanced
+./bin/18_Covariant_Return_Types
+```
 
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
+---
 
-### Run
+## 8) One-line Cheat Sheet
 
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
-
-### Run
-
-./bin/15_Multiple_Inheritance_Ambiguity through 18_Covariant_Return_Types
+`Base1::foo()` + `virtual` inheritance + `dynamic_cast` + `typeid(*p)` + covariant `clone()`.

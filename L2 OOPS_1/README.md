@@ -4,10 +4,20 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Lesson-L2-blue?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Files-19%20%2B%204%20Composition-success?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Files-20-success?style=for-the-badge" />
   <img src="https://img.shields.io/badge/C%2B%2B-17-informational?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Pillars-Encapsulation%20%2B%20Abstraction-orange?style=for-the-badge" />
 </p>
+
+---
+
+## Canonical source of truth
+
+- Latest navigation and counts: `README.md`
+- Theory depth: `OOPS_COMPLETE_GUIDE.md`
+- Legacy alias (backward links): `OOPS_1_COMPLETE.md`
+
+If any mismatch appears, trust this `README.md`.
 
 ---
 
@@ -20,10 +30,11 @@
 | **[`PADDING_AND_ALIGNMENT.md`](./PADDING_AND_ALIGNMENT.md)** | Struct padding, greedy alignment, `alignas`, `#pragma pack` |
 | **[`CONVERSION_FUNCTIONS.md`](./CONVERSION_FUNCTIONS.md)** | Implicit conversion, `explicit`, conversion operators |
 | **[`OBJECT_POOL_PATTERN.md`](./OBJECT_POOL_PATTERN.md)** | Object pool — reuse, memory optimization |
-| **[`Composition/OBJECT_RELATIONSHIPS_GUIDE.md`](./Composition/OBJECT_RELATIONSHIPS_GUIDE.md)** | **Has-A family** — Association, Aggregation, Composition, Dependency |
+| **[`L1 Composition/OBJECT_RELATIONSHIPS_GUIDE.md`](../%20L1%20Composition/OBJECT_RELATIONSHIPS_GUIDE.md)** | **Has-A family** — Association, Aggregation, Composition, Dependency |
 | **[`L3 OOPS_ADVANCED_INHERITANCE`](../L3%20OOPS_2/OOPS_ADVANCED_INHERITANCE.md)** | virtual, vtable, virtual dtor, diamond, overload vs override |
 | [`notes/`](./notes/) | Topic-wise revision |
-| [`Composition/notes/`](./Composition/notes/) | Per-relationship quick revision |
+| [`L1 Composition/notes/`](../%20L1%20Composition/notes/) | Per-relationship quick revision |
+| [`notes/06_oop_api_error_handling.md`](./notes/06_oop_api_error_handling.md) | OOP API error handling: exception vs status |
 
 **Legacy alias:** [`OOPS_1_COMPLETE.md`](./OOPS_1_COMPLETE.md) → same topics, L2 pillars detail (Encap + Abstraction).
 
@@ -80,12 +91,7 @@ L2 OOPS_1/
 ├── README.md
 ├── OOPS_COMPLETE_GUIDE.md
 ├── OOPS_ADVANCED_CPP.md
-├── C++ Code/                 ← 01_ … 19_ (classes, memory, pillars)
-├── Composition/              ← object relationships (Has-A)
-│   ├── OBJECT_RELATIONSHIPS_GUIDE.md
-│   ├── C++ Code/             ← 01_ … 04_
-│   ├── notes/
-│   └── compile.sh
+├── C++ Code/                 ← 01_ … 20_ (classes, memory, pillars)
 ├── notes/
 └── compile.sh
 ```
@@ -102,7 +108,7 @@ L2 OOPS_1/
 | [`CONVERSION_FUNCTIONS.md`](./CONVERSION_FUNCTIONS.md) | explicit, conversion operators | Constructor design questions |
 | [`OBJECT_POOL_PATTERN.md`](./OBJECT_POOL_PATTERN.md) | Acquire/release, reuse | System design + performance |
 | [`OOPS_1_COMPLETE.md`](./OOPS_1_COMPLETE.md) | Legacy alias — pillars detail | Bookmark only |
-| [`OBJECT_RELATIONSHIPS_GUIDE.md`](./Composition/OBJECT_RELATIONSHIPS_GUIDE.md) | UML arrows, ownership, lifetime | Before L3 Composition vs Inheritance |
+| [`OBJECT_RELATIONSHIPS_GUIDE.md`](../%20L1%20Composition/OBJECT_RELATIONSHIPS_GUIDE.md) | UML arrows, ownership, lifetime | Before L3 Composition vs Inheritance |
 | [`OOPS_COMPLETE_GUIDE.md`](../L3%20OOPS_2/OOPS_COMPLETE_GUIDE.md) | Inheritance + Polymorphism Part 2 | L2 ke baad |
 | [`OOPS_ADVANCED_INHERITANCE.md`](../L3%20OOPS_2/OOPS_ADVANCED_INHERITANCE.md) | vtable, diamond, virtual dtor | Advanced inheritance |
 
@@ -131,6 +137,7 @@ L2 OOPS_1/
 | 17 | [`17_Padding_And_Alignment.cpp`](./C%20%2B%2B%20Code/17_Padding_And_Alignment.cpp) | Padding & alignment |
 | 18 | [`18_Conversion_Functions.cpp`](./C%20%2B%2B%20Code/18_Conversion_Functions.cpp) | Implicit vs `explicit` conversions |
 | 19 | [`19_Object_Pool_Pattern.cpp`](./C%20%2B%2B%20Code/19_Object_Pool_Pattern.cpp) | Object pool acquire/release |
+| 20 | [`20_Inline_Static_Member_Usecase.cpp`](./C%20%2B%2B%20Code/20_Inline_Static_Member_Usecase.cpp) | `static` vs `inline static` use case |
 
 ---
 
@@ -502,6 +509,7 @@ cd " L1 Composition"
 | [`03_abstraction.md`](./notes/03_abstraction.md) | Pillar 2 — abstract class, interface thinking |
 | [`04_static_inline_friend_const.md`](./notes/04_static_inline_friend_const.md) | Static, inline, friend, const/mutable cheat sheet |
 | [`05_memory_advanced.md`](./notes/05_memory_advanced.md) | RAII, smart ptr, move, Rule 3/5/0 summary |
+| [`06_oop_api_error_handling.md`](./notes/06_oop_api_error_handling.md) | Exception vs status approach for OOP APIs |
 
 ---
 
@@ -542,7 +550,7 @@ chmod +x compile.sh
 
 ```
 Week 1: 01–07 fundamentals → 08 Encapsulation → 09 Abstraction
-Week 2: Composition/ 01–04 → 10–13 memory basics
+Week 2: L1 Composition (01-04) -> 10-13 memory basics
 Then: L3 inheritance
 ```
 
@@ -551,7 +559,7 @@ Then: L3 inheritance
 ```
 Day 1: 08, 09 pillars + OOPS_COMPLETE_GUIDE pillars section
 Day 2: 10–16. 14–16 smart ptr + move + Rule 3/5/0
-Day 3: Composition/ all 4 + 17 padding + 18 explicit + 19 pool
+Day 3: L1 Composition all 4 + 17 padding + 18 explicit + 19 pool
 ```
 
 ### Path C — Advanced C++ only
@@ -565,7 +573,7 @@ Parallel read: OOPS_ADVANCED_CPP.md, PADDING_AND_ALIGNMENT.md
 
 ```
 01–07 fundamentals → 08 Encapsulation → 09 Abstraction
-→ Composition/ (01–04 relationships)
+-> L1 Composition (01-04 relationships)
 → 10–19 memory & modern C++
 → L3 inheritance & polymorphism
 ```
@@ -599,7 +607,7 @@ flowchart TD
 | Rule of Five? | Copy/move ctor, copy/move assign, dtor — define or =default. See 16. |
 | Struct padding kyun? | Alignment — CPU reads aligned addresses faster. See 17. |
 | explicit keyword? | Block implicit single-arg ctor conversions. See 18. |
-| Association vs Composition? | No ownership vs strong ownership whole-part. See Composition/. |
+| Association vs Composition? | No ownership vs strong ownership whole-part. See L1 Composition docs. |
 
 ---
 
@@ -621,7 +629,7 @@ flowchart TD
 | ⬅️ Repo root | [../README.md](../README.md) |
 | ➡️ L3 OOPS_2 | [../L3 OOPS_2/README.md](../L3%20OOPS_2/README.md) |
 | ➡️ L4 UML | [../L4 UML_Diagrams/UML_DIAGRAMS_AND_NOTATION.md](../L4%20UML_Diagrams/UML_DIAGRAMS_AND_NOTATION.md) |
-| Composition deep dive | [Composition/README.md](./Composition/README.md) |
+| Composition deep dive | [L1 Composition/README.md](../%20L1%20Composition/README.md) |
 
 ### Study week 1 — detailed checklist
 

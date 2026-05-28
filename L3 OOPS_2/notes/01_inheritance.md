@@ -1,547 +1,81 @@
-# Inheritance — Complete Guide  
+# Inheritance Quick Notes (L3)
 
-> **EN:** Derived classes extend a base (IS-A), reuse code, add specialization.
-
-> **Demo:** [`01_Inheritance.cpp`](../C++%20Code/01_Inheritance.cpp)
-> **Guides:** [OOPS_2_COMPLETE](../OOPS_2_COMPLETE.md) · [OOPS_ADVANCED_INHERITANCE](../OOPS_ADVANCED_INHERITANCE.md)
+**Demo:** [`01_Inheritance.cpp`](../C++%20Code/01_Inheritance.cpp)
 
 ---
 
-## Table of Contents
+## 1) Core Idea
 
-1. [IS-A real world](#1-is-a)
-2. [Syntax & access](#2-syntax)
-3. [protected bridge](#3-protected)
-4. [Five inheritance types](#4-types)
-5. [Ctor/dtor chaining](#5-chain)
-6. [Walkthrough 01_Inheritance.cpp](#6-walk)
-7. [Object layout](#7    )
-8. [vs composition](#8-comp)
-9. [Mermaid](#9-mermaid)
-10. [Interview Q&A](#10-qa)
-11. [Mistakes & compile](#11-end)
+Inheritance models **IS-A** relationship.
+
+- `ManualCar` is a `Car`
+- `ElectricCar` is a `Car`
+
+Base class common behavior hold karta hai, derived classes specialization add karti hain.
 
 ---
 
-## 1. IS-A real world
-
-<a id="1-is-a"></a>
-
-ManualCar **is a** Car — brand, model, engine shared; gears or battery added.
-
-```mermaid
-classDiagram
-    Car <|-- ManualCar
-    Car <|-- ElectricCar
-```
-
-
----
-
-## 2. Syntax & access
-
-<a id="2-syntax"></a>
+## 2) Syntax
 
 ```cpp
 class ManualCar : public Car {
 public:
-    ManualCar(string b, string m) : Car(b, m) { }
+    ManualCar(string brand, string model) : Car(brand, model) {}
 };
 ```
 
-| Base member | Child | Outside |
-|-------------|-------|---------|
-| public | yes | yes |
-| protected | yes | no |
-| private | no | no |
-
-**Inheritance type se access change (notebook table):** [06_access_and_chaining.md §2](06_access_and_chaining.md#2-inheritance-modes-access-table)
+- `public` inheritance most common for true subtype relation.
+- `protected` members child use kar sakta hai, outside world nahi.
 
 ---
 
-## 3. protected bridge
+## 3) Access Summary
 
-<a id="3-protected"></a>
-
-`brand`, `model` protected — `shiftGear` uses them; `main` cannot.
+| Base member | Derived access? | Outside access? |
+| --- | --- | --- |
+| `public` | yes | yes |
+| `protected` | yes | no |
+| `private` | no (direct) | no |
 
 ---
 
-## 4. Types of inheritance (5 types)
+## 4) Constructor/Destructor Flow
 
-<a id="4-types"></a>
-
-| Type | Hindi / one line | Example | Demo file |
-| ---- | ---------------- | ------- | --------- |
-| **All 5 in one file** | revision / interview | sab types `main` mein | [`00_Five_Types_Of_Inheritance.cpp`](../C++%20Code/00_Five_Types_Of_Inheritance.cpp) |
-| **Single** | ek parent, ek child | `ManualCar : Car` | [`01_Inheritance.cpp`](../C++%20Code/01_Inheritance.cpp) |
-| **Multilevel** | chain — grandparent → parent → child | `GrandChild : Derived : Base` | [`11_Constructor_Chaining.cpp`](../C++%20Code/11_Constructor_Chaining.cpp) |
-| **Multiple** | do parents, ek child | `AllInOne : Printer, Scanner` | [`15_Multiple_Inheritance_Ambiguity.cpp`](../C++%20Code/15_Multiple_Inheritance_Ambiguity.cpp) |
-| **Hierarchical** | ek parent, kai children | `ManualCar`, `ElectricCar : Car` | [`01_Inheritance.cpp`](../C++%20Code/01_Inheritance.cpp) |
-| **Hybrid** | upar ke types ka mix | `TA : Employee, Student` + diamond | [`08_Diamond_Problem.cpp`](../C++%20Code/08_Diamond_Problem.cpp) |
-
-### 4.1 Single inheritance
-
-> **Single →** ek parent class hai, ek child class hai.
-
-```mermaid
-flowchart TB
-    P[Parent / Base class]
-    C[Child / Derived class]
-    P --> C
-```
+- Construction: Base -> Derived
+- Destruction: Derived -> Base
 
 ```cpp
-class ManualCar : public Car { /* ... */ };
+class Car {
+public:
+    virtual ~Car() = default;
+};
 ```
 
-### 4.2 Multilevel inheritance
-
-```mermaid
-flowchart TB
-    B[Base]
-    D[Derived]
-    G[GrandChild]
-    B --> D --> G
-```
-
-### 4.3 Multiple inheritance
-
-```mermaid
-flowchart TB
-    P1[Parent 1]
-    P2[Parent 2]
-    C[Child]
-    P1 --> C
-    P2 --> C
-```
-
-### 4.4 Hierarchical inheritance
-
-```mermaid
-flowchart TB
-    P[Parent Car]
-    C1[ManualCar]
-    C2[ElectricCar]
-    P --> C1
-    P --> C2
-```
-
-### 4.5 Hybrid inheritance
-
-Combination of single / multilevel / multiple / hierarchical (e.g. diamond problem).
-
-```mermaid
-flowchart TB
-    A[Base A]
-    B[Base B]
-    C[Derived C]
-    A --> C
-    B --> C
-```
-
-**Access table (public / protected / private inherit):** [`06_access_and_chaining.md` §2](06_access_and_chaining.md#2-inheritance-modes-access-table) · Code: [`10_Access_Specifiers_Inheritance.cpp`](../C++%20Code/10_Access_Specifiers_Inheritance.cpp)
+Polymorphic base me virtual destructor must-have hai.
 
 ---
 
-## 5. Ctor/dtor chaining
+## 5) Inheritance vs Composition
 
-<a id="5-chain"></a>
+- Inheritance: IS-A
+- Composition: HAS-A
 
-`: Car(b,m)` runs before ManualCar body. `delete` → ~ManualCar then ~Car. `virtual ~Car()`.
-
-```mermaid
-sequenceDiagram
-    ManualCar->>Car: Car(b,m)
-```
+If relation true subtype nahi hai, composition prefer karo.
 
 ---
 
-## 6. Walkthrough 01_Inheritance.cpp
+## 6) Interview One-liners
 
-<a id="6-walk"></a>
-
-**Car 22–65:** protected state; start/stop/accelerate/brake; virtual dtor.
-
-**ManualCar 67–81:** shiftGear; ctor chains Car.
-
-**ElectricCar 83–97:** chargeBattery.
-
-**main 102–122:** new/delete; inherited + specialized methods.
+- Inheritance ka primary goal: reuse + extensibility + polymorphic substitution.
+- Private members inherited state ka part hote hain but directly accessible nahi.
+- Overuse inheritance can increase coupling; composition safer default hota hai.
 
 ---
 
-## 7. Object layout
-
-<a id="layout"></a>
-
-ManualCar object = Car subobject + currentGear (+ vptr if virtual).
-
----
-
-## 8. vs composition
-
-<a id="8-comp"></a>
-
-IS-A → inherit. HAS-A → member object [`05_Composition_Vs_Inheritance.cpp`](../C++%20Code/05_Composition_Vs_Inheritance.cpp).
-
----
-
-## 9. Mermaid
-
-<a id="9-mermaid"></a>
-
-```mermaid
-flowchart LR
-    Base[Car subobject] --> Der[Derived fields]
-```
-
----
-
-## 10. Interview Q&A
-
-<a id="10-qa"></a>
-
-<details>
-<summary><strong>What is inheritance?</strong></summary>
-
-Derived gets base members/behaviour; extends or specializes.
-
-
-</details>
-
-
-<details>
-<summary><strong>IS-A vs HAS-A?</strong></summary>
-
-Inheritance vs composition.
-
-
-</details>
-
-
-<details>
-<summary><strong>Why public inheritance?</strong></summary>
-
-Preserves IS-A and upcasting.
-
-
-</details>
-
-
-<details>
-<summary><strong>protected meaning?</strong></summary>
-
-Child yes, outside no.
-
-
-</details>
-
-
-<details>
-<summary><strong>Ctor order?</strong></summary>
-
-Base before derived body.
-
-
-</details>
-
-
-<details>
-<summary><strong>Dtor order?</strong></summary>
-
-Derived then base.
-
-
-</details>
-
-
-<details>
-<summary><strong>Child access private base?</strong></summary>
-
-No.
-
-
-</details>
-
-
-<details>
-<summary><strong>Five inheritance types?</strong></summary>
-
-Single,multilevel,multiple,hierarchical,hybrid.
-
-
-</details>
-
-
-<details>
-<summary><strong>Virtual destructor why?</strong></summary>
-
-Safe delete via Car*.
-
-
-</details>
-
-
-<details>
-<summary><strong>Multiple inheritance?</strong></summary>
-
-class D:public A,public B
-
-
-</details>
-
-
-<details>
-<summary><strong>Diamond problem?</strong></summary>
-
-Two A subobjects in MI.
-
-
-</details>
-
-
-<details>
-<summary><strong>Virtual inheritance fix?</strong></summary>
-
-virtual public Base.
-
-
-</details>
-
-
-<details>
-<summary><strong>Can ctor be virtual?</strong></summary>
-
-No.
-
-
-</details>
-
-
-<details>
-<summary><strong>Liskov?</strong></summary>
-
-Subtype substitutable for base.
-
-
-</details>
-
-
-<details>
-<summary><strong>Object slicing?</strong></summary>
-
-Derived to base by value loses part.
-
-
-</details>
-
-
-<details>
-<summary><strong>sizeof derived?</strong></summary>
-
->= sizeof base.
-
-
-</details>
-
-
-<details>
-<summary><strong>When not inherit?</strong></summary>
-
-HAS-A or wrong IS-A.
-
-
-</details>
-
-
-<details>
-<summary><strong>Friend protected?</strong></summary>
-
-Friends access private/protected.
-
-
-</details>
-
-
-<details>
-<summary><strong>Code reuse only?</strong></summary>
-
-Also polymorphism; prefer composition if only reuse.
-
-
-</details>
-
-
-<details>
-<summary><strong>Multilevel file?</strong></summary>
-
-11_Constructor_Chaining.cpp
-
-
-</details>
-
-
----
-
-## 11. Mistakes & compile
-
-<a id="11-end"></a>
-
-| Mistake | Fix |
-|---------|-----|
-| No `: Car(args)` | init list |
-| public fields | protected |
-| delete Base* no virtual ~ | virtual ~Base |
+## 7) Run
 
 ```bash
-cd "L3 OOPS_2" && ./compile.sh && ./bin/01_Inheritance
+cd "L3 OOPS_2"
+./compile.sh
+./bin/01_Inheritance
 ```
-
----
-
-## Extended revision bank
-
-### Revision drill — 01_inheritance.md #1
-
-**EN:** Re-run the linked .cpp, predict output before executing.
-
-
-### Whiteboard — 01_inheritance.md #2
-
-**EN:** Draw class diagram and ctor order without looking at notes.
-
-
-### Compare EN/HI — 01_inheritance.md #3
-
-**EN:** State the rule in one English sentence and one Hindi mnemonic.
-
-
-### Interview twist — 01_inheritance.md #4
-
-**EN:** Interviewer asks 'what if' — answer using the demo code path.
-
-
-### Link forward — 01_inheritance.md #5
-
-**EN:** Note which next file in L3 OOPS_2 builds on this topic.
-
-
-### Revision drill — 01_inheritance.md #6
-
-**EN:** Re-run the linked .cpp, predict output before executing.
-
-
-### Whiteboard — 01_inheritance.md #7
-
-**EN:** Draw class diagram and ctor order without looking at notes.
-
-
-### Compare EN/HI — 01_inheritance.md #8
-
-**EN:** State the rule in one English sentence and one Hindi mnemonic.
-
-
-### Interview twist — 01_inheritance.md #9
-
-**EN:** Interviewer asks 'what if' — answer using the demo code path.
-
-
-### Link forward — 01_inheritance.md #10
-
-**EN:** Note which next file in L3 OOPS_2 builds on this topic.
-
-
-### Revision drill — 01_inheritance.md #11
-
-**EN:** Re-run the linked .cpp, predict output before executing.
-
-
-### Whiteboard — 01_inheritance.md #12
-
-**EN:** Draw class diagram and ctor order without looking at notes.
-
-
-### Compare EN/HI — 01_inheritance.md #13
-
-**EN:** State the rule in one English sentence and one Hindi mnemonic.
-
-
-### Interview twist — 01_inheritance.md #14
-
-**EN:** Interviewer asks 'what if' — answer using the demo code path.
-
-
-### Link forward — 01_inheritance.md #15
-
-**EN:** Note which next file in L3 OOPS_2 builds on this topic.
-
-
-### Revision drill — 01_inheritance.md #16
-
-**EN:** Re-run the linked .cpp, predict output before executing.
-
-
-### Whiteboard — 01_inheritance.md #17
-
-**EN:** Draw class diagram and ctor order without looking at notes.
-
-
-### Compare EN/HI — 01_inheritance.md #18
-
-**EN:** State the rule in one English sentence and one Hindi mnemonic.
-
-
-### Interview twist — 01_inheritance.md #19
-
-**EN:** Interviewer asks 'what if' — answer using the demo code path.
-
-
-### Link forward — 01_inheritance.md #20
-
-**EN:** Note which next file in L3 OOPS_2 builds on this topic.
-
-
-### Revision drill — 01_inheritance.md #21
-
-**EN:** Re-run the linked .cpp, predict output before executing.
-
-
-### Whiteboard — 01_inheritance.md #22
-
-**EN:** Draw class diagram and ctor order without looking at notes.
-
-
-### Compare EN/HI — 01_inheritance.md #23
-
-**EN:** State the rule in one English sentence and one Hindi mnemonic.
-
-
-### Interview twist — 01_inheritance.md #24
-
-**EN:** Interviewer asks 'what if' — answer using the demo code path.
-
-
-### Link forward — 01_inheritance.md #25
-
-**EN:** Note which next file in L3 OOPS_2 builds on this topic.
-
-
-### Revision drill — 01_inheritance.md #26
-
-**EN:** Re-run the linked .cpp, predict output before executing.
-
-
-### Whiteboard — 01_inheritance.md #27
-
-**EN:** Draw class diagram and ctor order without looking at notes.
-
-
-### Compare EN/HI — 01_inheritance.md #28
-
-**EN:** State the rule in one English sentence and one Hindi mnemonic.
-
-
-### Interview twist — 01_inheritance.md #29
-
-**EN:** Interviewer asks 'what if' — answer using the demo code path.

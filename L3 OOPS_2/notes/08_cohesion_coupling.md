@@ -1,513 +1,68 @@
-# Cohesion, Coupling & SOLID SRP
+# Cohesion, Coupling, and SRP
 
-> **EN:** High cohesion inside; low coupling between; SRP splits responsibilities.
-
-> **Runnable demo:** [`14_Cohesion_Coupling.cpp`](../C++ Code/14_Cohesion_Coupling.cpp)
-> **Parent guides:** [OOPS_COMPLETE_GUIDE](../OOPS_COMPLETE_GUIDE.md)
+**Demo:** [`14_Cohesion_Coupling.cpp`](../C++%20Code/14_Cohesion_Coupling.cpp)
 
 ---
 
-## Table of Contents
+## 1) Cohesion
 
-1. [Cohesion](#1-coh)
-2. [Coupling](#2-coup)
-3. [14 walkthrough](#3-14)
-4. [SRP](#4-srp)
-5. [Diagram](#5-diag)
-6. [Interview Q&A](#6-qa)
-7. [Cheat sheet](#7-cheat)
+Cohesion batata hai class ke andar responsibilities kitni focused hain.
 
-## 1. Cohesion
+- High cohesion: class ka ek clear kaam.
+- Low cohesion: random unrelated kaam same class me.
 
-<a id="1-cohesion"></a>
+---
 
-**High cohesion** — all methods serve one purpose (`PaymentService` only pays).
-## 2. Coupling
+## 2) Coupling
 
-<a id="2-coupling"></a>
+Coupling batata hai classes kitni tightly dependent hain.
 
-**Low coupling** — depend on interfaces/refs, not concrete internals.
-## 3. 14 walkthrough
+- Low coupling: interfaces/abstractions ke through dependencies.
+- High coupling: concrete internals pe hard dependency.
 
-<a id="3-14-walkthrough"></a>
+---
 
-`GodOrderProcessor` — validate+DB+pay+email+log in one class. `OrderService` orchestrates three focused services.
-## 4. SRP
+## 3) SRP Link
 
-<a id="4-srp"></a>
+Single Responsibility Principle follow karne se:
 
-**Single Responsibility Principle** — one reason to change per class → naturally **high cohesion**, **lower coupling**.
-```mermaid
-flowchart TB
-  SRP[SRP] --> HC[High Cohesion]
-  SRP --> LC[Low Coupling]
+- Cohesion improve hoti hai
+- Coupling generally reduce hota hai
+- Testing easy hota hai
+
+---
+
+## 4) Practical LLD Guidance
+
+- God class avoid karo (validation + DB + payment + notifications all-in-one nahi).
+- Orchestration class banao, focused services delegate karo.
+- Constructor injection use karo so mocks/stubs plug ho sakein.
+
+```cpp
+class OrderService {
+public:
+    OrderService(PaymentService& p, OrderRepository& r, EmailNotifier& n)
+        : payment_(p), repo_(r), notifier_(n) {}
+};
 ```
 
-## 5. Diagram
+---
 
-<a id="5-diagram"></a>
+## 5) Interview Quick Answers
 
-```mermaid
-flowchart LR
-  OS[OrderService] --> PAY[PaymentService]
-  OS --> REPO[OrderRepository]
-  OS --> MAIL[EmailNotifier]
+- Cohesion vs coupling?  
+  Cohesion = within class quality, coupling = between classes dependency level.
+- High cohesion and low coupling kyun?  
+  Maintainability, readability, testability improve hoti hai.
+- SRP relation?  
+  One reason to change -> focused classes -> better cohesion.
+
+---
+
+## 6) Run
+
+```bash
+cd "L3 OOPS_2"
+./compile.sh
+./bin/14_Cohesion_Coupling
 ```
-
-## 6. Interview Q&A
-
-<a id="6-interview-q-a"></a>
-
-<details>
-<summary><strong>Cohesion vs coupling?</strong></summary>
-
-Cohesion within class; coupling between classes.
-
-
-</details>
-
-<details>
-<summary><strong>High cohesion good?</strong></summary>
-
-Yes — focused class.
-
-
-</details>
-
-<details>
-<summary><strong>Low coupling good?</strong></summary>
-
-Yes — easier change/test.
-
-
-</details>
-
-<details>
-<summary><strong>SRP relation?</strong></summary>
-
-One class one job → cohesion up, coupling down.
-
-
-</details>
-
-<details>
-<summary><strong>God class?</strong></summary>
-
-Low cohesion high coupling anti-pattern — 14 demo.
-
-
-</details>
-
-## 7. Cheat sheet
-
-<a id="7-cheat-sheet"></a>
-
-```text
-High cohesion + Low coupling
-SRP: one reason to change
-14_Cohesion_Coupling.cpp
-```
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.
-
-### DI
-
-Constructor injection reduces coupling — swap `EmailNotifier` mock in tests.

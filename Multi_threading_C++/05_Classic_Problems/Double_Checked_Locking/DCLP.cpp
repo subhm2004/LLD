@@ -6,12 +6,14 @@
 #include <iostream>
 #include <mutex>
 
+using namespace std;
+
 class DatabaseService
 {
 private:
     // 1. Static instance pointer
     static DatabaseService *instance;
-    static std::mutex mtx;
+    static mutex mtx;
 
     // Private constructor taaki bahar se object na ban sake
     DatabaseService()
@@ -19,9 +21,27 @@ private:
         std::cout << "Database Service Initialized (Heavy Task)\n";
     }
 
-public:
-    // Copy constructor delete karna zaroori hai
+    // Singleton integrity rules:
+    // In 4 lines ka purpose hai ki existing singleton object ka duplicate
+    // copy/move se kabhi create na ho sake.
+
+    // 1) Copy constructor block:
+    //    DatabaseService b(a); ya DatabaseService b = a; allow nahi hoga.
     DatabaseService(const DatabaseService &) = delete;
+
+    // 2) Copy assignment block:
+    //    b = a; type assignment disallow.
+    DatabaseService &operator=(const DatabaseService &) = delete;
+
+    // 3) Move constructor block:
+    //    DatabaseService b(std::move(a)); disallow.
+    DatabaseService(DatabaseService &&) = delete;
+
+    // 4) Move assignment block:
+    //    b = std::move(a); disallow.
+    DatabaseService &operator=(DatabaseService &&) = delete;
+
+public:
 
     static DatabaseService *getInstance()
     {
@@ -33,7 +53,7 @@ public:
 
             // --- STEP 2: Lock Lagana ---
             // Agar instance null hai, toh hi lock lo taaki sirf EK thread andar jaye.
-            std::lock_guard<std::mutex> lock(mtx);
+            lock_guard<mutex> lock(mtx);
 
             // --- STEP 3: Doosra Check (Actual Safety) ---
             // Maan lo Thread A aur Thread B dono ne Step 1 pass kiya.
@@ -50,13 +70,13 @@ public:
 
     void query(std::string sql)
     {
-        std::cout << "Executing: " << sql << std::endl;
+        cout << "Executing: " << sql << endl;
     }
 };
 
 // Static variables ko initialize karna
 DatabaseService *DatabaseService::instance = nullptr;
-std::mutex DatabaseService::mtx;
+mutex DatabaseService::mtx;
 
 int main()
 {

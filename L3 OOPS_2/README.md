@@ -4,9 +4,19 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Lesson-L3-purple?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Files-18-success?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Files-19-success?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Pillars-Inheritance%20%2B%20Polymorphism-orange?style=for-the-badge" />
 </p>
+
+---
+
+## Canonical source of truth
+
+- Latest navigation and file count: `README.md`
+- Theory depth: `OOPS_COMPLETE_GUIDE.md`
+- Legacy alias (backward links): `OOPS_2_COMPLETE.md`
+
+If any mismatch appears, trust this `README.md`.
 
 ---
 
@@ -23,6 +33,7 @@
 | **[`COVARIANT_RETURN_TYPES.md`](./COVARIANT_RETURN_TYPES.md)** | Override with `Derived*` return |
 | **[`L2 OOPS_ADVANCED_CPP`](../L2%20OOPS_1/OOPS_ADVANCED_CPP.md)** | RAII, smart ptr, move, Rule 3/5/0 |
 | [`notes/`](./notes/) | Topic-wise revision |
+| [`notes/10_oop_api_error_handling.md`](./notes/10_oop_api_error_handling.md) | OOP API design: exception vs status |
 
 **Legacy alias:** [`OOPS_2_COMPLETE.md`](./OOPS_2_COMPLETE.md)
 
@@ -58,10 +69,11 @@ flowchart TB
 
 ---
 
-## Code index (`C++ Code/` — `01_` … `18_`)
+## Code index (`C++ Code/` — `00_` … `18_`)
 
 | # | File | Topic |
 | - | ---- | ----- |
+| 00 | [`00_Five_Types_Of_Inheritance.cpp`](./C%20%2B%2B%20Code/00_Five_Types_Of_Inheritance.cpp) | Single/multilevel/multiple/hierarchical/hybrid |
 | 01 | [`01_Inheritance.cpp`](./C%20%2B%2B%20Code/01_Inheritance.cpp) | Hierarchical inheritance, `protected` |
 | 02 | [`02_Static_Polymorphism.cpp`](./C%20%2B%2B%20Code/02_Static_Polymorphism.cpp) | Method overloading |
 | 03 | [`03_Dynamic_Polymorphism.cpp`](./C%20%2B%2B%20Code/03_Dynamic_Polymorphism.cpp) | `virtual`, override, dispatch |
@@ -389,6 +401,7 @@ cd "L3 OOPS_2"
 | [`notes/07_slicing_and_casting.md`](./notes/07_slicing_and_casting.md) | Object slicing + upcast/downcast |
 | [`notes/08_cohesion_coupling.md`](./notes/08_cohesion_coupling.md) | Design quality metrics |
 | [`notes/09_mi_rtti_conversion.md`](./notes/09_mi_rtti_conversion.md) | MI + RTTI + covariant combined revision |
+| [`notes/10_oop_api_error_handling.md`](./notes/10_oop_api_error_handling.md) | Exception vs status API contracts |
 
 ---
 

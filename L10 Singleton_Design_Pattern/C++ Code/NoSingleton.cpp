@@ -1,17 +1,32 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 
+// Ye class intentionally "NoSingleton" hai.
+// Matlab yaha pe hum multiple objects create kar sakte hain bina restriction ke.
 class NoSingleton {
 public:
+    // Constructor har baar object banne par call hoga.
+    // Agar 2 baar new karoge to 2 baar constructor chalega.
     NoSingleton() {
-        cout << "Singleton Constructor called. New Object created." << endl;
+        cout << "NoSingleton Constructor called. New object created." << endl;
     }
 };
 
 int main() {
-    NoSingleton* s1 = new NoSingleton();
-    NoSingleton* s2 = new NoSingleton();
+    // Object-1 create
+    NoSingleton *s1 = new NoSingleton();
 
-    cout << (s1 == s2) << endl;
+    // Object-2 create (alag memory location)
+    NoSingleton *s2 = new NoSingleton();
+
+    // Compare addresses:
+    // - true(1) => same object
+    // - false(0) => different object
+    // NoSingleton case me mostly false aayega.
+    cout << "s1 and s2 are same object? " << (s1 == s2) << endl;
+
+    // Manual cleanup (good practice when using new)
+    delete s1;
+    delete s2;
 }

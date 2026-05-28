@@ -4,38 +4,49 @@
 
 using namespace std;
 
-// C++ me mutex help krta h lock and unlock krne k liye (multithreading ka concept hai )
-class Singleton
-{
+// Thread-safe Lazy Singleton (coarse locking):
+// Har getInstance() call pe mutex lock hota hai.
+// Safe hai, par frequent calls me thoda overhead ho sakta hai.
+class Singleton {
 private:
-    static Singleton *instance;
-    static mutex mtx;
+  static Singleton *instance;
+  static mutex mtx;
 
-    Singleton()
-    {
-        cout << "Singleton Constructor Called!" << endl;
-    }
+  // Constructor private => direct object creation allowed nahi.
+  Singleton() { cout << "Singleton Constructor Called!" << endl; }
+
+  // Copy/move explicitly disable:
+  // Agar yeh allow rahe to singleton ka duplicate object ban sakta hai.
+  Singleton(const Singleton &) = delete;            // copy constructor blocked
+  Singleton &operator=(const Singleton &) = delete; // copy assignment blocked
+  Singleton(Singleton &&) = delete;                 // move constructor blocked
+  Singleton &operator=(Singleton &&) = delete;      // move assignment blocked
+  // Destructor private hai: outside delete nahi kar paoge.
+  ~Singleton() { cout << "Singleton Destructor called" << endl; }
 
 public:
-    static Singleton *getInstance()
-    {
-        lock_guard<mutex> lock(mtx); // Lock for thread safety (critical section ko lock kr diya hai taki ek baar me ek hi thread critical section me enter kre or wo use execute kare or jab thread vha se bahar nikle to wo critical section ko unlock kr de taki dusri thread us me enter ka paye)
-        if (instance == nullptr)
-        {
-            instance = new Singleton();
-        }
-        return instance;
+  static Singleton *getInstance() {
+    // lock_guard scope-based lock hai:
+    // - constructor me lock
+    // - function scope end hote hi auto unlock
+    lock_guard<mutex> lock(mtx);
+
+    // Critical section: instance create/check
+    if (instance == nullptr) {
+      instance = new Singleton();
     }
+    return instance;
+  }
 };
 
-// Initialize static members
+// Static members ki definitions
 Singleton *Singleton::instance = nullptr;
 mutex Singleton::mtx;
 
-int main()
-{
-    Singleton *s1 = Singleton::getInstance();
-    Singleton *s2 = Singleton::getInstance();
+int main() {
+  Singleton *s1 = Singleton::getInstance();
+  Singleton *s2 = Singleton::getInstance();
 
-    cout << (s1 == s2) << endl;
+  // true(1) => singleton behavior confirm.
+  cout << "s1 and s2 are same object? " << (s1 == s2) << endl;
 }

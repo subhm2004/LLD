@@ -10,6 +10,8 @@
 
 using namespace std;
 
+enum StrategyType { FLAT, PERCENT, PERCENT_WITH_CAP };
+
 // ----------------------------
 // Discount Strategy (Strategy Pattern)
 // ----------------------------
@@ -20,6 +22,8 @@ using namespace std;
 // apply.
 class DiscountStrategy {
 public:
+  // baseAmount ke against kitna discount dena hai, yeh concrete strategy decide
+  // karegi.
   virtual ~DiscountStrategy() {}
   virtual double calculate(double baseAmount) = 0;
 };
@@ -31,6 +35,8 @@ private:
 public:
   FlatDiscountStrategy(double amt) { amount = amt; }
   double calculate(double baseAmount) override {
+    // Flat discount kabhi base amount se bada nahi hona chahiye.
+    // Example: base=80, flat=100 => discount 80.
     return min(amount, baseAmount);
   }
 };
@@ -42,6 +48,7 @@ private:
 public:
   PercentageDiscountStrategy(double pct) { percent = pct; }
   double calculate(double baseAmount) override {
+    // Standard percentage formula.
     return (percent / 100.0) * baseAmount;
   }
 };
@@ -57,6 +64,7 @@ public:
     cap = capVal;
   }
   double calculate(double baseAmount) override {
+    // Pehle percent se discount nikalo, phir cap enforce karo.
     double disc = (percent / 100.0) * baseAmount;
     if (disc > cap) {
       return cap;
@@ -64,8 +72,6 @@ public:
     return disc;
   }
 };
-
-enum StrategyType { FLAT, PERCENT, PERCENT_WITH_CAP };
 
 // ----------------------------
 // DiscountStrategyManager (Singleton)
@@ -110,6 +116,9 @@ public:
   }
   DiscountStrategy *getStrategy(StrategyType type, double param1,
                                 double param2 = 0.0) const {
+    // Factory decision point:
+    // caller ko concrete class ka naam pata nahi hona chahiye.
+    // type ke basis par correct strategy object return karte hain.
     if (type == StrategyType::FLAT) {
       return new FlatDiscountStrategy(param1);
     }
@@ -145,6 +154,8 @@ public:
     this->category = category;
     this->price = price;
   }
+  // Simple getters: coupon eligibility aur cart total calculation me use hote
+  // hain.
   string getName() { return name; }
   string getCategory() const { return category; }
   double getPrice() { return price; }
@@ -160,6 +171,7 @@ public:
     product = prod;
     quantity = qty;
   }
+  // Ek cart line item ka subtotal (unit price * quantity).
   double itemTotal() { return product->getPrice() * quantity; }
   const Product *getProduct() { return product; }
 };
@@ -181,6 +193,12 @@ public:
   }
 
   void addProduct(Product *prod, int qty = 1) {
+    // Har add pe:
+    // 1) cart line create
+    // 2) original total update
+    // 3) current total update
+    // currentTotal later coupons apply hone par change hoga, originalTotal
+    // stable rahega.
     CartItem *item = new CartItem(prod, qty);
     items.push_back(item);
     originalTotal += item->itemTotal();
@@ -234,6 +252,10 @@ public:
   Coupon *getNext() { return next; }
 
   void applyDiscount(Cart *cart) {
+    // CoR step execution:
+    // - Agar current coupon applicable hai to discount apply karo.
+    // - Non-combinable ho to chain yahin stop.
+    // - Otherwise next coupon evaluate karo.
     if (isApplicable(cart)) {
       double discount = getDiscount(cart);
       cart->applyDiscount(discount);
@@ -267,6 +289,7 @@ public:
   SeasonalOffer(double pct, string cat) {
     percent = pct;
     category = cat;
+    // Seasonal rule ke liye percentage strategy bind ki gayi hai.
     strat = DiscountStrategyManager::getInstance()->getStrategy(
         StrategyType::PERCENT, percent);
   }
@@ -293,6 +316,7 @@ public:
     return strat->calculate(subtotal);
   }
   bool isCombinable() override { return true; }
+  // Human-readable coupon label (UI/logging ke liye).
   string name() override {
     return "Seasonal Offer " + to_string((int)percent) + " % off " + category;
   }
@@ -306,6 +330,7 @@ private:
 public:
   LoyaltyDiscount(double pct) {
     percent = pct;
+    // Loyalty coupon ke liye pure percent strategy.
     strat = DiscountStrategyManager::getInstance()->getStrategy(
         StrategyType::PERCENT, percent);
   }
@@ -331,6 +356,7 @@ public:
   BulkPurchaseDiscount(double thr, double off) {
     threshold = thr;
     flatOff = off;
+    // Bulk rule ke liye flat strategy.
     strat = DiscountStrategyManager::getInstance()->getStrategy(
         StrategyType::FLAT, flatOff);
   }
@@ -364,11 +390,15 @@ public:
     this->percent = percent;
     // Cap is a separate parameter (max discount); store it correctly.
     this->offCap = offCap;
+    // Banking offer ke liye capped-percent strategy.
     strat = DiscountStrategyManager::getInstance()->getStrategy(
         StrategyType::PERCENT_WITH_CAP, percent, offCap);
   }
   ~BankingCoupon() { delete strat; }
   bool isApplicable(Cart *cart) override {
+    // Dono conditions mandatory:
+    // 1) selected bank match
+    // 2) minimum spend threshold meet
     return cart->getPaymentBank() == bank &&
            cart->getOriginalTotal() >= minSpend;
   }
@@ -418,6 +448,8 @@ public:
   }
 
   void registerCoupon(Coupon *coupon) {
+    // Thread-safe append at chain tail.
+    // Order preserve hota hai, aur wahi order applyAll me follow hota hai.
     lock_guard<mutex> lock(mtx);
     if (!head) {
       head = coupon;
@@ -431,6 +463,9 @@ public:
   }
 
   vector<string> getApplicable(Cart *cart) const {
+    // Dry-run listing:
+    // discount apply nahi karta, sirf applicable coupon names collect karta
+    // hai.
     lock_guard<mutex> lock(mtx);
     vector<string> res;
     Coupon *cur = head;
@@ -444,6 +479,8 @@ public:
   }
 
   double applyAll(Cart *cart) {
+    // Chain head se sequentially apply.
+    // Exclusive coupon aate hi chain break ho sakti hai (base class behavior).
     lock_guard<mutex> lock(mtx);
     if (head) {
       head->applyDiscount(cart);
@@ -461,7 +498,7 @@ mutex CouponManager::instanceMtx;
 int main() {
 
   CouponManager *mgr = CouponManager::getInstance();
-  // Registration order = evaluation order in chain.
+  // Registration order = evaluation order in chain (important for CoR).
   mgr->registerCoupon(new SeasonalOffer(10, "Clothing"));
   mgr->registerCoupon(new LoyaltyDiscount(5));
   mgr->registerCoupon(new BulkPurchaseDiscount(1000, 100));
@@ -483,12 +520,14 @@ int main() {
   cout << "Original Cart Total: " << cart->getOriginalTotal() << " Rs" << endl;
 
   vector<string> applicable = mgr->getApplicable(cart);
+  // Step-1: user ko pehle dikhao kaunse coupons currently eligible hain.
   cout << "Applicable Coupons:" << endl;
   for (string name : applicable) {
     cout << " - " << name << endl;
   }
 
   double finalTotal = mgr->applyAll(cart);
+  // Step-2: actual discount chain apply karo.
   cout << "Final Cart Total after discounts: " << finalTotal << " Rs" << endl;
 
   // Cleanup code

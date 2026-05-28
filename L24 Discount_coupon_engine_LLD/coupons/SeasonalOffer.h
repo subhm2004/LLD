@@ -7,6 +7,12 @@
 
 namespace discount_coupon_lld {
 
+// -----------------------------------------------------------------------------
+// SeasonalOffer coupon
+// Kya karta hai:
+// - Category-level percentage discount deta hai.
+// - Example: "Clothing par 10% off"
+// -----------------------------------------------------------------------------
 class SeasonalOffer : public Coupon {
     double percent;
     std::string category;
@@ -15,11 +21,13 @@ class SeasonalOffer : public Coupon {
 public:
     SeasonalOffer(double pct, std::string cat)
         : percent(pct), category(std::move(cat)) {
+        // Seasonal discount math = percentage strategy
         strategy = DiscountStrategyManager::getInstance().createStrategy(StrategyType::PERCENT, percent);
     }
 
     ~SeasonalOffer() override { delete strategy; }
 
+    // Applicable tab hai jab cart me target category ka kam se kam ek item ho.
     bool isApplicable(Cart *cart) override {
         for (CartItem *item : cart->getItems()) {
             if (item->getProduct()->getCategory() == category) {
@@ -29,6 +37,8 @@ public:
         return false;
     }
 
+    // Discount base = sirf matching category items ka subtotal
+    // (poori cart par नहीं, category slice par percent)
     double getDiscount(Cart *cart) override {
         double subtotal = 0.0;
         for (CartItem *item : cart->getItems()) {

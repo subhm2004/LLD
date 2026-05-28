@@ -3,6 +3,12 @@
 
 namespace discount_coupon_lld {
 
+// -----------------------------------------------------------------------------
+// StrategyType
+// Kya karta hai:
+// - DiscountStrategyManager ko batata hai kaunsa discount math strategy object
+//   create karna hai.
+// -----------------------------------------------------------------------------
 enum class StrategyType { FLAT, PERCENT, PERCENT_WITH_CAP };
 
 }

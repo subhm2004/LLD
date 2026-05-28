@@ -14,8 +14,10 @@ using namespace std;
 // Discount Strategy (Strategy Pattern)
 // ----------------------------
 // Strategy intent:
-// - Discount math (flat / percent / capped-percent) is independent from coupon applicability rules.
-// - Each concrete Coupon composes a strategy to compute "how much" discount to apply.
+// - Discount math (flat / percent / capped-percent) is independent from coupon
+// applicability rules.
+// - Each concrete Coupon composes a strategy to compute "how much" discount to
+// apply.
 class DiscountStrategy {
 public:
   virtual ~DiscountStrategy() {}
@@ -70,18 +72,39 @@ enum StrategyType { FLAT, PERCENT, PERCENT_WITH_CAP };
 // ----------------------------
 // Factory + Singleton:
 // - Central place to create strategies; lets coupons ask for strategy by type.
-// - Returns heap-allocated strategies; each Coupon owns & deletes its strategy in destructor.
+// - Returns heap-allocated strategies; each Coupon owns & deletes its strategy
+// in destructor.
 class DiscountStrategyManager {
 private:
   static DiscountStrategyManager *instance;
+  // DCL support mutex:
+  // first check lock ke bina hota hai, second check lock ke andar.
+  // Is mutex ka purpose sirf singleton instance creation protect karna hai.
+  static mutex instanceMtx;
   DiscountStrategyManager() {}
-  DiscountStrategyManager(const DiscountStrategyManager &) = delete;
-  DiscountStrategyManager &operator=(const DiscountStrategyManager &) = delete;
+  DiscountStrategyManager(const DiscountStrategyManager &) =
+      delete; // copy constructor blocked
+  DiscountStrategyManager &operator=(const DiscountStrategyManager &) =
+      delete; // copy assignment blocked
+  DiscountStrategyManager(DiscountStrategyManager &&) =
+      delete; // move constructor blocked
+  DiscountStrategyManager &
+  operator=(DiscountStrategyManager &&) = delete; // move assignment blocked
+  // Destructor private hai: outside delete nahi kar paoge.
+  ~DiscountStrategyManager() {}
 
 public:
   static DiscountStrategyManager *getInstance() {
+    // -------- Double-Checked Locking (DCL) --------
+    // 1) Fast path: instance already bana hua hai to lock avoid.
+    // 2) Slow path: null ho to lock leke re-check karo.
+    // 3) Re-check mandatory hai because multiple threads first check tak
+    //    saath aa sakti hain.
     if (!instance) {
-      instance = new DiscountStrategyManager();
+      lock_guard<mutex> lock(instanceMtx);
+      if (!instance) {
+        instance = new DiscountStrategyManager();
+      }
     }
     return instance;
   }
@@ -101,13 +124,15 @@ public:
 };
 // Initialize static member
 DiscountStrategyManager *DiscountStrategyManager::instance = nullptr;
+mutex DiscountStrategyManager::instanceMtx;
 
 // ----------------------------
 // Assume existing Cart and Product classes
 // ----------------------------
 // Cart semantics:
 // - originalTotal: fixed baseline (used for eligibility like bulk/min-spend)
-// - currentTotal : mutable total after applying one or more discounts in the chain
+// - currentTotal : mutable total after applying one or more discounts in the
+// chain
 class Product {
 private:
   string name;
@@ -190,8 +215,10 @@ public:
 // ----------------------------
 // Chain of Responsibility intent:
 // - Coupons are linked in registration order.
-// - applyDiscount walks the chain; each coupon decides applicability + computes discount.
-// - isCombinable() allows "exclusive" coupons that stop the chain after applying.
+// - applyDiscount walks the chain; each coupon decides applicability + computes
+// discount.
+// - isCombinable() allows "exclusive" coupons that stop the chain after
+// applying.
 class Coupon {
 private:
   Coupon *next;
@@ -212,7 +239,8 @@ public:
       cart->applyDiscount(discount);
       cout << name() << " applied: " << discount << endl;
       if (!isCombinable()) {
-        // Exclusive coupon: once applied, no further coupons should be evaluated.
+        // Exclusive coupon: once applied, no further coupons should be
+        // evaluated.
         return;
       }
     }
@@ -244,7 +272,8 @@ public:
   }
   ~SeasonalOffer() { delete strat; }
   bool isApplicable(Cart *cart) override {
-    // Category-level eligibility: apply only if cart contains at least one item in `category`.
+    // Category-level eligibility: apply only if cart contains at least one item
+    // in `category`.
     for (CartItem *item : cart->getItems()) {
       if (item->getProduct()->getCategory() == category) {
         return true;
@@ -253,7 +282,8 @@ public:
     return false;
   }
   double getDiscount(Cart *cart) override {
-    // Category-level discount base is subtotal of matching category items (not full cart).
+    // Category-level discount base is subtotal of matching category items (not
+    // full cart).
     double subtotal = 0.0;
     for (CartItem *item : cart->getItems()) {
       if (item->getProduct()->getCategory() == category) {
@@ -282,7 +312,8 @@ public:
   ~LoyaltyDiscount() { delete strat; }
   bool isApplicable(Cart *cart) override { return cart->isLoyaltyMember(); }
   double getDiscount(Cart *cart) override {
-    // Cart-level: runs on currentTotal so earlier coupons reduce the base for later coupons.
+    // Cart-level: runs on currentTotal so earlier coupons reduce the base for
+    // later coupons.
     return strat->calculate(cart->getCurrentTotal());
   }
   string name() override {
@@ -305,7 +336,8 @@ public:
   }
   ~BulkPurchaseDiscount() { delete strat; }
   bool isApplicable(Cart *cart) override {
-    // Eligibility uses originalTotal so threshold doesn't change as discounts apply.
+    // Eligibility uses originalTotal so threshold doesn't change as discounts
+    // apply.
     return cart->getOriginalTotal() >= threshold;
   }
   double getDiscount(Cart *cart) override {
@@ -353,20 +385,34 @@ public:
 // CouponManager (Singleton)
 // ----------------------------
 // Thread-safety:
-// - register / list-applicable / apply-all hold a mutex, so chain isn't mutated while iterating.
-// Ownership:
+// - register / list-applicable / apply-all hold a mutex, so chain isn't mutated
+// while iterating. Ownership:
 // - head owns the chain (Coupon destructor deletes `next` recursively).
 class CouponManager {
 private:
   static CouponManager *instance;
+  // Singleton creation ke liye dedicated mutex (DCL).
+  // Note: yeh `mtx` (coupon chain operations lock) se alag hai.
+  static mutex instanceMtx;
   Coupon *head;
   mutable mutex mtx;
   CouponManager() { head = nullptr; }
 
 public:
   static CouponManager *getInstance() {
+    // -------- Double-Checked Locking (DCL) --------
+    // Fast path:
+    //   Agar instance bana hua hai to lock lene ki zarurat nahi.
+    // Slow path:
+    //   Null mile to lock lo, phir dobara check karo, phir create karo.
+    // Isse:
+    //   - duplicate construction avoid hota hai
+    //   - already-created case me unnecessary locking bachta hai
     if (!instance) {
-      instance = new CouponManager();
+      lock_guard<mutex> lock(instanceMtx);
+      if (!instance) {
+        instance = new CouponManager();
+      }
     }
     return instance;
   }
@@ -407,6 +453,7 @@ public:
 };
 // Initialize static instance pointer
 CouponManager *CouponManager::instance = nullptr;
+mutex CouponManager::instanceMtx;
 
 // ----------------------------
 // Main: Client code (heap allocations and pointers)
@@ -445,7 +492,8 @@ int main() {
   cout << "Final Cart Total after discounts: " << finalTotal << " Rs" << endl;
 
   // Cleanup code
-  // Note: Coupon chain is intentionally not deleted here since manager is a process-lifetime singleton.
+  // Note: Coupon chain is intentionally not deleted here since manager is a
+  // process-lifetime singleton.
   delete p1;
   delete p2;
   delete p3;

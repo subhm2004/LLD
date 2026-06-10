@@ -1,14 +1,14 @@
 # Low-Level Design (LLD) — Complete Master Repository Guide
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2500&pause=800&color=2F81F7&center=true&vCenter=true&width=900&lines=Master+LLD+Guide+%E2%80%94+2400%2B+Lines;40+Lessons+%7C+36+System+Projects;23%2B+GoF+Patterns+%7C+Interview+Deep+Dives" alt="Typing animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&duration=2500&pause=800&color=2F81F7&center=true&vCenter=true&width=900&lines=Master+LLD+Guide+%E2%80%94+2600%2B+Lines;40+Lessons+%7C+37+Diagrammed+Systems;23%2B+GoF+Patterns+%7C+Interview+Deep+Dives" alt="Typing animation" />
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Language-C%2B%2B17-blue?style=for-the-badge" alt="C++ Badge" />
   <img src="https://img.shields.io/badge/Lessons-L0%E2%80%93L40-6f42c1?style=for-the-badge" alt="Lessons badge" />
-  <img src="https://img.shields.io/badge/System+Projects-36-success?style=for-the-badge" alt="Projects badge" />
-  <img src="https://img.shields.io/badge/UML-36+Systems-FB8500?style=for-the-badge" alt="UML badge" />
+  <img src="https://img.shields.io/badge/System+Projects-37+-success?style=for-the-badge" alt="Projects badge" />
+  <img src="https://img.shields.io/badge/UML-37+Systems-FB8500?style=for-the-badge" alt="UML badge" />
   <img src="https://img.shields.io/badge/Focus-Interview%20Ready-orange?style=for-the-badge" alt="Interview badge" />
 </p>
 
@@ -16,12 +16,14 @@
 
 | Jump to | |
 |---------|---|
-| [5-min path](#quick-start-5-minutes) | First week roadmap |
-| [UML hub](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | 36 systems — class + sequence diagrams (Mermaid) |
+| [Fresher path](#fresher-interview-path-8-weeks) | **Start here if interview prep** — curated 8 projects |
+| [5-min path](#quick-start-5-minutes) | First compile in 5 minutes |
+| [UML hub](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) | 37 systems — class + sequence diagrams (Mermaid) |
 | [Pattern map](docs/PROJECT_DESIGN_PATTERNS.md) | 70+ projects × kaunsa pattern kahan |
 | [Design patterns](docs/Design_Patterns.md) | GoF complete guide + repo lesson links |
 | [Pattern types](docs/Design_Pattern_types.md) | Creational / Structural / Behavioral quick list |
 | [SOLID](docs/SOLID.md) | S · O · L · I · D — principles + violated vs fixed |
+| [SOLID deep dive](SOLID_HIGH_LOW_MODULES_DETAILED.md) | High/low modules, OCP, DIP, SRP break patterns |
 | [Concurrency](Multi_threading_C++/README.md) | Threads, pools, LC problems |
 
 ```mermaid
@@ -32,7 +34,7 @@ flowchart LR
         B[L7-L40 Patterns]
     end
     subgraph build [Build]
-        C[36 Systems]
+        C[37 Systems]
         D[main.cpp demos]
     end
     subgraph ship [Interview]
@@ -54,27 +56,28 @@ flowchart LR
 2. [Repository Statistics](#repository-statistics)
 3. [Why This Repository Exists](#why-this-repository-exists)
 4. [How To Use This Repository](#how-to-use-this-repository)
-5. [Recommended Learning Roadmap](#recommended-learning-roadmap)
-6. [Repository Layout At Root](#repository-layout-at-root)
-7. [Foundation Track — L0 to L6](#foundation-track--l0-to-l6)
-8. [Pattern & System Track — L7 to L20](#pattern--system-track--l7-to-l20)
-9. [Advanced Patterns & Systems — L21 to L40](#advanced-patterns--systems--l21-to-l40)
-10. [Standalone System Implementations](#standalone-system-implementations)
-11. [Multi-Threading Module](#multi-threading-module)
-12. [Design Pattern Coverage Matrix](#design-pattern-coverage-matrix)
-13. [Interview Preparation Playbook](#interview-preparation-playbook)
-14. [Compilation & Run Guide](#compilation--run-guide)
-15. [Standard Project Structure Convention](#standard-project-structure-convention)
-16. [Reference Materials In Repo](#reference-materials-in-repo)
-17. [Extension Exercises](#extension-exercises)
-18. [Quick Navigation Index](#quick-navigation-index)
-19. [System Projects — Deep Dive & Interview Bank](#system-projects--deep-dive--interview-bank)
-20. [Company-Wise Problem Mapping](#company-wise-problem-mapping)
-21. [12-Week Study Calendar](#12-week-study-calendar)
-22. [FAQ — Frequently Asked Questions](#faq--frequently-asked-questions)
-23. [Troubleshooting — Build & IDE](#troubleshooting--build--ide)
-24. [Glossary](#glossary)
-25. [Changelog & Maintenance](#changelog--maintenance)
+5. [Fresher Interview Path (8 Weeks)](#fresher-interview-path-8-weeks)
+6. [Recommended Learning Roadmap](#recommended-learning-roadmap)
+7. [Repository Layout At Root](#repository-layout-at-root)
+8. [Foundation Track — L0 to L6](#foundation-track--l0-to-l6)
+9. [Pattern & System Track — L7 to L20](#pattern--system-track--l7-to-l20)
+10. [Advanced Patterns & Systems — L21 to L40](#advanced-patterns--systems--l21-to-l40)
+11. [Standalone System Implementations](#standalone-system-implementations)
+12. [Multi-Threading Module](#multi-threading-module)
+13. [Design Pattern Coverage Matrix](#design-pattern-coverage-matrix)
+14. [Interview Preparation Playbook](#interview-preparation-playbook)
+15. [Compilation & Run Guide](#compilation--run-guide)
+16. [Standard Project Structure Convention](#standard-project-structure-convention)
+17. [Reference Materials In Repo](#reference-materials-in-repo)
+18. [Extension Exercises](#extension-exercises)
+19. [Quick Navigation Index](#quick-navigation-index)
+20. [System Projects — Deep Dive & Interview Bank](#system-projects--deep-dive--interview-bank)
+21. [Company-Wise Problem Mapping](#company-wise-problem-mapping)
+22. [12-Week Study Calendar](#12-week-study-calendar)
+23. [FAQ — Frequently Asked Questions](#faq--frequently-asked-questions)
+24. [Troubleshooting — Build & IDE](#troubleshooting--build--ide)
+25. [Glossary](#glossary)
+26. [Changelog & Maintenance](#changelog--maintenance)
 
 ---
 
@@ -106,7 +109,32 @@ cd Parking_lot_system_LLD
 ./parking_app
 ```
 
-**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (36 systems, ~5000+ lines Mermaid).
+**Diagrams:** Har major system ke class + sequence diagrams → [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) (37 systems, ~5500+ lines Mermaid).
+
+---
+
+## Fresher Interview Path (8 Weeks)
+
+> **Repo me 40+ lessons aur 37+ systems hain — fresher ko sab ek saath nahi karna.** Neeche wala path interview-focused minimum set hai.
+
+| Week | Focus | Must-do folders |
+| ---- | ----- | --------------- |
+| 1 | OOP + UML basics | [L2 OOPS_1](./L2%20OOPS_1/README.md), [L3 OOPS_2](./L3%20OOPS_2/README.md), [L4 UML](./L4%20UML_Diagrams/README.md) |
+| 2 | SOLID + core patterns | [L5 SOLID_1](./L5%20SOLID_1/README.md), [L6 SOLID_2](./L6%20SOLID_2/README.md), [L8 Strategy](./L8%20Strategy_Design_Patterns/), [L9 Factory](./L9%20Factory_Design_Pattern/) |
+| 3 | Classic LLD #1 | [Parking Lot](./Parking_lot_system_LLD/), [LRU Cache](./LRU_Cache_LLD/) |
+| 4 | Classic LLD #2 | [Elevator](./Elevator_System_LLD/), [Rate Limiter](./Rate_Limiter_LLD/) |
+| 5 | Payment systems | [L23 Payment Gateway](./L23%20Payment_gateway_system_LLD/), [GPay](./GPay_LLD/) |
+| 6 | Coupon + split | [L24 Discount Coupon](./L24%20Discount_coupon_engine_LLD/), [Splitwise L31](./L31%20Splitwise_LLD/) |
+| 7 | Patterns depth | [L10 Singleton](./L10%20Singleton_Design_Pattern/), [L12 Observer](./L12%20Observer_Design_Pattern/), [L25 Bridge](./L25%20Bridge_design_pattern/) |
+| 8 | Mock + diagrams | Whiteboard 3 projects + [UML §37 Payment](./docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md#37-payment-gateway-multi-gateway--l23) |
+
+**Deep theory (optional but high value):**
+
+- [`SOLID_HIGH_LOW_MODULES_DETAILED.md`](./SOLID_HIGH_LOW_MODULES_DETAILED.md) — SRP/OCP/DIP, high vs low modules, factory trade-offs
+- [`L2 OOPS_1/OOPS_COMPLETE_GUIDE.md`](./L2%20OOPS_1/OOPS_COMPLETE_GUIDE.md) — canonical L2 theory
+- [`L3 OOPS_2/OOPS_COMPLETE_GUIDE.md`](./L3%20OOPS_2/OOPS_COMPLETE_GUIDE.md) — canonical L3 theory
+
+**Per-project workflow:** `problem_statement.md` → classes whiteboard → `./compile.sh` → 3 interview Q self-answer.
 
 ---
 
@@ -117,7 +145,7 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | Category               | Count        | Description                                                             |
 | ---------------------- | ------------ | ----------------------------------------------------------------------- |
 | **Lesson modules**     | L0 – L40     | Intro, Has-A relationships, OOP, SOLID, UML, patterns, system hybrids |
-| **Standalone systems** | 36 projects  | CricBuzz, Collaborative Editor, In-Memory SQL DB, Razorpay, GPay + more   |
+| **Standalone systems** | 37+ projects | CricBuzz, Collaborative Editor, In-Memory SQL DB, Razorpay, GPay, L23 Payment Gateway + more |
 | **Concurrency labs**   | 1 folder     | `Multi_threading_C++` — threads, mutex, semaphores, thread pool, DCLP   |
 | **Reference assets**   | PDFs, images | Gang of Four, DDIA, design pattern cheat sheets                         |
 
@@ -133,8 +161,8 @@ Yeh repository **Low-Level Design (LLD)** seekhne ke liye banayi gayi hai — th
 | ------------------------------------ | ------------------------------------------------------------------------------------- |
 | Total C++/header source files        | ~490+                                                                                 |
 | Lesson folders (L0–L40)              | 41                                                                                    |
-| Runnable system demos                | 36                                                                                    |
-| Projects with dedicated `README.md`  | 24+                                                                                   |
+| Runnable system demos                | 37+ (UML diagram index)                                                               |
+| Projects with dedicated `README.md`  | 90+                                                                                   |
 | Design patterns demonstrated         | 20+ (GoF + Null Object)                                                               |
 | Projects with `problem_statement.md` | 28+                                                                                   |
 | UML class + sequence diagrams        | [`SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md`](docs/SYSTEM_CLASS_AND_SEQUENCE_DIAGRAMS.md) |
@@ -149,7 +177,7 @@ Zyada tar LLD preparation in points par atak jaati hai:
 | ------------------------------------------------- | ---------------------------------------------------------------------- |
 | Theory samajh aata hai, code me convert nahi hota | Har concept ke saath runnable `.cpp` / modular headers                 |
 | Code likh lete hain, extensibility weak hoti hai  | SOLID + OCP-focused refactors (e.g. L7 Bad vs Good design)             |
-| Sirf 1–2 problems solve kiye                      | 36 full systems + 10+ lesson-level LLDs                               |
+| Sirf 1–2 problems solve kiye                      | 37+ diagrammed systems + 10+ lesson-level LLDs                       |
 | Patterns yaad hain, use-case nahi                 | Har pattern ke saath real domain (ATM, Food Delivery, Payment Gateway) |
 | Interview me sirf code, design explain nahi       | Har project me assumptions, trade-offs, extension hooks                |
 
@@ -230,16 +258,18 @@ L15 Command → L21 Proxy → L31 Splitwise → L37 Chess (see full list below)
 
 ### Phase 4 — System Projects (Week 9–12)
 
-Priority interview list:
+**Fresher priority (must-do):** see [Fresher Interview Path](#fresher-interview-path-8-weeks) above.
+
+**Extended interview list:**
 
 1. [Parking Lot](#parking_lot_system_lld)
-2. [BookMyShow / Movie Ticket](#movie_ticket_booking_system)
-3. [LRU Cache](#lru_cache_lld) + [Rate Limiter](#rate_limiter_lld)
-4. [Elevator](#elevator_system_lld)
-5. [Splitwise](#l31-splitwise_lld) (lesson) + [Uber](#uber_lld)
-6. [WhatsApp](#whatsapp_lld)
-7. [Load Balancer](#loadbalancer_lld)
-8. [Logger](#logger_lld)
+2. [LRU Cache](#lru_cache_lld) + [Rate Limiter](#rate_limiter_lld)
+3. [L23 Payment Gateway](#l23-payment_gateway_system_lld) + [GPay](#gpay_lld)
+4. [L24 Discount Coupon](#l24-discount_coupon_engine_lld) + [Splitwise L31](#l31-splitwise_lld)
+5. [Elevator](#elevator_system_lld)
+6. [BookMyShow / Movie Ticket](#movie_ticket_booking_system)
+7. [WhatsApp](#whatsapp_lld) + [Uber](#uber_lld)
+8. [Load Balancer](#loadbalancer_lld) + [Logger](#logger_lld)
 
 ---
 
@@ -301,8 +331,9 @@ flowchart LR
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
 | **Path**           | [`L2 OOPS_1/`](./L2%20OOPS_1/)                                                                                                  |
 | **Master guide**   | [**`OOPS_COMPLETE_GUIDE.md`**](./L2%20OOPS_1/OOPS_COMPLETE_GUIDE.md) — full OOP fundamentals + Encapsulation + Abstraction       |
-| **Also**           | [`OOPS_1_COMPLETE.md`](./L2%20OOPS_1/OOPS_1_COMPLETE.md) · [`OOPS_ADVANCED_CPP.md`](./L2%20OOPS_1/OOPS_ADVANCED_CPP.md) · [`notes/`](./L2%20OOPS_1/notes/) |
-| **Code**           | `C++ Code/` **01–19** — fundamentals, pillars, memory, RAII, smart ptr, object pool                                            |
+| **Also**           | [`README.md`](./L2%20OOPS_1/README.md) (canonical index) · [`OOPS_1_COMPLETE.md`](./L2%20OOPS_1/OOPS_1_COMPLETE.md) (alias) · [`OOPS_ADVANCED_CPP.md`](./L2%20OOPS_1/OOPS_ADVANCED_CPP.md) · [`notes/`](./L2%20OOPS_1/notes/) |
+| **Code**           | `C++ Code/` **01–20** — fundamentals, pillars, memory, RAII, smart ptr, object pool, `inline static` use case                |
+| **Error handling** | [`notes/06_oop_api_error_handling.md`](./L2%20OOPS_1/notes/06_oop_api_error_handling.md) — exception vs status approach         |
 | **Has-A (moved)**  | Ab [`L1 Composition`](#l1-composition) — pehle `L2 OOPS_1/Composition/` tha                                                  |
 | **Key takeaway**   | OOP fundamentals — phir L3 inheritance                                                                                         |
 
@@ -314,8 +345,9 @@ flowchart LR
 | ------------------ | ---------------------------------------------------------------------------------------------------------- |
 | **Path**           | [`L3 OOPS_2/`](./L3%20OOPS_2/)                                                                             |
 | **Master guide**   | [**`OOPS_COMPLETE_GUIDE.md`**](./L3%20OOPS_2/OOPS_COMPLETE_GUIDE.md) — Inheritance + Polymorphism + composition |
-| **Also**           | [`OOPS_2_COMPLETE.md`](./L3%20OOPS_2/OOPS_2_COMPLETE.md) · [`notes/`](./L3%20OOPS_2/notes/)               |
-| **Files**          | `01_Inheritance.cpp`, `02_Static_Polymorphism.cpp`, `03_Dynamic_Polymorphism.cpp`, `04_Static_And_Dynamic_Polymorphism.cpp`, `05_Composition_Vs_Inheritance.cpp` |
+| **Also**           | [`README.md`](./L3%20OOPS_2/README.md) (canonical index) · [`OOPS_2_COMPLETE.md`](./L3%20OOPS_2/OOPS_2_COMPLETE.md) (alias) · [`notes/`](./L3%20OOPS_2/notes/) |
+| **Code**           | `C++ Code/` **00–18** (19 demos) — inheritance, polymorphism, diamond, RTTI, covariant returns               |
+| **Error handling** | [`notes/10_oop_api_error_handling.md`](./L3%20OOPS_2/notes/10_oop_api_error_handling.md) — exception vs status in OOP APIs |
 | **Key takeaway**   | 4 pillars complete — static overload vs virtual override, `virtual ~Base()`                                |
 
 ---
@@ -341,6 +373,8 @@ flowchart LR
 |                |                                  |
 | -------------- | -------------------------------- |
 | **Path**       | [`L5 SOLID_1/`](./L5%20SOLID_1/) |
+| **README**     | [`L5 SOLID_1/README.md`](./L5%20SOLID_1/README.md) — study order + SRP/OCP/DIP cross-map |
+| **Deep dive**  | [`SOLID_HIGH_LOW_MODULES_DETAILED.md`](./SOLID_HIGH_LOW_MODULES_DETAILED.md) |
 | **Principles** | SRP, OCP, LSP (part 1)           |
 | **Domain**     | E-commerce shopping cart         |
 
@@ -359,6 +393,8 @@ Also: `LSP_followed_wrongly.cpp` — subtle LSP mistake (worth studying).
 |                |                                                                                     |
 | -------------- | ----------------------------------------------------------------------------------- |
 | **Path**       | [`L6 SOLID_2/`](./L6%20SOLID_2/)                                                    |
+| **README**     | [`L6 SOLID_2/README.md`](./L6%20SOLID_2/README.md) — ISP/DIP + LSP rules index      |
+| **Deep dive**  | [`SOLID_HIGH_LOW_MODULES_DETAILED.md`](./SOLID_HIGH_LOW_MODULES_DETAILED.md)        |
 | **Principles** | ISP, DIP, LSP formal rules                                                          |
 | **ISP**        | Fat `Shape` with `volume()` → 2D shapes throw; fix: `Shape2D` / `Shape3D`           |
 | **DIP**        | `UserService` depends on `IDatabase`, not `MySQL` directly                          |
@@ -663,24 +699,25 @@ Note: Yeh full ATM LLD nahi hai — pattern demo hai. Full ATM ke liye [`ATM_LLD
 | **Pattern** | **Bridge**                                                                     |
 | **Domain**  | `Car` abstraction × `Engine` implementation — avoid `SedanPetrolCar` explosion |
 | **File**    | `C++ Code/BridgePattern.cpp`                                                   |
+| **Notes**   | [`Notes/Builder_design_pattern.md`](./L25%20Bridge_design_pattern/Notes/Builder_design_pattern.md) — class explosion + Bridge vs Strategy |
 
 ---
 
-### L26 Blinkit_LLD
+### L26 Blinkit / Zepto (Inventory Management)
 
-|          |                                            |
-| -------- | ------------------------------------------ |
-| **Path** | [`L26 Blinkit_LLD/`](./L26%20Blinkit_LLD/) |
-| **Type** | Quick commerce / dark store delivery       |
+|          |                                                                                          |
+| -------- | ---------------------------------------------------------------------------------------- |
+| **Path** | [`L26 Blinkit_or_Zepto_(Inventory_Management)_LLD/`](./L26%20Blinkit_or_Zepto_(Inventory_Management)_LLD/) |
+| **Type** | Quick commerce / dark store inventory + cart                                             |
+| **Docs** | `problem.md`, `requirements.md`                                                          |
+| **Code** | Modular headers (`core/`, `models/`, `inventory/`) + `C++ Code/ZeptoClone.cpp` monolith  |
 
 **Components:**
 
-- `DarkStore`, `DarkStoreManager` — geo-based store selection
-- `InventoryManager`, `InMemoryInventoryStore` — reserve/deduct stock
-- `OrderManager` — state machine: PLACED → … → DELIVERED / CANCELLED
-- `ProductFactory`, dynamic delivery fee (base + distance + surge)
-
-**Also:** `C++ Code/ZeptoClone.cpp` — alternate implementation
+- `BlinkitSystem` — orchestration
+- `Inventory` — stock reserve/deduct
+- `Product`, `UserCart` — domain models
+- `ZeptoClone.cpp` — alternate single-file reference implementation
 
 ---
 
@@ -1605,6 +1642,8 @@ g++ -std=c++17 -pthread dining_philosophers.cpp -o dp && ./dp
 | **I**  | Small interfaces > fat interfaces            |
 | **D**  | Depend on abstractions, not concretions      |
 
+**Deep dive:** [`SOLID_HIGH_LOW_MODULES_DETAILED.md`](./SOLID_HIGH_LOW_MODULES_DETAILED.md) — SRP break patterns, OCP/DIP violations, high vs low modules, Appendix C sample answers.
+
 ---
 
 ## Compilation & Run Guide
@@ -1709,6 +1748,9 @@ chmod +x scripts/build_all_systems.sh
 | [`books/`](./books/) DDIA PDF                                    | Scalability, storage, distributed systems thinking                                         |
 | [`assets/sheets/`](./assets/sheets/) `.webp` cheat sheets        | Quick visual revision                                                                      |
 | [`docs/Design_Pattern_types.md`](./docs/Design_Pattern_types.md) | Creational/Structural/Behavioral taxonomy (Hindi)                                          |
+| [`SOLID_HIGH_LOW_MODULES_DETAILED.md`](./SOLID_HIGH_LOW_MODULES_DETAILED.md) | SRP/OCP/DIP, high vs low modules, factory trade-offs, interview Q&A answers |
+| [`L2 OOPS_1/OOPS_COMPLETE_GUIDE.md`](./L2%20OOPS_1/OOPS_COMPLETE_GUIDE.md) | Canonical OOP Part 1 (L2) |
+| [`L3 OOPS_2/OOPS_COMPLETE_GUIDE.md`](./L3%20OOPS_2/OOPS_COMPLETE_GUIDE.md) | Canonical OOP Part 2 (L3) |
 | [`assets/images/`](./assets/images/) pattern/problem PNGs        | Interview aids                                                                             |
 | Per-lesson `Notes.pdf`, `UML.jpeg`                               | Lesson-specific diagrams                                                                   |
 | [`Exception_Handling/`](./Exception_Handling/)                   | [**Complete guide**](./Exception_Handling/EXCEPTION_HANDLING_COMPLETE.md) + 14 C++17 demos |
@@ -1772,7 +1814,7 @@ Har project complete karne ke baad yeh try karo:
 | L23 | Payment Gateway LLD           | [L23](./L23%20Payment_gateway_system_LLD/)                   |
 | L24 | Discount Coupon Engine        | [L24](./L24%20Discount_coupon_engine_LLD/)                   |
 | L25 | Bridge                        | [L25](./L25%20Bridge_design_pattern/)                        |
-| L26 | Blinkit_LLD                   | [L26](./L26%20Blinkit_LLD/)                                  |
+| L26 | Blinkit / Zepto Inventory     | [L26](./L26%20Blinkit_or_Zepto_(Inventory_Management)_LLD/)  |
 | L27 | Tinder_LLD                    | [L27](./L27%20Tinder_LLD/)                                   |
 | L28 | Builder                       | [L28](./L28%20Builder_design_pattern/)                       |
 | L29 | Iterator                      | [L29](./L29%20Iterator_design_pattern/)                      |
@@ -2602,12 +2644,18 @@ Need undo?                          → Command / Memento
 | 2026 | Updated `WhatsApp_LLD` — §16 UML + README: session encryption, delete-for-me / delete-for-everyone                          |
 | 2026 | **L0 Introduction** + **L1 Composition** (moved from `L2 OOPS_1/Composition/`); root README foundation track updated          |
 | 2026 | **L4 UML_Diagrams** reorganized — `C++ Code/`, `notes/`, `compile.sh`, `INHERITANCE_AND_COMPOSITION.md`                        |
+| 2026 | Added `SOLID_HIGH_LOW_MODULES_DETAILED.md` — high/low modules, OCP, DIP, SRP break patterns, interview appendix answers          |
+| 2026 | **L2/L3 OOPS** docs sync — canonical README index, error handling notes, corrupted notes cleanup                               |
+| 2026 | **L5/L6 SOLID** README guides + cross-links to deep SOLID doc                                                                  |
+| 2026 | **L23 Payment Gateway** §37 UML — retry, subscriptions, multi-gateway receipts (Paytm/Razorpay/PayPal)                         |
+| 2026 | **L25 Bridge** detailed notes + Hinglish comments in `BridgePattern.cpp`                                                       |
+| 2026 | Root README — fresher 8-week path, 37-system count sync, L26 folder path fix                                                   |
 
 **Maintainer checklist:**
 
 - [x] Har naye project me `problem_statement.md`, `requirements.md`, `compile.sh`
 - [x] Root README me project table update
-- [x] Diagram file me naya section add (§36 CricBuzz; §35 Collaborative Editor; §34 In-Memory SQL DB; §33 Razorpay)
+- [x] Diagram file me naya section add (§37 L23 Payment Gateway; §36 CricBuzz; §35 Collaborative Editor; §34 In-Memory SQL DB; §33 Razorpay)
 - [ ] `./scripts/build_all_systems.sh` green before push
 
 ---

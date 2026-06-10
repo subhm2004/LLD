@@ -4,11 +4,14 @@
 #include <bits/stdc++.h>
 
 #include "../inventory/Inventory.h"
+#include "../inventory/ReplenishStrategy.h"
 #include "../models/UserCart.h"
 
 using namespace std;
 
 namespace blinkit_lld {
+
+constexpr double kServiceRadiusKm = 5.0;
 
 enum class OrderStatus {
     PLACED,
@@ -35,13 +38,52 @@ struct DeliveryFeeBreakdown {
     double totalFee;
 };
 
+class DeliveryPartner {
+public:
+    explicit DeliveryPartner(string name) : name_(std::move(name)) {}
+    const string &getName() const { return name_; }
+
+private:
+    string name_;
+};
+
+struct OrderLineItem {
+    int sku;
+    string productName;
+    int quantity;
+    double unitPrice;
+};
+
+struct OrderFulfillmentSlice {
+    string darkStoreName;
+    vector<OrderLineItem> items;
+    string deliveryPartnerName;
+};
+
 class DarkStore {
 public:
-    DarkStore(string name, double x, double y) : name_(std::move(name)), x_(x), y_(y), inventory_(new InventoryManager(new InMemoryInventoryStore())) {}
-    ~DarkStore() { delete inventory_; }
+    DarkStore(string name, double x, double y, InventoryStoreType storeType = InventoryStoreType::DB)
+        : name_(std::move(name)), x_(x), y_(y), inventory_(new InventoryManager(InventoryStoreFactory::create(storeType))),
+          replenishStrategy_(nullptr) {}
+
+    ~DarkStore() {
+        delete inventory_;
+        delete replenishStrategy_;
+    }
 
     double distanceTo(double ux, double uy) const {
         return sqrt((x_ - ux) * (x_ - ux) + (y_ - uy) * (y_ - uy));
+    }
+
+    void setReplenishStrategy(ReplenishStrategy *strategy) {
+        delete replenishStrategy_;
+        replenishStrategy_ = strategy;
+    }
+
+    void runReplenishment(const map<int, int> &itemsToReplenish) {
+        if (replenishStrategy_ != nullptr) {
+            replenishStrategy_->replenish(inventory_, itemsToReplenish);
+        }
     }
 
     void addStock(int sku, int qty) { inventory_->addStock(sku, qty); }
@@ -55,6 +97,7 @@ private:
     double x_;
     double y_;
     InventoryManager *inventory_;
+    ReplenishStrategy *replenishStrategy_;
 };
 
 class DarkStoreManager {
@@ -66,21 +109,44 @@ public:
 
     void registerDarkStore(DarkStore *store) { stores_.push_back(store); }
 
-    vector<DarkStore *> nearbyStores(double ux, double uy, double maxDistance) const {
+    vector<DarkStore *> nearbyStores(double ux, double uy, double maxDistanceKm) const {
         vector<pair<double, DarkStore *>> candidates;
         for (DarkStore *store : stores_) {
             const double distance = store->distanceTo(ux, uy);
-            if (distance <= maxDistance) {
+            if (distance <= maxDistanceKm) {
                 candidates.push_back({distance, store});
             }
         }
-        sort(candidates.begin(), candidates.end(), [](const auto &a, const auto &b) { return a.first < b.first; });
+        sort(candidates.begin(), candidates.end(),
+             [](const auto &a, const auto &b) { return a.first < b.first; });
 
         vector<DarkStore *> result;
         for (const auto &entry : candidates) {
             result.push_back(entry.second);
         }
         return result;
+    }
+
+    void showCatalogWithinRadius(double ux, double uy, double radiusKm, const string &userName) const {
+        cout << "\n[Catalog] Products available within " << radiusKm << " KM for " << userName << ":\n";
+        const vector<DarkStore *> nearby = nearbyStores(ux, uy, radiusKm);
+        if (nearby.empty()) {
+            cout << "  No dark stores in range.\n";
+            return;
+        }
+
+        map<int, pair<string, double>> skuCatalog;
+        for (DarkStore *store : nearby) {
+            for (Product *product : store->products()) {
+                if (skuCatalog.count(product->getSku()) == 0) {
+                    skuCatalog[product->getSku()] = {product->getName(), product->getPrice()};
+                }
+            }
+        }
+
+        for (const auto &entry : skuCatalog) {
+            cout << "  SKU " << entry.first << " - " << entry.second.first << " @ Rs " << entry.second.second << "\n";
+        }
     }
 
     ~DarkStoreManager() {
@@ -101,39 +167,114 @@ public:
     }
 
     int placeOrder(User *user) {
-        auto stores = DarkStoreManager::getInstance()->nearbyStores(user->getX(), user->getY(), 5.0);
-        if (stores.empty()) {
-            cout << "No nearby dark store found.\n";
+        const vector<pair<Product *, int>> requestedItems = user->getCart()->getItems();
+        if (requestedItems.empty()) {
+            cout << "Cart is empty.\n";
             return -1;
         }
 
-        DarkStore *store = stores.front();
-        const double distanceKm = store->distanceTo(user->getX(), user->getY());
-        const DeliveryFeeBreakdown fee = calculateDeliveryFee(distanceKm);
-        const int orderId = ++orderCounter_;
-        orderStatus_[orderId] = OrderStatus::PLACED;
-
-        cout << "Placing order #" << orderId << " from " << store->getName() << " for user " << user->getName() << "\n";
-        double total = 0.0;
-
-        for (const auto &entry : user->getCart()->getItems()) {
-            Product *product = entry.first;
-            const int qty = entry.second;
-            if (store->checkStock(product->getSku()) < qty) {
-                cout << "Out of stock: " << product->getName() << "\n";
-                continue;
-            }
-            store->removeStock(product->getSku(), qty);
-            total += product->getPrice() * qty;
-            cout << "  " << product->getName() << " x " << qty << "\n";
+        vector<DarkStore *> nearbyStores =
+            DarkStoreManager::getInstance()->nearbyStores(user->getX(), user->getY(), kServiceRadiusKm);
+        if (nearbyStores.empty()) {
+            cout << "No dark stores within " << kServiceRadiusKm << " KM. Cannot fulfill order.\n";
+            return -1;
         }
 
-        cout << "Item Total: " << total << "\n";
-        cout << "Delivery Fee [Base: " << fee.baseFee
-             << ", DistanceFee: " << fee.distanceFee
-             << ", Surge: x" << fee.surgeMultiplier
-             << ", Total: " << fee.totalFee << "]\n";
-        cout << "Final Payable Amount: " << (total + fee.totalFee) << "\n";
+        const int orderId = ++orderCounter_;
+        orderStatus_[orderId] = OrderStatus::PLACED;
+        vector<OrderFulfillmentSlice> slices;
+        map<int, int> remaining;
+
+        for (const auto &item : requestedItems) {
+            remaining[item.first->getSku()] += item.second;
+        }
+
+        DarkStore *firstStore = nearbyStores.front();
+        bool allInFirstStore = true;
+        for (const auto &entry : remaining) {
+            if (firstStore->checkStock(entry.first) < entry.second) {
+                allInFirstStore = false;
+                break;
+            }
+        }
+
+        cout << "\n[OrderManager] Placing order #" << orderId << " for " << user->getName() << "\n";
+
+        if (allInFirstStore) {
+            cout << "  All items available at: " << firstStore->getName() << "\n";
+            OrderFulfillmentSlice slice;
+            slice.darkStoreName = firstStore->getName();
+            slice.deliveryPartnerName = "Partner1";
+
+            for (const auto &entry : remaining) {
+                const int sku = entry.first;
+                const int qty = entry.second;
+                Product *product = ProductFactory::createProduct(sku);
+                firstStore->removeStock(sku, qty);
+                slice.items.push_back({sku, product->getName(), qty, product->getPrice()});
+                delete product;
+            }
+            slices.push_back(slice);
+            cout << "  Assigned delivery partner: Partner1\n";
+        } else {
+            cout << "  Splitting order across dark stores...\n";
+            int partnerId = 1;
+
+            for (DarkStore *store : nearbyStores) {
+                if (remaining.empty()) {
+                    break;
+                }
+
+                cout << "   Checking: " << store->getName() << "\n";
+                OrderFulfillmentSlice slice;
+                slice.darkStoreName = store->getName();
+                bool assignedFromStore = false;
+                vector<int> fulfilledSkus;
+
+                for (const auto &entry : remaining) {
+                    const int sku = entry.first;
+                    const int qtyNeeded = entry.second;
+                    const int availableQty = store->checkStock(sku);
+                    if (availableQty <= 0) {
+                        continue;
+                    }
+
+                    const int takenQty = min(availableQty, qtyNeeded);
+                    store->removeStock(sku, takenQty);
+                    Product *product = ProductFactory::createProduct(sku);
+                    slice.items.push_back({sku, product->getName(), takenQty, product->getPrice()});
+                    delete product;
+
+                    cout << "     " << store->getName() << " supplies SKU " << sku << " x" << takenQty << "\n";
+
+                    if (qtyNeeded > takenQty) {
+                        remaining[sku] = qtyNeeded - takenQty;
+                    } else {
+                        fulfilledSkus.push_back(sku);
+                    }
+                    assignedFromStore = true;
+                }
+
+                for (int sku : fulfilledSkus) {
+                    remaining.erase(sku);
+                }
+
+                if (assignedFromStore) {
+                    slice.deliveryPartnerName = "Partner" + to_string(partnerId++);
+                    slices.push_back(slice);
+                    cout << "     Assigned: " << slice.deliveryPartnerName << " for " << store->getName() << "\n";
+                }
+            }
+
+            if (!remaining.empty()) {
+                cout << "  Could not fulfill completely:\n";
+                for (const auto &entry : remaining) {
+                    cout << "    SKU " << entry.first << " x" << entry.second << "\n";
+                }
+            }
+        }
+
+        printOrderSummary(orderId, user, slices);
         return orderId;
     }
 
@@ -143,8 +284,8 @@ public:
             throw runtime_error("Order not found");
         }
         if (!isValidTransition(it->second, nextStatus)) {
-            throw runtime_error("Invalid order status transition from " + orderStatusToString(it->second) +
-                                " to " + orderStatusToString(nextStatus));
+            throw runtime_error("Invalid order status transition from " + orderStatusToString(it->second) + " to " +
+                                orderStatusToString(nextStatus));
         }
         it->second = nextStatus;
         cout << "Order #" << orderId << " -> " << orderStatusToString(nextStatus) << "\n";
@@ -153,6 +294,32 @@ public:
 private:
     unordered_map<int, OrderStatus> orderStatus_;
     int orderCounter_ = 0;
+
+    static void printOrderSummary(int orderId, User *user, const vector<OrderFulfillmentSlice> &slices) {
+        double itemTotal = 0.0;
+        cout << "\n[OrderManager] Order #" << orderId << " summary\n";
+        cout << "  User: " << user->getName() << "\n";
+
+        for (const OrderFulfillmentSlice &slice : slices) {
+            cout << "  Store: " << slice.darkStoreName << " | Partner: " << slice.deliveryPartnerName << "\n";
+            for (const OrderLineItem &line : slice.items) {
+                cout << "    SKU " << line.sku << " (" << line.productName << ") x" << line.quantity << " @ Rs "
+                     << line.unitPrice << "\n";
+                itemTotal += line.unitPrice * line.quantity;
+            }
+        }
+
+        const double distanceKm = DarkStoreManager::getInstance()
+                                      ->nearbyStores(user->getX(), user->getY(), kServiceRadiusKm)
+                                      .front()
+                                      ->distanceTo(user->getX(), user->getY());
+        const DeliveryFeeBreakdown fee = calculateDeliveryFee(distanceKm);
+
+        cout << "  Item total: Rs " << itemTotal << "\n";
+        cout << "  Delivery fee [Base: " << fee.baseFee << ", Distance: " << fee.distanceFee
+             << ", Surge: x" << fee.surgeMultiplier << ", Total: " << fee.totalFee << "]\n";
+        cout << "  Final payable: Rs " << (itemTotal + fee.totalFee) << "\n";
+    }
 
     static DeliveryFeeBreakdown calculateDeliveryFee(double distanceKm) {
         const double baseFee = 20.0;

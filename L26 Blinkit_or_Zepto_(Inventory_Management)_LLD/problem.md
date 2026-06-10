@@ -1,15 +1,16 @@
-# Problem Statement: Blinkit-Style Quick Commerce LLD
+# Problem Statement: Blinkit / Zepto Inventory Management LLD
 
-Design a low-level system for a quick commerce platform where users order grocery items and the system fulfills orders from nearby dark stores.
+Design a low-level inventory and order fulfillment system for a quick-commerce platform (Blinkit/Zepto style).
 
 The system should support:
 
-1. Dark store registration with location.
-2. Product catalog and inventory per store.
-3. Cart management for a user.
-4. Nearby store discovery based on distance.
-5. Order placement with stock checks and total calculation.
-6. Dynamic delivery fee calculation based on distance and surge.
-7. Order state machine for lifecycle transitions.
+1. Dark store onboarding with location.
+2. Inventory add/remove per store using pluggable `InventoryStore` backends.
+3. Replenishment strategies (Threshold, Weekly) using Strategy pattern.
+4. User catalog view from all dark stores within **5 KM** radius.
+5. Cart and order placement with stock validation.
+6. Order splitting across multiple dark stores when one store cannot fulfill full cart.
+7. Multiple delivery partners for split fulfillment.
+8. Delivery fee calculation and order lifecycle states.
 
-The architecture should be modular so features like payment, delivery assignment, and replenishment can be added later.
+Architecture should remain modular so payment, routing, and persistence can be extended later.

@@ -1,7 +1,9 @@
 #ifndef BLINKIT_LLD_INVENTORY_INVENTORY_H
 #define BLINKIT_LLD_INVENTORY_INVENTORY_H
 
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <unordered_map>
+#include <vector>
 
 #include "../models/Product.h"
 
@@ -63,6 +65,72 @@ public:
 private:
     unordered_map<int, int> stock_;
     unordered_map<int, Product *> products_;
+};
+
+// DB-backed store simulation (extensible InventoryStore implementor).
+class DbInventoryStore : public InventoryStore {
+public:
+    ~DbInventoryStore() override {
+        for (auto &entry : products_) {
+            delete entry.second;
+        }
+    }
+
+    void addProduct(Product *product, int qty) override {
+        const int sku = product->getSku();
+        auto it = products_.find(sku);
+        if (it == products_.end()) {
+            products_[sku] = product;
+        } else {
+            delete product;
+        }
+        stock_[sku] += qty;
+    }
+
+    void removeProduct(int sku, int qty) override {
+        auto it = stock_.find(sku);
+        if (it == stock_.end()) {
+            return;
+        }
+        it->second = max(0, it->second - qty);
+    }
+
+    int checkStock(int sku) const override {
+        auto it = stock_.find(sku);
+        return (it == stock_.end()) ? 0 : it->second;
+    }
+
+    vector<Product *> listAvailableProducts() const override {
+        vector<Product *> items;
+        for (const auto &entry : stock_) {
+            if (entry.second > 0 && products_.count(entry.first) != 0) {
+                items.push_back(products_.at(entry.first));
+            }
+        }
+        return items;
+    }
+
+private:
+    unordered_map<int, int> stock_;
+    unordered_map<int, Product *> products_;
+};
+
+enum class InventoryStoreType {
+    IN_MEMORY,
+    DB
+};
+
+class InventoryStoreFactory {
+public:
+    static InventoryStore *create(InventoryStoreType type) {
+        switch (type) {
+        case InventoryStoreType::DB:
+            return new DbInventoryStore();
+        case InventoryStoreType::IN_MEMORY:
+        default:
+            return new InMemoryInventoryStore();
+        }
+    }
 };
 
 class InventoryManager {

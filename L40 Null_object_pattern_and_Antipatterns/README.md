@@ -3,8 +3,15 @@
 > **Null Object** ek **behavioral idiom** hai jo `nullptr` checks hata kar **no-op implementation** deta hai — same interface, kuch **nahi karta** (safe default).  
 > **Antipatterns** woh **common bad designs** hain jo LLD interviews mein **avoid** karne ko kehte hain.
 
-**Is folder mein:** [`Notes.pdf`](./Notes.pdf) — primary reference (no C++ demo code).  
+**Is folder mein:** [`Notes.pdf`](./Notes.pdf) — primary reference, plus runnable demos in [`C++ Code/`](./C++%20Code/).  
+**Runnable demo:** [`WithoutNullObject.cpp`](./C++%20Code/WithoutNullObject.cpp) (problem) vs [`NullObjectPattern.cpp`](./C++%20Code/NullObjectPattern.cpp) (solution).  
 **Repo code example:** WhatsApp [`NoOpEncryptionService`](../WhatsApp_LLD/services/EncryptionService.h).
+
+```bash
+cd "L40 Null_object_pattern_and_Antipatterns/C++ Code"
+g++ -std=c++17 NullObjectPattern.cpp -o null_object && ./null_object
+g++ -std=c++17 WithoutNullObject.cpp -o without_null_object && ./without_null_object
+```
 
 ---
 
@@ -238,7 +245,7 @@ From course notes + industry practice — **symptoms** aur **fixes**:
 | Pehlu | Detail |
 | ----- | ------ |
 | **Null Object type** | Behavioral idiom (not always GoF catalog) |
-| **This folder** | PDF notes — no C++ demo |
+| **This folder** | PDF notes + runnable demos in `C++ Code/` |
 | **Code in repo** | WhatsApp `EncryptionService.h` |
 | **Antipatterns** | God class, singleton abuse, anemic model, shotgun surgery, … |
 

@@ -1,0 +1,39 @@
+# ---- Compiled binaries / build artifacts ----
+# This repo is source-only. Build locally with each project's ./compile.sh.
+
+# App / demo executables produced by compile.sh
+*_app
+*_demo
+tempRun
+reels_app
+
+# Per-lesson build output folders
+bin/
+build/
+
+# Object files, libs, and generic binaries
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.exe
+*.out
+
+# Named executables in SOLID lessons (LSP_Violated, OCP_followed, ...)
+# (these are compiled binaries; their .cpp sources stay tracked)
+**/C++ Code/**/SRP_*
+!**/C++ Code/**/SRP_*.cpp
+**/C++ Code/**/OCP_*
+!**/C++ Code/**/OCP_*.cpp
+**/C++ Code/**/LSP_*
+!**/C++ Code/**/LSP_*.cpp
+**/C++ Code/**/DIP_*
+!**/C++ Code/**/DIP_*.cpp
+
+# ---- OS / editor noise ----
+.DS_Store
+*.swp
+*~
+.idea/
+*.dSYM/

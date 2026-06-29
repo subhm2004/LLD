@@ -1,6 +1,6 @@
-# Composition — Object Relationships (Association · Aggregation · Composition · Dependency)
+# Object Relationships — Association · Aggregation · Composition · Dependency
 
-> **Lesson L1** — **4 UML object relationships** (Has-A) with Hindi/English theory + runnable C++. Next: [`L2 OOPS_1`](../L2%20OOPS_1/) · [`L3 OOPS_2`](../L3%20OOPS_2/).
+> **Lesson L1** — the four **"Has-A" object relationships** every LLD interview tests, with UML notation, ownership/lifetime rules, and runnable C++17 demos. These relationships are the vocabulary you use to describe *how classes connect* before you ever draw a class diagram (L4) or apply a pattern.
 
 <p align="center">
   <img src="https://img.shields.io/badge/Topic-Has--A-blue?style=for-the-badge" />
@@ -8,530 +8,347 @@
   <img src="https://img.shields.io/badge/UML-Association%20to%20Composition-orange?style=for-the-badge" />
 </p>
 
----
-
-## Start here
-
-| Document | Content |
-| -------- | ------- |
-| **[`OBJECT_RELATIONSHIPS_GUIDE.md`](./OBJECT_RELATIONSHIPS_GUIDE.md)** | **Master guide** — comparison, UML, C++, interview |
+**Next:** [`L2 OOPS_1`](../L2%20OOPS_1/) → [`L3 OOPS_2`](../L3%20OOPS_2/) (composition vs inheritance) → [`L4 UML_Diagrams`](../L4%20UML_Diagrams/).
 
 ---
 
-## Course intro — Object relationships kya hain?
+## Table of Contents
 
-**Has-A family** — do classes ke beech **structural link** jab **inheritance (IS-A) sahi nahi**.
+1. [Why Object Relationships Matter](#1-why-object-relationships-matter)
+2. [The Four Relationships at a Glance](#2-the-four-relationships-at-a-glance)
+3. [Ownership & Lifetime — the Core Idea](#3-ownership--lifetime--the-core-idea)
+4. [UML Symbol Cheat Sheet](#4-uml-symbol-cheat-sheet)
+5. [Demo 01 — Association](#5-demo-01--association)
+6. [Demo 02 — Aggregation](#6-demo-02--aggregation)
+7. [Demo 03 — Composition](#7-demo-03--composition)
+8. [Demo 04 — Dependency](#8-demo-04--dependency)
+9. [C++ Implementation Guide (Pointer vs Member vs Param)](#9-c-implementation-guide-pointer-vs-member-vs-param)
+10. [Decision Tree — Which Relationship?](#10-decision-tree--which-relationship)
+11. [Composition vs Inheritance (Preview of L3)](#11-composition-vs-inheritance-preview-of-l3)
+12. [Build & Run](#12-build--run)
+13. [Practice Scenario Bank](#13-practice-scenario-bank)
+14. [Interview Drills](#14-interview-drills)
+15. [Glossary & Summary](#15-glossary--summary)
 
-- **Association** — jaante ho, use karte ho, **malik nahi**
-- **Aggregation** — weak has-a, **shared ownership**
-- **Composition** — strong has-a, **part whole ke saath marta hai**
-- **Dependency** — temporary, **method ke andar** use
+---
+
+## 1. Why Object Relationships Matter
+
+In LLD you rarely build one class — you connect many. *How* you connect them decides:
+
+| Decision | Consequence |
+| -------- | ----------- |
+| **Who owns whom** | Who is responsible for creating and destroying the object |
+| **Lifetime coupling** | Whether the part dies when the whole dies |
+| **Testability** | Loosely coupled collaborators are easy to mock |
+| **Flexibility** | Swappable parts (composition) vs rigid hierarchies (inheritance) |
+
+The golden rule: **prefer "Has-A" (these relationships) over "Is-A" (inheritance)** unless the subtype genuinely *is* the supertype. That single habit drives most good LLD designs (see [L3](../L3%20OOPS_2/) `05_Composition_Vs_Inheritance.cpp`).
+
+---
+
+## 2. The Four Relationships at a Glance
 
 ```mermaid
 flowchart LR
-    D[Dependency weakest]
-    AS[Association]
-    AG[Aggregation]
-    CO[Composition strongest]
-    D --> AS --> AG --> CO
+    D[Dependency<br/>weakest] --> AS[Association] --> AG[Aggregation] --> CO[Composition<br/>strongest]
+```
+
+| Relationship | Strength | Meaning | Repo demo |
+| ------------ | -------- | ------- | --------- |
+| **Dependency** | Weakest | "...uses temporarily" — only inside a method | `OrderService → Logger` |
+| **Association** | Weak | "...knows / uses" — holds a reference, **no ownership** | `Teacher ↔ Student` |
+| **Aggregation** | Medium | "...has a" (weak) — **shared ownership**, part can outlive whole | `Car ◇ Engine` |
+| **Composition** | Strongest | "...is made of" — **exclusive ownership**, part dies with whole | `House ◆ Room` |
+
+---
+
+## 3. Ownership & Lifetime — the Core Idea
+
+Every relationship answers two questions: **who deletes it?** and **when does it die?**
+
+| | Owns the part? | Part's lifetime | Stored as |
+| --- | -------------- | --------------- | --------- |
+| **Dependency** | ❌ No | Only during the method call | Method parameter |
+| **Association** | ❌ No | Independent of the whole | Field reference/pointer (never deleted by holder) |
+| **Aggregation** | ⚠️ Shared | Part may outlive the whole | Pointer / `shared_ptr` (not deleted in destructor) |
+| **Composition** | ✅ Exclusive | Part dies with the whole | Member object / `unique_ptr` |
+
+> **Mental model:** *Dependency* borrows a tool for one job. *Association* keeps a contact in its phonebook. *Aggregation* employs a worker who can quit. *Composition* grows an organ that dies with the body.
+
+---
+
+## 4. UML Symbol Cheat Sheet
+
+| Relationship | UML line | Arrow | Diamond | C++ pattern |
+| ------------ | -------- | ----- | ------- | ----------- |
+| **Dependency** | dashed | `..>` | — | method parameter |
+| **Association** | solid | `-->` | — | field pointer/reference, no `delete` |
+| **Aggregation** | solid | `o--` | hollow ◇ | `shared_ptr` / raw pointer, no `delete` in destructor |
+| **Composition** | solid | `*--` | filled ◆ | member object / `unique_ptr` owned in constructor |
+
+```mermaid
+classDiagram
+    Teacher --> Student : association
+    Car o-- Engine : aggregation
+    House *-- Room : composition
+    OrderService ..> Logger : dependency
 ```
 
 ---
 
-## Code (`C++ Code/`) — summary
-
-| File | Relationship | Example |
-| ---- | ------------ | ------- |
-| [`01_Association.cpp`](./C%20%2B%2B%20Code/01_Association.cpp) | **Association** | Teacher ↔ Student |
-| [`02_Aggregation.cpp`](./C%20%2B%2B%20Code/02_Aggregation.cpp) | **Aggregation** | Car ◇ Engine |
-| [`03_Composition.cpp`](./C%20%2B%2B%20Code/03_Composition.cpp) | **Composition** | House ◆ Room |
-| [`04_Dependency.cpp`](./C%20%2B%2B%20Code/04_Dependency.cpp) | **Dependency** | OrderService → Logger |
-
-```bash
-cd " L1 Composition"
-chmod +x compile.sh
-./compile.sh
-./bin/02_Aggregation
-```
-
----
-
-## Quick memory table
-
-| | Ownership? | Lifetime |
-| - | ----------- | -------- |
-| Dependency | ❌ | Method only |
-| Association | ❌ | Independent |
-| Aggregation | Weak | Part may outlive whole |
-| Composition | Strong ✅ | Part dies with whole |
-
----
-
-## Demo 01 — Association (`01_Association.cpp`)
+## 5. Demo 01 — Association
 
 | | |
 | ----- | ----- |
-| **UML** | Association |
-| **Example** | Teacher ↔ Student |
-| **Detail** | No ownership, independent lifetimes |
-| **Guide section** | [`OBJECT_RELATIONSHIPS_GUIDE`](./OBJECT_RELATIONSHIPS_GUIDE.md#2-association) |
-| **Revision note** | [`notes/01_Association.md`](./notes/01_Association.md) |
-| **Run** | `./bin/01_Association` |
+| **Example** | `Teacher ↔ Student` |
+| **Rule** | The teacher *knows* students but does **not own** them; lifetimes are independent |
+| **File** | [`01_Association.cpp`](./C%20%2B%2B%20Code/01_Association.cpp) · note [`notes/01_Association.md`](./notes/01_Association.md) |
 
-### Concept (Hindi/English)
-
-Teacher aur Student **associated** hain — teacher padhata hai lekin student ka **owner nahi**. Dono alag-alag ban sakte hain, teacher change ho sakta hai, student graduate ho kar chala jata hai.
-
-### C++ implementation hint
+**Concept:** A `Teacher` enrolls `Student`s and teaches them, but creating or destroying a teacher must not affect the students. They are separate entities that simply collaborate.
 
 ```cpp
-vector<Student*> studentsEnrolled;  // knows, does NOT own
-// Teacher destructor: do NOT delete students
+class Teacher {
+    vector<Student*> students;     // knows them, does NOT own them
+public:
+    void enroll(Student* s) { students.push_back(s); }
+    void teach() const { /* iterate and use students */ }
+    // destructor does NOT delete students — they live independently
+};
 ```
 
-### Interview questions — Association
+**Key:** No `delete` in the teacher's destructor. The students outlive the teacher's scope.
 
-- Association me ownership kyun nahi hoti?
-- Association vs Dependency — field vs parameter?
-- Bidirectional association kaise model karte ho?
-
-```bash
-./bin/01_Association
-```
+**Interview questions:** Why no ownership in association? Association vs Dependency (field vs parameter)? How do you model a bidirectional association without a memory-leak/cycle?
 
 ---
 
-## Demo 02 — Aggregation (`02_Aggregation.cpp`)
+## 6. Demo 02 — Aggregation
 
 | | |
 | ----- | ----- |
-| **UML** | Aggregation ◇ |
-| **Example** | Car ◇ Engine |
-| **Detail** | Weak has-a; part may outlive whole |
-| **Guide section** | [`OBJECT_RELATIONSHIPS_GUIDE`](./OBJECT_RELATIONSHIPS_GUIDE.md#3-aggregation) |
-| **Revision note** | [`notes/02_Aggregation.md`](./notes/02_Aggregation.md) |
-| **Run** | `./bin/02_Aggregation` |
+| **Example** | `Car ◇ Engine` |
+| **Rule** | Weak "has-a"; the `Engine` exists **outside** the `Car` and can outlive it |
+| **File** | [`02_Aggregation.cpp`](./C%20%2B%2B%20Code/02_Aggregation.cpp) · note [`notes/02_Aggregation.md`](./notes/02_Aggregation.md) |
 
-### Concept (Hindi/English)
-
-Car me Engine **aggregated** hai — Car engine ko use karti hai lekin Engine **independently** exist kar sakta hai. Garage me engine Car ke bina bhi reh sakta hai.
-
-### C++ implementation hint
+**Concept:** An `Engine` is created independently and *injected* into a `Car`. When the `Car` is destroyed, the `Engine` keeps living (it could go into another car).
 
 ```cpp
-Engine* engine;  // injected, Car dtor does NOT delete
-// Engine created outside, may outlive Car
+class Car {
+    Engine* engine;                // injected — external lifetime
+public:
+    Car(Engine* e) : engine(e) {}
+    void drive() const { engine->start(); }
+    // destructor does NOT delete engine
+};
+
+int main() {
+    Engine v8("V8-Petrol");        // Engine exists OUTSIDE the car
+    { Car c(&v8); c.drive(); }      // Car destroyed here...
+    // ...v8 is still alive
+}
 ```
 
-### Interview questions — Aggregation
+**Key:** The hollow diamond ◇ means shared/weak ownership — the part survives the whole.
 
-- Aggregation UML me hollow diamond kyun?
-- Aggregation vs Composition real example?
-- shared_ptr aggregation me safe hai?
-
-```bash
-./bin/02_Aggregation
-```
+**Interview questions:** Why a hollow diamond in UML? A real aggregation vs composition example? Is `shared_ptr` the right fit for aggregation?
 
 ---
 
-## Demo 03 — Composition (`03_Composition.cpp`)
+## 7. Demo 03 — Composition
 
 | | |
 | ----- | ----- |
-| **UML** | Composition ◆ |
-| **Example** | House ◆ Room |
-| **Detail** | Strong has-a; part dies with whole |
-| **Guide section** | [`OBJECT_RELATIONSHIPS_GUIDE`](./OBJECT_RELATIONSHIPS_GUIDE.md#4-composition) |
-| **Revision note** | [`notes/03_Composition_Strong_HasA.md`](./notes/03_Composition_Strong_HasA.md) |
-| **Run** | `./bin/03_Composition` |
+| **Example** | `House ◆ Room` |
+| **Rule** | Strong "has-a"; a `Room` is created and destroyed **with** the `House` |
+| **File** | [`03_Composition.cpp`](./C%20%2B%2B%20Code/03_Composition.cpp) · note [`notes/03_Composition_Strong_HasA.md`](./notes/03_Composition_Strong_HasA.md) |
 
-### Concept (Hindi/English)
-
-House me Room **composed** hai — Room bina House ke exist nahi karta (is design me). House destroy → Room bhi destroy. **Strongest ownership**.
-
-### C++ implementation hint
+**Concept:** Rooms have no independent existence in this design. The `House` owns them exclusively — when the house is gone, so are the rooms. The demo shows both member-object and `unique_ptr` styles.
 
 ```cpp
-Room livingRoom;  // member object — created/destroyed with House
-// OR unique_ptr<Room> owned in ctor
+class House {
+    vector<unique_ptr<Room>> extraRooms;   // owned exclusively
+public:
+    House() {
+        extraRooms.push_back(unique_ptr<Room>(new Room("Kitchen")));
+    }
+    // no manual cleanup needed — unique_ptr destroys rooms with the house
+};
 ```
 
-### Interview questions — Composition
+**Key:** The filled diamond ◆ means exclusive ownership. `unique_ptr` makes the "part dies with whole" rule automatic and exception-safe.
 
-- Composition me part parent ke bina kyun nahi rehta?
-- unique_ptr vs member object composition?
-- House-Room vs Car-Engine — kaunsa composition?
-
-```bash
-./bin/03_Composition
-```
+**Interview questions:** Why can't the part exist without its parent? `unique_ptr` member vs raw member object? Is `House–Room` always composition, or a design choice?
 
 ---
 
-## Demo 04 — Dependency (`04_Dependency.cpp`)
+## 8. Demo 04 — Dependency
 
 | | |
 | ----- | ----- |
-| **UML** | Dependency ..> |
-| **Example** | OrderService → Logger |
-| **Detail** | Temporary use, method scope |
-| **Guide section** | [`OBJECT_RELATIONSHIPS_GUIDE`](./OBJECT_RELATIONSHIPS_GUIDE.md#5-dependency) |
-| **Revision note** | [`notes/04_Dependency.md`](./notes/04_Dependency.md) |
-| **Run** | `./bin/04_Dependency` |
+| **Example** | `OrderService → Logger`, `PaymentGateway` |
+| **Rule** | Temporary use — the collaborator appears only as a **method parameter** |
+| **File** | [`04_Dependency.cpp`](./C%20%2B%2B%20Code/04_Dependency.cpp) · note [`notes/04_Dependency.md`](./notes/04_Dependency.md) |
 
-### Concept (Hindi/English)
-
-OrderService Logger par **depend** karti hai — Logger sirf method call ke dauran use hota hai, field me store nahi. Sabse **weak** link.
-
-### C++ implementation hint
+**Concept:** `OrderService` does not *have* a `Logger` — it receives one (and a `PaymentGateway`) only for the duration of `placeOrder()`. This is the weakest, most loosely coupled link.
 
 ```cpp
-void processOrder(Logger& log) { log.info("..."); }  // param only
+class OrderService {
+public:
+    // Logger & gateway are NOT fields — passed in per call (dependency)
+    void placeOrder(double amount, Logger& logger, PaymentGateway& gateway) const {
+        gateway.charge(amount);
+        logger.log("Order placed");
+    }
+};
 ```
 
-### Interview questions — Dependency
+**Key:** No member field. The dashed arrow `..>` signals "uses temporarily." This is exactly how dependency injection keeps code testable — pass a mock `Logger` in tests.
 
-- Dependency dashed arrow ka matlab?
-- Dependency injection se kya faida?
-- Dependency vs Association — kab upgrade karte ho?
+**Interview questions:** What does the dashed arrow mean? What does DI buy you? When do you "upgrade" a dependency to an association?
 
-```bash
-./bin/04_Dependency
+---
+
+## 9. C++ Implementation Guide (Pointer vs Member vs Param)
+
+| Relationship | C++ representation | Destructor behavior |
+| ------------ | ------------------ | ------------------- |
+| **Dependency** | Method parameter (`f(Logger&)`) | N/A — never stored |
+| **Association** | Field pointer/reference (`Student*`) | **Do not** delete |
+| **Aggregation** | Pointer / `shared_ptr` (external lifetime) | **Do not** delete (or let `shared_ptr` ref-count) |
+| **Composition** | Member object or `unique_ptr` | Destroyed **automatically** with the owner |
+
+**Rules of thumb**
+- If your destructor `delete`s a field, that field is almost certainly **composition**.
+- If a field is set from the outside and you must *not* delete it, that's **association/aggregation**.
+- If a collaborator never becomes a field at all, it's a **dependency**.
+
+---
+
+## 10. Decision Tree — Which Relationship?
+
+```
+Is the collaborator used only inside one method (not stored)?
+   YES → Dependency
+
+Stored as a field?
+   ├─ Does the holder create AND destroy it (dies together)?
+   │     YES → Composition
+   │     NO  → ↓
+   └─ Can the part exist independently / outlive the holder?
+         Shared/owned-elsewhere → Aggregation
+         Just "knows" it, no ownership → Association
 ```
 
----
+Worked examples:
 
-## Learning path
-
-```
-L2 OOPS_1 — C++ Code/01–09 (class, pillars)
-        ↓
-Composition/ (this folder) — Association → Aggregation → Composition → Dependency
-        ↓
-L2 C++ Code/10–19 (memory, RAII, smart ptr)
-        ↓
-L3 — 05_Composition_Vs_Inheritance, inheritance
-        ↓
-L4 UML — arrows on diagrams
-```
+| Pair | Relationship | Why |
+| ---- | ------------ | --- |
+| University ↔ Department | Aggregation | A department can be reorganized but exists on its own |
+| Document ↔ Paragraph | Composition | A paragraph has no meaning without its document |
+| Client ↔ Server | Association | Both are independent, long-lived services |
+| Parser ↔ Tokenizer | Dependency | Tokenizer used only during `parse()` |
 
 ---
 
-## OBJECT_RELATIONSHIPS_GUIDE.md — section map
-
-| # | Section | Kya milega |
-| - | ------- | ---------- |
-| 1 | 1. Quick Comparison | Sab relations ek table me |
-| 2 | 2. Association | Teacher-Student, no ownership |
-| 3 | 3. Aggregation | Car-Engine, hollow diamond |
-| 4 | 4. Composition | House-Room, filled diamond |
-| 5 | 5. Dependency | OrderService-Logger, dashed |
-| 6 | 6. Inheritance vs Has-A | IS-A vs HAS-A decision tree |
-| 7 | 7. UML Symbols | Mermaid diagrams |
-| 8 | 8. C++ Cheat Sheet | Pointer vs member vs param |
-| 9 | 9. Interview Question Bank | 50+ questions |
-| 10 | 10. Build & Run | compile.sh usage |
-
-**Full guide:** [`OBJECT_RELATIONSHIPS_GUIDE.md`](./OBJECT_RELATIONSHIPS_GUIDE.md)
-
----
-
-## notes/ — per-relationship revision
-
-| File | Content |
-| ---- | ------- |
-| [`01_Association.md`](./notes/01_Association.md) | Association one-pager |
-| [`02_Aggregation.md`](./notes/02_Aggregation.md) | Aggregation ◇ hollow diamond |
-| [`03_Composition_Strong_HasA.md`](./notes/03_Composition_Strong_HasA.md) | Composition ◆ strong has-a |
-| [`04_Dependency.md`](./notes/04_Dependency.md) | Dependency ..> temporary |
-
----
-
-## UML symbol cheat sheet
-
-| Relationship | UML line | Arrow | C++ pattern |
-| ------------ | -------- | ----- | ----------- |
-| Dependency | dashed | ..> | method parameter |
-| Association | solid | --> | field pointer/ref, no delete |
-| Aggregation | solid + ◇ | o-- | shared_ptr / raw, no delete in dtor |
-| Composition | solid + ◆ | *-- | member object / unique_ptr |
-
----
-
-## Composition vs Inheritance — preview (L3)
+## 11. Composition vs Inheritance (Preview of L3)
 
 | | Composition (Has-A) | Inheritance (Is-A) |
 | - | ------------------- | ------------------ |
-| Relationship | Whole has part | Child is parent type |
-| Reuse | Delegate to member | Override / extend |
-| Flexibility | Swap parts at runtime | Fixed hierarchy |
-| L3 file | — | [`05_Composition_Vs_Inheritance.cpp`](../../L3%20OOPS_2/C++%20Code/05_Composition_Vs_Inheritance.cpp) |
+| Relationship | Whole **has** a part | Child **is** a kind of parent |
+| Reuse | Delegate to the member | Override / extend |
+| Flexibility | Swap parts at runtime | Fixed hierarchy at compile time |
+| Coupling | Loose | Tight (subclass knows base internals) |
+| L3 file | — | [`05_Composition_Vs_Inheritance.cpp`](../L3%20OOPS_2/) |
+
+> **Interview line:** "Favor composition over inheritance — it keeps behavior swappable and avoids fragile base classes."
 
 ---
 
-## Build & run (detailed)
+## 12. Build & Run
 
 ```bash
 cd " L1 Composition"
 chmod +x compile.sh
-./compile.sh
+./compile.sh                 # builds all four into bin/
 
-# Run all four in order
 ./bin/01_Association
 ./bin/02_Aggregation
 ./bin/03_Composition
 ./bin/04_Dependency
 ```
 
----
-
-## Interview prep — relationship decision tree
-
-```
-Q: Kya B, A ke bina zinda reh sakta hai?
-   YES → Aggregation ya Association
-   NO  → Composition
-
-Q: Sirf ek method me use?
-   YES → Dependency
-
-Q: Field me store + delete nahi?
-   YES → Association ya Aggregation
-
-Q: Whole destroy → part destroy?
-   YES → Composition
-```
-
-### Practice scenario 1
-
-- **University** and **Department** → likely **Aggregation** — Dept alag exist kar sakta hai
-
-### Practice scenario 2
-
-- **Document** and **Paragraph** → likely **Composition** — Paragraph doc ke bina nahi
-
-### Practice scenario 3
-
-- **Client** and **Server** → likely **Association** — Dono independent services
-
-### Practice scenario 4
-
-- **Parser** and **Tokenizer** → likely **Dependency** — Tokenizer sirf parse() me
-
-### Practice scenario 5 — Person & Address
-
-- **Person** and **Address** → **Association** — Person address use karta hai; address dusre person ko bhi belong kar sakta hai
-
-### Practice scenario 6 — Team & Player
-
-- **Team** and **Player** → **Aggregation** — Player team change kar sakta hai; career team se independent
-
-### Practice scenario 7 — Computer & CPU
-
-- **Computer** and **CPU** → **Composition** (design choice) ya **Aggregation** — CPU swap ho sakta hai to Aggregation; soldered to board → Composition
-
-### Practice scenario 8 — ReportGenerator & Formatter
-
-- **ReportGenerator** and **Formatter** → **Dependency** — Formatter sirf `generate()` call me inject
-
-### Practice scenario 9 — Library & Book
-
-- **Library** and **Book** → **Aggregation** — Book library se nikal kar dusri library ja sakti hai
-
-### Practice scenario 10 — Page & Line
-
-- **Page** and **Line** → **Composition** — Line page ke bina meaningful nahi (is model me)
-
-### Practice scenario 11 — ATM & BankAccount
-
-- **ATM** and **BankAccount** → **Association** — ATM account access karta hai, owner nahi
-
-### Practice scenario 12 — ShoppingCart & TaxCalculator
-
-- **ShoppingCart** and **TaxCalculator** → **Dependency** — Tax logic method parameter / interface inject
-
-### Practice scenario 13 — Company & Employee
-
-- **Company** and **Employee** → **Aggregation** — Employee company chhod sakta hai
-
-### Practice scenario 14 — Tree & Node
-
-- **Tree** and **Node** → **Composition** — Node tree delete hone par destroy (owned children)
-
-### Practice scenario 15 — Driver & Car
-
-- **Driver** and **Car** → **Association** — Driver car chalata hai, car driver ki property nahi
-
-### Practice scenario 16 — EmailService & SmtpClient
-
-- **EmailService** and **SmtpClient** → **Dependency** ya **Composition** — long-lived member → Composition; per-send param → Dependency
-
-### Practice scenario 17 — Playlist & Song
-
-- **Playlist** and **Song** → **Aggregation** — Same song multiple playlists me; song file independent
-
-### Practice scenario 18 — Stack & StackFrame
-
-- **Stack** and **StackFrame** → **Composition** — Frame stack pop par destroy
-
-### Practice scenario 19 — Doctor & Patient
-
-- **Doctor** and **Patient** → **Association** — Treatment relationship, no ownership
-
-### Practice scenario 20 — WebApp & DatabaseConnection
-
-- **WebApp** and **DatabaseConnection** → **Dependency** (per request) ya **Composition** (pool owned by app)
-
-### Practice scenario 21 — Folder & File (Unix)
-
-- **Folder** and **File** → **Aggregation** — File folder move/delete se alag survive kar sakti hai
-
-### Practice scenario 22 — Human & Heart
-
-- **Human** and **Heart** → **Composition** — Heart body ke saath; strong biological whole-part
-
-### Practice scenario 23 — Compiler & Lexer
-
-- **Compiler** and **Lexer** → **Composition** — Lexer compiler ka owned subsystem
-
-### Practice scenario 24 — Controller & View (MVC)
-
-- **Controller** and **View** → **Association** — View controller se independent update ho sakti hai
-
-### Practice scenario 25 — Game & Level
-
-- **Game** and **Level** → **Composition** — Levels game package ke andar owned assets
-
-### Practice scenario 26 — Restaurant & Waiter
-
-- **Restaurant** and **Waiter** → **Aggregation** — Waiter job change kar sakta hai
-
-### Practice scenario 27 — PDF & PageObject
-
-- **PDF** and **PageObject** → **Composition** — Page PDF structure ka inseparable part
-
-### Practice scenario 28 — Function & LocalVariable
-
-- **Function** and **LocalVariable** → **Composition** — Scope-bound lifetime
-
-### Practice scenario 29 — SensorNetwork & Sensor
-
-- **SensorNetwork** and **Sensor** → **Aggregation** — Sensor replace / reuse across networks
-
-### Practice scenario 30 — MutexGuard & Lockable
-
-- **MutexGuard** and **Lockable** → **Dependency** — RAII guard temporary use (see L2 `13_RAII.cpp`)
-
-### Practice scenario 31 — Parent & Child (domain)
-
-- **Parent** and **Child** (people) → **Association** — NOT Composition; child outlives parent legally/socially
-
-### Practice scenario 32 — Widget & Tooltip
-
-- **Widget** and **Tooltip** → **Dependency** — Tooltip show() ke dauran create/destroy
-
-### Practice scenario 33 — Fleet & Vehicle
-
-- **Fleet** and **Vehicle** → **Aggregation** — Vehicle fleet se retire ho kar bhi exist
-
-### Practice scenario 34 — String & CharBuffer (bad design)
-
-- **String** owning raw `char*` without delete → **Association bug** — fix with Composition (`std::string` member)
-
-### Practice scenario 35 — ServiceLocator & Logger
-
-- **ServiceLocator** and **Logger** → **Association** — Shared logger instance, no exclusive ownership
-
-### Practice scenario 36 — HTTP Request & Headers map
-
-- **Request** and **Headers** → **Composition** — Headers request ke saath allocate/free
-
-### Practice scenario 37 — Course & Student enrollment
-
-- **Course** and **Student** → **Association** — Many-to-many, independent lifetimes
-
-### Practice scenario 38 — Factory & Product (runtime)
-
-- **Factory** creates **Product** → **Composition** if factory owns returned objects pool; else **Association**
-
-### Practice scenario 39 — Observer & Subject
-
-- **Subject** and **Observer** → **Association** — Observers register/unregister independently
-
-### Practice scenario 40 — Debate trick — Circle & Point
-
-- **Circle** and **Center Point** → usually **Composition** — Center point circle ke bina meaningless as owned center
+The `compile.sh` builds each `C++ Code/*.cpp` with `-std=c++17 -Wall -Wextra -pedantic` into `bin/`.
 
 ---
 
-⬅️ [L2 README](../README.md) · ➡️ [L3 OOPS_2](../../L3%20OOPS_2/README.md)
+## 13. Practice Scenario Bank
+
+Classify each pair, then justify by ownership + lifetime. (Many are *design choices* — defend your reasoning, that's what interviewers want.)
+
+| # | Pair | Most common answer | Reasoning |
+| - | ---- | ------------------ | --------- |
+| 1 | Person ↔ Address | Association | An address can belong to multiple people |
+| 2 | Team ↔ Player | Aggregation | A player can transfer teams |
+| 3 | Computer ↔ CPU | Composition / Aggregation | Soldered → composition; swappable → aggregation |
+| 4 | ReportGenerator ↔ Formatter | Dependency | Formatter injected only into `generate()` |
+| 5 | Library ↔ Book | Aggregation | A book can move between libraries |
+| 6 | Page ↔ Line | Composition | A line is meaningless without its page |
+| 7 | ATM ↔ BankAccount | Association | The ATM accesses, never owns, the account |
+| 8 | Company ↔ Employee | Aggregation | An employee can leave the company |
+| 9 | Tree ↔ Node | Composition | Owned children are destroyed with the tree |
+| 10 | Driver ↔ Car | Association | The driver uses the car, doesn't own it |
+| 11 | Playlist ↔ Song | Aggregation | The same song appears in many playlists |
+| 12 | Stack ↔ StackFrame | Composition | A frame dies when popped |
+| 13 | Subject ↔ Observer | Association | Observers register/unregister independently |
+| 14 | Human ↔ Heart | Composition | A strong biological whole-part |
+| 15 | Fleet ↔ Vehicle | Aggregation | A vehicle survives retirement from the fleet |
+| 16 | Widget ↔ Tooltip | Dependency | Tooltip created/destroyed during `show()` |
+| 17 | HTTP Request ↔ Headers | Composition | Headers allocated/freed with the request |
+| 18 | Course ↔ Student | Association | Many-to-many, independent lifetimes |
+| 19 | Parent ↔ Child (people) | Association | A child outlives the parent — *not* composition |
+| 20 | MutexGuard ↔ Lockable | Dependency | RAII guard borrows the lock briefly (see L2 `13_RAII.cpp`) |
+
+**Trap to remember:** "Whole–part" wording tempts you toward composition, but always check lifetime. *Parent–Child* people are an **association**, not composition.
 
 ---
 
-## Appendix — extra interview drills
+## 14. Interview Drills
 
-### Drill 1 — Whiteboard
-
-- **Task:** Draw four arrows: ..> --> o-- *-- with one example each
-- **Done when:** You can explain in Hindi + English without notes
-
-### Drill 2 — Code review
-
-- **Task:** Spot composition vs aggregation in a GitHub class diagram
-- **Done when:** You can explain in Hindi + English without notes
-
-### Drill 3 — Refactor
-
-- **Task:** Change Association field to Dependency if only used in one method
-- **Done when:** You can explain in Hindi + English without notes
-
-### Drill 4 — Memory
-
-- **Task:** Explain why Composition destructor must not double-delete parts
-- **Done when:** You can explain in Hindi + English without notes
-
-### Drill 5 — UML L4
-
-- **Task:** Cross-check with L4 UML_DIAGRAMS_AND_NOTATION.md
-- **Done when:** You can explain in Hindi + English without notes
-
-### Drill 6 — L3 bridge
-
-- **Task:** After this folder, run L3 05_Composition_Vs_Inheritance
-- **Done when:** You can explain in Hindi + English without notes
-
-### Drill 7 — Smart ptr
-
-- **Task:** When unique_ptr in composition beats raw member object
-- **Done when:** You can explain in Hindi + English without notes
-
-### Drill 8 — shared_ptr
-
-- **Task:** Aggregation often uses shared_ptr — ref count semantics
-- **Done when:** You can explain in Hindi + English without notes
-
-### Drill 9 — Testing
-
-- **Task:** Mock Logger via Dependency injection in unit tests
-- **Done when:** You can explain in Hindi + English without notes
-
-### Drill 10 — Lifetime
-
-- **Task:** Document ownership in header comments for each field
-- **Done when:** You can explain in Hindi + English without notes
+| Drill | Task | Done when |
+| ----- | ---- | --------- |
+| **Whiteboard** | Draw `..>` `-->` `o--` `*--` with one example each | You can explain each from memory |
+| **Code review** | Spot composition vs aggregation in a class diagram | You justify by destructor behavior |
+| **Refactor** | Convert an association field to a dependency when used in one method | Field removed, passed as parameter |
+| **Memory** | Explain why a composition destructor must not double-delete | You describe ownership uniqueness |
+| **Smart ptr** | When `unique_ptr` composition beats a raw member object | You cite polymorphism / optional parts |
+| **Aggregation** | Why aggregation often uses `shared_ptr` | You explain reference counting |
+| **Testing** | Mock a `Logger` via dependency injection | Test passes without a real logger |
 
 ---
 
-## Glossary (Hindi / English)
+## 15. Glossary & Summary
 
 | Term | Meaning |
 | ---- | ------- |
-| **Has-A** | Composition family — object contains or uses another |
-| **Whole-Part** | Composition / Aggregation — whole and part roles |
-| **Ownership** | Kaun delete karega — strongest in Composition |
-| **Lifetime** | Kab object destroy hota hai — tied to owner in Composition |
-| **UML diamond** | Hollow ◇ = Aggregation, Filled ◆ = Composition |
-| **Dashed arrow** | Dependency — temporary, weakest link |
-| **IS-A** | Inheritance — L3 topic, not this folder |
-| **Delegate** | Whole forwards work to part — composition pattern |
+| **Has-A** | The relationship family in this lesson — an object contains or uses another |
+| **Is-A** | Inheritance (an L3 topic) — a subtype relationship |
+| **Whole–Part** | The roles in composition/aggregation |
+| **Ownership** | Who is responsible for destroying the object — strongest in composition |
+| **Lifetime** | When an object is destroyed — tied to the owner in composition |
+| **Hollow diamond ◇** | Aggregation (weak/shared ownership) |
+| **Filled diamond ◆** | Composition (exclusive ownership) |
+| **Dashed arrow `..>`** | Dependency — temporary, weakest link |
+| **Delegate** | The whole forwards work to its part |
+
+| Aspect | Detail |
+| ------ | ------ |
+| **Lesson** | L1 — object relationships (Has-A) |
+| **Relationships** | Dependency → Association → Aggregation → Composition (weak → strong) |
+| **Core question** | Who owns it, and when does it die? |
+| **Demos** | `Teacher–Student`, `Car–Engine`, `House–Room`, `OrderService–Logger` |
+| **Master guide** | [`OBJECT_RELATIONSHIPS_GUIDE.md`](./OBJECT_RELATIONSHIPS_GUIDE.md) — comparison table, UML, 50+ Q bank |
+
+> **Remember:** Sort every relationship by **ownership strength** — *Dependency borrows, Association knows, Aggregation shares, Composition owns.* Get ownership right and lifetimes, destructors, and testability fall into place. 🔗
+
+⬅️ [Repo home](../README.md) · ➡️ [L2 OOPS_1](../L2%20OOPS_1/README.md) · [L3 OOPS_2](../L3%20OOPS_2/README.md)

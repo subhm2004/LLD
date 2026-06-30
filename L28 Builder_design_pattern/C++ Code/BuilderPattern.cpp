@@ -27,6 +27,7 @@ private:
     HttpRequest() { }
 
 public:
+    // Declare the Builder class as a friend (isse kya hoga ki builder class ke methods ko access milega private members ka)
     friend class HttpRequestBuilder;
 
     // Method to execute the HTTP request
@@ -59,7 +60,9 @@ private:
     HttpRequest req;
 
 public:    
-    // Method chaining
+    // Method chaining bolte hai isko 
+    // with laga kr naam dena ek namining convention hai builder pattern me, jisse pata chale ki ye method object ko modify kar rahi hai aur builder object return kar rahi hai
+    // withUrl, withMethod, withHeader, withQueryParams, withBody, withTimeout methods return karte hai reference to the builder object itself (isse kya hoga ki hum ek hi line me multiple methods call kar sakte hai aur ek fluent API ban jata hai)
     HttpRequestBuilder& withUrl(const string& u) {
         req.url = u; 
         return *this;

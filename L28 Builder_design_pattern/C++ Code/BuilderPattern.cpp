@@ -137,4 +137,16 @@ int main()
                               .build();
 
     request.execute(); // Guaranteed to be in a consistent state
+
+
+    HttpRequestBuilder *builder = new HttpRequestBuilder();
+    HttpRequest request2 = builder->withUrl("https://api.example.com")
+                               .withMethod("GET")
+                               .withHeader("Accept", "application/json")
+                               .withQueryParams("key", "67890")
+                               .withTimeout(30)
+                               .build();
+    request2.execute(); // Guaranteed to be in a consistent state
+
+    return 0;
 }

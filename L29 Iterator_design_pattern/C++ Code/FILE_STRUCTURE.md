@@ -5,7 +5,6 @@ Parent: [../FILE_STRUCTURE.md](../FILE_STRUCTURE.md)
 ```
 C++ Code/
 ├── FILE_STRUCTURE.md       # This file
-├── iter_demo
 └── IteratorPattern.cpp
 ```
 
@@ -13,5 +12,4 @@ C++ Code/
 
 | File | Role |
 |------|------|
-| `iter_demo` | File |
 | `IteratorPattern.cpp` | Source |

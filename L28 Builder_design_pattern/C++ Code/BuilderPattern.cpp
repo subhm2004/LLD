@@ -99,6 +99,10 @@ public:
         if (req.url.empty()) {
             throw runtime_error("URL cannot be empty");
         }
+        if (req.method.empty()) {
+            throw runtime_error("HTTP method cannot be empty");
+        }   
+        
         return req;
     }
 };

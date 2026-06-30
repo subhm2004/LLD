@@ -1,3 +1,5 @@
+// core/Board.h — N x N board: cells + snakes/ladders ki positions. setupBoard()
+// ek strategy ke through populate hota hai (Bridge). Position se next position deta.
 #ifndef SNAKE_LADDER_LLD_CORE_BOARD_H
 #define SNAKE_LADDER_LLD_CORE_BOARD_H
 

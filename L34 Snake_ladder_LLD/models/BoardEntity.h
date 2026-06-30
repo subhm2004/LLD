@@ -1,3 +1,5 @@
+// models/BoardEntity.h — Snake ya Ladder ka common model: start + end position.
+// Snake neeche le jaata (end < start), Ladder upar (end > start).
 #ifndef SNAKE_LADDER_LLD_MODELS_BOARDENTITY_H
 #define SNAKE_LADDER_LLD_MODELS_BOARDENTITY_H
 

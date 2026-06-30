@@ -1,3 +1,5 @@
+// pieces/PieceMoves.h — Har piece type ka move-generation logic (King/Queen/Rook/
+// Bishop/Knight/Pawn apne-apne tareeke se chalte hain). Piece isse delegate karta hai.
 #ifndef CHESS_LLD_PIECES_PIECEMOVES_H
 #define CHESS_LLD_PIECES_PIECEMOVES_H
 

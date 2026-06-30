@@ -1,3 +1,5 @@
+// rules/ChessRules.h — STRATEGY for rule engine: move legal hai? (piece moves +
+// king safety), aur check/checkmate/stalemate detection. Match isse consult karta.
 #ifndef CHESS_LLD_RULES_CHESSRULES_H
 #define CHESS_LLD_RULES_CHESSRULES_H
 

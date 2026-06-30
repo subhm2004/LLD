@@ -1,3 +1,5 @@
+// models/TicTacToePlayer.h — Player: naam + apna unique Symbol. Game turn-by-turn
+// inhi players ko move karne deta hai.
 #ifndef TICTACTOE_LLD_MODELS_TICTACTOEPLAYER_H
 #define TICTACTOE_LLD_MODELS_TICTACTOEPLAYER_H
 

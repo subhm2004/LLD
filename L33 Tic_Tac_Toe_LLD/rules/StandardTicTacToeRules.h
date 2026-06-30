@@ -1,3 +1,5 @@
+// rules/StandardTicTacToeRules.h — Concrete rules: row/column/diagonal/anti-
+// diagonal complete -> win; board full + no win -> draw. TicTacToeRules implement.
 #ifndef TICTACTOE_LLD_RULES_STANDARDTICTACTOERULES_H
 #define TICTACTOE_LLD_RULES_STANDARDTICTACTOERULES_H
 

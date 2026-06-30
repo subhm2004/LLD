@@ -1,3 +1,5 @@
+// models/Dice.h — Dice: roll() pe random value (1..faces) deta hai. Player ka
+// move isi roll se decide hota hai.
 #ifndef SNAKE_LADDER_LLD_MODELS_DICE_H
 #define SNAKE_LADDER_LLD_MODELS_DICE_H
 

@@ -1,3 +1,5 @@
+// strategies/MatchingStrategy.h — STRATEGY: queued users me se opponents kaise
+// pair karein (yahan score-based — similar rating wale match karo). Swap-able.
 #ifndef CHESS_LLD_STRATEGIES_MATCHINGSTRATEGY_H
 #define CHESS_LLD_STRATEGIES_MATCHINGSTRATEGY_H
 

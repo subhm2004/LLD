@@ -1,3 +1,10 @@
+// ============================================================================
+//  main.cpp  —  Splitwise expense-sharing system ka demo driver
+// ----------------------------------------------------------------------------
+//  Users + group banao, expenses add karo (equal/exact/percentage split),
+//  balances dekho, settle karo, aur debts simplify karo (min transactions).
+//  Patterns: Facade + Singleton + Strategy + Factory + Observer.
+// ============================================================================
 #include <bits/stdc++.h>
 
 #include "core/Splitwise.h"

@@ -1,3 +1,5 @@
+// models/Message.h — In-match chat ka ek message: sender + text. ChatMediator
+// inhe players ke beech route karta hai.
 #ifndef CHESS_LLD_MODELS_MESSAGE_H
 #define CHESS_LLD_MODELS_MESSAGE_H
 

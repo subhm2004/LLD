@@ -1,3 +1,4 @@
+// enums/Gender.h — User ka gender enum (profile + preference filtering me use).
 #ifndef TINDER_LLD_ENUMS_GENDER_H
 #define TINDER_LLD_ENUMS_GENDER_H
 

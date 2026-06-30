@@ -1,3 +1,5 @@
+// models/Expense.h — Ek kharcha: kisne paid kiya, total amount, aur splits ki
+// list (kaun kitna deta hai). Group ya individual dono ho sakta.
 #ifndef SPLITWISE_LLD_MODELS_EXPENSE_H
 #define SPLITWISE_LLD_MODELS_EXPENSE_H
 

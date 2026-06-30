@@ -1,3 +1,5 @@
+// strategies/BoardSetupStrategy.h — STRATEGY interface: board pe snakes/ladders
+// kaise place karein. Concrete: standard / random / custom. Bridge isse use karta.
 #ifndef SNAKE_LADDER_LLD_STRATEGIES_BOARDSETUPSTRATEGY_H
 #define SNAKE_LADDER_LLD_STRATEGIES_BOARDSETUPSTRATEGY_H
 

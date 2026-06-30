@@ -1,3 +1,5 @@
+// core/Match.h — Ek match between two users: board, turns, move history, result,
+// aur in-match chat (ChatMediator ke through). Gameplay orchestrate karta hai.
 #ifndef CHESS_LLD_CORE_MATCH_H
 #define CHESS_LLD_CORE_MATCH_H
 

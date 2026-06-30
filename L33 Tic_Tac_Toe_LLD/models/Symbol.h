@@ -1,3 +1,5 @@
+// models/Symbol.h — Ek player ka mark (X / O ya custom char). Board cells aur
+// players inhi symbols se identify hote hain.
 #ifndef TICTACTOE_LLD_MODELS_SYMBOL_H
 #define TICTACTOE_LLD_MODELS_SYMBOL_H
 

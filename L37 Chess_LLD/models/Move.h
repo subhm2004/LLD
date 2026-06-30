@@ -1,3 +1,5 @@
+// models/Move.h — Ek move: from Position -> to Position (+ moved/captured piece).
+// Match move-history me inhe store karta hai.
 #ifndef CHESS_LLD_MODELS_MOVE_H
 #define CHESS_LLD_MODELS_MOVE_H
 

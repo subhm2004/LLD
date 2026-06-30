@@ -1,3 +1,10 @@
+// ============================================================================
+//  main.cpp  —  Tinder-style dating app ka demo driver
+// ----------------------------------------------------------------------------
+//  Users register karo (profile + location), nearby profiles discover karo,
+//  swipe (left/right/super-like), mutual like pe match + chat. Daily swipe limit
+//  aur block/unmatch bhi. Sab TinderSystem facade ke through.
+// ============================================================================
 #include <bits/stdc++.h>
 
 #include "core/TinderSystem.h"

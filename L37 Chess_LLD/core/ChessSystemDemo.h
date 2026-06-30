@@ -1,3 +1,5 @@
+// core/ChessSystemDemo.h — End-to-end demo runner: users queue karta hai,
+// matchmaking, sample moves, check/checkmate, aur chat dikhata hai. main() isse call karta.
 #ifndef CHESS_LLD_CORE_CHESSSYSTEMDEMO_H
 #define CHESS_LLD_CORE_CHESSSYSTEMDEMO_H
 

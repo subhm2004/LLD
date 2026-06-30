@@ -1,3 +1,5 @@
+// factories/SnakeAndLadderGameFactory.h — FACTORY: standard/random/custom game
+// variants bana ke deta hai (board + setup strategy + players wire karke).
 #ifndef SNAKE_LADDER_LLD_FACTORIES_GAMEFACTORY_H
 #define SNAKE_LADDER_LLD_FACTORIES_GAMEFACTORY_H
 

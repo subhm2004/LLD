@@ -1,3 +1,5 @@
+// observers/IObserver.h — OBSERVER interface for game events (start, move, win,
+// draw). Game subject hai; concrete observers (console/UI/log) isse implement karte.
 #ifndef TICTACTOE_LLD_OBSERVERS_IOBSERVER_H
 #define TICTACTOE_LLD_OBSERVERS_IOBSERVER_H
 

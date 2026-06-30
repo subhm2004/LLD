@@ -1,3 +1,6 @@
+// services/MatchingService.h — Core matching logic: swipes record karta hai,
+// MUTUAL right-swipe pe match banata hai, aur match hone par ChatRoom create
+// karta hai. Domain models se alag, orchestration yahan.
 #ifndef TINDER_LLD_SERVICES_MATCHINGSERVICE_H
 #define TINDER_LLD_SERVICES_MATCHINGSERVICE_H
 

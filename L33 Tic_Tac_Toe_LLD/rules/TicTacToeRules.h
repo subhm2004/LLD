@@ -1,3 +1,5 @@
+// rules/TicTacToeRules.h — STRATEGY interface for game rules: move valid hai?
+// koi jeeta? draw hua? Naye variants (timed, wildcard) iske naye implementations.
 #ifndef TICTACTOE_LLD_RULES_TICTACTOERULES_H
 #define TICTACTOE_LLD_RULES_TICTACTOERULES_H
 

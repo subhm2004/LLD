@@ -1,3 +1,5 @@
+// core/Splitwise.h — FACADE + SINGLETON: users/groups create, expense add,
+// balances track, settle, aur debt simplify — sab ek top-level API se.
 #ifndef SPLITWISE_LLD_CORE_SPLITWISE_H
 #define SPLITWISE_LLD_CORE_SPLITWISE_H
 

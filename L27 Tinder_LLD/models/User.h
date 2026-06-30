@@ -1,3 +1,5 @@
+// models/User.h — App user: id, profile, location, swipe history, matches, aur
+// daily swipe count. Matching aur chat isi user ke around hote hain.
 #ifndef TINDER_LLD_MODELS_USER_H
 #define TINDER_LLD_MODELS_USER_H
 

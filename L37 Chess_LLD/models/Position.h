@@ -1,3 +1,5 @@
+// models/Position.h — Board pe ek cell ka coordinate (row, col). Moves aur board
+// lookups isi se hote hain.
 #ifndef CHESS_LLD_MODELS_POSITION_H
 #define CHESS_LLD_MODELS_POSITION_H
 

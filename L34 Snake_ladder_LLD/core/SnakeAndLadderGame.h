@@ -1,3 +1,5 @@
+// core/SnakeAndLadderGame.h — Game engine: turn-by-turn dice roll, snake/ladder
+// apply, rules se win check, observers ko notify. Poore game ka orchestrator.
 #ifndef SNAKE_LADDER_LLD_CORE_GAME_H
 #define SNAKE_LADDER_LLD_CORE_GAME_H
 

@@ -1,3 +1,6 @@
+// strategies/SplitStrategy.h — STRATEGY interface: amount ko members me kaise
+// baatna. Concrete: Equal / Exact / Percentage. Expense flow same rehta hai,
+// sirf math swap hoti hai.
 #ifndef SPLITWISE_LLD_STRATEGIES_SPLITSTRATEGY_H
 #define SPLITWISE_LLD_STRATEGIES_SPLITSTRATEGY_H
 

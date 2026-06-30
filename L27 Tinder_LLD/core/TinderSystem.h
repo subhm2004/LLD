@@ -1,3 +1,5 @@
+// core/TinderSystem.h — FACADE: registration, nearby discovery, swipe, match,
+// chat sab ek API se. Andar MatchingService/ChatRoom ko coordinate karta hai.
 #ifndef TINDER_LLD_CORE_TINDERSYSTEM_H
 #define TINDER_LLD_CORE_TINDERSYSTEM_H
 

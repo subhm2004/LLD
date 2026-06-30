@@ -1,3 +1,5 @@
+// core/Board.h — 8x8 chess board: pieces ka layout, initial setup, piece move/
+// capture, aur position lookups. Rules isi board ko padh ke legal moves nikalte.
 #ifndef CHESS_LLD_CORE_BOARD_H
 #define CHESS_LLD_CORE_BOARD_H
 

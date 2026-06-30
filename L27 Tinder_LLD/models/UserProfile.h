@@ -1,3 +1,5 @@
+// models/UserProfile.h — Profile metadata: naam, age, gender, bio, interests,
+// photos. Discovery isse dikhata hai; preferences se filter hota hai.
 #ifndef TINDER_LLD_MODELS_USERPROFILE_H
 #define TINDER_LLD_MODELS_USERPROFILE_H
 

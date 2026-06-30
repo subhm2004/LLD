@@ -1,3 +1,5 @@
+// core/TicTacToeGameFactory.h — FACTORY: GameType ke hisaab se game (board size +
+// rules + players) bana ke deta hai. Construction centralized.
 #ifndef TICTACTOE_LLD_CORE_TICTACTOEGAMEFACTORY_H
 #define TICTACTOE_LLD_CORE_TICTACTOEGAMEFACTORY_H
 

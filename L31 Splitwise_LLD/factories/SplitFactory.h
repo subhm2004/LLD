@@ -1,3 +1,5 @@
+// factories/SplitFactory.h — FACTORY: SplitType se sahi SplitStrategy (Equal/
+// Exact/Percentage) bana ke deta hai. Creation logic ek jagah.
 #ifndef SPLITWISE_LLD_FACTORIES_SPLITFACTORY_H
 #define SPLITWISE_LLD_FACTORIES_SPLITFACTORY_H
 

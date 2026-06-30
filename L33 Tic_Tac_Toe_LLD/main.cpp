@@ -1,3 +1,10 @@
+// ============================================================================
+//  main.cpp  —  Tic Tac Toe game ka demo driver
+// ----------------------------------------------------------------------------
+//  Factory se game banao (configurable N x N board + players), turn-by-turn
+//  moves karo, rules win/draw detect karte hain, observer events print karta hai.
+//  Patterns: Strategy (rules) + Observer (events) + Factory.
+// ============================================================================
 #include <bits/stdc++.h>
 
 #include "core/TicTacToeGameFactory.h"

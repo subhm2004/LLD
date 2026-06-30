@@ -1,3 +1,6 @@
+// strategies/BoardSetupStrategyImpl.h — Concrete board-setup strategies:
+// Standard (predefined), Random (difficulty-based), Custom (counts/positions).
+// BoardSetupStrategy ko implement karte hain.
 #ifndef SNAKE_LADDER_LLD_STRATEGIES_BOARDSETUPSTRATEGYIMPL_H
 #define SNAKE_LADDER_LLD_STRATEGIES_BOARDSETUPSTRATEGYIMPL_H
 

@@ -1,3 +1,5 @@
+// rules/SnakeAndLadderRules.h — Rules engine: move valid hai? (EXACT roll se win
+// chahiye — overshoot reject), aur win condition check. Game isse consult karta hai.
 #ifndef SNAKE_LADDER_LLD_RULES_RULES_H
 #define SNAKE_LADDER_LLD_RULES_RULES_H
 

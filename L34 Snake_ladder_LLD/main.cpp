@@ -1,3 +1,10 @@
+// ============================================================================
+//  main.cpp  —  Snake & Ladder game ka demo driver
+// ----------------------------------------------------------------------------
+//  Factory se game banao (standard/random/custom board setup), multiplayer
+//  turn-by-turn dice rolls, snakes/ladders apply, exact-roll win. Patterns:
+//  Strategy + Bridge (board setup) + Factory + Observer.
+// ============================================================================
 #include <bits/stdc++.h>
 
 #include "factories/SnakeAndLadderGameFactory.h"

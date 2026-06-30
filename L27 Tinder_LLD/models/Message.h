@@ -1,3 +1,5 @@
+// models/Message.h — Ek chat message: sender, text, timestamp. ChatRoom inhi ki
+// list rakhta hai.
 #ifndef TINDER_LLD_MODELS_MESSAGE_H
 #define TINDER_LLD_MODELS_MESSAGE_H
 

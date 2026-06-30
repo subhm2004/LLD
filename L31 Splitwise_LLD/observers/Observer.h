@@ -1,3 +1,5 @@
+// observers/Observer.h — OBSERVER interface: group members ko expense/settlement
+// events par notify karne ke liye. Group subject hai, users observers.
 #ifndef SPLITWISE_LLD_OBSERVERS_OBSERVER_H
 #define SPLITWISE_LLD_OBSERVERS_OBSERVER_H
 

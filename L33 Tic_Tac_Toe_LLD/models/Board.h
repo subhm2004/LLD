@@ -1,3 +1,5 @@
+// models/Board.h — N x N grid of Symbols: cell place karna, empty check, full
+// check, display. Rules isi board ko padh ke win/draw decide karte hain.
 #ifndef TICTACTOE_LLD_MODELS_BOARD_H
 #define TICTACTOE_LLD_MODELS_BOARD_H
 

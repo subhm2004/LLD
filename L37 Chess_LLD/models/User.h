@@ -1,3 +1,5 @@
+// models/User.h — Player: id, naam, aur score/rating. Matchmaking score se hota
+// hai; match khatam/quit par score update hota hai.
 #ifndef CHESS_LLD_MODELS_USER_H
 #define CHESS_LLD_MODELS_USER_H
 

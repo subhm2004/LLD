@@ -1,3 +1,5 @@
+// models/ChatRoom.h — Match hone ke baad do users ke beech chat: messages ki
+// list + send/read. Sirf matched users ke beech banta hai.
 #ifndef TINDER_LLD_MODELS_CHATROOM_H
 #define TINDER_LLD_MODELS_CHATROOM_H
 

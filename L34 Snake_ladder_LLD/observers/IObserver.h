@@ -1,3 +1,5 @@
+// observers/IObserver.h — OBSERVER interface for game events (roll, move, snake/
+// ladder hit, win). Concrete notifiers isse implement karte hain.
 #ifndef SNAKE_LADDER_LLD_OBSERVERS_IOBSERVER_H
 #define SNAKE_LADDER_LLD_OBSERVERS_IOBSERVER_H
 

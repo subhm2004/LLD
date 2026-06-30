@@ -1,3 +1,5 @@
+// factories/PieceFactory.h — FACTORY: PieceType + Color se sahi piece (apne
+// move-behavior ke saath) bana ke deta hai. Board setup isi se pieces banwata.
 #ifndef CHESS_LLD_FACTORIES_PIECEFACTORY_H
 #define CHESS_LLD_FACTORIES_PIECEFACTORY_H
 

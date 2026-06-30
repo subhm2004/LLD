@@ -1,3 +1,5 @@
+// models/SnakeAndLadderPlayer.h — Player: naam + current board position.
+// Game inhe turn-by-turn aage badhata hai.
 #ifndef SNAKE_LADDER_LLD_MODELS_PLAYER_H
 #define SNAKE_LADDER_LLD_MODELS_PLAYER_H
 

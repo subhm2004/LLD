@@ -1,3 +1,5 @@
+// observers/ConsoleNotifier.h — Concrete observer: game events ko console pe
+// print karta hai. IObserver implement karta hai.
 #ifndef TICTACTOE_LLD_OBSERVERS_CONSOLENOTIFIER_H
 #define TICTACTOE_LLD_OBSERVERS_CONSOLENOTIFIER_H
 

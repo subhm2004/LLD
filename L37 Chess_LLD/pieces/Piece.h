@@ -1,3 +1,5 @@
+// pieces/Piece.h — Ek chess piece: type, color, position, aur uska move-generation
+// behavior (PieceMoves). Board inhi pieces se bharta hai.
 #ifndef CHESS_LLD_PIECES_PIECE_H
 #define CHESS_LLD_PIECES_PIECE_H
 

@@ -1,3 +1,6 @@
+// utils/DebtSimplifier.h — Splitwise ka HEADLINE feature: who-owes-whom ko
+// MINIMUM transactions me simplify karta hai (greedy max-creditor vs max-debtor
+// matching). N*N pairwise debts -> sabse kam transfers.
 #ifndef SPLITWISE_LLD_UTILS_DEBTSIMPLIFIER_H
 #define SPLITWISE_LLD_UTILS_DEBTSIMPLIFIER_H
 

@@ -1,3 +1,10 @@
+// ============================================================================
+//  main.cpp  —  Online Chess system ka demo driver
+// ----------------------------------------------------------------------------
+//  Users queue karo -> score-based matchmaking -> match -> legal moves (per-piece),
+//  check/checkmate/stalemate detection, in-match chat, aur score update. Patterns:
+//  Singleton (GameManager) + Strategy (rules/matchmaking) + Mediator (chat) + Factory.
+// ============================================================================
 #include <bits/stdc++.h>
 
 #include "core/ChessSystemDemo.h"

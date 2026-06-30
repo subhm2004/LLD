@@ -1,3 +1,5 @@
+// enums/SwipeAction.h — Swipe ke types: LEFT (reject) / RIGHT (like) / SUPER_LIKE.
+// MatchingService isse decide karta hai match banega ya nahi.
 #ifndef TINDER_LLD_ENUMS_SWIPEACTION_H
 #define TINDER_LLD_ENUMS_SWIPEACTION_H
 

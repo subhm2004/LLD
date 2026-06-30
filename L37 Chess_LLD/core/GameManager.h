@@ -1,3 +1,6 @@
+// core/GameManager.h — SINGLETON: users ko queue karta hai, score-based
+// matchmaking se matches banata hai, aur match lifecycle manage karta hai.
+// Poore chess system ka central coordinator.
 #ifndef CHESS_LLD_CORE_GAMEMANAGER_H
 #define CHESS_LLD_CORE_GAMEMANAGER_H
 

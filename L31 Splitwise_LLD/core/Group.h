@@ -1,3 +1,5 @@
+// core/Group.h — Ek group: members, group expenses, aur internal balance matrix.
+// Members ko (Observer ke through) expense/settlement par notify karta hai.
 #ifndef SPLITWISE_LLD_CORE_GROUP_H
 #define SPLITWISE_LLD_CORE_GROUP_H
 

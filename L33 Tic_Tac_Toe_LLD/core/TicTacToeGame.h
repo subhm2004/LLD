@@ -1,3 +1,5 @@
+// core/TicTacToeGame.h — Game engine: turn-by-turn moves, board update, rules se
+// win/draw check, aur observers ko events notify. Poore game ka orchestrator.
 #ifndef TICTACTOE_LLD_CORE_TICTACTOEGAME_H
 #define TICTACTOE_LLD_CORE_TICTACTOEGAME_H
 

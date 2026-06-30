@@ -1,3 +1,5 @@
+// models/Location.h — lat/long coordinates + do locations ke beech distance.
+// "Nearby profiles within X km" discovery isi se calculate hoti hai.
 #ifndef TINDER_LLD_MODELS_LOCATION_H
 #define TINDER_LLD_MODELS_LOCATION_H
 

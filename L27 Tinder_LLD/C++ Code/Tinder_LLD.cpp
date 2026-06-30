@@ -1,3 +1,9 @@
+// ============================================================================
+//  Tinder_LLD.cpp  —  Tinder dating app (original single-file version)
+// ----------------------------------------------------------------------------
+//  Poore dating app ka original monolithic version (saari classes ek file me).
+//  Modular, folder-based version parent folder me hai (core/, services/, models/).
+// ============================================================================
 #include <bits/stdc++.h>
 using namespace std;
 

@@ -1,3 +1,5 @@
+// models/Split.h — Expense ke ek share ka record: user + uska owed amount.
+// SplitStrategy yahi Split objects banati hai.
 #ifndef SPLITWISE_LLD_MODELS_SPLIT_H
 #define SPLITWISE_LLD_MODELS_SPLIT_H
 

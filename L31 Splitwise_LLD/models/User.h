@@ -1,3 +1,5 @@
+// models/User.h — User: id, naam, aur uska balance sheet (kisko kitna dena/lena).
+// Observer bhi ban sakta hai (group notifications receive karne ke liye).
 #ifndef SPLITWISE_LLD_MODELS_USER_H
 #define SPLITWISE_LLD_MODELS_USER_H
 

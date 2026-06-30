@@ -107,6 +107,8 @@ public:
     }
 
     // Build method to create the immutable HttpRequest object
+    // Build method me validation logic add kar sakte hai, jisse ensure ho ki HttpRequest object hamesha consistent state me ho aur half-built state me na ho. Agar validation fail hota hai to exception throw kar sakte hai.
+    // ise terminating method bolte hai, kyunki ye builder chain ko terminate karta hai aur final product return karta hai. Ye method ek immutable HttpRequest object return karta hai, jisse ensure hota hai ki HttpRequest object hamesha consistent state me ho aur half-built state me na ho.
     HttpRequest build()
     {
         // Validation logic can be added here
@@ -137,7 +139,6 @@ int main()
                               .build();
 
     request.execute(); // Guaranteed to be in a consistent state
-
 
     HttpRequestBuilder *builder = new HttpRequestBuilder();
     HttpRequest request2 = builder->withUrl("https://api.example.com")

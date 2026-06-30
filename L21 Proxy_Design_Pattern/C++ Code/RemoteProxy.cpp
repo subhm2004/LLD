@@ -1,3 +1,12 @@
+// ============================================================================
+//  RemoteProxy.cpp  —  Proxy Pattern (Structural) : REMOTE proxy variant
+// ----------------------------------------------------------------------------
+//  Remote Proxy = ek local stand-in jo kisi "remote" (network) object ki taraf
+//  se kaam karta hai. Client local DataServiceProxy se baat karta hai; proxy
+//  andar connection/networking ki complexity handle karke RealDataService ko
+//  delegate karta hai. Client ko aisa lagta hai jaise object local hi hai
+//  (location transparency).
+// ============================================================================
 #include<iostream>
 #include<string>
 

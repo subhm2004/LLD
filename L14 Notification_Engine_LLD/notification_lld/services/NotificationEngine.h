@@ -1,3 +1,5 @@
+// services/NotificationEngine.h — Observer jo naya notification aane par usko
+// registered STRATEGIES (Email/SMS/Popup) ke through actually deliver karta hai.
 #ifndef NOTIFICATION_ENGINE_H
 #define NOTIFICATION_ENGINE_H
 

@@ -1,3 +1,11 @@
+// ============================================================================
+//  ReturnTypeRule.cpp  —  LSP Signature Rule: Return type (covariance)
+// ----------------------------------------------------------------------------
+//  LSP rule: override ka return type SAME ya base ke return type ka SUBTYPE
+//  hona chahiye (COVARIANT). Jaise base `Animal* reproduce()` return karta hai
+//  to derived `Dog* reproduce()` return kar sakta hai (Dog IS-A Animal -> caller
+//  ko Animal* hi milega, safe). Broader/unrelated return type dena LSP toड़ता hai.
+// ============================================================================
 #include <iostream>
 
 using namespace std;

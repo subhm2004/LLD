@@ -1,3 +1,6 @@
+// gateways/PaymentGateway.h — TEMPLATE METHOD base: processPayment() ka fixed
+// skeleton (validate -> initiate -> confirm). Concrete gateways (Paytm/Razorpay/
+// PayPal) sirf apne provider-specific steps override karte hain, order base ke control me.
 #ifndef PAYMENT_GATEWAY_LLD_GATEWAYS_PAYMENTGATEWAY_H
 #define PAYMENT_GATEWAY_LLD_GATEWAYS_PAYMENTGATEWAY_H
 

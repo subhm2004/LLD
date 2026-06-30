@@ -1,3 +1,5 @@
+// handlers/ThousandHandler.h — Chain ka pehla handler: ₹1000 ke notes dispense
+// karta hai (jitne possible), baaki ₹500 handler ko forward. MoneyHandler extend.
 #ifndef COR_ATM_HANDLERS_THOUSAND_HANDLER_H
 #define COR_ATM_HANDLERS_THOUSAND_HANDLER_H
 

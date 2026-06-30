@@ -1,3 +1,6 @@
+// MusicPlayerApplication.h — Top-level application (SINGLETON). Saare managers
+// (playlist/device/strategy) + audio engine ko wire karta hai. Facade isi ke
+// upar baith ke client ko simple API deta hai. (Patterns: Singleton + Facade)
 #ifndef MUSIC_PLAYER_APPLICATION_HPP
 #define MUSIC_PLAYER_APPLICATION_HPP
 #include "MusicPlayerFacade.h"

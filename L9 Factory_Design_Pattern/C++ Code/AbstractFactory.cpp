@@ -1,3 +1,13 @@
+// ============================================================================
+//  AbstractFactory.cpp  —  Abstract Factory Pattern (Creational)
+// ----------------------------------------------------------------------------
+//  Abstract Factory = related products ki ek POORI FAMILY banane ke liye
+//  interface. Yahan ek factory ek saath Burger + GarlicBread (do related
+//  products) banati hai. SinghBurger family normal products deti hai, KingBurger
+//  family wheat products. Faayda: ek consistent family ek saath milti hai
+//  (mix nahi hoti). Factory Method ek product banata, Abstract Factory ek
+//  product-FAMILY banata hai.
+// ============================================================================
 #include <bits/stdc++.h>
 
 using namespace std;

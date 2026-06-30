@@ -1,3 +1,6 @@
+// core/BlinkitSystem.h — FACADE: DarkStoreManager (5km catalog, stores) +
+// OrderManager (stock validation, order SPLIT across nearby stores, delivery
+// partners). Quick-commerce ka central orchestrator.
 #ifndef BLINKIT_LLD_CORE_BLINKITSYSTEM_H
 #define BLINKIT_LLD_CORE_BLINKITSYSTEM_H
 

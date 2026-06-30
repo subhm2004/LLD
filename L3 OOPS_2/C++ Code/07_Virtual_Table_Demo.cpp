@@ -1,7 +1,12 @@
-/**
- * Virtual functions & vtable (conceptual)
- * Compiler adds vptr; virtual calls go through vtable at runtime
- */
+// ============================================================================
+//  07_Virtual_Table_Demo.cpp  —  vtable / vptr (dynamic dispatch andar se)
+// ----------------------------------------------------------------------------
+//  Dynamic polymorphism kaise kaam karta hai? Har class jisme virtual function
+//  hai, uska ek VTABLE (function pointers ka table) banta hai. Har object me ek
+//  hidden VPTR hota hai jo us vtable ko point karta hai. virtual call ke waqt
+//  program vptr -> vtable -> sahi function dhoondh ke call karta hai (runtime).
+//  Isi wajah se virtual call ka thoda overhead aur object me extra pointer hota.
+// ============================================================================
 #include <iostream>
 using namespace std;
 

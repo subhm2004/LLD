@@ -1,3 +1,11 @@
+// ============================================================================
+//  03_Dynamic_Polymorphism.cpp  —  Dynamic (runtime) polymorphism
+// ----------------------------------------------------------------------------
+//  Dynamic polymorphism = base class pointer/reference se call karne par ASLI
+//  (derived) object ka method chalता hai — faisla RUNTIME pe hota hai.
+//  Achieve hota hai `virtual` functions + overriding se (vtable ke through).
+//  Yahi OOP ki asli taakat hai: ek hi interface, alag-alag behavior.
+// ============================================================================
 #include <iostream>
 #include <string>
 

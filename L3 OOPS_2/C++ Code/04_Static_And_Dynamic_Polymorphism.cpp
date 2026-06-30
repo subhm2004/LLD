@@ -1,3 +1,11 @@
+// ============================================================================
+//  04_Static_And_Dynamic_Polymorphism.cpp  —  dono ek saath (comparison)
+// ----------------------------------------------------------------------------
+//  Yeh file dono types side-by-side dikhati hai:
+//    STATIC (compile-time)  = overloading -> tez, runtime cost nahi, flexibility kam.
+//    DYNAMIC (runtime)      = virtual override -> flexible, par vtable lookup ka
+//                             chhota overhead. Interview me farq pucha jaata hai.
+// ============================================================================
 #include <iostream>
 #include <string>
 

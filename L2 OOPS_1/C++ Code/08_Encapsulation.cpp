@@ -1,3 +1,11 @@
+// ============================================================================
+//  08_Encapsulation.cpp  —  Encapsulation (OOP pillar #1)
+// ----------------------------------------------------------------------------
+//  Encapsulation = data (private fields) aur uspe kaam karne wale methods ko ek
+//  hi class me bind karna, aur internal details ko HIDE karna. Bahar se data
+//  sirf controlled getters/setters ke through milta hai -> validation laga
+//  sakte ho, invariants maintain hote hain. "Data ki suraksha + clean interface".
+// ============================================================================
 #include <iostream>
 #include <string>
 

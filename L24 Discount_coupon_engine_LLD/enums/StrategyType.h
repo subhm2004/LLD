@@ -1,3 +1,5 @@
+// enums/StrategyType.h — Discount strategy types: FLAT / PERCENT / PERCENT_WITH_CAP.
+// DiscountStrategyManager isse sahi strategy object deta hai.
 #ifndef DISCOUNT_COUPON_LLD_ENUMS_STRATEGYTYPE_H
 #define DISCOUNT_COUPON_LLD_ENUMS_STRATEGYTYPE_H
 

@@ -1,3 +1,5 @@
+// coupons/BankingCoupon.h — Concrete coupon: specific bank card se pay karne par
+// discount (jaise "XYZ Bank pe 10% off"). Coupon base ko extend karta hai.
 #ifndef DISCOUNT_COUPON_LLD_COUPONS_BANKINGCOUPON_H
 #define DISCOUNT_COUPON_LLD_COUPONS_BANKINGCOUPON_H
 

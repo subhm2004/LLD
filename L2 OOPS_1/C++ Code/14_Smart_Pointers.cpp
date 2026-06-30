@@ -1,6 +1,14 @@
-/**
- * Smart pointers — unique_ptr, shared_ptr, weak_ptr
- */
+// ============================================================================
+//  14_Smart_Pointers.cpp  —  Smart pointers (unique_ptr / shared_ptr / weak_ptr)
+// ----------------------------------------------------------------------------
+//  Smart pointers = RAII wrappers jo memory AUTOMATIC free kar dete hain (manual
+//  delete nahi). Teen types:
+//    - unique_ptr : EXCLUSIVE ownership (ek hi maalik), copy nahi ho sakta.
+//    - shared_ptr : SHARED ownership (reference count), last owner pe delete.
+//    - weak_ptr   : shared_ptr ka non-owning observer -> circular reference
+//                   (cyclic) leak ko todne ke liye.
+//  Modern C++ me raw owning pointers ki jagah yahi use karo.
+// ============================================================================
 #include <iostream>
 #include <memory>
 using namespace std;

@@ -1,3 +1,11 @@
+// ============================================================================
+//  12_Object_Slicing.cpp  —  Object slicing problem
+// ----------------------------------------------------------------------------
+//  Object slicing = jab derived object ko base object me BY VALUE copy/assign
+//  karte ho, to derived-specific part "kat" jaata hai (slice ho jaata hai),
+//  sirf base part bachta hai -> polymorphism toot jaata hai. Bachne ka tareeka:
+//  hamesha base POINTER ya REFERENCE use karo (Base&/Base*), by-value nahi.
+// ============================================================================
 #include <iostream>
 #include <string>
 using namespace std;

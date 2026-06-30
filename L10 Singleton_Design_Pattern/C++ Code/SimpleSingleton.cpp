@@ -1,4 +1,11 @@
-// Singleton ka simple version:
+// ============================================================================
+//  SimpleSingleton.cpp  —  Simple lazy Singleton (single-thread, UNSAFE)
+// ----------------------------------------------------------------------------
+//  Singleton ka basic lazy version: private constructor + static instance
+//  pointer + getInstance() jo pehli baar `new` karta hai. Single-thread me theek,
+//  par THREAD-SAFE NAHI: do threads ek saath `if(instance==null)` paas karke do
+//  objects bana sakte hain (race). Fix versions: Eager / Locking / DCL / Meyers.
+// ============================================================================
 // Goal: class ka sirf ek hi object poori application me exist kare.
 
 #include <bits/stdc++.h>

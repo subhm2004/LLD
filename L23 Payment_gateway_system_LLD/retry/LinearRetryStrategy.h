@@ -1,3 +1,5 @@
+// retry/LinearRetryStrategy.h — Concrete: har attempt ke beech FIXED interval
+// (jaise har baar 2s). RetryStrategy implement karta hai.
 #ifndef PAYMENT_GATEWAY_LLD_RETRY_LINEARRETRYSTRATEGY_H
 #define PAYMENT_GATEWAY_LLD_RETRY_LINEARRETRYSTRATEGY_H
 

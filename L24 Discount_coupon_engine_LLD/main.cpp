@@ -1,3 +1,11 @@
+// ============================================================================
+//  main.cpp  —  Discount Coupon Engine ka demo driver
+// ----------------------------------------------------------------------------
+//  Cart banao, multiple coupons (seasonal/loyalty/bulk/banking) register karo,
+//  aur CouponManager unhe ek CHAIN me cart par apply karta hai. Discount math
+//  STRATEGY se aata hai (flat/percent/percent-with-cap). Patterns: Chain of
+//  Responsibility + Strategy + Factory + Singleton.
+// ============================================================================
 #include <bits/stdc++.h>
 
 #include "core/CouponManager.h"

@@ -1,3 +1,5 @@
+// gateways/PaytmGateway.h — Concrete gateway: Paytm UPI flow. Validate/initiate/
+// confirm steps override karta hai (source/dest UPI IDs, timestamp, reference no.).
 #ifndef PAYMENT_GATEWAY_LLD_GATEWAYS_PAYTMGATEWAY_H
 #define PAYMENT_GATEWAY_LLD_GATEWAYS_PAYTMGATEWAY_H
 

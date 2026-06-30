@@ -1,3 +1,13 @@
+// ============================================================================
+//  NotificationSystem.cpp  —  Notification Engine (monolithic, single-file)
+// ----------------------------------------------------------------------------
+//  Ek notification system jo 4 patterns ek saath dikhata hai:
+//    Singleton  -> ek hi NotificationService instance
+//    Decorator  -> message ko Timestamp/Signature se wrap karna
+//    Observer   -> naya notification aane par observers (logger/UI) ko notify
+//    Strategy   -> alag channels (Email/SMS/Popup) se delivery
+//  Yeh original single-file version hai; modular version notification_lld/ me.
+// ============================================================================
 #include <iostream>
 #include <vector>
 #include <string>

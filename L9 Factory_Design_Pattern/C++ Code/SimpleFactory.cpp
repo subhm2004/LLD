@@ -1,14 +1,26 @@
+// ============================================================================
+//  SimpleFactory.cpp  —  Simple Factory (Factory pattern ka basic roop)
+// ----------------------------------------------------------------------------
+//  Simple Factory = object banane ka kaam ek hi jagah (factory class) me
+//  centralize karna. Client `new BasicBurger()` khud nahi karta — bas type
+//  string deta hai aur factory sahi object bana ke deta hai. Faayda: creation
+//  logic ek jagah. Nuksaan (OCP weak): naya burger type aaya to factory ke
+//  if-else me edit karna padega. (Aage FactoryMethod/AbstractFactory isse
+//  improve karte hain.)
+// ============================================================================
 #include <bits/stdc++.h>
 
 using namespace std;
 
+// Product interface — saare burgers prepare() denge.
 class Burger
 {
 public:
-    virtual void prepare() = 0; // Pure virtual function
-    virtual ~Burger() {}        // Virtual destructor
+    virtual void prepare() = 0; // pure virtual
+    virtual ~Burger() {}        // virtual destructor (base pointer se delete safe)
 };
 
+// Concrete products
 class BasicBurger : public Burger
 {
 public:
@@ -36,6 +48,8 @@ public:
     }
 };
 
+// Simple Factory: type ke hisaab se sahi concrete burger bana ke deta hai.
+// (Yeh if-else hi OCP-weak hissa hai — naya type = yahan edit.)
 class BurgerFactory
 {
 public:
@@ -67,6 +81,7 @@ int main()
 
     BurgerFactory *myBurgerFactory = new BurgerFactory();
 
+    // Client ko concrete class ka naam nahi pata — bas factory se maangta hai.
     Burger *burger = myBurgerFactory->createBurger(type);
 
     burger->prepare();

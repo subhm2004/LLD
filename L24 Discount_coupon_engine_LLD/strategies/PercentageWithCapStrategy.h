@@ -1,3 +1,5 @@
+// strategies/PercentageWithCapStrategy.h — Concrete: percentage off PAR ek max
+// cap ke saath (jaise "20% off, max ₹500"). IDiscountStrategy implement karta hai.
 #ifndef DISCOUNT_COUPON_LLD_STRATEGIES_PERCENTAGEWITHCAPSTRATEGY_H
 #define DISCOUNT_COUPON_LLD_STRATEGIES_PERCENTAGEWITHCAPSTRATEGY_H
 

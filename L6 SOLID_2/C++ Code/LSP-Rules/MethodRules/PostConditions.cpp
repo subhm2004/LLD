@@ -1,3 +1,12 @@
+// ============================================================================
+//  PostConditions.cpp  —  LSP Method Rule: Post-conditions
+// ----------------------------------------------------------------------------
+//  Post-condition = method chalne ke BAAD jo sach hona chahiye (output guarantee).
+//  LSP rule: subtype post-condition ko STRENGTHEN kar sakta hai, WEAKEN nahi.
+//  Matlab override caller ko utna ya usse ZYADA guarantee de — kam nahi (jaise
+//  base "balance >= 0 rakhega" promise karta tha to derived usse kam promise na
+//  kare). Yaad rakho: "promise no less" (post-conditions sirf tight ho sakti hain).
+// ============================================================================
 #include <bits/stdc++.h>
 
 using namespace std;

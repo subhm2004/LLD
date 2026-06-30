@@ -1,7 +1,11 @@
-/**
- * L3 — Composition (HAS-A) vs Inheritance (IS-A)
- * Car HAS Engine — don't say Car IS Engine
- */
+// ============================================================================
+//  05_Composition_Vs_Inheritance.cpp  —  Composition (HAS-A) vs Inheritance (IS-A)
+// ----------------------------------------------------------------------------
+//  Golden rule: "Favor composition over inheritance". Inheritance tabhi jab
+//  sach me IS-A ho (Dog IS-A Animal). Agar relationship HAS-A hai (Car HAS-A
+//  Engine), to composition use karo — Car IS Engine kabhi mat bolo. Composition
+//  loose coupling + runtime swap deta hai; inheritance tight aur rigid hota hai.
+// ============================================================================
 #include <iostream>
 #include <string>
 using namespace std;

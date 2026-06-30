@@ -1,3 +1,12 @@
+// ============================================================================
+//  ClassInvariants.cpp  —  LSP Property Rule: Class invariants
+// ----------------------------------------------------------------------------
+//  Class invariant = ek rule jo object ke poore lifetime me HAMESHA sach rehna
+//  chahiye (jaise "balance kabhi negative nahi"). LSP rule: subtype ko base ke
+//  invariants TODNE nahi chahiye. Agar derived koi aisा change allow kare jo
+//  base ka invariant todta hai, to base ki jagah use karne par system inconsistent
+//  ho jaata hai -> LSP break.
+// ============================================================================
 #include <bits/stdc++.h>
 
 using namespace std;

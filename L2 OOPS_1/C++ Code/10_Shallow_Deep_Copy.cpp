@@ -1,6 +1,12 @@
-/**
- * Shallow copy vs Deep copy
- */
+// ============================================================================
+//  10_Shallow_Deep_Copy.cpp  —  Shallow copy vs Deep copy
+// ----------------------------------------------------------------------------
+//  Shallow copy = pointer field ko WAISE HI copy kar diya -> dono objects ek hi
+//  memory point karte hain. Khatra: ek delete kare to doosra dangling pointer;
+//  double-delete bhi possible. Deep copy = pointer ke peeche ka data bhi NAYA
+//  allocate karke copy karo -> dono independent. Raw pointer wali class me
+//  copy ctor/assignment me hamesha DEEP copy karo (Rule of Three).
+// ============================================================================
 #include <iostream>
 #include <cstring>
 using namespace std;

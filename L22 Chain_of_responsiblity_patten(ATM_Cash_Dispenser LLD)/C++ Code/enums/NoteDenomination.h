@@ -1,3 +1,5 @@
+// enums/NoteDenomination.h — Note ki value: 1000 / 500 / 200 / 100.
+// Har handler ek denomination ko represent karta hai (CoR chain ka order).
 #ifndef COR_ATM_ENUMS_NOTE_DENOMINATION_H
 #define COR_ATM_ENUMS_NOTE_DENOMINATION_H
 

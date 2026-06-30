@@ -1,3 +1,6 @@
+// coupons/Coupon.h — CHAIN OF RESPONSIBILITY ka base coupon. Har coupon check
+// karta hai "main cart pe apply hota hoon?"; agar haan to discount lagao, phir
+// NEXT coupon ko pass karo. Coupons ek chain me lagते hain (stacking).
 #ifndef DISCOUNT_COUPON_LLD_COUPONS_COUPON_H
 #define DISCOUNT_COUPON_LLD_COUPONS_COUPON_H
 

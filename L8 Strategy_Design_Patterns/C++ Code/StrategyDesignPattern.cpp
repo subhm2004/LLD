@@ -1,15 +1,24 @@
+// ============================================================================
+//  StrategyDesignPattern.cpp  —  Strategy Design Pattern (Behavioral)
+// ----------------------------------------------------------------------------
+//  Strategy = ek behavior (algorithm) ko alag class me nikaal kar, runtime par
+//  plug/swap karna — "composition over inheritance". Robot ke walk/talk/fly
+//  behaviors fixed inheritance se nahi aate, balki INJECT hote hain. Isse
+//  ek hi Robot type alag-alag behaviors ke saath ban sakta hai, aur naya
+//  behavior add karne ke liye Robot class ko chhedna nahi padta (OCP).
+// ============================================================================
 #include <bits/stdc++.h>
 using namespace std;
 
-// --- Strategy Interface for Walk ---
+// --- Strategy interface: Walk behavior ---
 class WalkableRobot
 {
 public:
-    virtual void walk() = 0; // interface or abstract class
+    virtual void walk() = 0; // interface / abstract class
     virtual ~WalkableRobot() {}
 };
 
-// --- Concrete Strategies for walk ---
+// --- Concrete walk strategies ---
 class NormalWalk : public WalkableRobot
 {
 public:
@@ -19,7 +28,7 @@ public:
     }
 };
 
-class NoWalk : public WalkableRobot
+class NoWalk : public WalkableRobot // "no-op" strategy — chal hi nahi sakta
 {
 public:
     void walk() override
@@ -28,7 +37,7 @@ public:
     }
 };
 
-// --- Strategy Interface for Talk ---
+// --- Strategy interface: Talk behavior ---
 class TalkableRobot
 {
 public:
@@ -36,7 +45,7 @@ public:
     virtual ~TalkableRobot() {}
 };
 
-// --- Concrete Strategies for Talk ---
+// --- Concrete talk strategies ---
 class NormalTalk : public TalkableRobot
 {
 public:
@@ -55,7 +64,7 @@ public:
     }
 };
 
-// --- Strategy Interface for Fly ---
+// --- Strategy interface: Fly behavior ---
 class FlyableRobot
 {
 public:
@@ -81,16 +90,18 @@ public:
     }
 };
 
-// --- Robot Base Class ---
+// --- Robot base class (Context) ---
+// Behaviors ko HAS-A (composition) ke through rakhta hai, inherit nahi karta.
 class Robot
 {
 protected:
-    // has a realtion
+    // has-a relation — yahi strategy injection hai
     WalkableRobot *walkBehavior;
     TalkableRobot *talkBehavior;
     FlyableRobot *flyBehavior;
 
 public:
+    // Behaviors constructor me inject hote hain -> runtime par decide.
     Robot(WalkableRobot *w, TalkableRobot *t, FlyableRobot *f)
     {
         this->walkBehavior = w;
@@ -102,9 +113,10 @@ public:
         delete walkBehavior;
         delete talkBehavior;
         delete flyBehavior;
-        // is se heap memory clean ho jayegi
+        // heap memory clean ho jaayegi (Robot apne behaviors ko own karta hai)
     }
 
+    // Robot khud kaam nahi karta — behavior object ko delegate karta hai.
     void walk()
     {
         walkBehavior->walk();
@@ -118,10 +130,10 @@ public:
         flyBehavior->fly();
     }
 
-    virtual void projection() = 0; // Abstract method for subclasses
+    virtual void projection() = 0; // subclasses apna roop dikhayenge
 };
 
-// --- Concrete Robot Types ---
+// --- Concrete robot types ---
 class CompanionRobot : public Robot
 {
 public:
@@ -146,9 +158,10 @@ public:
     }
 };
 
-// --- Main Function ---
+// --- Main ---
 int main()
 {
+    // robot1: chal/bol sakta hai par ud nahi sakta — behaviors mix-and-match.
     Robot *robot1 = new CompanionRobot(new NormalWalk(), new NormalTalk(), new NoFly());
     robot1->walk();
     robot1->talk();
@@ -157,6 +170,7 @@ int main()
 
     cout << "--------------------" << endl;
 
+    // robot2: ud sakta hai par chal/bol nahi — same classes, alag strategies.
     Robot *robot2 = new WorkerRobot(new NoWalk(), new NoTalk(), new NormalFly());
     robot2->walk();
     robot2->talk();

@@ -1,3 +1,4 @@
+// models/CartItem.h — Cart ka ek line item: Product + quantity. Cart inhi ki list rakhti hai.
 #ifndef DISCOUNT_COUPON_LLD_MODELS_CARTITEM_H
 #define DISCOUNT_COUPON_LLD_MODELS_CARTITEM_H
 

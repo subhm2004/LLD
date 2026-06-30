@@ -1,3 +1,12 @@
+// ============================================================================
+//  13_Upcasting_Downcasting.cpp  —  Upcasting & Downcasting
+// ----------------------------------------------------------------------------
+//  UPCASTING = derived* ko base* me convert karna -> hamesha SAFE & implicit
+//  (Dog* -> Animal*). DOWNCASTING = base* ko derived* me convert -> risky, kyunki
+//  base actually derived ho bhi sakta hai ya nahi. Isliye `dynamic_cast` use karo
+//  jo runtime pe check karta hai (galat ho to nullptr deta hai), `static_cast`
+//  blindly cast kar deta hai (galat ho to undefined behavior).
+// ============================================================================
 #include <iostream>
 #include <typeinfo>
 using namespace std;

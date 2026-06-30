@@ -1,3 +1,5 @@
+// models/PaymentRequest.h — Common payment request data: sender, receiver,
+// amount, currency. Saare gateways isi unified model pe kaam karte hain.
 #ifndef PAYMENT_GATEWAY_LLD_MODELS_PAYMENTREQUEST_H
 #define PAYMENT_GATEWAY_LLD_MODELS_PAYMENTREQUEST_H
 

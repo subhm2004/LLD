@@ -1,3 +1,5 @@
+// handlers/TwoHundredHandler.h — ₹200 notes dispense karta hai, baaki ₹100
+// handler ko forward. Chain me FiveHundred ke baad. MoneyHandler extend.
 #ifndef COR_ATM_HANDLERS_TWO_HUNDRED_HANDLER_H
 #define COR_ATM_HANDLERS_TWO_HUNDRED_HANDLER_H
 

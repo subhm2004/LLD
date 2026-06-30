@@ -1,3 +1,5 @@
+// external/HeadphonesAPI.h — Third-party headphones API (incompatible interface);
+// HeadphonesAdapter isse IAudioOutputDevice me wrap karta hai.
 #ifndef HEADPHONES_API_HPP
 #define HEADPHONES_API_HPP
 #include<string>

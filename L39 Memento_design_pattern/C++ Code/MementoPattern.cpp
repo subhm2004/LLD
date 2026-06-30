@@ -1,3 +1,12 @@
+// ============================================================================
+//  MementoPattern.cpp  —  Memento Design Pattern (Behavioral)
+// ----------------------------------------------------------------------------
+//  Memento = object ka state SNAPSHOT save/restore karna, bina uske internals
+//  bahar expose kiye -> undo/rollback possible. 3 roles: Originator (Database -
+//  jo snapshot banata/restore karta), Memento (DatabaseMemento - opaque snapshot),
+//  Caretaker (TransactionManager - snapshot store karta, par andar dekhta nahi).
+//  Example: DB transaction begin -> changes -> rollback se purana state wapas.
+// ============================================================================
 #include <iostream>
 #include <string>
 #include <map>

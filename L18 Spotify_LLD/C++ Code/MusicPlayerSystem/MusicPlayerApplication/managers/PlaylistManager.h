@@ -1,3 +1,5 @@
+// managers/PlaylistManager.h — SINGLETON: playlists create karna, song add/remove,
+// aur playlists ka lookup. Songs/playlists ka central store.
 #   ifndef PLAYLIST_MANAGER_HPP
 #   define PLAYLIST_MANAGER_HPP
 #include "../models/Playlist.h"

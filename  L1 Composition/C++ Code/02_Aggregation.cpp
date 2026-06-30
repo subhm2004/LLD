@@ -1,8 +1,13 @@
 /**
- * AGGREGATION — weak "Has-a"; both INDEPENDENT lifetimes
- * Car has Engine* but does NOT own (delete) engine
- * Engine can outlive Car
- * UML: hollow diamond ◇ on Car side
+ * ============================================================================
+ *  02_Aggregation.cpp  —  AGGREGATION (weak Has-A, shared/external lifetime)
+ * ----------------------------------------------------------------------------
+ *  Aggregation = "whole" ke paas "part" hai, par part ki lifetime BAHAR se
+ *  control hoti hai. Whole destroy ho to part zinda reh sakta hai (kisi aur
+ *  whole me reuse ho sakta hai). Yahan Car ke paas Engine* hai par Car usse
+ *  delete NAHI karti — Engine Car ke bahar bana aur Car ke baad bhi zinda.
+ *  UML: hollow diamond ◇ Car ki taraf.
+ * ============================================================================
  */
 #include <iostream>
 #include <string>
@@ -20,13 +25,16 @@ public:
 
 class Car {
     string model;
-    Engine* engine;  // pointer — aggregation (shared / external lifetime)
+    // Aggregation: pointer hold karte hain, par OWN nahi karte (external lifetime).
+    Engine* engine;
 
 public:
+    // Engine bahar se inject hota hai (constructor injection) — Car banati nahi.
     Car(string m, Engine* e) : model(m), engine(e) {
         cout << "[Car] created: " << model << " (uses external engine)\n";
     }
 
+    // Important: destructor me engine ko delete NAHI karte — yahi aggregation.
     ~Car() {
         cout << "[Car] destroyed: " << model << " (engine NOT deleted here)\n";
     }
@@ -38,15 +46,15 @@ public:
 };
 
 int main() {
-    Engine v8("V8-Petrol");  // Engine exists OUTSIDE car
+    Engine v8("V8-Petrol");  // Engine Car ke BAHAR banaya
 
     {
-        Car sedan("Honda City", &v8);
+        Car sedan("Honda City", &v8); // Engine inject kiya
         sedan.drive();
-    }  // Car destroyed — Engine still alive
+    }  // <-- Car yahan destroy ho gayi, par Engine abhi bhi zinda hai
 
     cout << "--- Car gone, engine still usable ---\n";
-    v8.start();
+    v8.start(); // proof: engine ne car ko outlive kiya
 
-    return 0;  // Engine destroyed at end of main
+    return 0;  // Engine ab main ke end pe destroy hoga
 }

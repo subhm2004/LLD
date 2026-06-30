@@ -1,6 +1,12 @@
-/**
- * Virtual destructor — mandatory when deleting derived via base pointer
- */
+// ============================================================================
+//  06_Virtual_Destructor.cpp  —  Virtual destructor (zaroori kab?)
+// ----------------------------------------------------------------------------
+//  Jab base class POINTER se derived object delete karte ho (delete basePtr),
+//  to agar base ka destructor `virtual` NAHI hai -> sirf base ka destructor
+//  chalega, derived ka NAHI -> resource leak / undefined behavior. Rule: koi
+//  bhi class jo base banegi aur polymorphically delete hogi, uska destructor
+//  `virtual` hona CHAHIYE.
+// ============================================================================
 #include <iostream>
 using namespace std;
 

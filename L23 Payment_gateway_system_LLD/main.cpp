@@ -1,3 +1,11 @@
+// ============================================================================
+//  main.cpp  —  Multi-gateway Payment Gateway system ka demo driver
+// ----------------------------------------------------------------------------
+//  PaymentController ke through alag providers (Paytm UPI / Razorpay / PayPal)
+//  se payment, retry (linear/exponential) on failure, aur subscriptions ka
+//  billing cycle chalata hai. Patterns: Template Method + Strategy + Proxy +
+//  Factory + Singleton ek saath.
+// ============================================================================
 #include <bits/stdc++.h>
 
 #include "controllers/PaymentController.h"

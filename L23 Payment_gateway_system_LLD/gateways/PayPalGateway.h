@@ -1,3 +1,6 @@
+// gateways/PayPalGateway.h — Concrete gateway: PayPal flow (wallet emails,
+// international currency validation USD/EUR/GBP, unique transaction ID).
+// PaymentGateway extend karta hai.
 #ifndef PAYMENT_GATEWAY_LLD_GATEWAYS_PAYPALGATEWAY_H
 #define PAYMENT_GATEWAY_LLD_GATEWAYS_PAYPALGATEWAY_H
 

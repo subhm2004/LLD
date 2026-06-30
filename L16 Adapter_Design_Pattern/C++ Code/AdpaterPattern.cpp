@@ -1,3 +1,12 @@
+// ============================================================================
+//  AdpaterPattern.cpp  —  Adapter Design Pattern (Structural)
+// ----------------------------------------------------------------------------
+//  Adapter = do INCOMPATIBLE interfaces ko ek saath kaam karwana — ek "translator".
+//  Client ko ek interface chahiye (JSON), par legacy class doosra deta hai (XML).
+//  Adapter beech me aakar XML ko JSON me convert karke client ko de deta hai.
+//  Client ko legacy class ka pata bhi nahi chalta. (Filename me typo "Adpater"
+//  hai par concept Adapter hi hai.)
+// ============================================================================
 #include <iostream>
 #include <string>
 

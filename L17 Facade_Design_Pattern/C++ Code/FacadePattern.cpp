@@ -1,7 +1,16 @@
+// ============================================================================
+//  FacadePattern.cpp  —  Facade Design Pattern (Structural)
+// ----------------------------------------------------------------------------
+//  Facade = ek complex subsystem (bahut saari classes) ke upar ek SIMPLE
+//  interface. Client ko andar ke saare parts (PowerSupply, CPU, BIOS...) ke
+//  saath alag-alag deal nahi karna padta — bas ek hi call `startComputer()`.
+//  Example: computer boot karna — peeche bahut steps hain, par client ke liye
+//  ek button. Fayda: client aur subsystem ke beech loose coupling.
+// ============================================================================
 #include <iostream>
 using namespace std;
 
-// Subsystems
+// ---------- Subsystems (complex parts jo facade ke peeche chhupe hain) ----------
 class PowerSupply {
 public:
     void providePower() {
@@ -39,6 +48,7 @@ public:
 
 class BIOS {
 public:
+    // BIOS khud bhi do subsystems (CPU, Memory) ko coordinate karta hai.
     void boot(CPU& cpu, Memory& memory) {
         cout << "BIOS: Booting CPU and Memory checks..." << endl;
         cpu.initialize();
@@ -53,7 +63,9 @@ public:
     }
 };
 
-// Facade
+// ---------- Facade ----------
+// Saare subsystems ko members ki tarah rakhta hai aur sahi ORDER me call karta
+// hai. Client ko sirf yahi class dikhti hai.
 class ComputerFacade {
 private:
     PowerSupply powerSupply;
@@ -65,6 +77,7 @@ private:
     OperatingSystem os;
 
 public:
+    // Ek simple method jo poora complex boot sequence chhupa deta hai.
     void startComputer() {
         cout << "----- Starting Computer -----" << endl;
         powerSupply.providePower();
@@ -76,8 +89,9 @@ public:
     }
 };
 
-// Client
+// ---------- Client ----------
 int main() {
+    // Client ko andar ke 7 subsystems ka kuch nahi pata — bas ek call.
     ComputerFacade* computer = new ComputerFacade();
     computer->startComputer();
 

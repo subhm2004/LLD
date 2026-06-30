@@ -1,3 +1,6 @@
+// device/IAudioOutputDevice.h — Target interface jo AudioEngine expect karta hai
+// (playAudio(song)). Saare adapters isse implement karte hain -> engine ko farq
+// nahi padta device bluetooth hai, wired ya headphones. (Adapter pattern target)
 #ifndef I_AUDIO_OUTPUT_DEVICE_HPP
 #define I_AUDIO_OUTPUT_DEVICE_HPP
 #include "../models/Song.h"

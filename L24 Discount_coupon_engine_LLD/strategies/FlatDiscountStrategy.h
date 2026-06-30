@@ -1,3 +1,5 @@
+// strategies/FlatDiscountStrategy.h — Concrete: fixed flat amount off (jaise ₹100).
+// IDiscountStrategy implement karta hai.
 #ifndef DISCOUNT_COUPON_LLD_STRATEGIES_FLATDISCOUNTSTRATEGY_H
 #define DISCOUNT_COUPON_LLD_STRATEGIES_FLATDISCOUNTSTRATEGY_H
 

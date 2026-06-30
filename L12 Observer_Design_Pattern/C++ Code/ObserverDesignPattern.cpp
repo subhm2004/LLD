@@ -1,4 +1,13 @@
-// yt nodification system ese design kr skte hai
+// ============================================================================
+//  ObserverDesignPattern.cpp  —  Observer Design Pattern (Behavioral)
+// ----------------------------------------------------------------------------
+//  Observer = ek Subject (Channel) apne kai Observers (Subscribers) ko state
+//  change par AUTOMATIC notify karta hai — push model, polling nahi. YouTube
+//  channel example: video upload hote hi saare subscribers ko notification.
+//  Subject sirf ISubscriber interface jaanta hai (loose coupling) -> subscribe/
+//  unsubscribe runtime par hota hai. Yahi "1-to-many dependency" hai.
+// ============================================================================
+// yt notification system ese design kr skte hai
 #include <iostream>
 #include <vector>
 #include <string>

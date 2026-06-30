@@ -1,3 +1,10 @@
+// ============================================================================
+//  dclp_multithreading_safe_notification_system.cpp  —  thread-safe variant
+// ----------------------------------------------------------------------------
+//  Notification system ka thread-safe version: Singleton ko Double-Checked
+//  Locking (DCLP) + mutex se thread-safe banaya gaya hai, taaki multi-threaded
+//  environment me bhi ek hi NotificationService instance bane (race nahi).
+// ============================================================================
 #include <iostream>
 #include <vector>
 #include <string>

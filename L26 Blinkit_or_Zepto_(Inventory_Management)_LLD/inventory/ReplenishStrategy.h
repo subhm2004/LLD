@@ -1,3 +1,6 @@
+// inventory/ReplenishStrategy.h — STRATEGY: stock kab/kaise refill ho
+// (Threshold-based ya Weekly). Per dark-store swap ho sakti hai, naya strategy
+// add karna easy. (Strategy pattern)
 #ifndef BLINKIT_LLD_INVENTORY_REPLENISHSTRATEGY_H
 #define BLINKIT_LLD_INVENTORY_REPLENISHSTRATEGY_H
 

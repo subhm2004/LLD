@@ -1,3 +1,10 @@
+// ============================================================================
+//  main.cpp  —  Tomato food-delivery system ka demo driver
+// ----------------------------------------------------------------------------
+//  End-to-end flow chalata hai: user banao -> restaurant search -> cart me item
+//  add -> order place (now/scheduled) -> payment (UPI/CreditCard strategy) ->
+//  notification. Sab kaam TomatoApp facade ke through.
+// ============================================================================
 #include <iostream>
 #include "TomatoApp.h"
 using namespace std;

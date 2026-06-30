@@ -1,3 +1,12 @@
+// ============================================================================
+//  09_Abstraction.cpp  —  Abstraction (OOP pillar #2)
+// ----------------------------------------------------------------------------
+//  Abstraction = sirf ZAROORI cheez (kya karta hai) dikhao, complex internal
+//  details (kaise karta hai) chhupa do. Jaise car ka steering — chalana aata
+//  hai, andar engine kaise kaam karta hai jaanना zaroori nahi. C++ me aksar
+//  abstract class / pure virtual functions se achieve hota hai.
+//  (Encapsulation = data hide; Abstraction = complexity/implementation hide.)
+// ============================================================================
 #include <iostream>
 #include <string>
 

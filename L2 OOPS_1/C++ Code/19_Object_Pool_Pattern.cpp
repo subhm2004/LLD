@@ -1,7 +1,11 @@
-/**
- * Object Pool — reuse pre-allocated objects instead of repeated new/delete
- * Memory + allocation churn optimization
- */
+// ============================================================================
+//  19_Object_Pool_Pattern.cpp  —  Object Pool pattern
+// ----------------------------------------------------------------------------
+//  Object Pool = baar-baar new/delete karne ki jagah, ek pool me objects PEHLE
+//  se bana ke rakho aur use karke wapas pool me de do (reuse). Faayda: allocation
+//  ki churn aur memory fragmentation kam, performance behtar — un cheezon ke liye
+//  jo bahut frequent banti-mitti hain (DB connections, bullets in a game, threads).
+// ============================================================================
 #include <iostream>
 #include <memory>
 #include <queue>

@@ -1,3 +1,12 @@
+// ============================================================================
+//  ThreadSafeDoubleLockingSingleton.cpp  —  Double-Checked Locking (DCL)
+// ----------------------------------------------------------------------------
+//  Locking singleton ko optimize karta hai: pehle BINA lock ke check (instance
+//  bana hai kya?), agar nahi to tab lock lagao aur DOBARA check karke banao.
+//  Isse lock sirf PEHLI baar (creation) par lagta hai, baad me nahi -> fast.
+//  Caveat: sahi hone ke liye `std::atomic` / memory ordering chahiye, warna
+//  subtle reordering bug aa sakte hain. (Isiliye modern code Meyers prefer karta.)
+// ============================================================================
 #include <bits/stdc++.h>
 #include <iostream>
 #include <mutex>

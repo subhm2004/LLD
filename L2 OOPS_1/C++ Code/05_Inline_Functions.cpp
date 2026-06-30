@@ -1,7 +1,11 @@
-/**
- * L2 — inline: suggest compiler to expand at call site (no function call overhead)
- * Defined in header usually. Modern compilers inline even without keyword.
- */
+// ============================================================================
+//  05_Inline_Functions.cpp  —  Inline functions
+// ----------------------------------------------------------------------------
+//  `inline` = compiler ko HINT ki function call ki jagah uska code waheen
+//  expand kar do -> function-call ka overhead bachta hai (chhote functions ke
+//  liye useful). Aksar header me define karte hain. Note: modern compilers
+//  khud bhi inline kar dete hain bina keyword ke — yeh sirf ek suggestion hai.
+// ============================================================================
 #include <iostream>
 using namespace std;
 

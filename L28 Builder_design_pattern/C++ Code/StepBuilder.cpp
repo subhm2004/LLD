@@ -1,3 +1,12 @@
+// ============================================================================
+//  StepBuilder.cpp  —  Step (Type-State) Builder variant
+// ----------------------------------------------------------------------------
+//  Step Builder = builder ke steps ka ORDER compile-time pe enforce karta hai.
+//  Har step ek interface return karta hai jo SIRF agla valid step expose karta
+//  hai (UrlStep -> MethodStep -> HeaderStep -> OptionalStep -> build). Matlab
+//  galat order me call karoge to compile hi nahi hoga. Required fields chhoot
+//  hi nahi sakte — sabse safe builder variant.
+// ============================================================================
 #include <iostream>
 #include <stdexcept>
 #include <string>

@@ -1,3 +1,11 @@
+// ============================================================================
+//  DIP_followed_new_pointer_style.cpp  —  DIP fix, modern smart-pointer style
+// ----------------------------------------------------------------------------
+//  Wahi DIP fix (UserService -> Database abstraction), par raw pointer ki jagah
+//  `unique_ptr` se ownership clear aur memory management automatic. Concrete DB
+//  inject hota hai aur UserService usko own karta hai (RAII). Yeh production
+//  jaisa modern C++ idiom hai.
+// ============================================================================
 #include <iostream>
 #include <vector>
 #include <string>

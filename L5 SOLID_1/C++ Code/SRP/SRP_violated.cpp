@@ -1,9 +1,18 @@
+// ============================================================================
+//  SRP_violated.cpp  —  Single Responsibility Principle (SRP) ka VIOLATION
+// ----------------------------------------------------------------------------
+//  Concept: SRP kehta hai "ek class ke paas badalne ki sirf EK wajah honi
+//  chahiye". Yahan ShoppingCart ek saath 3 kaam kar rahi hai (cart logic +
+//  invoice printing + database saving) — yani 3 wajah se badal sakti hai.
+//  Isliye yeh SRP TODTI hai. Fix version: SRP_followed.cpp me dekho.
+// ============================================================================
+
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
-// Product class representing any item of any ECommerce.
+// Product = kisi bhi e-commerce item ka simple model (naam + price).
 class Product
 {
 public:
@@ -17,13 +26,14 @@ public:
     }
 };
 
-// Violating SRP: ShoppingCart is handling multiple responsibilities
+// ❌ SRP VIOLATION: ShoppingCart ek se zyada responsibilities sambhal rahi hai.
 class ShoppingCart
 {
 private:
-    vector<Product *> products;
+    vector<Product *> products; // cart ke andar ke saare products
 
 public:
+    // Responsibility #1 (sahi): cart me product add karna.
     void addProduct(Product *p)
     {
         products.push_back(p);
@@ -34,7 +44,7 @@ public:
         return products;
     }
 
-    // 1. Calculates total price in cart.
+    // Responsibility #1 (sahi): cart ka total price nikalna — yeh cart ka hi kaam hai.
     double calculateTotal()
     {
         double total = 0;
@@ -45,7 +55,8 @@ public:
         return total;
     }
 
-    // 2. Violating SRP - Prints invoice (Should be in a separate class)
+    // ❌ Responsibility #2 (galat): invoice print karna PRESENTATION ka kaam hai.
+    //    Ise alag InvoicePrinter class me hona chahiye.
     void printInvoice()
     {
         cout << "Shopping Cart Invoice:\n";
@@ -56,7 +67,8 @@ public:
         cout << "Total: Rs " << calculateTotal() << endl;
     }
 
-    // 3. Violating SRP - Saves to DB (Should be in a separate class)
+    // ❌ Responsibility #3 (galat): DB me save karna PERSISTENCE ka kaam hai.
+    //    Ise alag Repository/DAO class me hona chahiye.
     void saveToDatabase()
     {
         cout << "Saving shopping cart to database..." << endl;
@@ -65,6 +77,9 @@ public:
 
 int main()
 {
+    // Driver: cart banao, products daalo, phir invoice + DB save.
+    // Dhyaan do — agar invoice format YA db logic badle, to ShoppingCart
+    // class hi edit karni padegi. Yahi SRP break ka asli nuksaan hai.
     ShoppingCart *cart = new ShoppingCart();
 
     cart->addProduct(new Product("Laptop", 50000));

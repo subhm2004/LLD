@@ -1,3 +1,6 @@
+// OrderFactory.h — Abstract Factory interface: order banane ka contract.
+// Concrete factories (NowOrderFactory, ScheduledOrderFactory) ise implement
+// karke "abhi" ya "scheduled" order banate hain. (Factory Method pattern)
 #ifndef ORDER_FACTORY_H
 #define ORDER_FACTORY_H
 

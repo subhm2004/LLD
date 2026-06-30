@@ -1,3 +1,12 @@
+// ============================================================================
+//  TemplateMethodPattern.cpp  —  Template Method Pattern (Behavioral)
+// ----------------------------------------------------------------------------
+//  Template Method = base class me ek algorithm ka SKELETON (fixed steps ka
+//  order) define karo, par kuch steps subclasses ko override karne do. Yahan
+//  ML pipeline: trainPipeline() ka order fixed hai (load -> train -> evaluate
+//  -> save), par "kaise train/evaluate karna hai" subclasses (NeuralNetwork,
+//  RandomForest) decide karte hain. Order base ke control me, details child me.
+// ============================================================================
 #include <iostream>
 #include <string>
 

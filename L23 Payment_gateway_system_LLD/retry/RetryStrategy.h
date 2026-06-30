@@ -1,3 +1,5 @@
+// retry/RetryStrategy.h — STRATEGY interface for retry timing: "kitni der ruko
+// before next attempt". Concrete: Linear vs ExponentialBackoff. Proxy isse use karta.
 #ifndef PAYMENT_GATEWAY_LLD_RETRY_RETRYSTRATEGY_H
 #define PAYMENT_GATEWAY_LLD_RETRY_RETRYSTRATEGY_H
 

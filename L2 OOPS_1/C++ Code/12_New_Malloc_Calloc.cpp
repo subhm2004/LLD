@@ -1,6 +1,12 @@
-/**
- * new/delete vs malloc/free vs calloc
- */
+// ============================================================================
+//  12_New_Malloc_Calloc.cpp  —  new/delete vs malloc/free vs calloc
+// ----------------------------------------------------------------------------
+//  `new`/`delete` (C++): memory allocate karta hai AUR constructor/destructor
+//  chalata hai -> objects ke liye sahi. `malloc`/`free` (C): sirf raw memory
+//  deta hai, constructor NAHI chalता. `calloc`: malloc jaisa par memory ko 0 se
+//  initialize karta hai. C++ me objects ke liye hamesha new/delete (ya smart
+//  pointers) use karo, malloc/calloc nahi.
+// ============================================================================
 #include <iostream>
 #include <cstdlib>
 using namespace std;

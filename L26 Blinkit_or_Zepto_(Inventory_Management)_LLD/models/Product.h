@@ -1,3 +1,5 @@
+// models/Product.h — Product model: SKU id, naam, price. Inventory aur cart inhi
+// products se kaam karte hain (creation aksar factory se centralized).
 #ifndef BLINKIT_LLD_MODELS_PRODUCT_H
 #define BLINKIT_LLD_MODELS_PRODUCT_H
 

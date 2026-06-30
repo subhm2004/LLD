@@ -1,4 +1,12 @@
-// history kabhi change nhi honi chahiye ke baar parent class ne bol diya ye state hai to child class usi state ko follow kre
+// ============================================================================
+//  HistoryConstraint.cpp  —  LSP Property Rule: History constraint
+// ----------------------------------------------------------------------------
+//  History constraint = subtype ko aise state-changes ALLOW nahi karne chahiye
+//  jo base mana karta hai. Jaise base ne ek field ko "immutable" (set hone ke
+//  baad nahi badlega) declare kiya, to derived usse mutable bana kar baad me
+//  change na kare. Object ki "history" (allowed transitions) base jaisi hi rahe.
+//  Yani parent ne jo state-rules diye, child unhi ko follow kare.
+// ============================================================================
 
 #include <bits/stdc++.h>
 

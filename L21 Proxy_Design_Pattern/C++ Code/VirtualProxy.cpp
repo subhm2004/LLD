@@ -1,3 +1,12 @@
+// ============================================================================
+//  VirtualProxy.cpp  —  Proxy Pattern (Structural) : VIRTUAL proxy variant
+// ----------------------------------------------------------------------------
+//  Proxy = real object ke saamne ek "stand-in" jo SAME interface deta hai aur
+//  uske access ko control karta hai. Virtual Proxy ka kaam: LAZY LOADING — heavy
+//  RealImage ko tab tak nahi banao jab tak zaroorat na ho. ImageProxy pehli baar
+//  display() pe hi RealImage create karta hai. Client ko `IImage*` milta hai,
+//  pata nahi chalta ki proxy hai ya real.
+// ============================================================================
 #include <iostream>
 #include <string>
 

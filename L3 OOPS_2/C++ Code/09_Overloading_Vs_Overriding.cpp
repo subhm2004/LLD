@@ -1,6 +1,11 @@
-/**
- * Overloading (static) vs Overriding (dynamic) — side by side
- */
+// ============================================================================
+//  09_Overloading_Vs_Overriding.cpp  —  Overloading vs Overriding
+// ----------------------------------------------------------------------------
+//  OVERLOADING = same class me same naam ke functions, alag PARAMETERS. Compile
+//  -time pe resolve (static). OVERRIDING = derived class base ke `virtual`
+//  function ko same signature se redefine karti hai. Runtime pe resolve (dynamic).
+//  Yaad rakho: overload = "alag arguments", override = "same signature + virtual".
+// ============================================================================
 #include <iostream>
 using namespace std;
 

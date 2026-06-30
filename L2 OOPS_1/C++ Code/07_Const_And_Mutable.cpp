@@ -1,8 +1,11 @@
-/**
- * L2 — const: immutability contracts
- * const method = won't modify object state (logical const)
- * mutable = can change even in const method (caches, mutex)
- */
+// ============================================================================
+//  07_Const_And_Mutable.cpp  —  const & mutable
+// ----------------------------------------------------------------------------
+//  `const` = immutability ka contract. Const method object ka state nahi badlta
+//  (logical const) — compiler enforce karta hai. `mutable` = ek exception: aisi
+//  field jo const method ke andar bhi badli ja sakti hai (jaise cache, counter,
+//  ya mutex) — kyunki woh "logical" state ka hissa nahi hoti.
+// ============================================================================
 #include <iostream>
 using namespace std;
 

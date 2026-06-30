@@ -1,3 +1,5 @@
+// device/HeadphonesAdapter.h — ADAPTER: IAudioOutputDevice ko external
+// HeadphonesAPI me translate karta hai (same role as Bluetooth adapter).
 #ifndef HEADPHONES_ADAPTER_HPP
 #define HEADPHONES_ADAPTER_HPP
 

@@ -1,3 +1,5 @@
+// CreditCartPaymentStrategy.h — Concrete strategy: credit card se payment.
+// PaymentStrategy interface implement karta hai. (filename me "Cart" typo hai)
 #ifndef CREDIT_CARD_PAYMENT_STRATEGY_H
 #define CREDIT_CARD_PAYMENT_STRATEGY_H
 

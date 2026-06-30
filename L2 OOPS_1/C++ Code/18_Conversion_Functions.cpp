@@ -1,3 +1,12 @@
+// ============================================================================
+//  18_Conversion_Functions.cpp  —  Type conversion functions
+// ----------------------------------------------------------------------------
+//  C++ ek type ko doosre me convert karne ke do tareeke deta hai:
+//    1) Single-argument constructor -> doosre type se IS class me convert.
+//    2) Conversion operator (operator T()) -> IS class se doosre type me convert.
+//  Implicit conversion convenient hai par GALAT jagah chup-chap convert ho sakta
+//  hai -> isliye `explicit` keyword se implicit conversion rok sakte ho.
+// ============================================================================
 #include <bits/stdc++.h>
 using namespace std;
 

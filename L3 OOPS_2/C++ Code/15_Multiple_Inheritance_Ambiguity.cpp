@@ -1,3 +1,12 @@
+// ============================================================================
+//  15_Multiple_Inheritance_Ambiguity.cpp  —  Multiple inheritance ambiguity
+// ----------------------------------------------------------------------------
+//  Jab ek class do base classes se inherit kare jinme SAME naam ka member/method
+//  ho, to compiler confuse ho jaata hai (kaunsa wala?). Fix: call karte waqt
+//  scope resolution use karo -> obj.Base1::func() ya obj.Base2::func().
+//  Isiliye multiple inheritance carefully use karte hain (diamond problem bhi
+//  ek aisa hi case hai -> 08_Diamond_Problem.cpp).
+// ============================================================================
 #include <iostream>
 using namespace std;
 

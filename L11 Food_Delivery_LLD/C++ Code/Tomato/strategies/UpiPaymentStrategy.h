@@ -1,3 +1,5 @@
+// UpiPaymentStrategy.h — Concrete strategy: UPI se payment. PaymentStrategy
+// interface implement karta hai.
 #ifndef UPI_PAYMENT_STRATEGY_H
 #define UPI_PAYMENT_STRATEGY_H
 

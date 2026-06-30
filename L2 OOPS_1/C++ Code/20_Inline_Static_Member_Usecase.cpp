@@ -1,3 +1,12 @@
+// ============================================================================
+//  20_Inline_Static_Member_Usecase.cpp  —  `inline static` member ka use-case
+// ----------------------------------------------------------------------------
+//  Purane C++ me static data member ko class ke BAHAR alag se define karna padta
+//  tha (ek .cpp me), warna linker error. C++17 ka `inline static` isse fix
+//  karta hai — member ko header me hi declare + initialize kar do, alag
+//  definition ki zaroorat nahi, aur saari translation units me ek hi copy rehti
+//  hai. Header-only classes ke liye bahut useful.
+// ============================================================================
 #include <bits/stdc++.h>
 
 using namespace std;

@@ -1,3 +1,10 @@
+// ============================================================================
+//  ZeptoClone.cpp  —  Blinkit/Zepto inventory system (original single-file)
+// ----------------------------------------------------------------------------
+//  Poore quick-commerce inventory + order system ka original monolithic version.
+//  Modular, folder-based version parent folder me hai (core/, inventory/, models/).
+//  Reference ke liye preserve — modify nahi kiya gaya.
+// ============================================================================
 #include <iostream>
 #include <string>
 #include <vector>

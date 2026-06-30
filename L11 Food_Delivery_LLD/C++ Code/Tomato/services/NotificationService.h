@@ -1,3 +1,5 @@
+// NotificationService.h — Order confirm hone par user ko notification/receipt
+// bhejta hai (order summary print). Notification concern ko alag rakhta hai.
 #ifndef NOTIFICATION_SERVICE_H
 #define NOTIFICATION_SERVICE_H
 

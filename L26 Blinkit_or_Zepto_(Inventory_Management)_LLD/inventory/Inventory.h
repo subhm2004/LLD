@@ -1,3 +1,6 @@
+// inventory/Inventory.h — Stock manage karta hai (add/remove/reserve/deduct).
+// Pluggable InventoryStore backend (in-memory/DB-sim) ke saath, aur
+// InventoryStoreFactory bhi yahin — naya backend bina business logic chhede.
 #ifndef BLINKIT_LLD_INVENTORY_INVENTORY_H
 #define BLINKIT_LLD_INVENTORY_INVENTORY_H
 

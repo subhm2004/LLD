@@ -1,3 +1,6 @@
+// services/CashDispenseService.h — High-level service: withdrawal request leta hai,
+// inventory check karta hai, aur chain manager ke through dispense start karta hai.
+// Client ke liye single entry-point (handlers/chain ka jhamela chhupata hai).
 #ifndef COR_ATM_SERVICES_CASH_DISPENSE_SERVICE_H
 #define COR_ATM_SERVICES_CASH_DISPENSE_SERVICE_H
 

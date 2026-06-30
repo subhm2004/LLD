@@ -1,3 +1,6 @@
+// managers/StrategyManager.h — SINGLETON: PlayStrategyType ke hisaab se sahi
+// PlayStrategy (Sequential/Random/CustomQueue) deta hai. Play-order ko swap
+// karne ka central point.
 #ifndef STRATEGY_MANAGER_HPP
 #define STRATEGY_MANAGER_HPP
 #include<iostream>

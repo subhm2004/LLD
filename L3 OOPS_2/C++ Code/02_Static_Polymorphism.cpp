@@ -1,3 +1,11 @@
+// ============================================================================
+//  02_Static_Polymorphism.cpp  —  Static (compile-time) polymorphism
+// ----------------------------------------------------------------------------
+//  Static polymorphism = kaunsa function chalega ye COMPILE-TIME pe decide hota
+//  hai. Achieve hota hai: function OVERLOADING (same naam, alag parameters) aur
+//  operator overloading se. Tez hai (koi runtime lookup nahi), par flexibility
+//  kam. (Iska ulta: dynamic polymorphism = runtime, virtual functions se.)
+// ============================================================================
 #include <iostream>
 #include <string>
 

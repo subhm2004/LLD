@@ -1,7 +1,13 @@
-/**
- * L2 — Constructors, destructor, copy constructor, copy assignment
- * Rule of thumb: if you manage raw pointer → define/copy/delete carefully (Rule of Three)
- */
+// ============================================================================
+//  02_Constructors_Destructors.cpp  —  Constructor / Destructor / Copy
+// ----------------------------------------------------------------------------
+//  Constructor = object bante hi chalता hai (setup/initialize). Destructor =
+//  object marte waqt chalता hai (cleanup, jaise memory free). Copy constructor +
+//  copy assignment = ek object se doosra copy karte waqt chalte hain.
+//  RULE OF THREE: agar class raw pointer manage karti hai, to teeno (destructor,
+//  copy ctor, copy assignment) khud sahi se define karo — warna double-delete /
+//  shallow-copy bugs aate hain.
+// ============================================================================
 #include <iostream>
 #include <cstring>
 using namespace std;

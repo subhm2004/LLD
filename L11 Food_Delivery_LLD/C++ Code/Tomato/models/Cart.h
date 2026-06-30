@@ -1,3 +1,5 @@
+// Cart.h — User ka shopping cart: chosen restaurant + uske menu items ki list,
+// aur total amount nikalta hai. Order place karne se pehle ka state.
 #ifndef CART_H
 #define CART_H
 

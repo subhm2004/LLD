@@ -1,3 +1,5 @@
+// OrderManager.h — Saare orders ko track/manage karta hai (place, store, list).
+// Order placement flow ko coordinate karta hai (factory se order banwa ke rakhta).
 #ifndef ORDER_MANAGER_H
 #define ORDER_MANAGER_H
 

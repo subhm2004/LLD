@@ -1,3 +1,12 @@
+// ============================================================================
+//  CommandPattern.cpp  —  Command Design Pattern (Behavioral)
+// ----------------------------------------------------------------------------
+//  Command = ek request ko ek OBJECT bana dena, taaki use store, queue, log,
+//  ya UNDO kiya ja sake. 3 roles: Command (kaam ka object), Receiver (asli
+//  kaam karne wala device), Invoker (jo command trigger karta hai - jaise
+//  RemoteControl). Invoker ko receiver ka kuch nahi pata — bas command->execute().
+//  Yahan home-automation remote: har button ek command (execute + undo).
+// ============================================================================
 #include <iostream>
 using namespace std;
 

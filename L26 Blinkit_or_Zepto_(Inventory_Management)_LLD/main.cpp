@@ -1,3 +1,11 @@
+// ============================================================================
+//  main.cpp  —  Blinkit/Zepto quick-commerce inventory system ka demo driver
+// ----------------------------------------------------------------------------
+//  Dark stores onboard karo, inventory + replenishment set karo, 5km catalog
+//  dikhao, cart se order place karo — agar ek store full cart fulfill na kare
+//  to order SPLIT across nearby stores (alag delivery partners). Patterns:
+//  Strategy (replenish) + Factory (product/store) + Facade (BlinkitSystem).
+// ============================================================================
 #include <bits/stdc++.h>
 
 #include "core/BlinkitSystem.h"

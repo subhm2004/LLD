@@ -1,3 +1,11 @@
+// ============================================================================
+//  ThreadSafeEagerSingleton.cpp  —  Eager Singleton (thread-safe at startup)
+// ----------------------------------------------------------------------------
+//  Instance ko program START hote hi (static initialization me) bana dete hain,
+//  lazy nahi. Isliye koi race nahi -> thread-safe by construction. Nuksaan: agar
+//  instance kabhi use hi na ho to bhi ban jaata hai (resource waste), aur static
+//  init order across files tricky ho sakta hai. (Lazy chahiye to Meyers behtar.)
+// ============================================================================
 #include <bits/stdc++.h>
 #include <iostream>
 #include <mutex>

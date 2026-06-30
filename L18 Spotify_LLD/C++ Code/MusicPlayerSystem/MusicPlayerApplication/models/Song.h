@@ -1,3 +1,5 @@
+// models/Song.h — Ek gaane ka data: title, artist, aur audio data/path. System
+// ki sabse basic unit jise playlist hold karti aur engine play karta hai.
 #ifndef SONG_HPP
 #define SONG_HPP
 #include <string>

@@ -1,3 +1,6 @@
+// proxy/PaymentGatewayProxy.h — PROXY around a PaymentGateway: same interface,
+// par failure par RETRY add karta hai (retry strategy ke through). Retry ka
+// cross-cutting concern gateway code se bahar rehta hai.
 #ifndef PAYMENT_GATEWAY_LLD_PROXY_PAYMENTGATEWAYPROXY_H
 #define PAYMENT_GATEWAY_LLD_PROXY_PAYMENTGATEWAYPROXY_H
 

@@ -1,3 +1,10 @@
+// ============================================================================
+//  PaymentGatewayApplication.cpp  —  Payment Gateway (original single-file)
+// ----------------------------------------------------------------------------
+//  Poore multi-gateway payment system ka original monolithic version (saari
+//  classes ek file me). Modular, folder-based version parent folder me hai
+//  (gateways/, proxy/, retry/, factories/, services/, controllers/).
+// ============================================================================
 #include <cstdlib>
 #include <ctime>
 #include <iostream>

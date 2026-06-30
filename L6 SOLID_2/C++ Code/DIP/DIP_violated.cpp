@@ -1,3 +1,12 @@
+// ============================================================================
+//  DIP_violated.cpp  —  Dependency Inversion Principle ka VIOLATION
+// ----------------------------------------------------------------------------
+//  DIP: high-level module (policy) ko low-level module (detail) par DIRECT
+//  depend nahi karna chahiye — dono ko abstraction par depend karna chahiye.
+//  Yahan high-level UserService seedha concrete MySQLDatabase ko banata/use
+//  karta hai. Mongo pe switch karna ho? UserService edit karni padegi; test ke
+//  liye real DB chahiye. Fix: DIP_followed.cpp (Database interface + injection).
+// ============================================================================
 #include <bits/stdc++.h>
 using namespace std;
 

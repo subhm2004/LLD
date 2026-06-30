@@ -1,3 +1,13 @@
+// ============================================================================
+//  FactoryMethod.cpp  —  Factory Method Pattern (Creational)
+// ----------------------------------------------------------------------------
+//  Factory Method = object banane ka faisla SUBCLASS pe chhod do. Ek abstract
+//  BurgerFactory hai jo createBurger() declare karta hai; har concrete factory
+//  (SinghBurger = normal burgers, KingBurger = wheat burgers) apne hisaab se
+//  banata hai. Naya factory/variant add karna ho to NAYI factory class banao —
+//  existing code edit nahi (Simple Factory se behtar OCP). Client sirf abstract
+//  BurgerFactory* ke saath kaam karta hai.
+// ============================================================================
 #include <bits/stdc++.h>
 
 using namespace std;

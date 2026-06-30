@@ -1,3 +1,5 @@
+// models/Subscription.h — Recurring payment ka data: subscriber, receiver,
+// amount, currency, gateway, billing interval, active/cancelled status.
 #ifndef PAYMENT_GATEWAY_LLD_MODELS_SUBSCRIPTION_H
 #define PAYMENT_GATEWAY_LLD_MODELS_SUBSCRIPTION_H
 

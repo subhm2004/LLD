@@ -1,3 +1,5 @@
+// strategies/CustomQueueStrategy.h — Concrete strategy: user-defined queue ke
+// hisaab se play (user manually next songs queue karta hai). PlayStrategy implement.
 # ifndef CUSTOM_QUEUE_STRATEGY_HPP
 # define CUSTOM_QUEUE_STRATEGY_HPP
 #include<iostream>

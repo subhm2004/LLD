@@ -1,3 +1,5 @@
+// gateways/RazorpayGateway.h — Concrete gateway: Razorpay flow (bank account
+// numbers, completion timestamp, unique payment ID). PaymentGateway extend karta hai.
 #ifndef PAYMENT_GATEWAY_LLD_GATEWAYS_RAZORPAYGATEWAY_H
 #define PAYMENT_GATEWAY_LLD_GATEWAYS_RAZORPAYGATEWAY_H
 

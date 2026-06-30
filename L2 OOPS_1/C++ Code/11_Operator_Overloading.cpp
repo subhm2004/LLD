@@ -1,6 +1,12 @@
-/**
- * Operator overloading — compile-time polymorphism
- */
+// ============================================================================
+//  11_Operator_Overloading.cpp  —  Operator overloading
+// ----------------------------------------------------------------------------
+//  Operator overloading = built-in operators (+, ==, <<, ...) ko apni class ke
+//  objects ke liye custom meaning dena, taaki code natural lage
+//  (jaise c3 = c1 + c2 do Complex numbers ke liye). Yeh COMPILE-TIME
+//  polymorphism hai (kaunsa operator chalega compile pe decide hota hai).
+//  Dhyaan: operator ka meaning intuitive rakho, warna code confusing ho jaata.
+// ============================================================================
 #include <iostream>
 using namespace std;
 

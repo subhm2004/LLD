@@ -1,3 +1,12 @@
+// ============================================================================
+//  DIP_followed.cpp  —  Dependency Inversion Principle ka SAHI tareeka
+// ----------------------------------------------------------------------------
+//  Fix: ek `Database` ABSTRACTION (interface) banao. MySQL/MongoDB usse
+//  implement karein, aur high-level UserService sirf `Database` par depend kare
+//  (concrete par nahi). Concrete DB constructor ke through INJECT hota hai.
+//  Ab DB swap karna = bas alag object pass karo; test me mock pass karo. Yahi
+//  dependency injection se DIP achieve hota hai.
+// ============================================================================
 #include <bits/stdc++.h>
 using namespace std;
 

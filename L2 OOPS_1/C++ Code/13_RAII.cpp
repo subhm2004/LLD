@@ -1,7 +1,12 @@
-/**
- * RAII — Resource Acquisition Is Initialization
- * Acquire in ctor, release in dtor → exception-safe scope-bound cleanup
- */
+// ============================================================================
+//  13_RAII.cpp  —  RAII (Resource Acquisition Is Initialization)
+// ----------------------------------------------------------------------------
+//  RAII = resource (memory, file, lock...) ko CONSTRUCTOR me acquire karo aur
+//  DESTRUCTOR me release karo. Faayda: object scope se bahar jaate hi destructor
+//  apne aap chalta hai -> cleanup guaranteed, exception aaye tab bhi (stack
+//  unwinding). Isiliye smart pointers, lock_guard, file streams sab RAII use
+//  karte hain. "Resource ki lifetime object ki lifetime se bandh do."
+// ============================================================================
 #include <bits/stdc++.h>
 #include <mutex>
 using namespace std;

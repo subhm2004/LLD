@@ -1,3 +1,11 @@
+// ============================================================================
+//  COR_Original.cpp  —  Chain of Responsibility (original single-file version)
+// ----------------------------------------------------------------------------
+//  CoR: ek request ko handlers ki CHAIN me se guzaaro; har handler apna hissa
+//  karke baaki next ko de deta hai. Yahan ATM cash dispense: ₹1000 -> ₹500 ->
+//  ₹200 -> ₹100 handlers. Yeh original monolithic version hai; modular,
+//  layered version `C++ Code/` folder me hai.
+// ============================================================================
 #include <bits/stdc++.h>
 using namespace std;
 

@@ -1,3 +1,5 @@
+// core/NotificationSystem.h — System ka core orchestrator/facade: message banao,
+// rules check karo, engine ke through channels par bhejo, observers ko notify karo.
 #ifndef NOTIFICATION_SYSTEM_H
 #define NOTIFICATION_SYSTEM_H
 

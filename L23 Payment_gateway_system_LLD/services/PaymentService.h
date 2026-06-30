@@ -1,3 +1,5 @@
+// services/PaymentService.h — SINGLETON service: factory se sahi gateway leke
+// payment process karwata hai. Controller aur gateways ke beech orchestration layer.
 #ifndef PAYMENT_GATEWAY_LLD_SERVICES_PAYMENTSERVICE_H
 #define PAYMENT_GATEWAY_LLD_SERVICES_PAYMENTSERVICE_H
 

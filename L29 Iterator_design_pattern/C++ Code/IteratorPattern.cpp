@@ -1,3 +1,13 @@
+// ============================================================================
+//  IteratorPattern.cpp  —  Iterator Design Pattern (Behavioral)
+// ----------------------------------------------------------------------------
+//  Iterator = kisi collection ko traverse karne ka UNIFORM tareeka, uski
+//  internal structure ko expose kiye bina. Client sirf hasNext()/next() jaanta
+//  hai. Yahan teen alag structures — LinkedList, BinaryTree (in-order via
+//  stack), Playlist — sab ek hi `Iterator<T>` interface dete hain, isliye
+//  ek hi loop sabpe chalता hai. Cursor iterator ke andar rehta hai (multiple
+//  independent traversals possible).
+// ============================================================================
 #include <iostream>
 #include <vector>
 #include <stack>

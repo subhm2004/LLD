@@ -1,3 +1,12 @@
+// ============================================================================
+//  ProtectionProxy.cpp  —  Proxy Pattern (Structural) : PROTECTION proxy variant
+// ----------------------------------------------------------------------------
+//  Protection Proxy = access control ka kaam karta hai. Real object tak request
+//  tabhi jaati hai jab AUTHORIZATION pass ho. Yahan DocumentProxy pehle check
+//  karta hai ki user premium hai ya nahi — non-premium ko block, premium ko
+//  RealDocumentReader tak forward. Security logic proxy me, client me scattered
+//  nahi. Same interface (IDocumentReader) hone se client ko farq nahi padta.
+// ============================================================================
 #include <iostream>
 #include <string>
 

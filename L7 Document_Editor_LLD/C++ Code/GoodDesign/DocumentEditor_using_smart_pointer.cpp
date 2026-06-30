@@ -1,3 +1,10 @@
+// ============================================================================
+//  DocumentEditor_using_smart_pointer.cpp (GoodDesign)  —  smart-pointer version
+// ----------------------------------------------------------------------------
+//  Wahi achha design (polymorphic elements + Persistence strategy), par raw
+//  pointers ki jagah `shared_ptr`/`unique_ptr`. Faayda: manual delete nahi,
+//  memory automatic clean (RAII), exception-safe. Production-quality C++ idiom.
+// ============================================================================
 #include <iostream>
 #include <vector>
 #include <string>

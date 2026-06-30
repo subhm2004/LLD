@@ -1,3 +1,12 @@
+// ============================================================================
+//  MediatorPattern.cpp  —  Mediator Design Pattern (Behavioral)
+// ----------------------------------------------------------------------------
+//  Mediator = objects ek doosre ko DIRECT reference rakhne ke bajaye ek central
+//  mediator ke through baat karte hain. Isse N objects ke beech N*(N-1)/2
+//  connections ki jagah sirf N connections (mediator se) rehte hain. Yahan chat
+//  room: Users aapas me direct nahi, ChatMediator ke through message bhejte hain
+//  (broadcast/mute logic ek hi jagah). Loose coupling + reusable colleagues.
+// ============================================================================
 #include <iostream>
 #include <vector>
 #include <string>

@@ -1,3 +1,6 @@
+// services/RecurringPaymentService.h — Subscriptions ko manage karta hai:
+// register, cancel, aur billing cycle par saari active subscriptions ko usi
+// payment flow (retries ke saath) se charge karta hai.
 #ifndef PAYMENT_GATEWAY_LLD_SERVICES_RECURRINGPAYMENTSERVICE_H
 #define PAYMENT_GATEWAY_LLD_SERVICES_RECURRINGPAYMENTSERVICE_H
 

@@ -1,3 +1,6 @@
+// managers/CashDispenseChainManager.h — Handlers ki chain ko WIRE karta hai:
+// Thousand -> FiveHundred -> TwoHundred -> Hundred. Ek hi jagah chain banती hai,
+// taaki order/links galat na hon. Service isi se dispense start karti hai.
 #ifndef COR_ATM_MANAGERS_CASH_DISPENSE_CHAIN_MANAGER_H
 #define COR_ATM_MANAGERS_CASH_DISPENSE_CHAIN_MANAGER_H
 

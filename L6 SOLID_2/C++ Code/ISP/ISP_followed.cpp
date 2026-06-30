@@ -1,3 +1,13 @@
+// ============================================================================
+//  ISP_followed.cpp  —  Interface Segregation Principle ka SAHI tareeka
+// ----------------------------------------------------------------------------
+//  Fix: ek moti interface ki jagah role-specific chhote interfaces:
+//    Two_Dimensional_Shape  -> sirf area()
+//    Three_Dimensional_Shape-> area() + volume()
+//  Square/Rectangle 2D wala implement karte (volume ka jhootha promise nahi),
+//  Cube 3D wala. Ab koi class unwanted method implement nahi karti. ISP + LSP
+//  dono saaf rehte hain.
+// ============================================================================
 #include <iostream>
 
 using namespace std;

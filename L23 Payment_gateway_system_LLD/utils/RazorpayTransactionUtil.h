@@ -1,3 +1,5 @@
+// utils/RazorpayTransactionUtil.h — Razorpay ke liye helper: unique payment ID,
+// completion timestamp etc. generate karta hai.
 #ifndef PAYMENT_GATEWAY_LLD_UTILS_RAZORPAYTRANSACTIONUTIL_H
 #define PAYMENT_GATEWAY_LLD_UTILS_RAZORPAYTRANSACTIONUTIL_H
 

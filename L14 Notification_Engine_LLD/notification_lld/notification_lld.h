@@ -1,3 +1,5 @@
+// notification_lld.h — Umbrella header: poore modular notification system ke
+// saare parts (core/enums/models/rules/services) ek jagah include kar deta hai.
 #ifndef NOTIFICATION_LLD_H
 #define NOTIFICATION_LLD_H
 

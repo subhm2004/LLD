@@ -1,3 +1,5 @@
+// retry/ExponentialBackoffRetryStrategy.h — Concrete: wait time har attempt par
+// exponentially badhta hai (base * 2^attempt). RetryStrategy implement karta hai.
 #ifndef PAYMENT_GATEWAY_LLD_RETRY_EXPONENTIALBACKOFFRETRYSTRATEGY_H
 #define PAYMENT_GATEWAY_LLD_RETRY_EXPONENTIALBACKOFFRETRYSTRATEGY_H
 

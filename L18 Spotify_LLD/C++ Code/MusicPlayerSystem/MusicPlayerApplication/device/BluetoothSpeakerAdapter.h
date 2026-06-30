@@ -1,3 +1,6 @@
+// device/BluetoothSpeakerAdapter.h — ADAPTER: IAudioOutputDevice ko external
+// BluetoothSpeakerAPI me convert karta hai. Engine standard playAudio() bolta hai,
+// adapter use bluetooth API ke method me translate kar deta hai.
 # ifndef BLUETOOTH_SPEAKER_ADAPTER_HPP
 # define BLUETOOTH_SPEAKER_ADAPTER_HPP
 #include "../models/Song.h"

@@ -1,3 +1,5 @@
+// TimeUtils.h — Chhota helper: current time / formatted time strings dene ke
+// liye. Now vs Scheduled orders ke timestamps yahin se aate hain.
 #ifndef TIME_UTILS_H
 #define TIME_UTILS_H
 

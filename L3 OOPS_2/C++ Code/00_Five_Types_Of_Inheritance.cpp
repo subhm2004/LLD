@@ -1,3 +1,11 @@
+// ============================================================================
+//  00_Five_Types_Of_Inheritance.cpp  —  Inheritance ke 5 types (overview)
+// ----------------------------------------------------------------------------
+//  Inheritance = "IS-A" relationship; child parent ke members reuse karta hai.
+//  5 types: Single (A->B), Multilevel (A->B->C), Multiple ((A,B)->C),
+//  Hierarchical (A->B, A->C), Hybrid (multiple+hierarchical mix). Yeh file
+//  sab types ek saath dikhati hai. (Detailed L4 me bhi hai.)
+// ============================================================================
 #include <iostream>
 #include <string>
 

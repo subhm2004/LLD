@@ -1,3 +1,11 @@
+// ============================================================================
+//  ThreadSafeLockingSingleton.cpp  —  Lazy Singleton + mutex (safe but slow)
+// ----------------------------------------------------------------------------
+//  Lazy creation ko thread-safe banane ke liye getInstance() me HAR call par
+//  mutex lock lagta hai. Correct hai, par problem: instance ban jaane ke baad
+//  bhi har baar lock lagana padta hai -> performance overhead. Isi ko optimize
+//  karne ke liye Double-Checked Locking (DCL) aata hai.
+// ============================================================================
 #include <bits/stdc++.h>
 #include <iostream>
 #include <mutex>

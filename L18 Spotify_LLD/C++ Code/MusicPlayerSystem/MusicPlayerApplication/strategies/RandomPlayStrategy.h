@@ -1,3 +1,5 @@
+// strategies/RandomPlayStrategy.h — Concrete strategy: songs ko shuffle/random
+// order me play karta hai (already-played track karke). PlayStrategy implement.
 #ifndef RANDOM_PLAY_STRATEGY_HPP
 #define RANDOM_PLAY_STRATEGY_HPP
 #include<iostream>

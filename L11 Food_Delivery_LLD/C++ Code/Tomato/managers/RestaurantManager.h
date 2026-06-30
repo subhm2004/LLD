@@ -1,4 +1,6 @@
-// singleton banaya h restaurant manager ko Double locking ka use kiya hai
+// RestaurantManager.h — Saare restaurants ka central registry; naam/location se
+// search deta hai. Yeh SINGLETON hai (double-checked locking se thread-safe) —
+// kyunki poore app me ek hi restaurant catalog hona chahiye.
 #ifndef RESTAURANT_MANAGER_H //
 #define RESTAURANT_MANAGER_H
 

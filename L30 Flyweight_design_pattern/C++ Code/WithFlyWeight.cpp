@@ -1,3 +1,13 @@
+// ============================================================================
+//  WithFlyWeight.cpp  —  Flyweight Design Pattern (Structural) — FIXED version
+// ----------------------------------------------------------------------------
+//  Flyweight = bahut saare similar objects ki SHARED heavy data (intrinsic
+//  state: color, texture, size) ko ek hi baar store karo, aur per-object unique
+//  data (extrinsic state: position, velocity) alag rakho. Yahan 1,000,000
+//  asteroids sirf 3 shared flyweights use karte hain -> memory bahut kam.
+//  Factory cache karta hai taaki same-type flyweight dobara na bane.
+//  (Compare with WithoutFlyWeight.cpp jahan har object apni copy rakhta hai.)
+// ============================================================================
 #include <iostream>
 #include <vector>
 #include <unordered_map>
@@ -7,7 +17,7 @@
 #include <chrono>
 using namespace std;
 
-// Flyweight - Stores INTRINSIC state only
+// Flyweight - sirf INTRINSIC (shared) state store karta hai
 class AsteroidFlyweight {
 private: 
     // Intrinsic properties (shared among asteroids of same type)

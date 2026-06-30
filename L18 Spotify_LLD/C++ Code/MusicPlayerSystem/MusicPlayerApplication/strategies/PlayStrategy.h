@@ -1,3 +1,5 @@
+// strategies/PlayStrategy.h — STRATEGY interface for "next/previous song" order.
+// Concrete: Sequential/Random/CustomQueue. Play-order swap without changing engine.
 #ifndef PLAY_STRATEGY_HPP
 #define PLAY_STRATEGY_HPP
 #include<iostream>

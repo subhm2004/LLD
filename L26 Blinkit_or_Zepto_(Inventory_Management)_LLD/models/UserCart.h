@@ -1,3 +1,5 @@
+// models/UserCart.h — User ka cart: SKU -> quantity ki list. Order place karte
+// waqt yahi cart stock ke against validate aur (zarurat ho to) split hota hai.
 #ifndef BLINKIT_LLD_MODELS_USERCART_H
 #define BLINKIT_LLD_MODELS_USERCART_H
 

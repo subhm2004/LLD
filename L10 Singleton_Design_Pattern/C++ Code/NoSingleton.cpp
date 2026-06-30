@@ -1,3 +1,11 @@
+// ============================================================================
+//  NoSingleton.cpp  —  Baseline: Singleton ke BINA (problem dikhane ke liye)
+// ----------------------------------------------------------------------------
+//  Yahan class normal hai -> jitne chaaho objects ban jaate hain. Agar resource
+//  ek hi hona chahiye (jaise ek hi DB connection / config), to multiple objects
+//  banna problem hai (duplicate state, resource conflict). Iska fix Singleton —
+//  baaki files (Simple/Eager/Locking/DCL/Meyers) progressively better solution.
+// ============================================================================
 #include <bits/stdc++.h>
 
 using namespace std;

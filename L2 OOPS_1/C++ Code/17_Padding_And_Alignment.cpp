@@ -1,3 +1,12 @@
+// ============================================================================
+//  17_Padding_And_Alignment.cpp  —  Struct padding & memory alignment
+// ----------------------------------------------------------------------------
+//  CPU har data type ko ek "aligned" address pe chahta hai (jaise int 4-byte
+//  boundary pe). Isliye compiler struct members ke beech khaali bytes (PADDING)
+//  daal deta hai -> struct ka size members ke sum se bada ho sakta hai.
+//  Members ko size ke hisaab se order karne se padding kam hoti hai (BadLayout
+//  vs GoodLayout). Cache/memory optimize karne ke liye important concept.
+// ============================================================================
 #include <iostream>
 #include <cstddef>
 using namespace std;

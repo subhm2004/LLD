@@ -1,3 +1,10 @@
+// ============================================================================
+//  DiscountCoupon.cpp  —  Discount Coupon Engine (original single-file version)
+// ----------------------------------------------------------------------------
+//  Poore coupon engine ka original monolithic version (saari classes ek file me).
+//  Modular, folder-based version parent folder me hai (coupons/, strategies/,
+//  factories/, core/). Reference ke liye preserve kiya gaya.
+// ============================================================================
 #include <bits/stdc++.h>
 
 #include <algorithm>

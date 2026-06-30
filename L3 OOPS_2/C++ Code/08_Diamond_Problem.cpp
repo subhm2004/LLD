@@ -1,7 +1,11 @@
-/**
- * Diamond problem — multiple inheritance ambiguity
- * Solved with virtual inheritance (virtual base class)
- */
+// ============================================================================
+//  08_Diamond_Problem.cpp  —  Diamond problem & virtual inheritance
+// ----------------------------------------------------------------------------
+//  Diamond: A -> B, A -> C, aur D : B, C. Ab D ke paas A ki DO copies aa jaati
+//  hain -> ambiguity (kaunsi A?). Fix: B aur C, A ko `virtual` inherit karein
+//  (virtual base class) -> tab D me A ki sirf EK shared copy rehti hai.
+//  Yahi reason hai multiple inheritance ko soch-samajh ke use karte hain.
+// ============================================================================
 #include <iostream>
 using namespace std;
 

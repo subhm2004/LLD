@@ -1,3 +1,6 @@
+// models/NotificationMessage.h — Ek notification ka data: id, title, body, priority.
+// NOTE: neeche dusra #ifndef block bhi hai (ek alternate definition bina title ke),
+// par same include-guard ki wajah se woh DEAD hai — sirf upar wala active rehta hai.
 #ifndef NOTIFICATION_MESSAGE_H
 #define NOTIFICATION_MESSAGE_H
 

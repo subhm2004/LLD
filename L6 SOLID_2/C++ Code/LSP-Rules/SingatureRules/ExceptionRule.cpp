@@ -1,3 +1,12 @@
+// ============================================================================
+//  ExceptionRule.cpp  —  LSP Signature Rule: Exceptions
+// ----------------------------------------------------------------------------
+//  LSP rule: override ko base ke declare kiye exceptions SE NAYE ya BROADER
+//  (unrelated) exceptions throw nahi karne chahiye. Same ya narrower (subtype)
+//  exception theek hai. Agar derived koi naya exception phenke jo caller expect
+//  nahi karta, to base ki jagah use karne par code unexpectedly crash karega
+//  -> LSP break.
+// ============================================================================
 #include <bits/stdc++.h>
 
 using namespace std;

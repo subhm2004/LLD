@@ -1,3 +1,5 @@
+// models/Playlist.h — Songs ka ordered collection (naam + list of Songs).
+// PlaylistManager inhe manage karta hai; PlayStrategy inhi par chalti hai.
 #ifndef PLAYLIST_HPP
 #define PLAYLIST_HPP
 #include <vector>

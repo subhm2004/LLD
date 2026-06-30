@@ -1,3 +1,5 @@
+// models/Recipient.h — Notification ka receiver: naam + contact details
+// (email/phone) + preferred channel. Engine isse decide karta hai kahan bhejna.
 #ifndef RECIPIENT_H
 #define RECIPIENT_H
 

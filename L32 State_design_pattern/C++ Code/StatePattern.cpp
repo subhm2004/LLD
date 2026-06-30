@@ -1,3 +1,13 @@
+// ============================================================================
+//  StatePattern.cpp  —  State Design Pattern (Behavioral)
+// ----------------------------------------------------------------------------
+//  State = object ka behavior uske INTERNAL STATE ke hisaab se badalta hai —
+//  bade if-else/switch ki jagah har state ka apna class. Context (VendingMachine)
+//  apne current state object ko delegate karta hai, aur har state khud decide
+//  karta hai ki agla state kya hoga (transition). Yahan vending machine:
+//  NoCoin -> HasCoin -> Dispense -> (SoldOut). Invalid action (jaise bina coin
+//  ke product) automatically usi state me handle ho jaata hai.
+// ============================================================================
 #include <iostream>
 #include <string>
 

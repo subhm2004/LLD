@@ -1,3 +1,12 @@
+// ============================================================================
+//  14_Cohesion_Coupling.cpp  —  Cohesion & Coupling
+// ----------------------------------------------------------------------------
+//  COHESION = ek class kitni focused hai (uske members ek hi kaam se related
+//  hon -> HIGH cohesion = achha). COUPLING = classes ek doosre par kitni
+//  dependent hain (kam dependency -> LOW coupling = achha).
+//  Goal: HIGH cohesion + LOW coupling. Yeh maintainable, testable design ki
+//  pehchaan hai (SOLID isi ko enforce karta hai).
+// ============================================================================
 #include <iostream>
 #include <string>
 using namespace std;

@@ -1,9 +1,13 @@
-/**
- * Virtual base class — diamond problem ADVANCED
- * - Who constructs the shared virtual base?
- * - Construction / destruction order
- * - vbptr / layout (conceptual)
- */
+// ============================================================================
+//  17_Virtual_Base_Class_Advanced.cpp  —  Virtual base class (advanced)
+// ----------------------------------------------------------------------------
+//  Diamond ke fix (virtual inheritance) ke andar ki baatein:
+//   - Shared virtual base ko sabse DERIVED (most-derived) class construct karti
+//     hai, beech wali classes nahi.
+//   - Construction order: virtual base pehle, phir baaki bases, phir derived.
+//   - Compiler ek `vbptr` (virtual base pointer) rakhta hai taaki shared base
+//     tak pahunch sake (layout thoda complex ho jaata hai).
+// ============================================================================
 #include <iostream>
 #include <string>
 using namespace std;

@@ -1,8 +1,17 @@
+// ============================================================================
+//  DecoratorPattern.cpp  —  Decorator Design Pattern (Structural)
+// ----------------------------------------------------------------------------
+//  Decorator = ek object par naye features RUNTIME par "wrap" karke add karna,
+//  bina uski class badle. Har decorator base se IS-A bhi hai aur usko HAS-A
+//  bhi (wrap karta hai). Mario par HeightUp, GunPowerUp, StarPowerUp ek ke upar
+//  ek lag jaate hain. Inheritance hota to 2^n subclasses banti (combinatorial
+//  explosion) — decorator usse bachata hai, abilities stack ho jaati hain.
+// ============================================================================
 #include <bits/stdc++.h>
 
 using namespace std;
 
-// Component Interface: defines a common interface for Mario and all power-up decorators.
+// Component Interface: Mario aur saare power-up decorators ka common interface.
 class Character
 {
 public:

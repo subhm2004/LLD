@@ -1,3 +1,11 @@
+// ============================================================================
+//  WithoutMediator.cpp  —  Mediator ke BINA (mesh coupling problem)
+// ----------------------------------------------------------------------------
+//  Yahan har User doosre Users ka DIRECT reference rakhta hai. Jaise-jaise users
+//  badhte hain, connections N*(N-1)/2 tak badh jaate hain (tight mesh coupling).
+//  Naya user add/remove karna ya broadcast/mute logic badalna mushkil ho jaata
+//  hai. Iska fix MediatorPattern.cpp — sab ek central mediator se baat karte hain.
+// ============================================================================
 #include <iostream>
 #include <vector>
 #include <string>

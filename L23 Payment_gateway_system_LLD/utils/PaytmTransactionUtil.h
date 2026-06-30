@@ -1,3 +1,5 @@
+// utils/PaytmTransactionUtil.h — Paytm ke liye helper: unique reference number,
+// timestamp etc. generate karta hai (confirmed transaction ke details).
 #ifndef PAYMENT_GATEWAY_LLD_UTILS_PAYTMTRANSACTIONUTIL_H
 #define PAYMENT_GATEWAY_LLD_UTILS_PAYTMTRANSACTIONUTIL_H
 

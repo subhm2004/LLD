@@ -1,3 +1,11 @@
+// ============================================================================
+//  11_Constructor_Chaining.cpp  —  Constructor & destructor chaining
+// ----------------------------------------------------------------------------
+//  Jab derived object banta hai to constructors UPAR se NEECHE chalte hain:
+//  Base -> Derived -> MoreDerived. Destructors ULTA chalte hain: MoreDerived ->
+//  Derived -> Base. Derived apne base ka constructor initializer list se call
+//  kar sakta hai (jaise `Derived(): Base(x)`). Yahi "chaining" hai.
+// ============================================================================
 #include <iostream>
 #include <string>
 using namespace std;

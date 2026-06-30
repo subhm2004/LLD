@@ -1,3 +1,6 @@
+// controllers/PaymentController.h — SINGLE entry-point (Singleton) for clients:
+// handlePayment(request, provider). Andar PaymentService ko delegate karta hai —
+// client ko gateways/proxy/factory ka kuch nahi pata. (Facade-jaisa controller.)
 #ifndef PAYMENT_GATEWAY_LLD_CONTROLLERS_PAYMENTCONTROLLER_H
 #define PAYMENT_GATEWAY_LLD_CONTROLLERS_PAYMENTCONTROLLER_H
 

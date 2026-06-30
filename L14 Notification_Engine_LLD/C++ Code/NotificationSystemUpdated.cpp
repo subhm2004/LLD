@@ -1,3 +1,10 @@
+// ============================================================================
+//  NotificationSystemUpdated.cpp  —  Notification Engine (improved version)
+// ----------------------------------------------------------------------------
+//  NotificationSystem.cpp ka refined version — same patterns (Singleton +
+//  Decorator + Observer + Strategy) par cleaner structure / extra features.
+//  Padhne ke liye dono compare karo: kya improve hua.
+// ============================================================================
 #include <iostream>
 #include <vector>
 #include <string>

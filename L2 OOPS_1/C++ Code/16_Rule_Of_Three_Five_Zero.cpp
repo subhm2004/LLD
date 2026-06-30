@@ -1,9 +1,14 @@
-/**
- * Rule of Three / Five / Zero
- * Three: dtor + copy ctor + copy assignment (raw resource)
- * Five: + move ctor + move assignment (C++11)
- * Zero: use smart pointers / containers → compiler defaults OK
- */
+// ============================================================================
+//  16_Rule_Of_Three_Five_Zero.cpp  —  Rule of Three / Five / Zero
+// ----------------------------------------------------------------------------
+//  Agar class koi resource (raw pointer, file handle) khud manage karti hai:
+//    RULE OF THREE : destructor + copy constructor + copy assignment — teeno do.
+//    RULE OF FIVE  : upar wale 3 + move constructor + move assignment (C++11) —
+//                    performance ke liye move bhi handle karo.
+//    RULE OF ZERO  : sabse behtar — raw resource manage hi mat karo; smart
+//                    pointers/containers use karo, to compiler ke defaults theek
+//                    hain aur tumhe kuch likhna hi nahi padta.
+// ============================================================================
 #include <iostream>
 #include <memory>
 #include <string>

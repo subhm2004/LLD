@@ -1,6 +1,11 @@
-/**
- * L2 — this pointer: hidden pointer to current object
- */
+// ============================================================================
+//  03_This_Pointer.cpp  —  `this` pointer
+// ----------------------------------------------------------------------------
+//  `this` = ek hidden pointer jo HAR non-static member function ko milta hai,
+//  aur current object ka address rakhta hai. Use kab: (1) jab parameter aur
+//  member ka naam same ho (this->name = name), (2) method se khud object return
+//  karne ke liye (return *this -> method chaining/fluent API).
+// ============================================================================
 #include <iostream>
 using namespace std;
 

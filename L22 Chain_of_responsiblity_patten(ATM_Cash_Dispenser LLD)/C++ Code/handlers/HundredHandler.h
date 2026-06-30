@@ -1,3 +1,6 @@
+// handlers/HundredHandler.h — Chain ka aakhri handler: ₹100 notes dispense karta
+// hai. Iske baad koi next nahi — agar phir bhi amount bacha to dispense fail.
+// MoneyHandler extend karta hai.
 #ifndef COR_ATM_HANDLERS_HUNDRED_HANDLER_H
 #define COR_ATM_HANDLERS_HUNDRED_HANDLER_H
 

@@ -1,3 +1,4 @@
+// models/Product.h — Ek product: naam, category, price. Cart items inhi se bante.
 #ifndef DISCOUNT_COUPON_LLD_MODELS_PRODUCT_H
 #define DISCOUNT_COUPON_LLD_MODELS_PRODUCT_H
 

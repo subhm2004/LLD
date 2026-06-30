@@ -1,3 +1,6 @@
+// MusicPlayerFacade.h — FACADE: client ke liye simple API (play/pause/next,
+// playlist load, device connect). Andar managers/engine ke saare steps chhupata
+// hai taaki caller ko subsystem ki complexity na dekhni pade.
 # ifndef MUSIC_PLAYER_FACADE_HPP
 # define MUSIC_PLAYER_FACADE_HPP
 #include "core/AudioEngine.h"

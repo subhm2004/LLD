@@ -1,3 +1,6 @@
+// core/CouponManager.h — SINGLETON registry: saare coupons ko ek CHAIN me jodता
+// hai aur cart par sequentially apply karta hai (thread-safe registry). Yeh
+// system ka central orchestrator hai.
 #ifndef DISCOUNT_COUPON_LLD_CORE_COUPONMANAGER_H
 #define DISCOUNT_COUPON_LLD_CORE_COUPONMANAGER_H
 

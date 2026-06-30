@@ -1,3 +1,6 @@
+// banking/BankingSystem.h — STRATEGY for the actual money-processing backend.
+// Alag banking implementations swap ho sakti hain; gateway isi ke through paisa
+// process karta hai (provider-specific banking integration).
 #ifndef PAYMENT_GATEWAY_LLD_BANKING_BANKINGSYSTEM_H
 #define PAYMENT_GATEWAY_LLD_BANKING_BANKINGSYSTEM_H
 

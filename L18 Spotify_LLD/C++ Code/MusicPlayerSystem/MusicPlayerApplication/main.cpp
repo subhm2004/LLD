@@ -1,3 +1,11 @@
+// ============================================================================
+//  main.cpp  —  Spotify-style Music Player ka demo driver
+// ----------------------------------------------------------------------------
+//  Flow: songs/playlist banao -> output device connect karo (Bluetooth/Wired/
+//  Headphones adapter) -> play strategy chuno (Sequential/Random/CustomQueue) ->
+//  play/pause/next. Sab MusicPlayerFacade ke through. Patterns: Facade, Singleton,
+//  Strategy, Adapter, Factory ek saath.
+// ============================================================================
 #include <bits/stdc++.h>
 #include "MusicPlayerApplication.h"
 

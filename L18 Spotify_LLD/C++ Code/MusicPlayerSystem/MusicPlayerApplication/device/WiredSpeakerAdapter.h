@@ -1,3 +1,5 @@
+// device/WiredSpeakerAdapter.h — ADAPTER: IAudioOutputDevice ko external
+// WiredSpeakerAPI me translate karta hai (same role as other adapters).
 #ifndef WIRED_SPEAKER_ADAPTER_HPP
 #define WIRED_SPEAKER_ADAPTER_HPP
 

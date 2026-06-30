@@ -1,3 +1,12 @@
+// ============================================================================
+//  WithoutBuilder.cpp  —  Builder ke BINA (problem dikhane ke liye)
+// ----------------------------------------------------------------------------
+//  Yahan HttpRequest banane ke liye telescoping constructors (1-arg, 2-arg,
+//  3-arg...) + public setters hain. Problems: bahut saare same-type args
+//  (string, string...) order galat ho sakta hai; setters ki wajah se aadha-bana
+//  (half-built) object use ho sakta hai; required fields enforce nahi hote.
+//  Iska fix BuilderPattern.cpp (fluent builder + build()).
+// ============================================================================
 #include <iostream>
 #include <string>
 #include <vector>

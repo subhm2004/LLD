@@ -1,3 +1,5 @@
+// models/CashCassette.h — Ek denomination ka cassette (drawer): note value +
+// available count. Inventory inhi cassettes se banti hai.
 #ifndef COR_ATM_MODELS_CASH_CASSETTE_H
 #define COR_ATM_MODELS_CASH_CASSETTE_H
 

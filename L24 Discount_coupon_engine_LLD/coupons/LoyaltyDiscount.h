@@ -1,3 +1,5 @@
+// coupons/LoyaltyDiscount.h — Concrete coupon: loyal/regular customers ke liye
+// discount. Coupon base ko extend karta hai (chain ka ek link).
 #ifndef DISCOUNT_COUPON_LLD_COUPONS_LOYALTYDISCOUNT_H
 #define DISCOUNT_COUPON_LLD_COUPONS_LOYALTYDISCOUNT_H
 

@@ -1,3 +1,5 @@
+// MenuItem.h — Restaurant ke menu ka ek item (code, naam, price). Cart aur Order
+// inhi items se bante hain.
 #ifndef MENUITEM_H
 #define MENUITEM_H
 

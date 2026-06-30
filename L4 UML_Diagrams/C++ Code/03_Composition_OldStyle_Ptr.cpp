@@ -1,3 +1,12 @@
+// ============================================================================
+//  03_Composition_OldStyle_Ptr.cpp  —  Composition raw pointer (purana style)
+// ----------------------------------------------------------------------------
+//  Yeh 02_Composition_UniquePtr.cpp ka OLD-STYLE counterpart hai. Yahan B,
+//  A ko raw pointer (new) se own karta hai -> isliye B ke destructor me khud
+//  `delete a` karna PADTA hai, warna memory leak. unique_ptr wale version me
+//  yeh delete automatic ho jaata. Composition dono me same hai (B owns A),
+//  bas memory management manual vs automatic ka farq hai.
+// ============================================================================
 // L4 — Has-A: composition with manual new/delete (compare with 02)
 #include <iostream>
 

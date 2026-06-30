@@ -1,3 +1,13 @@
+// ============================================================================
+//  DocumentEditor.cpp (GoodDesign)  —  Document Editor ka SAHI design
+// ----------------------------------------------------------------------------
+//  BadDesign ka fix: har document element (Text, Image, Bold, NewLine, Tab) ek
+//  DocumentElement subclass hai jo apna render() khud jaanta hai (no string
+//  checks). Storage ke liye Persistence STRATEGY (FileStorage/DBStorage) inject
+//  hota hai. DocumentEditor sirf orchestrate karta hai. Naya element ya storage
+//  add karna = nayi class, purani edit nahi (OCP follow).
+//  (Raw pointer version; smart-pointer variant alag file me.)
+// ============================================================================
 #include <iostream>
 #include <vector>
 #include <string>

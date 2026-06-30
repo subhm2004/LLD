@@ -1,3 +1,12 @@
+// ============================================================================
+//  18_Covariant_Return_Types.cpp  —  Covariant return types
+// ----------------------------------------------------------------------------
+//  Normally override ka return type same hona chahiye. Exception: COVARIANT
+//  return — agar base ka virtual function Base* (ya Base&) return karta hai, to
+//  override usse DERIVED* (ya Derived&) return kar sakta hai. Bahut useful in
+//  clone()/factory methods, jahan har subclass apne hi type ka object return kare
+//  bina caller ko cast karne padte.
+// ============================================================================
 #include <iostream>
 #include <memory>
 #include <string>

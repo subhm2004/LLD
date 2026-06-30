@@ -1,3 +1,5 @@
+// coupons/SeasonalOffer.h — Concrete coupon: festival/season ke time ka discount
+// (jaise category-based %). Coupon base + ek discount STRATEGY use karta hai.
 #ifndef DISCOUNT_COUPON_LLD_COUPONS_SEASONALOFFER_H
 #define DISCOUNT_COUPON_LLD_COUPONS_SEASONALOFFER_H
 

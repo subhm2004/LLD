@@ -1,3 +1,5 @@
+// PickupOrder.h — Order ka woh type jahan user khud restaurant se PICKUP karta
+// hai (koi delivery address nahi). Order base ko extend karta hai.
 #ifndef PICKUP_ORDER_H
 #define PICKUP_ORDER_H
 

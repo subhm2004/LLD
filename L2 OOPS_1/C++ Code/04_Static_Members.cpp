@@ -1,7 +1,11 @@
-/**
- * L2 — static data member + static member function
- * Belongs to CLASS, not each object. One shared copy.
- */
+// ============================================================================
+//  04_Static_Members.cpp  —  Static data members & static member functions
+// ----------------------------------------------------------------------------
+//  `static` member CLASS ka hota hai, har object ka nahi — saare objects ek hi
+//  shared copy use karte hain (jaise total count). Static member FUNCTION bina
+//  object ke (ClassName::func()) call ho sakta hai, par sirf static members hi
+//  access kar sakta hai (uske paas `this` nahi hota).
+// ============================================================================
 #include <iostream>
 using namespace std;
 

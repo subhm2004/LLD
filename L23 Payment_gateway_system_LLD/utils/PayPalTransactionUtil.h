@@ -1,3 +1,5 @@
+// utils/PayPalTransactionUtil.h — PayPal ke liye helper: unique transaction ID,
+// timestamp etc. generate karta hai.
 #ifndef PAYMENT_GATEWAY_LLD_UTILS_PAYPALTRANSACTIONUTIL_H
 #define PAYMENT_GATEWAY_LLD_UTILS_PAYPALTRANSACTIONUTIL_H
 

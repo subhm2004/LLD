@@ -1,3 +1,5 @@
+// core/AudioEngine.h — Actual playback engine: current song ko chosen output
+// device par play/pause karta hai. System ka "core" jahan sound nikalta hai.
 #ifndef AUDIO_ENGINE_HPP
 #define AUDIO_ENGINE_HPP
 

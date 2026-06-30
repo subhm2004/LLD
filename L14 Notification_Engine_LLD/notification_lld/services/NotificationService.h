@@ -1,3 +1,6 @@
+// services/NotificationService.h — SINGLETON entry point + Observable subject.
+// Naya notification set hote hi observers (Logger, NotificationEngine) ko notify
+// karta hai. Poore system ka central coordinator.
 #ifndef NOTIFICATION_SERVICE_H
 #define NOTIFICATION_SERVICE_H
 

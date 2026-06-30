@@ -1,7 +1,13 @@
-/**
- * Move semantics — rvalue references, std::move
- * Steal resources instead of copying
- */
+// ============================================================================
+//  15_Move_Semantics.cpp  —  Move semantics (rvalue refs, std::move)
+// ----------------------------------------------------------------------------
+//  Move semantics = mehngi COPY ki jagah resources ko "CHURA" (transfer) karna.
+//  Jab source object temporary hai (rvalue) ya aage use nahi hoga, to deep copy
+//  banane ki jagah uske internal pointer/buffer ko naye object me move kar do
+//  (source ko khaali chhod do). `std::move` ek object ko rvalue me cast karke
+//  move ko enable karta hai. Move ctor / move assignment isi ke liye hote hain.
+//  Bade objects (vector, string) ke liye performance bahut behtar.
+// ============================================================================
 #include <iostream>
 #include <utility>
 #include <vector>

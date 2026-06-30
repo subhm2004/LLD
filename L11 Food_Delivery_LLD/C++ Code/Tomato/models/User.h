@@ -1,3 +1,5 @@
+// User.h — App ka user: id, naam, address, aur uska apna Cart. Orders isi user
+// ke against bante hain.
 #ifndef USER_H
 #define USER_H
 

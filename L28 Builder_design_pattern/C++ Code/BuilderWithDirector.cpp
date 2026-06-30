@@ -1,3 +1,11 @@
+// ============================================================================
+//  BuilderWithDirector.cpp  —  Builder + Director variant
+// ----------------------------------------------------------------------------
+//  Director = ek reusable "recipe" jo builder ke steps ko ek fixed sequence me
+//  call karta hai. Jaise "JSON POST request" banane ka standard tareeka Director
+//  me likh do; client baar-baar wahi steps repeat na kare — bas Director ko bole.
+//  Builder banane ka kaam karta hai, Director order/recipe sambhalta hai.
+// ============================================================================
 #include <iostream>
 #include <stdexcept>
 #include <string>

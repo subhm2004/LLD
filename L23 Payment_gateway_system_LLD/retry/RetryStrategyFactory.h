@@ -1,3 +1,5 @@
+// retry/RetryStrategyFactory.h — FACTORY: RetryStrategyType se sahi retry strategy
+// (Linear/ExponentialBackoff) bana ke deta hai.
 #ifndef PAYMENT_GATEWAY_LLD_RETRY_RETRYSTRATEGYFACTORY_H
 #define PAYMENT_GATEWAY_LLD_RETRY_RETRYSTRATEGYFACTORY_H
 

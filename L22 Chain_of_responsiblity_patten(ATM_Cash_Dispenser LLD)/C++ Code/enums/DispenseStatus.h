@@ -1,3 +1,5 @@
+// enums/DispenseStatus.h — Cash dispense ka result status (success / partial /
+// insufficient funds etc.). Service isse batata hai withdrawal kaisa raha.
 #ifndef COR_ATM_ENUMS_DISPENSE_STATUS_H
 #define COR_ATM_ENUMS_DISPENSE_STATUS_H
 

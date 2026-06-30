@@ -1,3 +1,11 @@
+// ============================================================================
+//  TomatoApp.h  —  FACADE of the food-delivery system ("Tomato" = Zomato/Swiggy)
+// ----------------------------------------------------------------------------
+//  Yeh poore system ka single entry-point (Facade) hai. Client ko andar ke
+//  managers/factories/strategies ka jhamela nahi dekhna padta — bas TomatoApp
+//  ke through restaurant search, cart, order place, payment, notification sab
+//  ho jaata hai. Patterns yahan: Facade (yeh class) + Factory + Strategy.
+// ============================================================================
 #ifndef TOMATO_APP_H
 #define TOMATO_APP_H
 

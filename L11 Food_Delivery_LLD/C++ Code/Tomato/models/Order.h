@@ -1,3 +1,5 @@
+// Order.h — Abstract base order: user, restaurant, items, total, time, payment.
+// Isse DeliveryOrder aur PickupOrder inherit karte hain (alag fulfillment type).
 #ifndef ORDER_H
 #define ORDER_H
 

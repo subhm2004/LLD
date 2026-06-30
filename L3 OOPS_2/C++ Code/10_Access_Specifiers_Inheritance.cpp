@@ -1,3 +1,14 @@
+// ============================================================================
+//  10_Access_Specifiers_Inheritance.cpp  —  public/protected/private inheritance
+// ----------------------------------------------------------------------------
+//  Inheritance ka mode batata hai ki base ke members derived me kaunse access
+//  level pe aate hain:
+//    public    : public->public, protected->protected (IS-A relationship)
+//    protected : public+protected dono -> protected ban jaate
+//    private   : public+protected dono -> private ban jaate ("implemented in
+//                terms of", IS-A nahi)
+//  private members har case me base ke bahar directly accessible NAHI hote.
+// ============================================================================
 #include <iostream>
 using namespace std;
 

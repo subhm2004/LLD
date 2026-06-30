@@ -1,3 +1,5 @@
+// strategies/IDiscountStrategy.h — STRATEGY interface: "amount par kitna discount".
+// Concrete: Flat / Percentage / PercentageWithCap. Coupons isi math ko reuse karte.
 #ifndef DISCOUNT_COUPON_LLD_STRATEGIES_IDISCOUNTSTRATEGY_H
 #define DISCOUNT_COUPON_LLD_STRATEGIES_IDISCOUNTSTRATEGY_H
 

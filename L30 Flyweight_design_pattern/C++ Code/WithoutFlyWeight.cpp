@@ -1,3 +1,12 @@
+// ============================================================================
+//  WithoutFlyWeight.cpp  —  Flyweight ke BINA (problem dikhane ke liye)
+// ----------------------------------------------------------------------------
+//  Yahan har Asteroid object apni saari fields (color, texture, material, size
+//  + position + velocity) khud rakhta hai. 1,000,000 asteroids matlab heavy
+//  shared data 1,000,000 baar duplicate -> bahut zyada memory. Sirf 3 types
+//  hain phir bhi har object full copy. Iska fix WithFlyWeight.cpp (shared
+//  intrinsic state). Dono ka memory output compare karke farq dekho.
+// ============================================================================
 #include <iostream>
 #include <vector>
 #include <unordered_map>

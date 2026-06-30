@@ -1,3 +1,6 @@
+// factories/DiscountStrategyManager.h — FACTORY (Singleton): StrategyType ke
+// hisaab se sahi IDiscountStrategy banata/cache karta hai. Coupons isse strategy
+// maangte hain (creation centralized).
 #ifndef DISCOUNT_COUPON_LLD_FACTORIES_DISCOUNTSTRATEGYMANAGER_H
 #define DISCOUNT_COUPON_LLD_FACTORIES_DISCOUNTSTRATEGYMANAGER_H
 

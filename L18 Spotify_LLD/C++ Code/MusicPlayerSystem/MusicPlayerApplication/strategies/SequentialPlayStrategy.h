@@ -1,3 +1,5 @@
+// strategies/SequentialPlayStrategy.h — Concrete strategy: songs ko ek-ke-baad-ek
+// (order me) play karta hai. PlayStrategy ko implement karta hai.
 #ifndef SEQUENTIAL_PLAY_STRATEGY_HPP
 #define SEQUENTIAL_PLAY_STRATEGY_HPP
 

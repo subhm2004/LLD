@@ -1,7 +1,12 @@
-/**
- * L2 — friend function / friend class: breaks encapsulation selectively
- * NOT part of class; can access private members
- */
+// ============================================================================
+//  06_Friend_Function.cpp  —  Friend function / friend class
+// ----------------------------------------------------------------------------
+//  `friend` = ek class kisi BAHARI function/class ko apne PRIVATE members tak
+//  access dene ki permission deti hai. Friend class ka member NAHI hota (na uske
+//  paas `this` hota), par private data padh/likh sakta hai. Encapsulation ko
+//  SELECTIVELY ttodta hai — soch-samajh ke use karo (jaise operator<< ya tightly
+//  related helper classes ke liye).
+// ============================================================================
 #include <iostream>
 using namespace std;
 

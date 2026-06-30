@@ -1,8 +1,13 @@
 /**
- * COMPOSITION — strong "Has-a"; part CANNOT exist without whole
- * House owns Room objects (member subobjects)
- * Room lifetime tied to House
- * UML: filled diamond ◆ on House side
+ * ============================================================================
+ *  03_Composition.cpp  —  COMPOSITION (strong Has-A, exclusive ownership)
+ * ----------------------------------------------------------------------------
+ *  Composition = "part" bina "whole" ke exist hi nahi karta. Whole banta hai
+ *  to part bante hain, whole marta hai to part bhi mar jaate hain. Sabse
+ *  strong ownership. Yahan House apne Rooms ko khud banati/destroy karti hai.
+ *  Do styles dikhaye: (1) member sub-objects, (2) unique_ptr ctor me owned.
+ *  UML: filled diamond ◆ House ki taraf.
+ * ============================================================================
  */
 #include <iostream>
 #include <string>
@@ -12,7 +17,8 @@ using namespace std;
 
 class Room {
     string name;
-    // Room only created as part of House in this design
+    // Room ka constructor private hai — sirf House (friend) ise bana sakti hai.
+    // Matlab Room akele kahin bhi nahi banaya ja sakta (composition enforce).
     friend class House;
 
     Room(string n) : name(n) {
@@ -26,19 +32,23 @@ public:
 
 class House {
     string address;
-    Room livingRoom;
-    Room bedroom;
-    vector<unique_ptr<Room>> extraRooms;  // also composition via unique_ptr in ctor
+    Room livingRoom; // member sub-object -> House ke saath banega/marega
+    Room bedroom;    // member sub-object
+    // unique_ptr se bhi composition: House exclusively own karti hai inhe.
+    vector<unique_ptr<Room>> extraRooms;
 
 public:
+    // Member rooms initializer list me bante hain (House bante hi).
     House(string addr)
         : address(addr),
           livingRoom("Living"),
           bedroom("Bedroom") {
-        extraRooms.push_back(unique_ptr<Room>(new Room("Kitchen")));  // House is friend
+        // House friend hai isliye yahan naya Room bana sakti hai.
+        extraRooms.push_back(unique_ptr<Room>(new Room("Kitchen")));
         cout << "[House] created at " << address << "\n";
     }
 
+    // House destroy hote hi saare rooms (member + unique_ptr) automatic destroy.
     ~House() {
         cout << "[House] destroyed at " << address << " (all rooms go with it)\n";
     }
@@ -56,7 +66,7 @@ int main() {
     {
         House home("221B Baker Street");
         home.listRooms();
-    }  // All rooms destroyed automatically with House
+    }  // <-- House yahan destroy -> saare Rooms bhi automatic destroy (dekho output)
 
     cout << "House scope ended — no Room objects left\n";
     return 0;

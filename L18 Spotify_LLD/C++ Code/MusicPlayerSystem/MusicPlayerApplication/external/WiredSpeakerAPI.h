@@ -1,3 +1,5 @@
+// external/WiredSpeakerAPI.h — Third-party wired-speaker API (incompatible
+// interface); WiredSpeakerAdapter isse IAudioOutputDevice me wrap karta hai.
 #ifndef WIRED_SPEAKER_API_HPP
 #define WIRED_SPEAKER_API_HPP
 #include<string>

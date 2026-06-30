@@ -1,3 +1,12 @@
+// ============================================================================
+//  CompositePattern.cpp  —  Composite Design Pattern (Structural)
+// ----------------------------------------------------------------------------
+//  Composite = "part-whole" tree ko uniform tareeke se treat karna. Yani client
+//  ek single object (File = leaf) aur ek group (Folder = composite) ko EK HI
+//  interface (FileSystemItem) se use kare — same method `ls()`, `getSize()`...
+//  Folder ke andar File bhi ho sakti hai aur dusra Folder bhi (recursion).
+//  Yahi reason hai file-systems Composite ka classic example hain.
+// ============================================================================
 #include <bits/stdc++.h>
 #include <iostream>
 #include <string>
@@ -5,19 +14,20 @@
 
 using namespace std;
 
-// Base interface for files and folders
+// Component: common interface — File aur Folder dono ise implement karte hain.
 class FileSystemItem {
 public:
   virtual ~FileSystemItem() {}
-  virtual void ls(int indent = 0) = 0;
-  virtual void openAll(int indent = 0) = 0;
-  virtual int getSize() = 0;
-  virtual FileSystemItem *cd(const string &name) = 0; // change directory ye folder mein chala jayega lekin file mein nahi  chalega
+  virtual void ls(int indent = 0) = 0;       // contents list karo
+  virtual void openAll(int indent = 0) = 0;  // poora tree recursively kholo
+  virtual int getSize() = 0;                 // total size
+  // cd = change directory: sirf Folder me andar ja sakte hain, File me nahi.
+  virtual FileSystemItem *cd(const string &name) = 0;
   virtual string getName() = 0;
   virtual bool isFolder() = 0;
 };
 
-// Leaf: File
+// Leaf: File — tree ka end node, iske koi children nahi.
 class File : public FileSystemItem {
   string name;
   int size;
@@ -36,8 +46,9 @@ public:
     cout << string(indent, ' ') << name << "\n";
   }
 
-  int getSize() override { return size; }
+  int getSize() override { return size; } // leaf ka size apna hi
 
+  // File ke andar cd nahi ho sakta -> nullptr.
   FileSystemItem *cd(const string &) override { return nullptr; }
 
   string getName() override { return name; }
@@ -45,13 +56,15 @@ public:
   bool isFolder() override { return false; }
 };
 
+// Composite: Folder — ismein doosre FileSystemItem (File ya Folder) ho sakte hain.
 class Folder : public FileSystemItem {
   string name;
-  vector<FileSystemItem *> children;
+  vector<FileSystemItem *> children; // mixed: files + sub-folders
 
 public:
   Folder(const string &n) { name = n; }
   ~Folder() {
+    // Composite apne saare children ko own karta hai -> destroy bhi karta hai.
     for (auto c : children)
       delete c;
   }
@@ -68,6 +81,7 @@ public:
     }
   }
 
+  // Recursion: har child ka openAll call -> poora tree khul jaata hai.
   void openAll(int indent = 0) override {
     cout << string(indent, ' ') << "+ " << name << "\n";
     for (auto child : children) {
@@ -75,6 +89,7 @@ public:
     }
   }
 
+  // Folder ka size = saare children ke size ka sum (recursively).
   int getSize() override {
     int total = 0;
     for (auto child : children) {
@@ -83,13 +98,14 @@ public:
     return total;
   }
 
+  // Naam se matching sub-folder dhoondo.
   FileSystemItem *cd(const string &target) override {
     for (auto child : children) {
       if (child->isFolder() && child->getName() == target) {
         return child;
       }
     }
-    // not found or not a folder
+    // mila nahi ya folder nahi tha
     return nullptr;
   }
 
@@ -98,7 +114,7 @@ public:
 };
 
 int main() {
-  // Build file system
+  // Ek file system tree banate hain (folders ke andar files + folders).
   Folder *root = new Folder("root");
   root->add(new File("file1.txt", 1));
   root->add(new File("file2.txt", 1));
@@ -112,12 +128,11 @@ int main() {
   images->add(new File("photo.jpg", 1));
   root->add(images);
 
-  root->ls();
+  root->ls();   // root ke direct children
+  docs->ls();   // docs ke andar
+  root->openAll(); // poora tree recursively
 
-  docs->ls();
-
-  root->openAll();
-
+  // cd se docs me jaa kar uska content dekho — uniform interface ka faayda.
   FileSystemItem *cwd = root->cd("docs");
   if (cwd != nullptr) {
     cwd->ls();
@@ -125,9 +140,9 @@ int main() {
     cout << "\n Could not cd into docs \n";
   }
 
-  cout << root->getSize();
+  cout << root->getSize(); // pure tree ka total size
 
-  // Cleanup
+  // Cleanup: root delete -> recursively saare children delete.
   delete root;
   return 0;
 }

@@ -1,3 +1,5 @@
+// strategies/PercentageDiscountStrategy.h — Concrete: percentage off (jaise 10%).
+// IDiscountStrategy implement karta hai.
 #ifndef DISCOUNT_COUPON_LLD_STRATEGIES_PERCENTAGEDISCOUNTSTRATEGY_H
 #define DISCOUNT_COUPON_LLD_STRATEGIES_PERCENTAGEDISCOUNTSTRATEGY_H
 

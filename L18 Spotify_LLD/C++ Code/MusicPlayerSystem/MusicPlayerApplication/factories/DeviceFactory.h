@@ -1,3 +1,6 @@
+// factories/DeviceFactory.h — FACTORY: DeviceType ke hisaab se sahi adapter
+// (Bluetooth/Wired/Headphones) bana ke deta hai, uske API ko wrap karke.
+// Object creation logic ek jagah centralized.
 #ifndef DEVICE_FACTORY_HPP
 #define DEVICE_FACTORY_HPP
 #include<iostream>

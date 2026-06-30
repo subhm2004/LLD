@@ -1,3 +1,5 @@
+// models/ATMCashInventory.h — ATM me har denomination ke kitne notes hain, iska
+// hisaab (cassettes ka collection). Handlers yahin se notes nikalte/ghatate hain.
 #ifndef COR_ATM_MODELS_ATM_CASH_INVENTORY_H
 #define COR_ATM_MODELS_ATM_CASH_INVENTORY_H
 

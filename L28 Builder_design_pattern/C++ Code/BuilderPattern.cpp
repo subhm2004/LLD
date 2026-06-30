@@ -1,3 +1,11 @@
+// ============================================================================
+//  BuilderPattern.cpp  —  Builder Pattern (Creational) : classic fluent builder
+// ----------------------------------------------------------------------------
+//  Builder = complex object ko step-by-step banao ek fluent API se
+//  (.withUrl().withMethod()...), aur build() pe validate karke IMMUTABLE
+//  product do. Telescoping constructors aur half-built mutable objects ka
+//  problem solve hota hai. Yahan HttpRequest ko HttpRequestBuilder banata hai.
+// ============================================================================
 #include <iostream>
 #include <stdexcept>
 #include <string>

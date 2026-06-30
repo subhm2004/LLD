@@ -1,3 +1,5 @@
+// NowOrderFactory.h — Concrete factory: turant (abhi) wala order banata hai
+// (current time ke saath). OrderFactory interface ko implement karta hai.
 #ifndef NOW_ORDER_FACTORY_H
 #define NOW_ORDER_FACTORY_H
 

@@ -1,3 +1,5 @@
+// Restaurant.h — Restaurant model: id, naam, location, aur uska menu (MenuItems).
+// RestaurantManager inhe manage karta hai.
 #ifndef RESTAURANT_H
 #define RESTAURANT_H
 

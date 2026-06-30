@@ -1,3 +1,12 @@
+// ============================================================================
+//  DocumentEditor.cpp (BadDesign)  —  Document Editor ka GALAT design
+// ----------------------------------------------------------------------------
+//  Yahan ek hi DocumentEditor class sab kuch karti hai: elements store karna,
+//  render karna (string suffix ".jpg" check karke type decide karna), aur save
+//  karna. Problems: naya element type ya storage add karne pe yahi class edit
+//  hoti hai (OCP break), aur fragile string-checks. Fix: GoodDesign/ folder me
+//  Strategy (persistence) + polymorphic elements se dekho.
+// ============================================================================
 #include <iostream>
 #include <vector>
 #include <string>

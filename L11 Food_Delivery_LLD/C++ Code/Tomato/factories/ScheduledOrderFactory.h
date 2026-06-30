@@ -1,3 +1,5 @@
+// ScheduledOrderFactory.h — Concrete factory: future time ke liye scheduled
+// order banata hai (user-given time). OrderFactory interface implement karta hai.
 #ifndef SCHEDULED_ORDER_FACTORY_H
 #define SCHEDULED_ORDER_FACTORY_H
 

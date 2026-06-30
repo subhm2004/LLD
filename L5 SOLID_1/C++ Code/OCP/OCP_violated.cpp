@@ -1,9 +1,19 @@
+// ============================================================================
+//  OCP_violated.cpp  —  Open/Closed Principle (OCP) ka VIOLATION
+// ----------------------------------------------------------------------------
+//  OCP: class "extension ke liye open" par "modification ke liye closed" honi
+//  chahiye. Yahan ShoppingCartStorage me har naye storage type ke liye ek NAYA
+//  method (saveToSQL/saveToMongo/saveToFile...) add karna padta hai — yani
+//  existing tested class baar-baar EDIT hoti hai. Yahi OCP break hai.
+//  Fix: OCP_followed.cpp me Persistence abstraction se dekho.
+// ============================================================================
+
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
-// Product class representing any item in eCommerce.
+// Product = e-commerce item ka model.
 class Product
 {
 public:
@@ -17,7 +27,7 @@ public:
     }
 };
 
-// 1. ShoppingCart: Only responsible for Cart related business logic.
+// 1. ShoppingCart: sirf cart business logic (SRP yahan sahi hai).
 class ShoppingCart
 {
 private:
@@ -34,7 +44,6 @@ public:
         return products;
     }
 
-    // Calculates total price in cart.
     double calculateTotal()
     {
         double total = 0;
@@ -46,7 +55,7 @@ public:
     }
 };
 
-// 2. ShoppingCartPrinter: Only responsible for printing invoices
+// 2. ShoppingCartPrinter: sirf invoice printing.
 class ShoppingCartPrinter
 {
 private:
@@ -69,7 +78,8 @@ public:
     }
 };
 
-// 3. ShoppingCartStorage: Only responsible for saving cart to DB
+// ❌ 3. ShoppingCartStorage: har naye storage backend ke liye yahan NAYA
+//    method add karna padega -> class har baar modify hoti hai -> OCP break.
 class ShoppingCartStorage
 {
 private:
@@ -81,17 +91,17 @@ public:
         this->cart = cart;
     }
 
-    void saveToSQLDatabase()
+    void saveToSQLDatabase() // SQL ke liye
     {
         cout << "Saving shopping cart to SQL DB..." << endl;
     }
 
-    void saveToMongoDatabase()
+    void saveToMongoDatabase() // Mongo ke liye -> naya method
     {
         cout << "Saving shopping cart to Mongo DB..." << endl;
     }
 
-    void saveToFile()
+    void saveToFile() // File ke liye -> phir naya method (modification)
     {
         cout << "Saving shopping cart to File..." << endl;
     }
@@ -107,6 +117,7 @@ int main()
     ShoppingCartPrinter *printer = new ShoppingCartPrinter(cart);
     printer->printInvoice();
 
+    // Har backend ke liye alag method call — naya backend = class edit.
     ShoppingCartStorage *db = new ShoppingCartStorage(cart);
     db->saveToSQLDatabase();
     db->saveToMongoDatabase();

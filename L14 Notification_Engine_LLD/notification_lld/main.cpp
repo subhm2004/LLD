@@ -1,3 +1,10 @@
+// ============================================================================
+//  main.cpp  —  Modular Notification Engine ka demo driver
+// ----------------------------------------------------------------------------
+//  NotificationService (singleton) se message banao, decorators (Timestamp/
+//  Signature) se wrap karo, aur engine alag channels (Email/SMS/Popup) pe deliver
+//  karta hai; Logger observer use log karta hai. Sab patterns ek saath chalte hue.
+// ============================================================================
 #include "core/NotificationSystem.h"
 #include <iostream>
 

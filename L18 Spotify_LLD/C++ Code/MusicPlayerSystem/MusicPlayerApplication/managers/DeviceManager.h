@@ -1,3 +1,5 @@
+// managers/DeviceManager.h — SINGLETON: currently connected output device ko
+// manage karta hai (connect/switch). Factory se device banwa ke engine ko deta.
 # ifndef DEVICE_MANAGER_HPP
 # define DEVICE_MANAGER_HPP
 #include<iostream>

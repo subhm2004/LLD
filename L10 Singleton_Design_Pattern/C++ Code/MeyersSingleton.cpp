@@ -1,3 +1,11 @@
+// ============================================================================
+//  MeyersSingleton.cpp  —  Meyers Singleton (modern, RECOMMENDED)
+// ----------------------------------------------------------------------------
+//  Sabse saaf tareeka: getInstance() ke andar ek `static` LOCAL variable rakho
+//  aur uska reference return karo. C++11+ guarantee karta hai ki function-local
+//  static ka initialization THREAD-SAFE hai (compiler khud lock laga deta hai).
+//  Yani lazy + thread-safe + zero manual locking. Interview/production ka default.
+// ============================================================================
 #include <bits/stdc++.h>
 
 using namespace std;

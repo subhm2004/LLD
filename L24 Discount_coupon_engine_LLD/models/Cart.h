@@ -1,3 +1,5 @@
+// models/Cart.h — Cart: items ki list, original total, aur applied discounts ke
+// baad current total + loyalty/banking flags. Coupons isi cart par apply hote hain.
 #ifndef DISCOUNT_COUPON_LLD_MODELS_CART_H
 #define DISCOUNT_COUPON_LLD_MODELS_CART_H
 

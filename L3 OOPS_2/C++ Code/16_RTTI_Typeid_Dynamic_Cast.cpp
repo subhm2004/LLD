@@ -1,3 +1,13 @@
+// ============================================================================
+//  16_RTTI_Typeid_Dynamic_Cast.cpp  —  RTTI: typeid & dynamic_cast
+// ----------------------------------------------------------------------------
+//  RTTI (Run-Time Type Information) = runtime pe object ka asli type pata karna.
+//    `typeid(obj)`     -> object ka type info deta hai (compare/print).
+//    `dynamic_cast`    -> safe downcast; galat type ho to pointer pe nullptr,
+//                         reference pe bad_cast exception. (Polymorphic class
+//                         chahiye -> base me virtual function hona zaroori.)
+//  Tip: zyada dynamic_cast/typeid design smell ho sakta hai -> polymorphism prefer karo.
+// ============================================================================
 #include <iostream>
 #include <typeinfo>
 #include <string>

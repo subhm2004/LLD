@@ -1,3 +1,6 @@
+// factories/GatewayFactory.h — FACTORY (Singleton): GatewayType ke hisaab se
+// sahi gateway banata hai, AUR usse retry-proxy me wrap karke deta hai. Client
+// ko hamesha ek ready-to-use proxied gateway milta hai.
 #ifndef PAYMENT_GATEWAY_LLD_FACTORIES_GATEWAYFACTORY_H
 #define PAYMENT_GATEWAY_LLD_FACTORIES_GATEWAYFACTORY_H
 

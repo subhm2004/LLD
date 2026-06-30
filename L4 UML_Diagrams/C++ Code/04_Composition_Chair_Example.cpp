@@ -1,10 +1,17 @@
-// L4 — Has-A: Chair composed of Seat, Arms, Wheels, Cover
+// ============================================================================
+//  04_Composition_Chair_Example.cpp  —  Composition ka real example (Chair)
+// ----------------------------------------------------------------------------
+//  Chair "HAS-A" Seat, Arms, Wheels, Cover — ek whole jo kai parts se bana hai.
+//  Saare parts Chair ke constructor me bante hain aur Chair destroy hote hi
+//  (unique_ptr ki wajah se) automatic destroy ho jaate hain -> strong
+//  composition. UML: filled diamond ◆ Chair ki taraf har part ke saath.
+// ============================================================================
 #include <iostream>
 #include <memory>
 
 using namespace std;
 
-// Individual components (parts of Chair)
+// Individual components (Chair ke parts) — har ek apni info print karta hai.
 
 class Seat
 {
@@ -42,7 +49,7 @@ public:
     }
 };
 
-// Chair HAS-A relationship (Composition)
+// Chair HAS-A parts (Composition) — unique_ptr se exclusive ownership.
 class Chair
 {
 private:
@@ -52,7 +59,7 @@ private:
     unique_ptr<Cover> cover;
 
 public:
-    // Constructor → all parts created WITH Chair
+    // Constructor -> saare parts Chair ke saath hi create hote hain.
     Chair()
     {
         seat = make_unique<Seat>();
@@ -65,6 +72,7 @@ public:
         cout << "This is a chair is made by Shubham Malik :" << endl;
     }
 
+    // Chair apne parts ko delegate karke details dikhati hai.
     void showChairDetails()
     {
         seat->info();
@@ -73,10 +81,13 @@ public:
         cover->info();
     }
 
-    Wheels *getWheels() // ese bhi kr skte hai but isse encapsulation kharab hoti hai
+    // Aise getter de sakte hain, par isse encapsulation kamzor hoti hai
+    // (andar ka part bahar expose ho jaata hai) — generally avoid karo.
+    Wheels *getWheels()
     {
         return wheels.get();
     }
+    // Chair destroy -> seat/arms/wheels/cover sab automatic destroy (unique_ptr).
 };
 
 int main()
@@ -86,5 +97,5 @@ int main()
     chair->info();
     chair->showChairDetails();
 
-    return 0;
+    return 0; // chair scope-end pe destroy -> saare parts bhi free
 }

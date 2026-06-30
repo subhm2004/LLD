@@ -1,3 +1,12 @@
+// ============================================================================
+//  PreConditions.cpp  —  LSP Method Rule: Pre-conditions
+// ----------------------------------------------------------------------------
+//  Pre-condition = method chalne se PEHLE jo sach hona chahiye (input shart).
+//  LSP rule: subtype pre-condition ko WEAKEN kar sakta hai, STRENGTHEN nahi.
+//  Matlab override caller se ZYADA demand nahi kar sakta (jaise base 0-100
+//  accept karta tha to derived sirf 50-100 maange -> GALAT, LSP break).
+//  Yaad rakho: "demand no more" (pre-conditions sirf dheeli ho sakti hain).
+// ============================================================================
 #include <bits/stdc++.h>
 
 using namespace std;

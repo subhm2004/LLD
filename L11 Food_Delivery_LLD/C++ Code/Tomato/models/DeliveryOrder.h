@@ -1,3 +1,5 @@
+// DeliveryOrder.h — Order ka woh type jahan khana user ke address pe DELIVER
+// hota hai (delivery address extra field). Order base ko extend karta hai.
 #ifndef DELIVERY_ORDER_H
 #define DELIVERY_ORDER_H
 

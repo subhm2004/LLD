@@ -1,3 +1,5 @@
+// coupons/BulkPurchaseDiscount.h — Concrete coupon: cart total ek threshold se
+// upar ho to discount (bulk buy). Coupon base ko extend karta hai.
 #ifndef DISCOUNT_COUPON_LLD_COUPONS_BULKPURCHASEDISCOUNT_H
 #define DISCOUNT_COUPON_LLD_COUPONS_BULKPURCHASEDISCOUNT_H
 

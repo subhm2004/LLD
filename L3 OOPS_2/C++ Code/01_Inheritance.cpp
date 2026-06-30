@@ -1,3 +1,11 @@
+// ============================================================================
+//  01_Inheritance.cpp  —  Inheritance basics (IS-A relationship)
+// ----------------------------------------------------------------------------
+//  Inheritance se ek class (derived/child) doosri class (base/parent) ke data +
+//  methods reuse karta hai aur naye add kar sakta hai. "Code reuse + IS-A".
+//  `public` inheritance ka matlab: Derived IS-A Base (base type ki jagah use
+//  ho sakta hai). Base ka constructor pehle, phir derived ka chalta hai.
+// ============================================================================
 #include <iostream>
 #include <string>
 

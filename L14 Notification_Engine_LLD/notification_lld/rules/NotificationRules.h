@@ -1,3 +1,5 @@
+// rules/NotificationRules.h — Business rules: kaunsa message bheja jaaye ya
+// skip ho (jaise priority/channel filter, rate-limit). Delivery se pehle check.
 #ifndef NOTIFICATION_RULES_H
 #define NOTIFICATION_RULES_H
 

@@ -1,3 +1,12 @@
+// ============================================================================
+//  ISP_violated.cpp  —  Interface Segregation Principle ka VIOLATION
+// ----------------------------------------------------------------------------
+//  ISP: kisi client ko aise methods implement karne pe MAJBOOR mat karo jinki
+//  use zaroorat nahi. Yahan ek moti `Shape` interface me area() + volume() dono
+//  hain. 2D shape (Square) ke paas volume hota hi nahi -> usko volume() implement
+//  karna padta hai aur woh exception throw karta hai (jhootha implementation).
+//  Fix: ISP_followed.cpp me 2D/3D ke alag interfaces.
+// ============================================================================
 #include <iostream>
 #include <stdexcept>
 

@@ -1,3 +1,5 @@
+// ye akela builder pattern hai ho multiple inheritance ka use karke step-by-step building ko enforce karta hai.
+// isme hum step by step define krte hai ki kaunsa step agla valid step hai. Isse galat order me call karne pe compile time error aayega.
 // ============================================================================
 //  StepBuilder.cpp  —  Step (Type-State) Builder variant
 // ----------------------------------------------------------------------------

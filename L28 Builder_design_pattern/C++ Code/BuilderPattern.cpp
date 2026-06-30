@@ -23,7 +23,7 @@ private:
     string body;
     int timeout; // in seconds
 
-    // Private constructor - can only be accessed by the Builder
+    // Private constructor - can only be accessed by the Builder (isse kya hoga ki new keyboard se HttpRequest object nahi banega jse ki hum ne singleton me bhi kiya tha ctor ko private kr diya tha, sirf builder se hi banega)
     HttpRequest() { }
 
 public:

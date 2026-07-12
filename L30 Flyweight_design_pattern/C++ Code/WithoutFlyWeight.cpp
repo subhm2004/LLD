@@ -1,4 +1,4 @@
-// ============================================================================
+ // ============================================================================
 //  WithoutFlyWeight.cpp  —  Flyweight ke BINA (problem dikhane ke liye)
 // ----------------------------------------------------------------------------
 //  Yahan har Asteroid object apni saari fields (color, texture, material, size

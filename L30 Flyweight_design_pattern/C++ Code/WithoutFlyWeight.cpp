@@ -62,11 +62,7 @@ public:
         string mat, int posX, int posY, int velX, int velY) {
             this->length = l;
             this->width = w;
-            this->weight = w;   // BUG: yaha `wt` hona chahiye tha, `w` nahi.
-                                // Abhi weight me width ki value ja rahi hai
-                                // (25/35/45), jabki caller ne 250/350/450 bheja tha.
-                                // Render output me weight print nahi hota isliye
-                                // pakda nahi gaya. WithFlyWeight.cpp me bhi same typo hai.
+            this->weight = wt;   
             this->color = col;
             this->texture = tex;
             this->material = mat;

@@ -24,7 +24,7 @@
 // ============================================================================
 #include <iostream>
 #include <vector>
-#include <stack>  // BinaryTree ka in-order traversal recursion ki jagah explicit stack se
+#include <stack> // BinaryTree ka in-order traversal recursion ki jagah explicit stack se
 #include <string>
 
 using namespace std;
@@ -165,14 +165,14 @@ public:
     // List khatam tab hoti hai jab current nullptr ho jaye (last node ka next).
     bool hasNext() override
     {
-        return current != nullptr;
+        return current->next != nullptr;
     }
 
     int next() override
     {
-        int val = current->data;  // 1-> 2-> 3 : pehle CURRENT ki value uthao
-        current = current->next;  // phir cursor ko agle node pe shift karo
-        return val;               // aur purani value return kar do
+        int val = current->data; // 1-> 2-> 3 : pehle CURRENT ki value uthao
+        current = current->next; // phir cursor ko agle node pe shift karo
+        return val;              // aur purani value return kar do
     }
 };
 

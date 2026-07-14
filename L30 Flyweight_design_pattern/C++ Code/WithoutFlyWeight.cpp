@@ -62,7 +62,7 @@ public:
         string mat, int posX, int posY, int velX, int velY) {
             this->length = l;
             this->width = w;
-            this->weight = wt;   
+            this->weight = wt;
             this->color = col;
             this->texture = tex;
             this->material = mat;

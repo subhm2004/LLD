@@ -1,4 +1,4 @@
- // ============================================================================
+// ============================================================================
 //  WithoutFlyWeight.cpp  —  Flyweight ke BINA (problem dikhane ke liye)
 // ----------------------------------------------------------------------------
 //  Yahan har Asteroid object apni saari fields (color, texture, material, size
@@ -36,7 +36,8 @@ using namespace std;
 //  Har `new Asteroid(...)` pe 3 string objects bante hain aur unka heap data
 //  bhi copy hota hai. 10 lakh baar. Yahi memory blow-up ki jad hai.
 // ----------------------------------------------------------------------------
-class Asteroid {
+class Asteroid
+{
 private:
     // Intrinsic properties (same for many asteroids) - DUPLICATED FOR EACH OBJECT
     // Sirf 3 unique combinations hain in 6 fields ke, phir bhi har object
@@ -59,28 +60,30 @@ public:
     // Note: strings by VALUE aa rahi hain (const& nahi) — matlab har call pe
     // ek extra copy banti hai. 10 lakh calls = 30 lakh string copies.
     Asteroid(int l, int w, int wt, string col, string tex,
-        string mat, int posX, int posY, int velX, int velY) {
-            this->length = l;
-            this->width = w;
-            this->weight = wt;
-            this->color = col;
-            this->texture = tex;
-            this->material = mat;
-            this->posX = posX;
-            this->posY = posY;
-            this->velocityX = velX;
-            this->velocityY = velY;
+             string mat, int posX, int posY, int velX, int velY)
+    {
+        this->length = l;
+        this->width = w;
+        this->weight = wt;
+        this->color = col;
+        this->texture = tex;
+        this->material = mat;
+        this->posX = posX;
+        this->posY = posY;
+        this->velocityX = velX;
+        this->velocityY = velY;
     }
 
     // Dhyaan do: render() ko koi parameter nahi chahiye, kyunki position/velocity
     // object ke ANDAR hi padi hai. WithFlyWeight.cpp me yahi signature badal
     // jayega — wahan position bahar se pass karni padegi. Yahi pattern ka core diff hai.
-    void render() {
-        cout << "Rendering " << color <<", " << texture << ", " << material
-            <<" asteroid at (" << posX << "," << posY
-            << ") Size: " << length << "x" << width
-            << " Velocity: (" << velocityX << ", "
-            << velocityY << ")" << endl;
+    void render()
+    {
+        cout << "Rendering " << color << ", " << texture << ", " << material
+             << " asteroid at (" << posX << "," << posY
+             << ") Size: " << length << "x" << width
+             << " Velocity: (" << velocityX << ", "
+             << velocityY << ")" << endl;
     }
 
     // Calculate approximate memory usage per object
@@ -94,22 +97,25 @@ public:
     //     96  -> unka heap data (approx)
     // Inme se 168 bytes (72 + 96) PURA intrinsic hai — yahi Flyweight bachayega.
     // Bachega sirf 28 bytes ka extrinsic hissa.
-    static size_t getMemoryUsage() {
-        return sizeof(int) * 7 +                // length, width, weight, x, y, velocityX, velocityY
-               sizeof(string) * 3 +             // color, texture, material string objects
-               32 * 3;                          // Approximate string data (assuming average 10 chars each)
+    static size_t getMemoryUsage()
+    {
+        return sizeof(int) * 7 +    // length, width, weight, x, y, velocityX, velocityY
+               sizeof(string) * 3 + // color, texture, material string objects
+               32 * 3;              // Approximate string data (assuming average 10 chars each)
     }
 };
 
 // ----------------------------------------------------------------------------
 //  SpaceGame — client. Bas asteroids ka vector bhar deta hai.
 // ----------------------------------------------------------------------------
-class SpaceGame {
+class SpaceGame
+{
 private:
-    vector<Asteroid*> asteroids; // 10 lakh alag-alag heap objects
+    vector<Asteroid *> asteroids; // 10 lakh alag-alag heap objects
 
 public:
-    void spawnAsteroids(int count) {
+    void spawnAsteroids(int count)
+    {
         cout << "\n=== Spawning " << count << " asteroids ===" << endl;
 
         // Sirf 3 hi variety hai — yahi baat is poore demo ka point hai.
@@ -118,20 +124,21 @@ public:
         vector<string> materials = {"Iron", "Stone", "Ice"};
         int sizes[] = {25, 35, 45};
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             int type = i % 3; // 0,1,2,0,1,2... -> round-robin se teeno type banenge
 
             // Har iteration me ek POORA naya object — intrinsic data samet.
             // i=0 aur i=3 dono "Red/Rocky/Iron" hain, par phir bhi do alag
             // objects ban rahe hain jinme wahi 3 strings dubara store ho rahi hain.
             asteroids.push_back(new Asteroid(
-                sizes[type], sizes[type], sizes[type] * 10,   // <- intrinsic (repeat hota hai)
+                sizes[type], sizes[type], sizes[type] * 10,    // <- intrinsic (repeat hota hai)
                 colors[type], textures[type], materials[type], // <- intrinsic (repeat hota hai)
-                100 + i * 50,          // Simple x: 100, 150, 200, 250...   <- extrinsic (unique)
-                200 + i * 30,          // Simple y: 200, 230, 260, 290...   <- extrinsic (unique)
-                1,                     // All move right with velocity 1     <- extrinsic
-                2                      // All move down with velocity 2      <- extrinsic
-            ));
+                100 + i * 50,                                  // Simple x: 100, 150, 200, 250...   <- extrinsic (unique)
+                200 + i * 30,                                  // Simple y: 200, 230, 260, 290...   <- extrinsic (unique)
+                1,                                             // All move right with velocity 1     <- extrinsic
+                2                                              // All move down with velocity 2      <- extrinsic
+                ));
         }
 
         cout << "Created " << asteroids.size() << " asteroid objects" << endl;
@@ -139,30 +146,35 @@ public:
         //   saath me "Total flyweight objects: 3" bhi print hoga.
     }
 
-    void renderAll() {
+    void renderAll()
+    {
         cout << "\n--- Rendering first 5 asteroids ---" << endl;
         // Sirf 5 print kar rahe hain — 10 lakh lines terminal me kaun dekhega.
-        for (int i = 0; i < min(5, (int)asteroids.size()); i++) {
+        for (int i = 0; i < min(5, (int)asteroids.size()); i++)
+        {
             asteroids[i]->render();
         }
     }
 
     // Total = per-object size × object count. Bilkul linear growth.
     // Koi sharing nahi, isliye count double karo to memory bhi double.
-    size_t calculateMemoryUsage() {
+    size_t calculateMemoryUsage()
+    {
         return asteroids.size() * Asteroid::getMemoryUsage();
     }
 
-    int getAsteroidCount() {
+    int getAsteroidCount()
+    {
         return asteroids.size();
     }
 };
 
-int main() {
-    const int ASTEROID_COUNT = 1000000;
+int main()
+{
+    const int ASTEROID_COUNT = 1e6; // 1,000,000 asteroids (1 million asteroids)
 
     cout << "\n TESTING WITHOUT FLYWEIGHT PATTERN" << endl;
-    SpaceGame* game = new SpaceGame();
+    SpaceGame *game = new SpaceGame();
 
     game->spawnAsteroids(ASTEROID_COUNT);
 

@@ -332,7 +332,7 @@ public:
 };
 
 int main() {
-    const int ASTEROID_COUNT = 1000000;
+    const int ASTEROID_COUNT = 1e6; // 1,000,000 asteroids (1 million asteroids)
 
     cout << "\nTESTING WITH FLYWEIGHT + BUILDER PATTERN" << endl;
     SpaceGameWithFlyweight* game = new SpaceGameWithFlyweight();

@@ -4,6 +4,7 @@
 //  Poore coupon engine ka original monolithic version (saari classes ek file me).
 //  Modular, folder-based version parent folder me hai (coupons/, strategies/,
 //  factories/, core/). Reference ke liye preserve kiya gaya.
+//  Is file me detail me (Hinglish + English mix) comments add kiye gaye hain.
 // ============================================================================
 #include <bits/stdc++.h>
 
@@ -17,115 +18,131 @@
 
 using namespace std;
 
+// Enum to identify different types of discount calculations
 enum StrategyType { FLAT, PERCENT, PERCENT_WITH_CAP };
 
-// ----------------------------
-// Discount Strategy (Strategy Pattern)
-// ----------------------------
-// Strategy intent:
-// - Discount math (flat / percent / capped-percent) is independent from coupon
-// applicability rules.
-// - Each concrete Coupon composes a strategy to compute "how much" discount to
-// apply.
+// ----------------------------------------------------------------------------
+// [DESIGN PATTERN: Strategy Pattern]
+// ----------------------------------------------------------------------------
+// Strategy Pattern ka use discount calculator math ko coupon rule algorithms se
+// alag (decouple) karne ke liye kiya gaya hai.
+// - Discount calculation ka logic (Flat discount, Percentage discount, or Percentage with Cap)
+//   alag strategy classes me encapsulated hai.
+// - Coupon classes (like SeasonalOffer, LoyaltyDiscount) concrete calculation algorithm ko
+//   hardcode karne ke bajaye `DiscountStrategy` interface ke through bind (composition) karti hain.
+// - Isse naye mathematical models implement karna asaan ho jata hai bina coupon classes ko modify kiye.
+// ----------------------------------------------------------------------------
+
+// Discount Strategy Interface (Abstract Strategy)
 class DiscountStrategy {
 public:
-  // baseAmount ke against kitna discount dena hai, yeh concrete strategy decide
-  // karegi.
+  // Virtual destructor ensure karta hai ki dynamically allocated subclass objects leak na ho
   virtual ~DiscountStrategy() {}
+  
+  // calculate: Base amount accept karke net discount amount return karta hai
   virtual double calculate(double baseAmount) = 0;
 };
 
+// Concrete Strategy 1: Flat Discount
 class FlatDiscountStrategy : public DiscountStrategy {
 private:
-  double amount;
+  double amount; // Kitna fixed cash discount dena hai
 
 public:
   FlatDiscountStrategy(double amt) { amount = amt; }
+
   double calculate(double baseAmount) override {
-    // Flat discount kabhi base amount se bada nahi hona chahiye.
-    // Example: base=80, flat=100 => discount 80.
+    // Flat discount total cart value se bada nahi ho sakta (negatives avoid karne ke liye)
+    // Example: cart value 80, coupon off 100 => total discount 80 hi milega.
     return min(amount, baseAmount);
   }
 };
 
+// Concrete Strategy 2: Percentage-based Discount
 class PercentageDiscountStrategy : public DiscountStrategy {
 private:
-  double percent;
+  double percent; // Kitne percent discount dena hai (e.g. 10%)
 
 public:
   PercentageDiscountStrategy(double pct) { percent = pct; }
+
   double calculate(double baseAmount) override {
-    // Standard percentage formula.
+    // Standard percentage calculation: (percent / 100) * total
     return (percent / 100.0) * baseAmount;
   }
 };
 
+// Concrete Strategy 3: Percentage Discount with an Upper Limit Cap
 class PercentageWithCapStrategy : public DiscountStrategy {
 private:
-  double percent;
-  double cap;
+  double percent; // Discount percentage
+  double cap;     // Max discount limit (Maximum threshold cap)
 
 public:
   PercentageWithCapStrategy(double pct, double capVal) {
     percent = pct;
     cap = capVal;
   }
+
   double calculate(double baseAmount) override {
-    // Pehle percent se discount nikalo, phir cap enforce karo.
+    // Pehle percentage discount calculate karenge, fir use cap value ke limit me restrict karenge
     double disc = (percent / 100.0) * baseAmount;
     if (disc > cap) {
-      return cap;
+      return cap; // Cap threshold limit crossed, apply capped amount only
     }
     return disc;
   }
 };
 
-// ----------------------------
-// DiscountStrategyManager (Singleton)
-// ----------------------------
-// Factory + Singleton:
-// - Central place to create strategies; lets coupons ask for strategy by type.
-// - Returns heap-allocated strategies; each Coupon owns & deletes its strategy
-// in destructor.
+// ----------------------------------------------------------------------------
+// [DESIGN PATTERN: Singleton Pattern & Factory Pattern]
+// ----------------------------------------------------------------------------
+// 1. Singleton: DiscountStrategyManager pure application me single instantiation control
+//    rakhta hai. Static functions, private constructor, and block operators iske duplication
+//    ko prevent karte hain. Multithreading environments me Double-Checked Locking (DCL)
+//    ensure karta hai safety.
+// 2. Simple Factory: `getStrategy` method is a factory method jo strategy type ke rules ke basis par
+//    concrete strategy objects instantiate aur distribute karta hai.
+// ----------------------------------------------------------------------------
+
 class DiscountStrategyManager {
 private:
+  // Static instance pointer and synchronization mutex for thread-safe access
   static DiscountStrategyManager *instance;
-  // DCL support mutex:
-  // first check lock ke bina hota hai, second check lock ke andar.
-  // Is mutex ka purpose sirf singleton instance creation protect karna hai.
   static mutex instanceMtx;
+
+  // Private constructor to disable direct instantiation
   DiscountStrategyManager() {}
-  DiscountStrategyManager(const DiscountStrategyManager &) =
-      delete; // copy constructor blocked
-  DiscountStrategyManager &operator=(const DiscountStrategyManager &) =
-      delete; // copy assignment blocked
-  DiscountStrategyManager(DiscountStrategyManager &&) =
-      delete; // move constructor blocked
-  DiscountStrategyManager &
-  operator=(DiscountStrategyManager &&) = delete; // move assignment blocked
-  // Destructor private hai: outside delete nahi kar paoge.
+
+  // Deleting copy & move constructors/assignments to avoid copies or moves
+  DiscountStrategyManager(const DiscountStrategyManager &) = delete;
+  DiscountStrategyManager &operator=(const DiscountStrategyManager &) = delete;
+  DiscountStrategyManager(DiscountStrategyManager &&) = delete;
+  DiscountStrategyManager &operator=(DiscountStrategyManager &&) = delete;
+
+  // Private destructor to prevent explicit deletion from outside
   ~DiscountStrategyManager() {}
 
 public:
+  // Thread-Safe Singleton Getter utilizing Double-Checked Locking (DCL)
   static DiscountStrategyManager *getInstance() {
-    // -------- Double-Checked Locking (DCL) --------
-    // 1) Fast path: instance already bana hua hai to lock avoid.
-    // 2) Slow path: null ho to lock leke re-check karo.
-    // 3) Re-check mandatory hai because multiple threads first check tak
-    //    saath aa sakti hain.
+    // 1st Check (Lock-Free): Performance speed badhane ke liye. 
+    // Agar object already active hai to lock call avoid ho sake.
     if (!instance) {
+      // Locking step: Sync issues control karne ke liye
       lock_guard<mutex> lock(instanceMtx);
+      
+      // 2nd Check: Dual threads race condition protection
       if (!instance) {
         instance = new DiscountStrategyManager();
       }
     }
     return instance;
   }
+
+  // Factory creation algorithm: returns dynamic strategy pointer based on strategy type input
   DiscountStrategy *getStrategy(StrategyType type, double param1,
                                 double param2 = 0.0) const {
-    // Factory decision point:
-    // caller ko concrete class ka naam pata nahi hona chahiye.
-    // type ke basis par correct strategy object return karte hain.
     if (type == StrategyType::FLAT) {
       return new FlatDiscountStrategy(param1);
     }
@@ -138,21 +155,18 @@ public:
     return nullptr;
   }
 };
-// Initialize static member
+
+// Static instances setup definitions
 DiscountStrategyManager *DiscountStrategyManager::instance = nullptr;
 mutex DiscountStrategyManager::instanceMtx;
 
 // ----------------------------
-// Assume existing Cart and Product classes
+// Product Class representing Cart Line Items
 // ----------------------------
-// Cart semantics:
-// - originalTotal: fixed baseline (used for eligibility like bulk/min-spend)
-// - currentTotal : mutable total after applying one or more discounts in the
-// chain
 class Product {
 private:
   string name;
-  string category;
+  string category; // Helpful in resolving category level discounts (e.g. Clothing/Electronics)
   double price;
 
 public:
@@ -161,13 +175,13 @@ public:
     this->category = category;
     this->price = price;
   }
-  // Simple getters: coupon eligibility aur cart total calculation me use hote
-  // hain.
+
   string getName() { return name; }
   string getCategory() const { return category; }
   double getPrice() { return price; }
 };
 
+// CartItem represents quantity metadata mapping against a single Product
 class CartItem {
 private:
   Product *product;
@@ -178,18 +192,20 @@ public:
     product = prod;
     quantity = qty;
   }
-  // Ek cart line item ka subtotal (unit price * quantity).
+
+  // Subtotal calculated dynamically as: (Price * Quantity)
   double itemTotal() { return product->getPrice() * quantity; }
   const Product *getProduct() { return product; }
 };
 
+// Cart represents the customer order bucket
 class Cart {
 private:
   vector<CartItem *> items;
-  double originalTotal;
-  double currentTotal;
-  bool loyaltyMember;
-  string paymentBank;
+  double originalTotal; // Fixed baseline total (Useful in checks like minimum spend threshold eligibility)
+  double currentTotal;  // Mutable running total. Redundant discount deductions dynamically affect this total.
+  bool loyaltyMember;   // Flag to check if user has premium loyalty membership
+  string paymentBank;   // Selected Bank gateway during payment (Useful in Resolving Bank specific coupon rules)
 
 public:
   Cart() {
@@ -199,111 +215,115 @@ public:
     paymentBank = "";
   }
 
+  // Add Item wrapper logic
   void addProduct(Product *prod, int qty = 1) {
-    // Har add pe:
-    // 1) cart line create
-    // 2) original total update
-    // 3) current total update
-    // currentTotal later coupons apply hone par change hoga, originalTotal
-    // stable rahega.
     CartItem *item = new CartItem(prod, qty);
     items.push_back(item);
     originalTotal += item->itemTotal();
-    currentTotal += item->itemTotal();
+    currentTotal += item->itemTotal(); // Initially currentTotal and originalTotal are identical
   }
 
   double getOriginalTotal() { return originalTotal; }
-
   double getCurrentTotal() { return currentTotal; }
 
+  // Apply absolute discount deductions on current running total
   void applyDiscount(double d) {
-    // Guardrail: never allow negative totals.
     currentTotal -= d;
     if (currentTotal < 0) {
-      currentTotal = 0;
+      currentTotal = 0; // Total cart price cannot drop below zero
     }
   }
 
   void setLoyaltyMember(bool member) { loyaltyMember = member; }
-
   bool isLoyaltyMember() { return loyaltyMember; }
 
   void setPaymentBank(string bank) { paymentBank = bank; }
-
   string getPaymentBank() { return paymentBank; }
 
   vector<CartItem *> getItems() { return items; }
 };
 
-// ----------------------------
-// Coupon base class (Chain of Responsibility)
-// ----------------------------
-// Chain of Responsibility intent:
-// - Coupons are linked in registration order.
-// - applyDiscount walks the chain; each coupon decides applicability + computes
-// discount.
-// - isCombinable() allows "exclusive" coupons that stop the chain after
-// applying.
+// ----------------------------------------------------------------------------
+// [DESIGN PATTERN: Chain of Responsibility Pattern (CoR)]
+// ----------------------------------------------------------------------------
+// Chain of Responsibility Pattern ka use discount validation aur sequencing me kiya gaya hai.
+// - Coupon base class ek node ki tarah act karti hai jisme `next` pointer sequential link banata hai.
+// - `applyDiscount` method chain ko automatic sequence me iterate karwata hai.
+// - Har coupon object dynamic criteria validation check karta hai.
+// - `isCombinable()` mechanism exclusive coupons provide karta hai; agar koi coupon application ke
+//   baad combinable nahi hai (returns false), to discount traversal pipeline wahin stop ho jata hai.
+// ----------------------------------------------------------------------------
+
+// Coupon Base class (Handler interface for the Chain)
 class Coupon {
 private:
-  Coupon *next;
+  Coupon *next; // Pointer to the next coupon in the chain
 
 public:
   Coupon() { next = nullptr; }
+
+  // Recursive Destructor: Chain me clear deletion sequence enforce karne ke liye
   virtual ~Coupon() {
     if (next) {
-      delete next;
+      delete next; // Har node agle standard nodes ko recursive clean karta hai
     }
   }
+
   void setNext(Coupon *nxt) { next = nxt; }
   Coupon *getNext() { return next; }
 
+  // CoR traversal processor logic
   void applyDiscount(Cart *cart) {
-    // CoR step execution:
-    // - Agar current coupon applicable hai to discount apply karo.
-    // - Non-combinable ho to chain yahin stop.
-    // - Otherwise next coupon evaluate karo.
+    // 1. eligibility criteria resolve karo
     if (isApplicable(cart)) {
       double discount = getDiscount(cart);
       cart->applyDiscount(discount);
-      cout << name() << " applied: " << discount << endl;
+      cout << name() << " applied: " << discount << " Rs" << endl;
+
+      // Exclusive coupon handling check
       if (!isCombinable()) {
-        // Exclusive coupon: once applied, no further coupons should be
-        // evaluated.
-        return;
+        cout << "[CoR] Exclusive coupon applied (" << name() << "). Terminating discount chain execution." << endl;
+        return; // Next nodes execution logic cut/blocked
       }
     }
+
+    // 2. Delegation to the next link in sequence
     if (next) {
       next->applyDiscount(cart);
     }
   }
+
+  // Virtual hooks defined for concrete coupons implementation
   virtual bool isApplicable(Cart *cart) = 0;
   virtual double getDiscount(Cart *cart) = 0;
-  virtual bool isCombinable() { return true; }
+  virtual bool isCombinable() { return true; } // Combinable default set as true
   virtual string name() = 0;
 };
 
-// ----------------------------
-// Concrete Coupons
-// ----------------------------
+// ----------------------------------------------------------------------------
+// Concrete Coupon implementations (Chain nodes)
+// ----------------------------------------------------------------------------
+
+// 1. Seasonal Offer Coupon (Applies to a specific product category)
 class SeasonalOffer : public Coupon {
 private:
   double percent;
   string category;
-  DiscountStrategy *strat;
+  DiscountStrategy *strat; // Strategy composition
 
 public:
   SeasonalOffer(double pct, string cat) {
     percent = pct;
     category = cat;
-    // Seasonal rule ke liye percentage strategy bind ki gayi hai.
+    // Strategy instance retrieved from Singleton Factory
     strat = DiscountStrategyManager::getInstance()->getStrategy(
         StrategyType::PERCENT, percent);
   }
+
   ~SeasonalOffer() { delete strat; }
+
+  // Applicable only if the cart contains at least one item matching the target category
   bool isApplicable(Cart *cart) override {
-    // Category-level eligibility: apply only if cart contains at least one item
-    // in `category`.
     for (CartItem *item : cart->getItems()) {
       if (item->getProduct()->getCategory() == category) {
         return true;
@@ -311,9 +331,9 @@ public:
     }
     return false;
   }
+
+  // Computes percentage discount over the subtotal of matching category items only
   double getDiscount(Cart *cart) override {
-    // Category-level discount base is subtotal of matching category items (not
-    // full cart).
     double subtotal = 0.0;
     for (CartItem *item : cart->getItems()) {
       if (item->getProduct()->getCategory() == category) {
@@ -322,13 +342,15 @@ public:
     }
     return strat->calculate(subtotal);
   }
+
   bool isCombinable() override { return true; }
-  // Human-readable coupon label (UI/logging ke liye).
+
   string name() override {
-    return "Seasonal Offer " + to_string((int)percent) + " % off " + category;
+    return "Seasonal Offer " + to_string((int)percent) + "% off on " + category;
   }
 };
 
+// 2. Loyalty Coupon (Applies to loyalty premium club members)
 class LoyaltyDiscount : public Coupon {
 private:
   double percent;
@@ -337,22 +359,25 @@ private:
 public:
   LoyaltyDiscount(double pct) {
     percent = pct;
-    // Loyalty coupon ke liye pure percent strategy.
     strat = DiscountStrategyManager::getInstance()->getStrategy(
         StrategyType::PERCENT, percent);
   }
+
   ~LoyaltyDiscount() { delete strat; }
+
   bool isApplicable(Cart *cart) override { return cart->isLoyaltyMember(); }
+
+  // Runs on running current total (compounding discount application support)
   double getDiscount(Cart *cart) override {
-    // Cart-level: runs on currentTotal so earlier coupons reduce the base for
-    // later coupons.
     return strat->calculate(cart->getCurrentTotal());
   }
+
   string name() override {
     return "Loyalty Discount " + to_string((int)percent) + "% off";
   }
 };
 
+// 3. Bulk Purchase Coupon (Applies a flat discount when total crosses threshold limit)
 class BulkPurchaseDiscount : public Coupon {
 private:
   double threshold;
@@ -363,25 +388,28 @@ public:
   BulkPurchaseDiscount(double thr, double off) {
     threshold = thr;
     flatOff = off;
-    // Bulk rule ke liye flat strategy.
     strat = DiscountStrategyManager::getInstance()->getStrategy(
         StrategyType::FLAT, flatOff);
   }
+
   ~BulkPurchaseDiscount() { delete strat; }
+
+  // Uses originalTotal so that discount thresholds are validated on original spend value
   bool isApplicable(Cart *cart) override {
-    // Eligibility uses originalTotal so threshold doesn't change as discounts
-    // apply.
     return cart->getOriginalTotal() >= threshold;
   }
+
   double getDiscount(Cart *cart) override {
     return strat->calculate(cart->getCurrentTotal());
   }
+
   string name() override {
     return "Bulk Purchase Rs " + to_string((int)flatOff) + " off over " +
            to_string((int)threshold);
   }
 };
 
+// 4. Banking Gateway Coupon (Applies discount with a capped upper limit based on selected Bank)
 class BankingCoupon : public Coupon {
 private:
   string bank;
@@ -395,56 +423,51 @@ public:
     bank = b;
     minSpend = ms;
     this->percent = percent;
-    // Cap is a separate parameter (max discount); store it correctly.
     this->offCap = offCap;
-    // Banking offer ke liye capped-percent strategy.
+    // Uses Capped Percentage strategy pattern setup
     strat = DiscountStrategyManager::getInstance()->getStrategy(
         StrategyType::PERCENT_WITH_CAP, percent, offCap);
   }
+
   ~BankingCoupon() { delete strat; }
+
   bool isApplicable(Cart *cart) override {
-    // Dono conditions mandatory:
-    // 1) selected bank match
-    // 2) minimum spend threshold meet
     return cart->getPaymentBank() == bank &&
            cart->getOriginalTotal() >= minSpend;
   }
+
   double getDiscount(Cart *cart) override {
     return strat->calculate(cart->getCurrentTotal());
   }
+
   string name() override {
-    return bank + " Bank Rs " + to_string((int)percent) + " off upto " +
-           to_string((int)offCap);
+    return bank + " Bank " + to_string((int)percent) + "% off (max Rs " +
+           to_string((int)offCap) + ")";
   }
 };
 
-// ----------------------------
-// CouponManager (Singleton)
-// ----------------------------
-// Thread-safety:
-// - register / list-applicable / apply-all hold a mutex, so chain isn't mutated
-// while iterating. Ownership:
-// - head owns the chain (Coupon destructor deletes `next` recursively).
+// ----------------------------------------------------------------------------
+// [DESIGN PATTERN: Singleton Pattern]
+// ----------------------------------------------------------------------------
+// CouponManager application layer wrapper class hai jo rules registration list,
+// applicable coupons audit reporting aur process execution order coordinate karti hai.
+// Singleton implementation updates isko dynamic memory protection provide karti hai.
+// ----------------------------------------------------------------------------
+
 class CouponManager {
 private:
-  static CouponManager *instance;
-  // Singleton creation ke liye dedicated mutex (DCL).
-  // Note: yeh `mtx` (coupon chain operations lock) se alag hai.
-  static mutex instanceMtx;
-  Coupon *head;
-  mutable mutex mtx;
+  static CouponManager *instance; // Static singleton instance
+  static mutex instanceMtx;       // Singleton instantiation lock
+  
+  Coupon *head;                   // Head of the Coupon Chain (CoR)
+  mutable mutex mtx;              // Mutex for safe multi-threaded chain register/read operations
+
+  // Private constructor
   CouponManager() { head = nullptr; }
 
 public:
+  // Singleton instance accessor (Double-Checked Locking)
   static CouponManager *getInstance() {
-    // -------- Double-Checked Locking (DCL) --------
-    // Fast path:
-    //   Agar instance bana hua hai to lock lene ki zarurat nahi.
-    // Slow path:
-    //   Null mile to lock lo, phir dobara check karo, phir create karo.
-    // Isse:
-    //   - duplicate construction avoid hota hai
-    //   - already-created case me unnecessary locking bachta hai
     if (!instance) {
       lock_guard<mutex> lock(instanceMtx);
       if (!instance) {
@@ -454,9 +477,17 @@ public:
     return instance;
   }
 
+  // Clean-up handler: Deletes the coupon chain dynamically to avoid memory leaks at shutdown
+  ~CouponManager() {
+    lock_guard<mutex> lock(mtx);
+    if (head) {
+      delete head; // Triggers recursive deletion chain of Coupon destructor
+      head = nullptr;
+    }
+  }
+
+  // Register a coupon at the end of the chain
   void registerCoupon(Coupon *coupon) {
-    // Thread-safe append at chain tail.
-    // Order preserve hota hai, aur wahi order applyAll me follow hota hai.
     lock_guard<mutex> lock(mtx);
     if (!head) {
       head = coupon;
@@ -469,10 +500,8 @@ public:
     }
   }
 
+  // Retrieve list of currently applicable coupon names (Dry run evaluation)
   vector<string> getApplicable(Cart *cart) const {
-    // Dry-run listing:
-    // discount apply nahi karta, sirf applicable coupon names collect karta
-    // hai.
     lock_guard<mutex> lock(mtx);
     vector<string> res;
     Coupon *cur = head;
@@ -485,9 +514,8 @@ public:
     return res;
   }
 
+  // Sequentially apply all applicable coupons in the chain to the cart
   double applyAll(Cart *cart) {
-    // Chain head se sequentially apply.
-    // Exclusive coupon aate hi chain break ho sakti hai (base class behavior).
     lock_guard<mutex> lock(mtx);
     if (head) {
       head->applyDiscount(cart);
@@ -495,56 +523,62 @@ public:
     return cart->getCurrentTotal();
   }
 };
-// Initialize static instance pointer
+
+// Static initializations
 CouponManager *CouponManager::instance = nullptr;
 mutex CouponManager::instanceMtx;
 
 // ----------------------------
-// Main: Client code (heap allocations and pointers)
+// Main: Client application simulation
 // ----------------------------
 int main() {
-
   CouponManager *mgr = CouponManager::getInstance();
-  // Registration order = evaluation order in chain (important for CoR).
+
+  // Step 1: Register coupons in specific sequence order (Chain evaluation order is critical in CoR)
   mgr->registerCoupon(new SeasonalOffer(10, "Clothing"));
   mgr->registerCoupon(new LoyaltyDiscount(5));
   mgr->registerCoupon(new BulkPurchaseDiscount(1000, 100));
   mgr->registerCoupon(new BankingCoupon("ABC", 2000, 15, 500));
 
+  // Step 2: Create mock items (products)
   Product *p1 = new Product("Winter Jacket", "Clothing", 1000);
   Product *p2 = new Product("Smartphone", "Electronics", 20000);
   Product *p3 = new Product("Jeans", "Clothing", 1000);
   Product *p4 = new Product("Headphones", "Electronics", 2000);
 
+  // Step 3: Populate user cart and customer attributes
   Cart *cart = new Cart();
-  cart->addProduct(p1, 1);
-  cart->addProduct(p2, 1);
-  cart->addProduct(p3, 2);
-  cart->addProduct(p4, 1);
+  cart->addProduct(p1, 1);  // Subtotal clothing = 1000
+  cart->addProduct(p2, 1);  // Subtotal electronics = 20000
+  cart->addProduct(p3, 2);  // Subtotal clothing = 2000 (total clothing = 3000)
+  cart->addProduct(p4, 1);  // Subtotal electronics = 2000 (total electronics = 22000)
   cart->setLoyaltyMember(true);
   cart->setPaymentBank("ABC");
 
   cout << "Original Cart Total: " << cart->getOriginalTotal() << " Rs" << endl;
+  cout << "------------------------------------------" << endl;
 
+  // Step 4: Preview eligible coupons
   vector<string> applicable = mgr->getApplicable(cart);
-  // Step-1: user ko pehle dikhao kaunse coupons currently eligible hain.
-  cout << "Applicable Coupons:" << endl;
+  cout << "Applicable Coupons (Preview):" << endl;
   for (string name : applicable) {
     cout << " - " << name << endl;
   }
+  cout << "------------------------------------------" << endl;
 
+  // Step 5: Execute pipeline application of discount coupon sequence
   double finalTotal = mgr->applyAll(cart);
-  // Step-2: actual discount chain apply karo.
+  cout << "------------------------------------------" << endl;
   cout << "Final Cart Total after discounts: " << finalTotal << " Rs" << endl;
 
-  // Cleanup code
-  // Note: Coupon chain is intentionally not deleted here since manager is a
-  // process-lifetime singleton.
+  // Cleanup dynamic allocations to prevent memory leaks
   delete p1;
   delete p2;
   delete p3;
   delete p4;
   delete cart;
 
+  // Note: Coupon chain and managers are intentionally not deleted here 
+  // since they are process-lifetime singletons.
   return 0;
 }

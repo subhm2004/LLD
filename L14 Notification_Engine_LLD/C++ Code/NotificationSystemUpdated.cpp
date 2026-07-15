@@ -3,7 +3,7 @@
 // ----------------------------------------------------------------------------
 //  NotificationSystem.cpp ka refined version — same patterns (Singleton +
 //  Decorator + Observer + Strategy) par cleaner structure / extra features.
-//  Padhne ke liye dono compare karo: kya improve hua.
+//  Is file me detailed comments (Hinglish + English mix) add kiye gaye hain.
 // ============================================================================
 #include <iostream>
 #include <vector>
@@ -12,18 +12,21 @@
 
 using namespace std;
 
-/*============================
-      Notification & Decorators
-=============================*/
+/*=============================================================================
+  [DESIGN PATTERN: Decorator Pattern]
+  -----------------------------------------------------------------------------
+  INotification decorator implementation raw string messages ko dynamically wrap 
+  karke prefix/suffix (timestamps, signatures) append karti hai.
+=============================================================================*/
 
+// Interface for Notifications (Component)
 class INotification {
 public:
     virtual string getContent() const = 0;
-
     virtual ~INotification() {}
 };
 
-// Concrete Notification: simple text notification.
+// Concrete Notification: Simple text message wrapper (Concrete Component)
 class SimpleNotification : public INotification {
 private:
     string text;
@@ -36,20 +39,22 @@ public:
     }
 };
 
-// Abstract Decorator: wraps a Notification object.
+// Abstract Decorator class for extending behavior
 class INotificationDecorator : public INotification {
 protected:
-    INotification* notification;
+    INotification* notification; // Wrapped component instance pointer
 public:
     INotificationDecorator(INotification* n) {
         notification = n;
     }
+    
+    // Destructor: cleans recursively allocated wrapped objects to prevent leaks
     virtual ~INotificationDecorator() {
         delete notification;
     }
 };
 
-// Decorator to add a timestamp to the content.
+// Concrete Decorator 1: prepends timestamp formatting strings
 class TimestampDecorator : public INotificationDecorator {
 public:
     TimestampDecorator(INotification* n) : INotificationDecorator(n) { }
@@ -59,7 +64,7 @@ public:
     }
 };
 
-// Decorator to append a signature to the content.
+// Concrete Decorator 2: appends signature metadata strings
 class SignatureDecorator : public INotificationDecorator {
 private:
     string signature;
@@ -72,18 +77,27 @@ public:
     }
 };
 
-/*============================
-  Observer Pattern Components
-=============================*/
+/*=============================================================================
+  [DESIGN PATTERN: Observer Pattern]
+  -----------------------------------------------------------------------------
+  Subscribers (Observers) update checks perform karte hain jab new state variables
+  publish hote hain Observable (Subject) pipeline me.
+  
+  *Refinement in Updated Version*: 
+  Concrete Observers (Logger, NotificationEngine) ab self-registration coordinate
+  karte hain. Apne default constructor me, yeh Singleton `NotificationService` se 
+  automatically observable fetch karke khud ko register kar lete hain. Client (main) 
+  ko manually `addObserver` call nahi karna padta.
+=============================================================================*/
 
-// Observer interface: each observer gets an update with a Notification pointer.
+// Observer interface
 class IObserver {
 public:
     virtual void update() = 0;
-
     virtual ~IObserver() {}
 };
 
+// Observable/Subject interface
 class IObservable {
 public:
     virtual void addObserver(IObserver* observer) = 0;
@@ -91,7 +105,7 @@ public:
     virtual void notifyObservers() = 0;
 };
 
-// Concrete Observable
+// Concrete Subject class managing observers and notifications
 class NotificationObservable :  public IObservable {
 private:
     vector<IObserver*> observers;
@@ -132,28 +146,26 @@ public:
     }
 
     ~NotificationObservable() {
-        if (currentNotification != NULL) {
+        if (currentNotification != nullptr) {
             delete currentNotification;
         }
     }
 };
 
-/*============================
-       NotificationService
-=============================*/
+/*=============================================================================
+  [DESIGN PATTERN: Singleton Pattern]
+  -----------------------------------------------------------------------------
+  `NotificationService` manager acts as a Singleton. Client is ke zariye 
+  incoming messages pipe me send karta hai.
+=============================================================================*/
 
-// The NotificationService manages notifications. It keeps track of notifications. 
-// Any client code will interact with this service.
-
-// Singleton class
 class NotificationService {
 private:
     NotificationObservable* observable;
     static NotificationService* instance;
-    vector<INotification*> notifications;
+    vector<INotification*> notifications; // Stores history database logs
 
     NotificationService() {
-        // private constructor
         observable = new NotificationObservable();
     }
 
@@ -165,12 +177,10 @@ public:
         return instance;
     }
 
-    // Expose the observable so observers can attach.
     NotificationObservable* getObservable() {
         return observable;
     }
 
-    // Creates a new Notification and notifies observers.
     void sendNotification(INotification* notification) {
         notifications.push_back(notification);
         observable->setNotification(notification);
@@ -183,88 +193,94 @@ public:
 
 NotificationService* NotificationService::instance = nullptr;
 
-/*============================
-       ConcreteObservers
-=============================*/
+/*=============================================================================
+  Concrete Observers (Logger, NotificationEngine)
+  Self-Registration behavior implemented in constructors.
+=============================================================================*/
+
 class Logger : public IObserver {
 private:
     NotificationObservable* notificationObservable;
 
 public:
+    // Default Constructor: Self-registration using Singleton service helper
     Logger() {
        this->notificationObservable = NotificationService::getInstance()->getObservable();
-       notificationObservable->addObserver(this);
+       notificationObservable->addObserver(this); // Self attachment step
     }
 
+    // Parametrized Constructor: Manual attachment option
     Logger(NotificationObservable* observable) {
         this->notificationObservable = observable;
         notificationObservable->addObserver(this);
     }
 
-    void update() {
+    void update() override {
         cout << "Logging New Notification : \n" << notificationObservable->getNotificationContent();
     }
 };
 
-/*============================
-  Strategy Pattern Components (Concrete Observer 2)
-=============================*/
+/*=============================================================================
+  [DESIGN PATTERN: Strategy Pattern]
+  -----------------------------------------------------------------------------
+  Different channels (SMS, Email, UI PopUp) are represented as interchangeable 
+  strategies wrapped inside the context coordinator NotificationEngine.
+=============================================================================*/
 
-// Abstract class for different Notification Strategies.
+// Strategy Interface
 class INotificationStrategy {
 public:    
     virtual void sendNotification(string content) = 0;
+    virtual ~INotificationStrategy() {}
 };
 
+// Concrete Strategy 1: Email channel
 class EmailStrategy : public INotificationStrategy {
 private:
     string emailId;
 public:
-
     EmailStrategy(string emailId) {
         this->emailId = emailId;
     }
 
     void sendNotification(string content) override {
-        // Simulate the process of sending an email notification, 
-        // representing the dispatch of messages to users via email.​
         cout << "Sending email Notification to: " << emailId << "\n" << content;
     }
 };
 
+// Concrete Strategy 2: SMS channel
 class SMSStrategy : public INotificationStrategy {
 private:
     string mobileNumber;
 public:
-
     SMSStrategy(string mobileNumber) {
         this->mobileNumber = mobileNumber;
     }
 
     void sendNotification(string content) override {
-        // Simulate the process of sending an SMS notification, 
-        // representing the dispatch of messages to users via SMS.​
         cout << "Sending SMS Notification to: " << mobileNumber << "\n" << content;
     }
 };
 
+// Concrete Strategy 3: Popup screen channel
 class PopUpStrategy : public INotificationStrategy {
 public:
     void sendNotification(string content) override {
-        // Simulate the process of sending popup notification.
         cout << "Sending Popup Notification: \n" << content;
     }
 };
 
+// Strategy Context & Observer implementation
 class NotificationEngine : public IObserver {
 private:
     NotificationObservable* notificationObservable;
     vector<INotificationStrategy*> notificationStrategies;
 
 public:
+    // Default Constructor: Self-registration setup
     NotificationEngine() {
         this->notificationObservable = NotificationService::getInstance()->getObservable();
-        notificationObservable->addObserver(this);
+        notificationObservable->addObserver(this); // Self registration
     }
 
     NotificationEngine(NotificationObservable* observable) {
@@ -275,9 +291,13 @@ public:
         this->notificationStrategies.push_back(ns);
     }
 
-    // Can have RemoveNotificationStrategy as well.
+    ~NotificationEngine() {
+        for (auto* strat : notificationStrategies) {
+            delete strat;
+        }
+    }
 
-    void update() {
+    void update() override {
         string notificationContent = notificationObservable->getNotificationContent();
         for(const auto notificationStrategy : notificationStrategies) {
             notificationStrategy->sendNotification(notificationContent);
@@ -285,28 +305,34 @@ public:
     }
 };
 
+// ----------------------------
+// Main Flow Driver
+// ----------------------------
 int main() {
-    // Create NotificationService.
+    // 1) Get Singleton Manager instance
     NotificationService* notificationService = NotificationService::getInstance();
    
-    // Create Logger Observer
+    // 2) Create Observers (They register themselves to observable in constructors!)
     Logger* logger = new Logger();
-
-    // Create NotificationEngine observers.
     NotificationEngine* notificationEngine = new NotificationEngine();
 
+    // 3) Setup strategies inside Engine context
     notificationEngine->addNotificationStrategy(new EmailStrategy("random.person@gmail.com"));
     notificationEngine->addNotificationStrategy(new SMSStrategy("+91 9876543210"));
     notificationEngine->addNotificationStrategy(new PopUpStrategy());
 
-    // Create a notification with decorators.
+    // 4) Construct and decorate message content
     INotification* notification = new SimpleNotification("Your order has been shipped!");
     notification = new TimestampDecorator(notification);
     notification = new SignatureDecorator(notification, "Customer Care");
     
+    // 5) Dispatch notification
     notificationService->sendNotification(notification);
 
+    // Clean-ups
     delete logger;
     delete notificationEngine;
+    delete NotificationService::getInstance();
+
     return 0;
 }

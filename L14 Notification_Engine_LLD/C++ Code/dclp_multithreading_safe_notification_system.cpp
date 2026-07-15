@@ -4,6 +4,7 @@
 //  Notification system ka thread-safe version: Singleton ko Double-Checked
 //  Locking (DCLP) + mutex se thread-safe banaya gaya hai, taaki multi-threaded
 //  environment me bhi ek hi NotificationService instance bane (race nahi).
+//  Is file me detailed comments (Hinglish + English mix) add kiye gaye hain.
 // ============================================================================
 #include <iostream>
 #include <vector>
@@ -15,10 +16,14 @@
 
 using namespace std;
 
-/*============================
-      Notification & Decorators
-=============================*/
+/*=============================================================================
+  [DESIGN PATTERN: Decorator Pattern]
+  -----------------------------------------------------------------------------
+  INotification interface base is formatted dynamically with timestamps and signature
+  details recursively during notification creation.
+=============================================================================*/
 
+// Interface for Notifications (Component)
 class INotification
 {
 public:
@@ -26,6 +31,7 @@ public:
     virtual ~INotification() {}
 };
 
+// Concrete Notification: raw message content (Concrete Component)
 class SimpleNotification : public INotification
 {
 private:
@@ -36,16 +42,20 @@ public:
     string getContent() const override { return text; }
 };
 
+// Abstract Decorator
 class INotificationDecorator : public INotification
 {
 protected:
-    INotification *notification;
+    INotification *notification; // Wrapped object pointer
 
 public:
     INotificationDecorator(INotification *n) { notification = n; }
+    
+    // Destructor: recursively cleans dynamic wrappers to avoid leaks
     virtual ~INotificationDecorator() { delete notification; }
 };
 
+// Concrete Decorator 1: prepends timestamp
 class TimestampDecorator : public INotificationDecorator
 {
 public:
@@ -56,6 +66,7 @@ public:
     }
 };
 
+// Concrete Decorator 2: appends signature
 class SignatureDecorator : public INotificationDecorator
 {
 private:
@@ -72,10 +83,13 @@ public:
     }
 };
 
-/*============================
-  Observer Interface
-=============================*/
+/*=============================================================================
+  [DESIGN PATTERN: Observer Pattern - Interfaces]
+  -----------------------------------------------------------------------------
+  Subject (IObservable) publishes notifications to all registered observers (IObserver).
+=============================================================================*/
 
+// Observer Interface (Subscriber)
 class IObserver
 {
 public:
@@ -83,6 +97,7 @@ public:
     virtual ~IObserver() {}
 };
 
+// Observable Interface (Publisher)
 class IObservable
 {
 public:
@@ -91,11 +106,14 @@ public:
     virtual void notifyObservers() = 0;
 };
 
-/*============================
-  Strategy Pattern Components
-  (Logger se PEHLE define karo)
-=============================*/
+/*=============================================================================
+  [DESIGN PATTERN: Strategy Pattern]
+  -----------------------------------------------------------------------------
+  Delivery channels (Email, SMS, PopUp) implement the INotificationStrategy interface,
+  decoupling dispatch transport mechanism logic from NotificationEngine.
+=============================================================================*/
 
+// Strategy Interface
 class INotificationStrategy
 {
 public:
@@ -104,6 +122,7 @@ public:
     virtual ~INotificationStrategy() {}
 };
 
+// Concrete Strategy 1: Email channel
 class EmailStrategy : public INotificationStrategy
 {
 private:
@@ -119,6 +138,7 @@ public:
     }
 };
 
+// Concrete Strategy 2: SMS channel
 class SMSStrategy : public INotificationStrategy
 {
 private:
@@ -134,6 +154,7 @@ public:
     }
 };
 
+// Concrete Strategy 3: Push PopUp channel
 class PopUpStrategy : public INotificationStrategy
 {
 public:
@@ -144,10 +165,9 @@ public:
     }
 };
 
-/*============================
-  Observable
-=============================*/
-
+/*=============================================================================
+  Observable (Subject implementation)
+=============================================================================*/
 class NotificationObservable : public IObservable
 {
 private:
@@ -183,23 +203,25 @@ public:
 
     ~NotificationObservable()
     {
-        if (currentNotification != NULL)
+        if (currentNotification != nullptr)
             delete currentNotification;
     }
 };
 
-/*============================
-  Logger (File + Console)
-  Strategy ke BAAD define karo
-=============================*/
-
+/*=============================================================================
+  Logger Observer (Concrete Observer 1)
+  -----------------------------------------------------------------------------
+  Logger prints notification events to standard console output and archives
+  them to a persistent file "logs.txt".
+=============================================================================*/
 class Logger : public IObserver
 {
 private:
     NotificationObservable *notificationObservable;
-    vector<INotificationStrategy *> *strategiesRef;
+    vector<INotificationStrategy *> *strategiesRef; // Strategy reference to retrieve target numbers/emails
     string logFilePath;
 
+    // Get current formatted calendar date/time string
     string getCurrentTime()
     {
         time_t now = time(nullptr);
@@ -208,6 +230,7 @@ private:
         return string(buf);
     }
 
+    // Write log entry lines to persistent local storage file
     void writeToFile(const string &entry)
     {
         ofstream logFile(logFilePath, ios::app);
@@ -232,6 +255,7 @@ public:
         this->logFilePath = filePath;
     }
 
+    // Observer callback updates handler
     void update() override
     {
         string content = notificationObservable->getNotificationContent();
@@ -243,6 +267,7 @@ public:
         logEntry += "Message  : " + content + "\n";
         logEntry += "Sent To  :\n";
 
+        // Query active strategies types inside Logger to print routing channels info
         for (auto *strategy : *strategiesRef)
         {
             if (auto *email = dynamic_cast<EmailStrategy *>(strategy))
@@ -256,21 +281,22 @@ public:
 
         cout << "[LOG] Notification send hui:\n"
              << logEntry;
-        writeToFile(logEntry);
+        writeToFile(logEntry); // Save log logs.txt
     }
 };
 
-/*============================
-  Notification Engine
-=============================*/
-
+/*=============================================================================
+  NotificationEngine (Concrete Observer 2)
+  -----------------------------------------------------------------------------
+  Engine context class delegates notifications dynamically over configured strategies.
+=============================================================================*/
 class NotificationEngine : public IObserver
 {
 private:
     NotificationObservable *notificationObservable;
 
 public:
-    vector<INotificationStrategy *> notificationStrategies;
+    vector<INotificationStrategy *> notificationStrategies; // Active list of strategies
 
     NotificationEngine(NotificationObservable *observable)
     {
@@ -282,38 +308,54 @@ public:
         this->notificationStrategies.push_back(ns);
     }
 
+    ~NotificationEngine() {
+        for (auto* strat : notificationStrategies) {
+            delete strat;
+        }
+    }
+
     void update() override
     {
         string notificationContent = notificationObservable->getNotificationContent();
+        // Invoke dynamic channels strategies
         for (const auto notificationStrategy : notificationStrategies)
             notificationStrategy->sendNotification(notificationContent);
     }
 };
 
-/*============================
-  NotificationService (DCLP Singleton)
-=============================*/
+/*=============================================================================
+  [DESIGN PATTERN: Singleton Pattern with Double-Checked Locking (DCLP)]
+  -----------------------------------------------------------------------------
+  Multithreaded execution me duplicate allocation blocks protect karne ke liye
+  `NotificationService` Double-Checked Locking strategy and std::mutex locks follow 
+  karti hai.
+  1) Lock free 1st check check speed perform karta hai.
+  2) Synchronization lock concurrent threads block secure rakhta hai.
+  3) lock ke andar 2nd check validation double verify karta hai.
+=============================================================================*/
 
 class NotificationService
 {
 private:
     NotificationObservable *observable;
     static NotificationService *instance;
-    static mutex mtx;
-    vector<INotification *> notifications;
+    static mutex mtx;                      // Thread locks controller mutex
+    vector<INotification *> notifications; // Ledger histories vector
 
     NotificationService() { observable = new NotificationObservable(); }
 
 public:
+    // Block assignments to maintain pure Singleton structure
     NotificationService(const NotificationService &) = delete;
     NotificationService &operator=(const NotificationService &) = delete;
 
+    // Double Checked Locking singleton access point
     static NotificationService *getInstance()
     {
-        if (instance == nullptr)
+        if (instance == nullptr) // 1st Check (Lock-free optimization)
         {
-            lock_guard<mutex> lock(mtx);
-            if (instance == nullptr)
+            lock_guard<mutex> lock(mtx); // Acquire Thread Lock
+            if (instance == nullptr) // 2nd Check (Security confirmation)
                 instance = new NotificationService();
         }
         return instance;
@@ -330,47 +372,51 @@ public:
     ~NotificationService() { delete observable; }
 };
 
+// Static pointer initializations
 NotificationService *NotificationService::instance = nullptr;
 mutex NotificationService::mtx;
 
-/*============================
-            main()
-=============================*/
-
+/*=============================================================================
+  Main driver thread simulator
+=============================================================================*/
 int main()
 {
+    // 1) Initialize Thread-Safe Singleton
     NotificationService *notificationService = NotificationService::getInstance();
     NotificationObservable *notificationObservable = notificationService->getObservable();
 
-    // Engine pehle banao (Logger ko strategies ka reference chahiye)
+    // 2) Configure Engine & Strategies
     NotificationEngine *notificationEngine = new NotificationEngine(notificationObservable);
     notificationEngine->addNotificationStrategy(new EmailStrategy("subhu04012003@gmail.com"));
     notificationEngine->addNotificationStrategy(new SMSStrategy("+91 8168447388"));
     notificationEngine->addNotificationStrategy(new PopUpStrategy());
 
-    // Logger ko strategies ka reference do
+    // 3) Create Logger and pass strategies reference for status outputs
     Logger *logger = new Logger(
         notificationObservable,
         &notificationEngine->notificationStrategies,
         "logs.txt");
 
-    // Pehle Logger, phir Engine
+    // 4) Attach Observers
     notificationObservable->addObserver(logger);
     notificationObservable->addObserver(notificationEngine);
 
-    // Notification 1
+    // 5) Send decorated message 1
     INotification *n1 = new SimpleNotification("Your order has been shipped!");
     n1 = new TimestampDecorator(n1);
     n1 = new SignatureDecorator(n1, "Customer Care");
     notificationService->sendNotification(n1);
 
-    // Notification 2
+    // 6) Send decorated message 2
     INotification *n2 = new SimpleNotification("Your payment of Rs. 499 was successful.");
     n2 = new TimestampDecorator(n2);
     n2 = new SignatureDecorator(n2, "Billing Team");
     notificationService->sendNotification(n2);
 
+    // Dynamic memory cleanup
     delete logger;
     delete notificationEngine;
+    delete NotificationService::getInstance();
+
     return 0;
 }

@@ -9,22 +9,26 @@
 #include <vector>
 #include <string>
 #include <fstream>
-#include <memory> // Smart pointers ke liye
+#include <memory> // Smart pointers (std::unique_ptr, std::shared_ptr) utility library file headers.
 
 using namespace std;
 
-// 1. Abstraction for document elements
+// ============================================================================
+// 1. POLYMORPHIC COMPONENT HIERARCHY (Open-Closed Principle - OCP)
+// ============================================================================
+
+// DocumentElement: Base interface abstract class define.
 class DocumentElement
 {
 public:
     virtual string render() = 0;
     virtual ~DocumentElement()
     {
-        // cout << "Element Deleted" << endl; // Debugging ke liye
+        // Smart pointer automatic destructions triggers verification hooks logs can be placed here.
     }
 };
 
-// 2. Concrete Implementations
+// TextElement: Plain text content elements configuration class.
 class TextElement : public DocumentElement
 {
 private:
@@ -32,9 +36,12 @@ private:
 
 public:
     TextElement(string t) : text(t) {}
-    string render() override { return text; }
+    string render() override { 
+      return text; 
+    }
 };
 
+// BoldTextElement: Markdown bold markup formatting layout representations.
 class BoldTextElement : public DocumentElement
 {
 private:
@@ -42,9 +49,12 @@ private:
 
 public:
     BoldTextElement(string t) : text(t) {}
-    string render() override { return "**" + text + "**"; }
+    string render() override { 
+      return "**" + text + "**"; 
+    }
 };
 
+// ImageElement: Image dynamic path mapping container.
 class ImageElement : public DocumentElement
 {
 private:
@@ -52,35 +62,50 @@ private:
 
 public:
     ImageElement(string path) : imagePath(path) {}
-    string render() override { return "[Image: " + imagePath + "]"; }
+    string render() override { 
+      return "[Image: " + imagePath + "]"; 
+    }
 };
 
+// NewLineElement: Line break formatting controller class.
 class NewLineElement : public DocumentElement
 {
 public:
-    string render() override { return "\n"; }
+    string render() override { 
+      return "\n"; 
+    }
 };
 
+// TabSpaceElement: Gaps layout spaces selector.
 class TabSpaceElement : public DocumentElement
 {
 public:
-    string render() override { return "\t"; }
+    string render() override { 
+      return "\t"; 
+    }
 };
 
-// 3. Document Class (Container)
+// ============================================================================
+// 2. DOCUMENT CONTAINER (Aggregator using modern std::unique_ptr vectors)
+// ============================================================================
+
+// Document: Container class maintaining elements sequences.
 class Document
 {
 private:
-    // Raw pointer vector ki jagah unique_ptr ka vector
+    // Raw pointers array vectors bypass. std::unique_ptr ensures single-ownership model safety.
+    // Vector destroy hone par, saare element structures automatically clean ho jate hain heap memory se.
     vector<unique_ptr<DocumentElement>> documentElements;
 
 public:
+    // addElement: Moves ownership to internal vector dataset dynamically.
     void addElement(unique_ptr<DocumentElement> element)
     {
-        // unique_ptr ko std::move karna padta hai vector mein
+        // unique_ptr values are non-copyable, isliye ownership transfer ke liye std::move mandatory check hai.
         documentElements.push_back(std::move(element));
     }
 
+    // render: Iterates loops elements, invoking respective polymorphic render overrides.
     string render()
     {
         string result;
@@ -91,11 +116,15 @@ public:
         return result;
     }
 
-    // Yahan koi DESTRUCTOR (~Document) likhne ki zaroorat nahi hai!
-    // Vector delete hote hi saare unique_ptr apne aap saaf ho jayenge.
+    // Yahan kisi manual destructor cleaner loop (~Document) ki jarurat nahi padegi.
+    // unique_ptr container scope exit triggers automatically delete dynamic objects allocations.
 };
 
-// 4. Persistence Abstraction
+// ============================================================================
+// 3. STRATEGY DESIGN PATTERN (Document Storage Persistence Systems)
+// ============================================================================
+
+// Persistence: Strategy Base interface targets class defining operations contracts.
 class Persistence
 {
 public:
@@ -103,6 +132,7 @@ public:
     virtual ~Persistence() {}
 };
 
+// FileStorage: Persistence Strategy concrete implementation. Saves document formatted strings in local txt file.
 class FileStorage : public Persistence
 {
 public:
@@ -118,6 +148,7 @@ public:
     }
 };
 
+// DBStorage: Persistence Strategy concrete database implementation.
 class DBStorage : public Persistence
 {
 public:
@@ -127,23 +158,26 @@ public:
     }
 };
 
-// 5. Document Editor
+// ============================================================================
+// 4. EDITOR CONTROLLER CONTEXT (Strategy Context Controller)
+// ============================================================================
+
+// DocumentEditor: Aggregator context executing actions on Document.
 class DocumentEditor
 {
 private:
-    // Shared_ptr ya Raw pointer yahan behtar hai kyunki Editor
-    // zaroori nahi ki Document ka 'Malik' ho, wo bas use 'Edit' kar raha hai.
-    // Par yahan simplicity ke liye hum unique_ptr ownership handle kar rahe hain.
-    Document *document;
-    unique_ptr<Persistence> storage;
+    Document *document;              // Weak association reference pointer.
+    unique_ptr<Persistence> storage; // Strategy pointer wrapped under unique_ptr context controls.
 
 public:
+    // Constructor: Injects Document dependency and transfers Persistence Strategy unique pointer ownership.
     DocumentEditor(Document *doc, unique_ptr<Persistence> s)
     {
         this->document = doc;
         this->storage = std::move(s);
     }
 
+    // make_unique wrapper methods ensure optimal exception safe heap memory allocations setup patterns.
     void addText(string text)
     {
         document->addElement(make_unique<TextElement>(text));
@@ -169,28 +203,33 @@ public:
         document->addElement(make_unique<TabSpaceElement>());
     }
 
-    // Storage badalne ke liye setter
+    // setStorage: Strategy runtime swapping helper method.
+    // Naya storage persistence algorithm runtime par inject karne ke liye parameter utility function.
     void setStorage(unique_ptr<Persistence> newStorage)
     {
         this->storage = std::move(newStorage);
     }
 
+    // saveDocument: Strategy executor callback method.
     void saveDocument()
     {
         storage->save(document->render());
     }
 };
 
-// 6. Main Function
+// ============================================================================
+// 5. CLIENT DRIVER ENTRY POINT
+// ============================================================================
 int main()
 {
-    // make_unique se memory allocate karein
+    // make_unique allocations automatically handles deallocations tasks.
     auto myDocument = make_unique<Document>();
 
-    // Editor banayein (FileStorage ke saath)
+    // PEHLE Persistence strategy object setup (File Storage selection initialization)
     auto fileStore = make_unique<FileStorage>();
     DocumentEditor editor(myDocument.get(), std::move(fileStore));
 
+    // Element addition calls mapping triggers.
     editor.addText("Hello C++!");
     editor.addNewLine();
     editor.addBoldText("Smart Pointers are great.");
@@ -200,11 +239,12 @@ int main()
     cout << "--- Attempting File Save ---" << endl;
     editor.saveDocument();
 
-    // Ab DB mein switch karte hain
+    // DUSRA Runtime strategy swapping check (Switch to Database saving)
     cout << "\n--- Switching to DB and Saving ---" << endl;
-    editor.setStorage(make_unique<DBStorage>());
+    editor.setStorage(make_unique<DBStorage>()); // Swaps old strategy dynamic allocations pointer automatically.
     editor.saveDocument();
 
     return 0;
-    // Sab kuch AUTOMATICALLY delete ho jayega!
+    // Yaha kisi manual delete operation keys call ki jarurat nahi padegi.
+    // RAII principles based compiler triggers automatically safely destroys allocations.
 }

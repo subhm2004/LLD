@@ -15,20 +15,30 @@
 
 using namespace std;
 
-// Abstraction for document elements
+// ============================================================================
+// 1. POLYMORPHIC COMPONENT HIERARCHY (Open-Closed Principle - OCP)
+// ============================================================================
+// BadDesign me elements ko direct list of strings me save kiya jata thha aur
+// rendering ke time lambi string checking loops chalani padti thi.
+// GoodDesign me humne har document element type ko ek alag subclass me 
+// encapsulate kiya hai jo render() custom string returns handle karti hain.
+
+// DocumentElement: Sabhi document components (Text, Image, spaces) ke liye base interface class.
 class DocumentElement
 {
 public:
+    // render(): Pure virtual function jo string format me formatted element output return karta hai.
     virtual string render() = 0;
 
+    // Virtual destructor memory dynamic deallocations safely check karne ke liye.
     virtual ~DocumentElement() {}
 };
 
-// Concrete implementation for text elements
+// TextElement: Standard Plain text component content storage subclass.
 class TextElement : public DocumentElement
 {
 private:
-    string text;
+    string text; // User input text body character.
 
 public:
     TextElement(string text)
@@ -36,17 +46,18 @@ public:
         this->text = text;
     }
 
+    // render() overrides base class method to directly return plain text.
     string render() override
     {
         return text;
     }
 };
 
-// Concrete implementation for image elements
+// ImageElement: Rich component image paths references details wrap karne ke liye.
 class ImageElement : public DocumentElement
 {
 private:
-    string imagePath;
+    string imagePath; // Image storage location paths checks.
 
 public:
     ImageElement(string imagePath)
@@ -54,13 +65,14 @@ public:
         this->imagePath = imagePath;
     }
 
+    // render() overrides to format path inside standard tags.
     string render() override
     {
         return "[Image: " + imagePath + "]";
     }
 };
 
-// NewLineElement represents a line break in the document.
+// NewLineElement: Document formatting ke line breaks coordinates setup checking class.
 class NewLineElement : public DocumentElement
 {
 public:
@@ -70,7 +82,7 @@ public:
     }
 };
 
-// TabSpaceElement represents a tab space in the document.
+// TabSpaceElement: Text block gaps alignment formatting system.
 class TabSpaceElement : public DocumentElement
 {
 public:
@@ -79,7 +91,10 @@ public:
         return "\t";
     }
 };
-// --- NAYA FEATURE: Bold Text Element ---
+
+// BoldTextElement: Markdown bold markup formatting layout representations.
+// OCP Proof: Purani existing code structures ko bina touch/alter kiye humne 
+// new elements support system easily add kiya hai standard inheritance subclassing ke through.
 class BoldTextElement : public DocumentElement
 {
 private:
@@ -92,36 +107,49 @@ public:
     }
     string render() override
     {
-        // Markdown style bold
-        return "**" + text + "**";
+        return "**" + text + "**"; // Markdown syntax bold string wrapper details.
     }
 };
 
-// Document class responsible for holding a collection of elements
+// ============================================================================
+// 2. DOCUMENT CONTAINER (Aggregator Class)
+// ============================================================================
+
+// Document: Container class jo multiple dynamic elements list coordinate trace store karti hai.
 class Document
 {
 private:
+    // Pointers list standard dynamic vector arrays.
     vector<DocumentElement *> documentElements;
 
 public:
+    // addElement: Add custom elements to standard sequence list.
     void addElement(DocumentElement *element)
     {
         documentElements.push_back(element);
     }
 
-    // Renders the document by concatenating the render output of all elements.
+    // render(): Composite evaluation traversal loops trace.
+    // Sabhi internal elements loop structure me pass hokar dynamic text join coordinates evaluate karte hain.
     string render()
     {
         string result;
         for (auto element : documentElements)
         {
-            result += element->render();
+            result += element->render(); // Polymorphic method call parameters checks.
         }
         return result;
     }
 };
 
-// Persistence abstraction
+// ============================================================================
+// 3. STRATEGY DESIGN PATTERN (Document Storage Persistence Systems)
+// ============================================================================
+// Game or Editor documents dynamic saving location paths structures (File saving, DB, cloud updates) 
+// runtime switchable interfaces properties me isolate hone chahiye. 
+// Persistence base Strategy interface concrete implementations coordinates handle karta hai.
+
+// Persistence: Strategy Base interface class define for saving targets.
 class Persistence
 {
 public:
@@ -130,7 +158,8 @@ public:
     virtual ~Persistence() {}
 };
 
-// FileStorage implementation of Persistence
+// FileStorage: Persistence Strategy concrete implementation. 
+// Standard Document string parameters file targets me dump coordinates trace updates.
 class FileStorage : public Persistence
 {
 public:
@@ -150,26 +179,31 @@ public:
     }
 };
 
-// Placeholder DBStorage implementation
+// DBStorage: Persistence Strategy concrete implementation to save content in DB datasets.
 class DBStorage : public Persistence
 {
 public:
     void save(string data) override
     {
-        // Save to DB
+        // Database queries execute updates placeholders logic.
         cout << "Document saved to DB" << endl;
     }
 };
 
-// DocumentEditor class managing client interactions
+// ============================================================================
+// 4. EDITOR CONTROLLER CONTEXT (Facade Interface Wrapper)
+// ============================================================================
+
+// DocumentEditor: Context Class jo Document elements insertions aur strategies coordinate controls manage karti hai.
 class DocumentEditor
 {
 private:
-    Document *document;
-    Persistence *storage;
-    string renderedDocument;
+    Document *document;       // Aggregation document pointer reference details.
+    Persistence *storage;     // Active storage execution strategy interface pointer reference.
+    string renderedDocument;  // Cached copy of rendered data to optimize multiple saves calculations.
 
 public:
+  // Constructor: Inject document object dependencies aur storage mechanisms pointers strategies.
     DocumentEditor(Document *document, Persistence *storage)
     {
         this->document = document;
@@ -186,23 +220,22 @@ public:
         document->addElement(new ImageElement(imagePath));
     }
 
-    // Adds a new line to the document.
     void addNewLine()
     {
         document->addElement(new NewLineElement());
     }
 
-    // Adds a tab space to the document.
     void addTabSpace()
     {
         document->addElement(new TabSpaceElement());
     }
-    // --- NAYA FEATURE: Bold Text Element ---
+
     void addBoldText(string text)
     {
         document->addElement(new BoldTextElement(text));
     }
 
+    // renderDocument: Evaluates total document content representation string mappings.
     string renderDocument()
     {
         if (renderedDocument.empty())
@@ -212,23 +245,26 @@ public:
         return renderedDocument;
     }
 
+    // saveDocument: Strategy executor callback method. Directly triggers injected persistence strategies.
     void saveDocument()
     {
         storage->save(renderDocument());
     }
 };
 
-// Client usage example
+// ============================================================================
+// 5. CLIENT DRIVER ENTRY POINT
+// ============================================================================
 int main()
 {
-    // 1. Basic Setup
+    // 1. Core Document creation layout memory.
     Document *document = new Document();
 
-    // 2. Pehle File Storage use karte hain
+    // 2. Select FileStorage strategy on start.
     Persistence *filePersistence = new FileStorage();
     DocumentEditor *editor = new DocumentEditor(document, filePersistence);
 
-    // Document content add karna
+    // Dynamic inputs setup structures coordinates updates.
     editor->addText("Hello, world!");
     editor->addNewLine();
     editor->addBoldText("This is a bold text.");
@@ -236,19 +272,19 @@ int main()
     editor->addTabSpace();
     editor->addImage("picture.jpg");
 
-    // File mein save karein
+    // Saves document coordinates file strategy targets logic checks.
     cout << "--- File Save Attempt (check document.txt) ---" << endl;
     editor->saveDocument();
 
-    // 3. Ab DB Storage use karte hain
-    // Hum ek naya editor bana rahe hain jo same document use karega par storage DB wala
+    // 3. Dynamic Strategy Swapping checks.
+    // Hum runtime par different storage model pass karke database saving execution trigger karte hain.
     Persistence *dbPersistence = new DBStorage();
     DocumentEditor *dbEditor = new DocumentEditor(document, dbPersistence);
 
     cout << "\n--- DB Save Attempt ---" << endl;
-    dbEditor->saveDocument(); // Yeh "Document saved to DB" print karega
+    dbEditor->saveDocument(); // Triggers "Document saved to DB" message print.
 
-    // Cleanup
+    // 4. Memory dynamic allocations deallocations sweeps to avoid leak hazards.
     delete editor;
     delete dbEditor;
     delete filePersistence;

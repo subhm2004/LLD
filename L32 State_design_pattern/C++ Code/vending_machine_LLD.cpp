@@ -1,5 +1,5 @@
 // ============================================================================
-//  StatePattern.cpp  —  STATE DESIGN PATTERN (Behavioral)
+//  vending_machine_LLD.cpp  —  STATE DESIGN PATTERN (Behavioral)
 // ----------------------------------------------------------------------------
 //  State = "object ka BEHAVIOR uske ANDAR ke state ke hisaab se badal jaata hai,
 //           aur bahar se aisa lagta hai jaise object ne apni CLASS hi badal li ho."

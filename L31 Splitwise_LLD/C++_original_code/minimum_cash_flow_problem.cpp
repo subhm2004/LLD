@@ -46,10 +46,16 @@
                      // aur creditors/debtors ki list store karni hai
 #include <map>       // map<key, value> ordered key-value store ke liye —
                      // groupBalances aur netAmount store karne ke liye use hoga
+#include <string>    // string ke liye — Transaction ke from/to naam store karne
+                     // me use hota hai. (Pehle ye missing tha! Code sirf isliye
+                     // chal raha tha kyunki <iostream>/<map> andar-hi-andar
+                     // <string> ko kheench laate hain. Ye "transitive include"
+                     // pe bharosa karna galat hai — compiler/version badla to
+                     // build toot sakti hai. Jo use karo, wo KHUD include karo.)
 #include <algorithm> // sort(), min() jaise ready-made algorithms ke liye
 #include <iomanip>   // setprecision(), fixed — output ko 2 decimal places
                      // (currency format) me print karne ke liye
-#include <cmath>     // round() function ke liye — floating point rounding
+#include <cmath>     // round(), fabs() ke liye — floating point rounding
 
 using namespace std; // baar baar std:: likhne se bachne ke liye
 
@@ -96,82 +102,89 @@ struct Transaction
 // ---------------------------------------------------------------------------
 class DebtSimplifier
 {
-public:
+private:
     // -----------------------------------------------------------------------
-    // Main function: simplifyDebts
+    // HELPER: Har user ka NET AMOUNT nikalna (STEP 1 ka kaam)
     // -----------------------------------------------------------------------
-    // Input : groupBalances -> raw balance sheet (multiple entries per user)
-    //         (reference se pass kiya hai "&" ke through, taaki poora map
-    //         copy na ho — bade group me ye copy costly ho sakti hai)
-    // Output: vector<Transaction> -> minimum transactions ki list jo saare
-    //         debts ko settle kar degi
+    // netAmount[X] > 0  => X ko total milakar itna paisa MILNA hai (creditor)
+    // netAmount[X] < 0  => X ko total milakar itna paisa DENA hai  (debtor)
+    //
+    // ⭐ Ye function alag kyu banaya? (Ye ek asli FIX hai)
+    //    Pehle yehi net-calculation ka logic DO jagah copy-paste tha —
+    //    `simplifyDebts()` me bhi aur `printNetBalances()` me bhi. Ye ek
+    //    classic maintainability bug hai: kal ko net nikalne ka rule badla
+    //    (jaise negative entries ko handle karna), to DONO jagah badalna
+    //    padta — aur ek jagah bhool gaye to print kuch aur dikhata aur
+    //    algorithm kuch aur karta. Aisa bug pakadna bahut mushkil hota hai.
+    //    Ab logic EK jagah hai; dono function isi ko bulate hain. (DRY —
+    //    "Don't Repeat Yourself")
+    //
+    // `const &` isliye: hum groupBalances ko sirf PADH rahe hain, badal nahi
+    // rahe. Const lagane se do fayde — (1) compiler galti se modify karne se
+    // rok dega, (2) caller const map ya temporary bhi pass kar sakta hai.
     // -----------------------------------------------------------------------
-    static vector<Transaction> simplifyDebts(
-        map<string, map<string, double>> &groupBalances)
+    static map<string, double> calculateNetAmounts(
+        const map<string, map<string, double>> &groupBalances)
     {
-
-        // ---------------------------------------------------------------
-        // STEP 1: Har user ka NET AMOUNT nikalna
-        // ---------------------------------------------------------------
-        // netAmount[X] > 0  => X ko total milakar itna paisa milna hai
-        // netAmount[X] < 0  => X ko total milakar itna paisa dena hai
-        //
-        // Hum ek naya map bana rahe hain jisme key hai person ka naam,
-        // aur value hai uska "net" balance (saare transactions ka jodh-ghata
-        // karke jo final number bachta hai).
         map<string, double> netAmount;
 
         // -----------------------------------------------------------------
         // Pehle sabhi known users ko 0 se initialize kar dete hain,
         // taaki koi bhi user missed na ho (even if unka net exactly 0 ho).
         //
-        // Yeh isliye zaroori hai kyunki agar hum directly "STEP ka doosra
-        // loop" chala de, aur kisi bande ka balance coincidentally +100
-        // aur -100 ho ke net 0 ban jaye, to bhi humein us bande ka entry
-        // netAmount map me chahiye (taaki agar zaroorat pade to pata chale
-        // ki wo "settled" hai, "missing" nahi).
+        // Yeh isliye zaroori hai kyunki agar kisi bande ka balance
+        // coincidentally +100 aur -100 ho ke net 0 ban jaye, to bhi humein
+        // us bande ka entry netAmount map me chahiye (taaki pata chale ki
+        // wo "settled" hai, "missing" nahi) — printNetBalances usko "0.00
+        // (settled)" dikhata hai.
         // -----------------------------------------------------------------
-        for (auto &entry : groupBalances)
+        for (const auto &entry : groupBalances)
         {
             // entry.first  -> outer map ki key, matlab ek "creditor-ID"
             // entry.second -> ek inner map<string,double>, jisme uske
             //                 saare debtors aur unke amounts listed hain
-            netAmount[entry.first] += 0; // ensures key exists
-                                         // (map me agar key already nahi
-                                         // hai, to ye automatically 0.0
-                                         // value ke saath create ho jayegi)
+            //
+            // map me `[]` lagate hi, agar key nahi hai to wo apne aap 0.0
+            // ke saath ban jaati hai. Bas isi "side effect" ka fayda utha
+            // rahe hain — key ko exist karwa rahe hain.
+            // (Pehle yahan `netAmount[...] += 0;` likha tha — `+= 0` bekaar
+            //  tha, kyunki `[]` khud hi 0 se entry bana deta hai.)
+            netAmount[entry.first];
 
-            for (auto &inner : entry.second)
+            for (const auto &inner : entry.second)
             {
-                // inner.first  -> is creditor ka ek debtor ka naam
-                // inner.second -> us debtor par kitna amount due hai
-                netAmount[inner.first] += 0; // ensures key exists
+                // inner.first -> is creditor ka ek debtor ka naam
+                netAmount[inner.first];
             }
         }
 
         // -----------------------------------------------------------------
         // Ab actual net calculate karte hain.
         // groupBalances[A][B] = amount  =>  B owes A "amount"
-        // Iska matlab: A ka net badhega (+amount), B ka net ghategga (-amount)
+        // Iska matlab: A ka net badhega (+amount), B ka net ghatega (-amount)
         // -----------------------------------------------------------------
-        for (auto &entry : groupBalances)
+        for (const auto &entry : groupBalances)
         {
-            string creditorId = entry.first; // outer key = jisko paisa milna hai
+            const string &creditorId = entry.first; // outer key = jisko paisa milna hai
 
-            for (auto &inner : entry.second)
+            for (const auto &inner : entry.second)
             {
-                string debtorId = inner.first; // inner key = jisko paisa dena hai
-                double amount = inner.second;  // kitna amount
+                const string &debtorId = inner.first; // inner key = jisko paisa dena hai
+                double amount = inner.second;         // kitna amount
 
                 // -------------------------------------------------------
                 // Sirf positive amounts hi count karenge, taaki
                 // double-counting na ho (kyunki balances[A][B] aur
                 // balances[B][A] dono ho sakte hain, ek positive ek negative)
                 //
-                // Yani agar kisi galti se balances[A][B] = -50 jaisi negative
-                // entry aa jaye, to us se skip kar denge — kyunki wo already
-                // balances[B][A] = 50 ke roop me kahi represent ho chuki
-                // hogi (ya honi chahiye). Ye ek safety check hai.
+                // Yani agar balances[A][B] = -50 jaisi negative entry aati
+                // hai, to use skip kar denge — kyunki wo already
+                // balances[B][A] = +50 ke roop me represent honi chahiye.
+                //
+                // ⚠ Dhyaan: ye ek ASSUMPTION hai, guarantee nahi. Agar koi
+                // SIRF negative form likhe (aur mirror na banaye), to wo
+                // debt chup-chaap gayab ho jaayegi. Input dete waqt hamesha
+                // positive form use karo: balances[creditor][debtor] = amount.
                 // -------------------------------------------------------
                 if (amount > 0)
                 {
@@ -180,6 +193,45 @@ public:
                 }
             }
         }
+
+        return netAmount;
+    }
+
+public:
+    // EPSILON ek chhota sa threshold value hai. Floating point numbers
+    // (double) me precision ki dikkat hoti hai — jaise 0.1 + 0.2 exactly
+    // 0.3 nahi hota, balki 0.30000000000000004 jaisa kuch hota hai.
+    // Isliye hum "net == 0" check karne ke bajaye "abs(net) < EPSILON"
+    // check karte hain, taaki chhoti-moti rounding errors ki wajah se
+    // koi settled person galti se creditor/debtor list me na chala jaye.
+    //
+    // ⭐ Ye class-level constant kyu? (Ek aur asli FIX)
+    //    Pehle `EPSILON` sirf simplifyDebts() ke andar local tha, aur
+    //    printNetBalances() me hardcoded `0.01` likha tha. Yaani ek hi
+    //    "settled kya hota hai" ka rule DO jagah alag-alag likha tha! Kal
+    //    koi EPSILON badal deta (jaise 0.001), to algorithm kuch aur maanta
+    //    aur print kuch aur dikhata — dono me chup-chaap mismatch. Ab ek hi
+    //    jagah se dono chalte hain.
+    //    (`static constexpr` -> compile-time constant, poori class ke liye ek.)
+    static constexpr double EPSILON = 0.01;
+
+    // -----------------------------------------------------------------------
+    // Main function: simplifyDebts
+    // -----------------------------------------------------------------------
+    // Input : groupBalances -> raw balance sheet (multiple entries per user)
+    //         (`const &` se pass kiya hai — poora map copy nahi hota, aur
+    //          hum ise badal bhi nahi sakte. Bade group me copy costly hoti.)
+    // Output: vector<Transaction> -> minimum transactions ki list jo saare
+    //         debts ko settle kar degi
+    // -----------------------------------------------------------------------
+    static vector<Transaction> simplifyDebts(
+        const map<string, map<string, double>> &groupBalances)
+    {
+        // ---------------------------------------------------------------
+        // STEP 1: Har user ka NET AMOUNT nikalna
+        // ---------------------------------------------------------------
+        // Poora logic ab helper me hai (upar dekho) — yahan bas ek call.
+        map<string, double> netAmount = calculateNetAmounts(groupBalances);
 
         // ---------------------------------------------------------------
         // STEP 2: Creditors aur Debtors ko alag-alag list me daalna
@@ -192,16 +244,10 @@ public:
         vector<pair<string, double>> creditors;
         vector<pair<string, double>> debtors;
 
-        // EPSILON ek chhota sa threshold value hai. Floating point numbers
-        // (double) me precision ki dikkat hoti hai — jaise 0.1 + 0.2 exactly
-        // 0.3 nahi hota, balki 0.30000000000000004 jaisa kuch hota hai.
-        // Isliye hum "net == 0" check karne ke bajaye "abs(net) < EPSILON"
-        // check karte hain, taaki chhoti-moti rounding errors ki wajah se
-        // koi settled person galti se creditor/debtor list me na chala jaye.
-        const double EPSILON = 0.01; // floating point precision error handle
-                                     // karne ke liye threshold
+        // (EPSILON ab class-level constant hai — upar dekho. Pehle wo yahan
+        //  local tha aur printNetBalances me alag se hardcoded 0.01 tha.)
 
-        for (auto &entry : netAmount)
+        for (const auto &entry : netAmount)
         {
             if (entry.second > EPSILON)
             {
@@ -270,13 +316,25 @@ public:
         // liye, overall O(n log n) sorting ki wajah se).
         // ---------------------------------------------------------------
         vector<Transaction> result; // final answer yaha store hoga
-        int i = 0, j = 0;           // creditors aur debtors ke liye pointers
+
+        // `size_t` use kiya (pehle `int` tha aur har compare pe `(int)` cast
+        // lagana padta tha). `.size()` khud size_t deta hai, to same type
+        // rakhne se cast ki zaroorat hi nahi aur signed/unsigned compare ka
+        // warning bhi nahi aata.
+        size_t i = 0, j = 0; // creditors aur debtors ke liye pointers
 
         // Loop tab tak chalega jab tak dono list me kuch bacha hai.
         // (Agar ek list khatam ho gayi, matlab baaki sab settled hai —
         // kyunki total creditors ka sum == total debtors ka sum hamesha
         // hota hai, ye ek mathematical guarantee hai is problem ki)
-        while (i < (int)creditors.size() && j < (int)debtors.size())
+        //
+        // 💡 Loop HAMESHA khatam hota hai (infinite loop nahi ho sakta) —
+        // kyunki dono list me sirf wahi log hain jinka amount > EPSILON hai,
+        // to har round me `settleAmount` kam se kam 0.01 hota hai, aur wo
+        // dono balances me se ghata jaata hai. Balances girte-girte EPSILON
+        // se neeche aayenge, aur pointer aage badh jaayega. Har iteration
+        // progress karti hai.
+        while (i < creditors.size() && j < debtors.size())
         {
             string creditorId = creditors[i].first;      // current creditor ka naam
             string debtorId = debtors[j].first;          // current debtor ka naam
@@ -349,44 +407,27 @@ public:
     // hum apne haath se calculation verify kar sakte hain ki algorithm
     // sahi kaam kar raha hai ya nahi.
     // -----------------------------------------------------------------------
-    static void printNetBalances(map<string, map<string, double>> &groupBalances)
+    static void printNetBalances(const map<string, map<string, double>> &groupBalances)
     {
-        // Yaha bhi wahi net-calculation logic repeat ho rahi hai jo
-        // simplifyDebts() ke STEP 1 me thi — bas is baar hum result ko
-        // return nahi kar rahe, seedha print kar rahe hain.
-        map<string, double> netAmount;
-
-        // Sabhi users ko pehle 0 se initialize karo (koi miss na ho)
-        for (auto &entry : groupBalances)
-        {
-            netAmount[entry.first] += 0;
-            for (auto &inner : entry.second)
-                netAmount[inner.first] += 0;
-        }
-
-        // Ab actual net nikalo
-        for (auto &entry : groupBalances)
-        {
-            for (auto &inner : entry.second)
-            {
-                if (inner.second > 0)
-                {
-                    netAmount[entry.first] += inner.second;
-                    netAmount[inner.first] -= inner.second;
-                }
-            }
-        }
+        // ⭐ Pehle yahan simplifyDebts() wala poora net-calculation logic
+        // DOBARA copy-paste tha (~20 line). Ab wahi shared helper bulate hain.
+        // Isse guarantee ho gaya ki jo net ye PRINT karta hai, bilkul wahi net
+        // algorithm bhi USE karta hai — dono kabhi alag nahi ho sakte.
+        map<string, double> netAmount = calculateNetAmounts(groupBalances);
 
         // Ab sundar tarike se print karte hain
         cout << "\n--------------- Net Balances ---------------" << endl;
-        for (auto &entry : netAmount)
+        for (const auto &entry : netAmount)
         {
             cout << entry.first << " : ";
 
-            if (entry.second > 0.01)
+            // ⭐ Ab wahi EPSILON use ho raha hai jo algorithm use karta hai
+            // (pehle yahan hardcoded `0.01` likha tha — agar EPSILON badalta
+            //  to print aur algorithm alag-alag baat karte).
+            if (entry.second > EPSILON)
                 // Positive net -> isko paisa milna hai
                 cout << "+" << fixed << setprecision(2) << entry.second << "  (paisa milna hai)";
-            else if (entry.second < -0.01)
+            else if (entry.second < -EPSILON)
                 // Negative net -> isko paisa dena hai
                 // (yaha "fixed" ki wajah se negative sign apne aap
                 // number ke saath print ho jayega, jaise -230.00)

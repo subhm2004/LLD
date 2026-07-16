@@ -1,3 +1,2 @@
-Hello, world!
-**This is a bold text.**
-	[Image: picture.jpg]
+Hello C++!
+**Smart Pointers are great.**	[Image: tech.png]

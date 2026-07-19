@@ -1,5 +1,11 @@
-// models/Message.h — Ek chat message: sender, text, timestamp. ChatRoom inhi ki
-// list rakhta hai.
+// ============================================================================
+//  models/Message.h — Ek chat message (sender + text + timestamp + read flag)
+// ----------------------------------------------------------------------------
+//  Chat ka basic unit. read_ flag hi Tinder/WhatsApp ka "read receipt"
+//  (blue tick) feature deta — markRead() se true hota. ChatRoom messages
+//  ki list rakhta. timestamp_ auto-set (time(nullptr)) message banne par.
+//  Simple data holder with getters + markRead().
+// ============================================================================
 #ifndef TINDER_LLD_MODELS_MESSAGE_H
 #define TINDER_LLD_MODELS_MESSAGE_H
 

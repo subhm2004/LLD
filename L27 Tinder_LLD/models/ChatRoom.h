@@ -1,5 +1,16 @@
-// models/ChatRoom.h — Match hone ke baad do users ke beech chat: messages ki
-// list + send/read. Sirf matched users ke beech banta hai.
+// ============================================================================
+//  models/ChatRoom.h — Matched users ke beech ka chat (messages + read)
+// ----------------------------------------------------------------------------
+//  MATCH hone ke BAAD hi banta hai (mutual like) — sirf matched users chat
+//  kar sakte. Do users (userA, userB) + messages ki list.
+//
+//  ⭐ markMessagesReadFor(readerId) ka smart logic: reader ne jo messages
+//  bheje wo NAHI, balki DUSRE ne bheje messages ko read mark karta hai
+//  (`if senderId != readerId`). Kyunki apne bheje message to already
+//  "read" hote (tumne likha hai!) — read receipt to SAAMNE wale ke message
+//  pe lagti hai. Bilkul WhatsApp jaisa (tumhare bheje pe blue tick tab jab
+//  saamne wala padhe, tumhare padhne se nahi).
+// ============================================================================
 #ifndef TINDER_LLD_MODELS_CHATROOM_H
 #define TINDER_LLD_MODELS_CHATROOM_H
 

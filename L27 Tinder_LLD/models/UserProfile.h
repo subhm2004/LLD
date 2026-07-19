@@ -1,5 +1,11 @@
-// models/UserProfile.h — Profile metadata: naam, age, gender, bio, interests,
-// photos. Discovery isse dikhata hai; preferences se filter hota hai.
+// ============================================================================
+//  models/UserProfile.h — Profile data: naam, age, gender, location
+// ----------------------------------------------------------------------------
+//  User ki public-facing details jo discovery me dikhti hain. Immutable
+//  data holder (sab getters, koi setter). Location zaroori — isi se "nearby
+//  profiles" filter hoti (distance calculate hota). Simple model — real
+//  Tinder me bio, photos, interests bhi hote (monolith version me hain).
+// ============================================================================
 #ifndef TINDER_LLD_MODELS_USERPROFILE_H
 #define TINDER_LLD_MODELS_USERPROFILE_H
 

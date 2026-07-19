@@ -1,5 +1,37 @@
-// core/TinderSystem.h — FACADE: registration, nearby discovery, swipe, match,
-// chat sab ek API se. Andar MatchingService/ChatRoom ko coordinate karta hai.
+// ============================================================================
+//  core/TinderSystem.h — FACADE (L17): poore system ka orchestrator ❤️
+// ----------------------------------------------------------------------------
+//  Ye file sabse important hai — client ko sirf ek clean API deti hai, aur
+//  andar sab coordinate karti hai (users, matching, chat rooms, blocks,
+//  swipe limits). Har method ke peeche multiple cheezein ho rahi hoti hain.
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  swipe() method ke PEECHE kitna kaam (Facade ka fayda):                 │
+//  │                                                                          │
+//  │   1. self-swipe check (khud ko swipe nahi)                             │
+//  │   2. block check (blocked user ko swipe nahi)                          │
+//  │   3. daily limit check (consumeSwipe — 10 swipe/2 super-like per day)   │
+//  │   4. swipe record karo (from user ki history me)                       │
+//  │   5. MUTUAL like? -> ChatRoom banao (MATCH!)                            │
+//  │                                                                          │
+//  │  Client ko sirf swipe("user1","user2",RIGHT) dikhta — baaki 5 steps    │
+//  │  chhupe hain. Yahi Facade!                                             │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  KEY DATA STRUCTURES (interview me batane layak):
+//    users_          -> id -> User* (sab users ka registry)
+//    chatRooms_      -> "CHAT_a_b" -> ChatRoom (matched pairs ke chat)
+//    blockedUsers_   -> id -> set<blocked ids> (block relationships)
+//    dailySwipeCount -> id -> count (rate limiting)
+//
+//  ⭐ CHAT ROOM KEY ka trick: "CHAT_userA_userB" — par order koi bhi ho
+//  sakta! isliye getChatRoom() DONO orders check karta (key1 aur key2).
+//  Bina iske "user1->user2" aur "user2->user1" alag rooms samajh jaate.
+//
+//  ⚠️ NOTE: daily limits in-memory counters se hain (dailySwipeCount_) —
+//  par ye kabhi RESET nahi hote (koi "naya din" logic nahi). Real system
+//  me midnight pe reset ya timestamp-based check chahiye. Demo limitation.
+// ============================================================================
 #ifndef TINDER_LLD_CORE_TINDERSYSTEM_H
 #define TINDER_LLD_CORE_TINDERSYSTEM_H
 

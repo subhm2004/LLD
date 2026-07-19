@@ -1,8 +1,33 @@
 // ============================================================================
-//  Tinder_LLD.cpp  —  Tinder dating app (original single-file version)
+//  Tinder_LLD.cpp — TINDER dating app (single-file MONOLITH, feature-rich)
 // ----------------------------------------------------------------------------
-//  Poore dating app ka original monolithic version (saari classes ek file me).
-//  Modular, folder-based version parent folder me hai (core/, services/, models/).
+//  Poora dating app EK file me — ye version modular se ZYADA feature-rich hai
+//  (5 design patterns!). Modular folder-based version parent folder me hai
+//  (core/, services/, models/ + main.cpp). Detail: ../design_patterns_used.md
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  IS MONOLITH ME 5 PATTERNS (modular se zyada — dekh ke seekho):         │
+//  │                                                                          │
+//  │   OBSERVER   -> NotificationObserver + NotificationService              │
+//  │                 (match/message hone pe users ko notify)                 │
+//  │   STRATEGY   -> LocationStrategy (location calc) +                      │
+//  │                 Matcher (BasicMatcher/InterestsBasedMatcher/            │
+//  │                 LocationBasedMatcher — matching algorithm swap!)        │
+//  │   FACTORY    -> MatcherFactory (MatcherType se sahi matcher banana)     │
+//  │   SINGLETON  -> NotificationService + LocationService + DatingApp       │
+//  │   FACADE     -> DatingApp (poore system ka entry point)                 │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  IS FILE KA LAYOUT (upar se neeche):
+//    Observer (notification) -> enums -> Location/Interest/Preference ->
+//    Message/ChatRoom -> UserProfile -> User -> LocationStrategy (Strategy) ->
+//    Matcher hierarchy (Strategy) -> MatcherFactory (Factory) ->
+//    DatingApp (Facade + Singleton) -> main
+//
+//  ⭐ MODULAR vs MONOLITH: modular version SIMPLE hai (mainly Facade +
+//  distance-based matching). Ye monolith advanced hai — MULTIPLE matching
+//  algorithms (Strategy), notifications (Observer), matcher creation
+//  (Factory). Interview ke liye ye monolith zyada pattern-rich reference hai.
 // ============================================================================
 #include <bits/stdc++.h>
 using namespace std;

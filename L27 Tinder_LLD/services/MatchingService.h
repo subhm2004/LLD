@@ -1,6 +1,23 @@
-// services/MatchingService.h — Core matching logic: swipes record karta hai,
-// MUTUAL right-swipe pe match banata hai, aur match hone par ChatRoom create
-// karta hai. Domain models se alag, orchestration yahan.
+// ============================================================================
+//  services/MatchingService.h — nearby profile DISCOVERY (service layer)
+// ----------------------------------------------------------------------------
+//  Ye service "discovery" logic ko domain models se ALAG rakhta hai
+//  (separation of concerns). findNearbyProfiles() ka kaam: user ke liye
+//  wo candidates dhundho jo:
+//    1. Khud nahi (self skip)
+//    2. Pehle se interact NAHI kiye (already swiped ko dobara nahi dikhana)
+//    3. maxDistanceKm ke ANDAR hain (Haversine distance se)
+//
+//  ⭐ "interacted" check hi Tinder ka "already seen" behavior deta — jise
+//  ek baar swipe kar diya wo card dobara nahi aata. Real Tinder me bhi
+//  aisa hi (swiped profiles wapas nahi aate).
+//
+//  DHYAN DO — ye alag class kyun (User me ye method daal sakte the)?
+//  Kyunki discovery cross-user operation hai (saare users pe iterate) —
+//  ye ek USER ka kaam nahi, SYSTEM ka kaam hai. Isliye service layer.
+//  Monolith version me ye "Matcher" Strategy pattern se hota hai (multiple
+//  matching algorithms) — ye modular version simpler distance-based hai.
+// ============================================================================
 #ifndef TINDER_LLD_SERVICES_MATCHINGSERVICE_H
 #define TINDER_LLD_SERVICES_MATCHINGSERVICE_H
 

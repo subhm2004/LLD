@@ -1,9 +1,33 @@
 // ============================================================================
-//  main.cpp  —  Tinder-style dating app ka demo driver
+//  main.cpp  —  TINDER-style dating app ka demo driver (L27 LLD project)
 // ----------------------------------------------------------------------------
-//  Users register karo (profile + location), nearby profiles discover karo,
-//  swipe (left/right/super-like), mutual like pe match + chat. Daily swipe limit
-//  aur block/unmatch bhi. Sab TinderSystem facade ke through.
+//  System kya karta hai: users register karo (profile + location) -> nearby
+//  profiles discover karo (X km ke andar) -> swipe (left/right/super-like) ->
+//  MUTUAL like pe MATCH + chat room -> messages + read receipts. Plus daily
+//  swipe limit, undo swipe, block/unmatch. Poora Tinder ka mini LLD!
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  MATCH KAISE BANTA HAI (core logic):                                    │
+//  │                                                                          │
+//  │   user1 --RIGHT--> user2   (user1 ne user2 ko like kiya)               │
+//  │   user2 --RIGHT--> user1   (user2 ne bhi like kiya)                    │
+//  │        │                                                                │
+//  │        ▼ MUTUAL like! -> MATCH -> ChatRoom ban gaya                     │
+//  │        │                                                                │
+//  │   ab dono chat kar sakte hain (sirf matched users chat kar sakte)      │
+//  │                                                                          │
+//  │  Agar user2 ne LEFT (reject) kiya hota to match NAHI hota — chat        │
+//  │  room banta hi nahi. "Mutual interest" hi Tinder ka pura funda hai!    │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  IS MODULAR VERSION KE PATTERNS:
+//    Facade    -> TinderSystem (registration/discover/swipe/chat ek API se)
+//    Service   -> MatchingService (nearby-profile logic alag layer me)
+//  (Monolith version C++ Code/Tinder_LLD.cpp me ZYADA patterns hain:
+//   Observer + Strategy + Factory + Singleton — detail: design_patterns_used.md)
+//
+//  DEMO FLOW: 2 users register -> discover -> super-like + undo -> mutual
+//  right-swipe (MATCH!) -> chat -> read messages -> unmatch -> block.
 // ============================================================================
 #include <bits/stdc++.h>
 

@@ -1,5 +1,20 @@
-// models/User.h — App user: id, profile, location, swipe history, matches, aur
-// daily swipe count. Matching aur chat isi user ke around hote hain.
+// ============================================================================
+//  models/User.h — App user: id + profile + swipe history + activity
+// ----------------------------------------------------------------------------
+//  Ek user ka core: userId, profile (naam/age/gender/location), aur
+//  swipeHistory_ (kisko kya swipe kiya). lastActive_ activity tracking.
+//
+//  ⭐ swipeHistory_ (map: targetId -> SwipeAction) hi MATCH detection ka
+//  aadhaar hai:
+//    liked(x)      -> "maine x ko RIGHT/SUPER_LIKE kiya?" (match check)
+//    interacted(x) -> "maine x ko koi bhi swipe kiya?" (discovery me skip)
+//  Jab A swipe kare B pe, system check karta B->liked(A)? Agar haan =
+//  MUTUAL like = MATCH! (TinderSystem.swipe me ye logic hai.)
+//
+//  undoSwipe() -> swipe history se hata do (Tinder ka "rewind" feature).
+//  touch() -> lastActive update (koi bhi activity pe "last seen" refresh).
+//  Ownership: User apni profile + history ka malik (value members).
+// ============================================================================
 #ifndef TINDER_LLD_MODELS_USER_H
 #define TINDER_LLD_MODELS_USER_H
 

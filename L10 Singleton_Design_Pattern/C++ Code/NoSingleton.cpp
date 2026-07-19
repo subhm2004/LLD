@@ -1,10 +1,27 @@
 // ============================================================================
-//  NoSingleton.cpp  —  Baseline: Singleton ke BINA (problem dikhane ke liye)
+//  NoSingleton.cpp  —  Baseline: SINGLETON ke BINA (problem samajhne ke liye)
 // ----------------------------------------------------------------------------
-//  Yahan class normal hai -> jitne chaaho objects ban jaate hain. Agar resource
-//  ek hi hona chahiye (jaise ek hi DB connection / config), to multiple objects
-//  banna problem hai (duplicate state, resource conflict). Iska fix Singleton —
-//  baaki files (Simple/Eager/Locking/DCL/Meyers) progressively better solution.
+//  Singleton = "class ka poore program me sirf EK object bane, aur sab usi
+//               ko access karein" — DB connection, config, logger jaise
+//               resources ke liye.
+//
+//  Ye file problem dikhati hai: normal class = jitne chaaho objects!
+//  Do DB-connection objects bane to? Duplicate state, resource conflict,
+//  inconsistency — jo cheez EK honi chahiye thi wo bikhar gayi.
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  L10 KA SAFAR — 6 files ki evolution story (isi order me padho!):       │
+//  │                                                                          │
+//  │  1. NoSingleton (ye file)  -> problem: kitne bhi objects ban jaate      │
+//  │  2. SimpleSingleton        -> lazy + private ctor... par THREAD-UNSAFE  │
+//  │  3. ThreadSafeLocking      -> mutex har call pe... safe par SLOW        │
+//  │  4. ThreadSafeDoubleLocking-> DCL: lock sirf pehli baar... par tricky   │
+//  │  5. ThreadSafeEager        -> start pe hi bana do... par shayad waste   │
+//  │  6. MeyersSingleton        -> static local: lazy+safe+simple ✅ WINNER  │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  Output me dono constructors chalenge aur s1 == s2 FALSE aayega —
+//  yahi problem hai jo baaki 5 files solve karti hain!
 // ============================================================================
 #include <bits/stdc++.h>
 

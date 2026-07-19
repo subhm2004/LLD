@@ -1,10 +1,35 @@
 // ============================================================================
-//  MeyersSingleton.cpp  —  Meyers Singleton (modern, RECOMMENDED)
+//  MeyersSingleton.cpp — STEP 6 (FINAL): Meyers Singleton — THE WINNER ✅
 // ----------------------------------------------------------------------------
-//  Sabse saaf tareeka: getInstance() ke andar ek `static` LOCAL variable rakho
-//  aur uska reference return karo. C++11+ guarantee karta hai ki function-local
-//  static ka initialization THREAD-SAFE hai (compiler khud lock laga deta hai).
-//  Yani lazy + thread-safe + zero manual locking. Interview/production ka default.
+//  Poora magic EK line me:  static Singleton instance;  (getInstance ke andar)
+//  C++11 se GUARANTEE hai: function-local static ka initialization
+//  THREAD-SAFE hota hai — compiler khud internally locking karta hai.
+//  Matlab: LAZY (pehli call pe banega) + THREAD-SAFE + ZERO manual locks
+//  + destructor bhi program exit pe khud chalega (new/delete ka jhanjhat nahi)!
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  FINAL SCOREBOARD — L10 ke saare versions ek nazar me:                  │
+//  │                                                                          │
+//  │   Version        | Lazy? | Thread-safe? | Fast? | Simple? | Verdict     │
+//  │   ---------------+-------+--------------+-------+---------+------------ │
+//  │   NoSingleton    |  n/a  | n/a          | n/a   | ✅      | ❌ singleton│
+//  │                  |       |              |       |         |    hi nahi! │
+//  │   Simple         |  ✅   | ❌ RACE!     | ✅    | ✅      | ❌ unsafe   │
+//  │   Locking        |  ✅   | ✅           | ❌ har| ✅      | ⚠️ slow     │
+//  │                  |       |              | call  |         |             │
+//  │                  |       |              | lock  |         |             │
+//  │   DCL            |  ✅   | ✅(atomic ke | ✅    | ❌      | ⚠️ tricky   │
+//  │                  |       |  saath hi    |       | tricky  |             │
+//  │                  |       |  100%)       |       |         |             │
+//  │   Eager          |  ❌   | ✅           | ✅    | ✅      | ⚠️ waste    │
+//  │                  |       |              |       |         |  possible   │
+//  │   MEYERS (ye!)   |  ✅   | ✅ C++11     | ✅    | ✅ 3    | ✅ DEFAULT  │
+//  │                  |       |  guarantee   |       | lines!  |    CHOICE   │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  Ek aur detail: ye REFERENCE (&) return karta hai, pointer nahi — caller
+//  galti se delete nahi kar sakta! Repo me real use: L24 CouponManager +
+//  DiscountStrategyManager isi style ke hain.
 // ============================================================================
 #include <bits/stdc++.h>
 

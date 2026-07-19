@@ -1,11 +1,29 @@
 // ============================================================================
-//  ThreadSafeDoubleLockingSingleton.cpp  —  Double-Checked Locking (DCL)
+//  ThreadSafeDoubleLockingSingleton.cpp — STEP 4: DCL (fast + safe... mostly)
 // ----------------------------------------------------------------------------
-//  Locking singleton ko optimize karta hai: pehle BINA lock ke check (instance
-//  bana hai kya?), agar nahi to tab lock lagao aur DOBARA check karke banao.
-//  Isse lock sirf PEHLI baar (creation) par lagta hai, baad me nahi -> fast.
-//  Caveat: sahi hone ke liye `std::atomic` / memory ordering chahiye, warna
-//  subtle reordering bug aa sakte hain. (Isiliye modern code Meyers prefer karta.)
+//  Locking version ki "har call pe lock" problem ka fix — DO checks:
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │   if (!instance) {                 // CHECK #1 — BINA lock (fast path)  │
+//  │       lock_guard<mutex> lock(mtx); // lock sirf zaroorat pe             │
+//  │       if (!instance) {             // CHECK #2 — lock ke ANDAR          │
+//  │           instance = new Singleton();                                   │
+//  │       }                                                                 │
+//  │   }                                                                     │
+//  │                                                                          │
+//  │  CHECK #1 kyun: 99.9% calls me instance BANA hota hai — unhe bina      │
+//  │    lock ke turant return milta hai. Lock ka kharcha sirf shuru me!      │
+//  │  CHECK #2 kyun: do threads ek saath check #1 paas kar gaye -> dono     │
+//  │    lock ki line me. Pehla bana ke nikla; dusra lock paake agar phir     │
+//  │    check NA kare to DUSRA object bana dega! Check #2 yahi rokta hai.    │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  ⚠️ CAVEAT (senior-level point): raw pointer wala DCL 100% correct hone
+//  ke liye `std::atomic<Singleton*>` / memory ordering chahiye — warna
+//  compiler/CPU instruction REORDERING se ek thread ADHURA-constructed
+//  object dekh sakta hai (rare par real bug!). Isi jhanjhat ki wajah se
+//  modern C++ me MEYERS version (agli file) hi default choice hai.
+//  (Ye DCL real use me bhi dikhega: L24 ke DiscountCoupon.cpp me!)
 // ============================================================================
 #include <bits/stdc++.h>
 #include <iostream>

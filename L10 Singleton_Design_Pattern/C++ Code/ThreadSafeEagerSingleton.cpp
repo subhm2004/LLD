@@ -1,10 +1,26 @@
 // ============================================================================
-//  ThreadSafeEagerSingleton.cpp  —  Eager Singleton (thread-safe at startup)
+//  ThreadSafeEagerSingleton.cpp — STEP 5: EAGER (race ko hone hi mat do!)
 // ----------------------------------------------------------------------------
-//  Instance ko program START hote hi (static initialization me) bana dete hain,
-//  lazy nahi. Isliye koi race nahi -> thread-safe by construction. Nuksaan: agar
-//  instance kabhi use hi na ho to bhi ban jaata hai (resource waste), aur static
-//  init order across files tricky ho sakta hai. (Lazy chahiye to Meyers behtar.)
+//  Bilkul alag approach: lazy banane ki jagah instance PROGRAM START pe hi
+//  bana do — `static` member ki initialization me hi `new Singleton()`.
+//  main() chalne se PEHLE object ready! Threads baad me aate hain, tab tak
+//  banane ka kaam ho chuka — RACE KA SAWAL HI NAHI. Zero locks, zero checks.
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  EAGER vs LAZY ka trade-off:                                            │
+//  │                                                                          │
+//  │   ✅ Thread-safe FREE me (creation main se pehle single-threaded hai)   │
+//  │   ✅ getInstance() ekdum fast — bas pointer return                      │
+//  │   ❌ Instance kabhi USE hi na ho to bhi banta hai — mehnga object       │
+//  │      (DB pool, bada cache) ho to seedha WASTE                           │
+//  │   ❌ Startup slow hota hai — sab eager objects pehle banenge            │
+//  │   ❌ "Static initialization order fiasco": alag-alag .cpp files ke      │
+//  │      static objects ka creation ORDER guaranteed nahi — ek eager        │
+//  │      singleton dusre static pe depend kare to UB ho sakta hai!          │
+//  │                                                                          │
+//  │  Rule: instance SASTA hai aur PAKKA use hoga -> Eager theek.            │
+//  │        Mehnga hai ya shayad use na ho -> Lazy (Meyers) lo.              │
+//  └──────────────────────────────────────────────────────────────────────────┘
 // ============================================================================
 #include <bits/stdc++.h>
 #include <iostream>

@@ -1,10 +1,27 @@
 // ============================================================================
-//  SimpleSingleton.cpp  —  Simple lazy Singleton (single-thread, UNSAFE)
+//  SimpleSingleton.cpp  —  STEP 2: Simple LAZY Singleton (thread-UNSAFE!)
 // ----------------------------------------------------------------------------
-//  Singleton ka basic lazy version: private constructor + static instance
-//  pointer + getInstance() jo pehli baar `new` karta hai. Single-thread me theek,
-//  par THREAD-SAFE NAHI: do threads ek saath `if(instance==null)` paas karke do
-//  objects bana sakte hain (race). Fix versions: Eager / Locking / DCL / Meyers.
+//  Singleton banane ki 3-item recipe (har version me yahi base hai):
+//    1. PRIVATE constructor      -> bahar se object banana IMPOSSIBLE
+//    2. Static instance pointer  -> class-level ekmatra copy ka address
+//    3. Public getInstance()     -> ekmatra darwaza — pehli baar banao
+//                                   (LAZY), baad me wahi lautao
+//  + copy/move DELETE (4 lines)  -> clone/move se duplicate banne ka
+//                                   piche ka darwaza bhi band!
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  ⚠️ IS VERSION KA BUG — race condition (interview ka pakka sawal):     │
+//  │                                                                          │
+//  │   Thread A: if (instance == nullptr)  <- null dikha, andar ghusa        │
+//  │   Thread B: if (instance == nullptr)  <- A ne abhi banaya NAHI —        │
+//  │                                          B ko BHI null dikha!           │
+//  │   Thread A: instance = new Singleton();   <- object #1                  │
+//  │   Thread B: instance = new Singleton();   <- object #2 !! 💥            │
+//  │                                                                          │
+//  │   DO objects ban gaye — singleton toot gaya + pehla wala LEAK ho gaya.  │
+//  │   Single-thread me ye kabhi nahi hoga, isliye bug chhupa rehta hai —    │
+//  │   production me multi-thread aate hi phat-ta hai! Fix: agli files.      │
+//  └──────────────────────────────────────────────────────────────────────────┘
 // ============================================================================
 // Goal: class ka sirf ek hi object poori application me exist kare.
 

@@ -1,26 +1,61 @@
 // ============================================================================
-//  IteratorPattern.cpp  —  Iterator Design Pattern (Behavioral)
+//  IteratorPattern.cpp  —  ITERATOR DESIGN PATTERN (Behavioral)
 // ----------------------------------------------------------------------------
-//  Iterator = kisi collection ko traverse karne ka UNIFORM tareeka, uski
-//  internal structure ko expose kiye bina. Client sirf hasNext()/next() jaanta
-//  hai. Yahan teen alag structures — LinkedList, BinaryTree (in-order via
-//  stack), Playlist — sab ek hi `Iterator<T>` interface dete hain, isliye
-//  ek hi loop sabpe chalta hai. Cursor iterator ke andar rehta hai (multiple
-//  independent traversals possible).
+//  Iterator = "kisi bhi collection ko traverse karne ka UNIFORM tareeka do —
+//              uski internal structure (nodes? tree? vector?) expose kiye
+//              BINA. Client sirf hasNext()/next() jaanta hai, bas."
 //
-//  Pattern ke 4 roles (GoF naming) is file me kaun nibha raha hai:
-//    1. Iterator (interface)          -> class Iterator<T>
-//    2. ConcreteIterator (actual walk)-> LinkedListIterator, BinaryTreeInorderIterator,
-//                                        PlaylistIterator
-//    3. Iterable / Aggregate (iface)  -> class Iterable<T>
-//    4. ConcreteAggregate (collection)-> LinkedList, BinaryTree, Playlist
+//  Asli duniya ka example: TV ka remote 📺
+//    - Channel kaise store hain (satellite? cable? internet?) — tumhe kya!
+//    - Tum bas NEXT button dabate ho, agla channel mil jaata hai.
+//    - TV badal do, remote ka interface wahi — NEXT is NEXT!
+//  Waise hi: LinkedList ho, BinaryTree ho ya Playlist — client ka loop
+//  same: while (it->hasNext()) it->next();
 //
-//  Fayda kya hai:
-//    - Client ko `->next` pointer, `stack`, ya `vector index` — kuch nahi pata.
-//      Traversal ka logic collection se BAHAR nikal ke iterator me chala gaya
-//      (Single Responsibility: collection data rakhe, iterator usse ghume).
-//    - Ek naya structure add karo (e.g. Graph), naya iterator likh do —
-//      client ka `while (it->hasNext())` loop bilkul same rehta hai (Open/Closed).
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  ITERATOR KYUN? — bina iske client ka haal:                             │
+//  │                                                                          │
+//  │    // LinkedList ghumne ke liye:                                        │
+//  │    while (node != nullptr) { ...; node = node->next; }  // pointers!    │
+//  │    // BinaryTree ghumne ke liye:                                        │
+//  │    inorder(root->left); visit(root); inorder(root->right); // recursion!│
+//  │    // Playlist ghumne ke liye:                                          │
+//  │    for (int i = 0; i < songs.size(); i++) { ... }        // index!      │
+//  │                                                                          │
+//  │  1) Client ko HAR collection ka internal structure jaanna padta hai     │
+//  │  2) Collection ne structure badla (vector -> list) -> SAB client tootey │
+//  │  3) Traversal logic har jagah bikhra hua — duplicate + error-prone      │
+//  │                                                                          │
+//  │  ITERATOR se: traversal ka saara gyaan ITERATOR class me band ho jaata  │
+//  │  hai. Client ko bas do buttons milte hain: hasNext() aur next(). ✅     │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  PATTERN KE ROLES (GoF naming) is file me:
+//    1. Iterator (interface)   -> Iterator<T>       : hasNext()/next() ka contract
+//    2. ConcreteIterator       -> LinkedListIterator, BinaryTreeInorderIterator,
+//                                 PlaylistIterator  : asli traversal logic
+//    3. Iterable / Aggregate   -> Iterable<T>       : "mujhse iterator lo" ka contract
+//    4. ConcreteAggregate      -> LinkedList, BinaryTree, Playlist : collections
+//
+//  ============================================================================
+//   TEENO COLLECTIONS — structure alag, traversal alag, CLIENT LOOP SAME!
+//  ----------------------------------------------------------------------------
+//   Collection | Internal structure   | Iterator ka cursor    | Traversal trick
+//   -----------+----------------------+-----------------------+------------------
+//   LinkedList | nodes + next pointer | LinkedList* current   | pointer sarkao
+//   BinaryTree | left/right children  | stack<BinaryTree*>    | recursion ko stack
+//              |                      |                       |  se simulate (lazy
+//              |                      |                       |  in-order!)
+//   Playlist   | vector<Song>         | size_t index          | index++ karo
+//
+//   ⭐ CURSOR ITERATOR ke andar hai, collection me NAHI — isliye ek hi
+//   collection pe 2-3 INDEPENDENT traversals ek saath chal sakte hain
+//   (har getIterator() call FRESH cursor deta hai).
+//
+//   📌 SABSE BADA RULE — hasNext() POOCHHTA hai, next() BADHATA hai:
+//   hasNext() = sirf check, koi side-effect nahi (kitni baar bhi call karo)
+//   next()    = current element DO + cursor aage BADHAO (dono ek saath)
+//   Contract: next() se pehle hasNext() true hona chahiye — warna UB!
 // ============================================================================
 #include <iostream>
 #include <vector>
@@ -162,10 +197,13 @@ public:
         current = head;
     }
 
-    // List khatam tab hoti hai jab current nullptr ho jaye (last node ka next).
+    // List khatam tab hoti hai jab current nullptr ho jaye (last node ke
+    // next() ke baad). BUG FIX: pehle yahan `current->next != nullptr` tha —
+    // isse LAST node skip ho jaata tha (1,2,3 me sirf "1 2" print hota!)
+    // aur khaali list (nullptr head) pe crash bhi hota. Sahi check: current khud.
     bool hasNext() override
     {
-        return current->next != nullptr;
+        return current != nullptr;
     }
 
     int next() override

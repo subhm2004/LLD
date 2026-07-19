@@ -9,20 +9,30 @@
 
 namespace meeting_scheduler_lld {
 
+/**
+ * @class EarliestMutualSlotStrategy
+ * @brief Concrete strategy jo common/mutual free slots linear search ya fixed steps ke through calculate karti hai.
+ * 
+ * Ye strategy step size (jaise 15 minutes) ke intervals pe check karti hai ki kya sabhi users us time bracket
+ * me available hain aur unka koi clash toh nahi hai.
+ */
 class EarliestMutualSlotStrategy : public IFreeSlotStrategy {
 public:
+    // Implementation details for finding mutual free slots.
     std::vector<TimeSlot> findSlots(
         const std::string& date, int durationMinutes,
         const std::vector<std::string>& userIds,
         const std::unordered_map<std::string, std::vector<AvailabilityWindow>>& availability,
         const std::unordered_map<std::string, Meeting>& meetings) const override {
+        
         if (durationMinutes <= 0) {
-            throw std::invalid_argument("duration must be positive");
+            throw std::invalid_argument("Duration positive honi chahiye.");
         }
         if (userIds.empty()) {
             return {};
         }
 
+        // Sabhi users ke combined search space limits find karte hain.
         int dayStart = 24 * 60;
         int dayEnd = 0;
         bool hasAvailability = false;
@@ -42,13 +52,15 @@ public:
             }
         }
 
+        // Agar kisi bhi user ki availability set nahi hai toh koi slots nahi milenge.
         if (!hasAvailability) {
             return {};
         }
 
         std::vector<TimeSlot> slots;
-        const int step = 15;
+        const int step = 15; // 15-minute search precision interval
 
+        // dayStart se lekar dayEnd tak loop chala kar check karte hain.
         for (int start = dayStart; start + durationMinutes <= dayEnd; start += step) {
             const int end = start + durationMinutes;
             if (isSlotFree(date, start, end, userIds, availability, meetings)) {
@@ -59,6 +71,7 @@ public:
     }
 
 private:
+    // Check karta hai ki kya diya gaya slot range sabhi users ke liye free hai (R5 tracking support).
     bool isSlotFree(
         const std::string& date, int start, int end, const std::vector<std::string>& userIds,
         const std::unordered_map<std::string, std::vector<AvailabilityWindow>>& availability,
@@ -74,6 +87,7 @@ private:
         return true;
     }
 
+    // Availability verification helper.
     bool isWithinAvailability(
         const std::string& userId, const std::string& date, int start, int end,
         const std::unordered_map<std::string, std::vector<AvailabilityWindow>>& availability)
@@ -90,6 +104,7 @@ private:
         return false;
     }
 
+    // Clash detection helper.
     bool hasMeetingConflict(const std::string& userId, const std::string& date, int start,
                             int end,
                             const std::unordered_map<std::string, Meeting>& meetings) const {
@@ -99,7 +114,12 @@ private:
                 continue;
             }
             if (meeting.involvesUser(userId) && meeting.overlaps(start, end)) {
-                return true;
+                // Agar attendee ne invitation decline kar di ho, toh unka clash nahi mana jayega.
+                auto statuses = meeting.getAttendeeStatuses();
+                auto it = statuses.find(userId);
+                if (meeting.getOrganizerId() == userId || (it != statuses.end() && it->second != InvitationStatus::DECLINED)) {
+                    return true;
+                }
             }
         }
         return false;

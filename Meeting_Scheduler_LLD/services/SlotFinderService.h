@@ -14,13 +14,23 @@
 
 namespace meeting_scheduler_lld {
 
+/**
+ * @class SlotFinderService
+ * @brief Strategy pattern ko utilize karke multiple users ke mutual free slots dhoondhne wali service.
+ * 
+ * Client code dynamic strategy inject kar sakta hai. By default, ye `EarliestMutualSlotStrategy`
+ * use karti hai jo common free time block identify karne me help karti hai.
+ */
 class SlotFinderService {
 public:
+    // Default constructor jo default strategy allocate karta hai.
     SlotFinderService() : strategy_(std::make_shared<EarliestMutualSlotStrategy>()) {}
 
+    // Constructor agar dynamic strategy inject karni ho.
     explicit SlotFinderService(std::shared_ptr<IFreeSlotStrategy> strategy)
         : strategy_(std::move(strategy)) {}
 
+    // Diye gaye list of users ke liye mutual available free slots calculate karne ka function.
     std::vector<TimeSlot> findMutualSlots(
         const std::vector<std::string>& userIds, const std::string& date, int durationMinutes,
         const std::unordered_map<std::string, std::vector<AvailabilityWindow>>& availability,
@@ -29,7 +39,7 @@ public:
     }
 
 private:
-    std::shared_ptr<IFreeSlotStrategy> strategy_;
+    std::shared_ptr<IFreeSlotStrategy> strategy_; // Inject ki gayi interface strategy pointer (Strategy Pattern)
 };
 
 }  // namespace meeting_scheduler_lld

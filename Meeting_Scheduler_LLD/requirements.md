@@ -1,5 +1,28 @@
 # Meeting Scheduler — Requirements
 
+## Core Requirements (R1–R6) — Problem Statement se
+
+Ye woh 6 core requirements hain jo problem definition me diye gaye the. Neeche har requirement
+ke saamne uska code location aur pattern mapping diya gaya hai — matlab har point actually
+implement ho chuka hai, sirf theory nahi.
+
+| ID | Requirement | Kahan implement hua (code) |
+|----|-------------|-----------------------------|
+| **R1** | System me ek fixed number ke meeting rooms available hone chahiye | `MeetingRoom` model + `MeetingSchedulerSystem::addMeetingRoom()` + `rooms_` map |
+| **R2** | Har room ki ek capacity hoti hai (kitne log baith sakte hain) | `MeetingRoom::capacity_` + `MeetingRoom::canAccommodate()` + `ConflictDetectionService::validateRoom()` |
+| **R3** | Room tabhi reserve ho jab wo already booked na ho — fixed start/end time ke saath | `ConflictDetectionService::validateRoom()` (overlap check) + `Meeting::overlaps()` |
+| **R4** | Meeting me invited sabhi logon ko notification bhejna zaruri hai | **Observer** — `NotificationService` (Subject) + `INotificationObserver` / `ConsoleNotificationObserver` |
+| **R5** | Sab invitees ko invitation mile (available ho ya na ho), aur wo Accept/Decline kar sakein | `Meeting::attendeeStatuses_` (PENDING/ACCEPTED/DECLINED) + `respondToInvitation()` + `strictMode=false` flexible flow |
+| **R6** | Har user ke paas ek personal Calendar ho jo dates/times track kare + schedule/cancel manage kare | `User::calendar_` (`Calendar` model) — `addMeeting` / `removeMeeting` / `addAvailability` |
+
+### Problem Definition ke extra points
+
+- **Organizer schedule ke baad bhi naye log add kar sakta hai** → `Meeting::attendeeStatuses_` map extensible hai; naya attendee PENDING status ke saath add ho sakta hai.
+- **Participants ko quick notifications milein** → Observer pattern (`NotificationService`) broadcast turant kar deta hai.
+- **Design patterns discuss karo** → dekho [`design_patterns_used.md`](./design_patterns_used.md).
+
+---
+
 ## Functional
 
 | ID | Requirement |

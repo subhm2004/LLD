@@ -1,18 +1,55 @@
 // ============================================================================
-//  with_flyweight_with_builder.cpp  —  Flyweight + Builder Design Pattern
+//  with_flyweight_with_builder.cpp  —  FLYWEIGHT + BUILDER (dono ka combo 🚀)
 // ----------------------------------------------------------------------------
-//  Flyweight = bahut saare similar objects ki SHARED heavy data (intrinsic
-//  state: color, texture, size) ko ek hi baar store karo, aur per-object unique
-//  data (extrinsic state: position, velocity) alag rakho. Yahan 1,000,000
-//  asteroids sirf 3 shared flyweights use karte hain -> memory bahut kam.
-//  Factory cache karta hai taaki same-type flyweight dobara na bane.
+//  Ye file dono patterns ka BEST version hai:
+//    Flyweight = memory bachao (shared intrinsic data sirf 3 baar store)
+//    Builder   = creation saaf rakho (fluent chaining, no 10-param ctor)
+//  Aur sabse badi baat: client ko FLYWEIGHT KA PATA BHI NAHI CHALTA —
+//  wo bas builder pe saari values set karta hai, sharing ka saara jugaad
+//  builder ANDAR chhupa ke karta hai!
 //
-//  BUILDER INTEGRATION:
-//    Yahan humne ek Builder class (AsteroidContextBuilder) implement ki hai.
-//    Client bas saare variables (intrinsic aur extrinsic) builder ko batayega.
-//    Builder internally:
-//      1. Intrinsic values ke corresponding factory se shared flyweight lo.
-//      2. Halka Context object banao aur return karo.
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  CLIENT KI NAZAR SE — usse kya dikhta hai vs andar kya hota hai:        │
+//  │                                                                          │
+//  │    // Client bas itna likhta hai (simple, readable):                    │
+//  │    AsteroidContextBuilder()                                             │
+//  │        .setColor("Red").setTexture("Rocky")...  // intrinsic values     │
+//  │        .setPosition(100, 200).setVelocity(1,2)  // extrinsic values     │
+//  │        .build();                                                        │
+//  │                                                                          │
+//  │    // build() ke ANDAR chupke se ye hota hai:                           │
+//  │    // 1. intrinsic values se factory me lookup ->                       │
+//  │    //      cache HIT  -> purana shared flyweight pointer (99.99% baar)  │
+//  │    //      cache MISS -> naya flyweight banao (poore run me sirf 3x)    │
+//  │    // 2. halka Context banao (24 bytes) jisme flyweight ka pointer +    │
+//  │    //    extrinsic values ho -> wahi return                             │
+//  │                                                                          │
+//  │  Client ko encapsulation + readability, system ko memory saving. WIN-WIN│
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  PATTERN KE ROLES is file me (4 kirdaar):
+//    1. Flyweight        -> AsteroidFlyweight      : shared intrinsic state
+//    2. FlyweightFactory -> AsteroidFactory        : cache + reuse (3 hi banenge)
+//    3. Context          -> AsteroidContext        : extrinsic + flyweight pointer
+//                                                    (ctor PRIVATE — builder friend hai)
+//    4. Builder          -> AsteroidContextBuilder : fluent API + factory-lookup
+//                                                    ka saara jugaad andar chhupata hai
+//
+//  ============================================================================
+//   CHAARO FILES KA SAFAR — is folder ki poori story ek nazar me
+//  ----------------------------------------------------------------------------
+//   File                            | Builder | Flyweight | Memory    | Creation
+//   --------------------------------+---------+-----------+-----------+---------
+//   WithoutFlyWeight.cpp            | ❌      | ❌        | 186.92 MB | 10-param mess
+//   withoutflyweight_but_with_      | ✅      | ❌        | 186.92 MB | clean ✅
+//     builder.cpp                   |         |           | (same!)   |
+//   WithFlyWeight.cpp               | ❌      | ✅        | 22.89 MB✅| factory+ctor
+//   with_flyweight_with_builder.cpp | ✅      | ✅        | 22.89 MB✅| clean ✅
+//   (YE FILE — best of both!)       |         |           |           |
+//
+//   📌 LESSON: patterns COMBINE hote hain! Builder creation-side problem
+//   solve karta hai, Flyweight memory-side — dono milke ek solid design
+//   dete hain jisme na 10-param constructor hai, na 186 MB ka blast.
 // ============================================================================
 #include <iostream>
 #include <vector>

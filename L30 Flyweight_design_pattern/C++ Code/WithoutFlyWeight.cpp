@@ -1,26 +1,52 @@
 // ============================================================================
-//  WithoutFlyWeight.cpp  —  Flyweight ke BINA (problem dikhane ke liye)
+//  WithoutFlyWeight.cpp  —  FLYWEIGHT ke BINA (problem samajhne ke liye)
 // ----------------------------------------------------------------------------
-//  Yahan har Asteroid object apni saari fields (color, texture, material, size
-//  + position + velocity) khud rakhta hai. 1,000,000 asteroids matlab heavy
-//  shared data 1,000,000 baar duplicate -> bahut zyada memory. Sirf 3 types
-//  hain phir bhi har object full copy. Iska fix WithFlyWeight.cpp (shared
-//  intrinsic state). Dono ka memory output compare karke farq dekho.
+//  Ye file jaan-bujh kar MEHNGA (memory-blowing) tareeka dikhati hai, taaki
+//  WithFlyWeight.cpp ka fix samajh aaye. Pehle problem feel karo!
 //
-//  ASLI PROBLEM ek line me:
-//    Game me asteroid ke sirf 3 TYPE hain (Red/Rocky/Iron, Blue/Metallic/Stone,
-//    Gray/Icy/Ice). Har type ka color+texture+material+size BILKUL same hai.
-//    Phir bhi hum wo same data 1,000,000 baar RAM me duplicate kar rahe hain.
-//    Yaani ~10 lakh me se sirf 3 unique copies chahiye thi — baaki sab waste.
+//  Asli duniya ka example: space game me 10,00,000 (1 million) asteroids:
+//    - Asteroid ke sirf 3 TYPE hain: Red/Rocky/Iron, Blue/Metallic/Stone,
+//      Gray/Icy/Ice — har type ka color+texture+material+size BILKUL same
+//    - Phir bhi HAR asteroid apni personal copy rakh raha hai — wahi 3
+//      strings RAM me 10 lakh baar duplicate! 999,997 copies pure waste.
 //
-//  Data ke do type (ye samajh liya to Flyweight aa gaya):
-//    INTRINSIC (shared ho sakta hai) -> color, texture, material, length, width,
-//                                       weight. Ye asteroid ke TYPE pe depend
-//                                       karta hai, individual asteroid pe nahi.
-//    EXTRINSIC (har object ka apna)  -> posX, posY, velocityX, velocityY.
-//                                       Ye har asteroid ka alag hai, share nahi
-//                                       ho sakta.
-//    Is file me dono ek hi class me ghuse hue hain — yahi galti hai.
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  PROBLEM KA MATH — memory ka blast ek nazar me:                         │
+//  │                                                                          │
+//  │    Ek Asteroid object = ~196 bytes:                                     │
+//  │       28 bytes -> 7 ints (size/weight/position/velocity)                │
+//  │       72 bytes -> 3 string OBJECTS (sizeof(string)=24 each)             │
+//  │       96 bytes -> strings ka heap data (approx)                         │
+//  │                                                                          │
+//  │    Total = 196 bytes × 10,00,000 objects = ~186.92 MB 💥                │
+//  │                                                                          │
+//  │    Jabki unique data kitna tha? Sirf 3 types × ~180 bytes = 540 bytes!  │
+//  │    Matlab ~186 MB me se ~164 MB sirf DUPLICATE copies hain. 😵          │
+//  │                                                                          │
+//  │  FIX (WithFlyWeight.cpp): shared data EK baar rakho, pointer se share   │
+//  │  karo -> 24 bytes/asteroid -> ~22.89 MB (~8x kam!)                      │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  ============================================================================
+//   ⭐ INTRINSIC vs EXTRINSIC — ye table samajh liya to Flyweight aa gaya!
+//   (Sawaal khud se poochho: "Do alag asteroids ke liye ye value SAME ho
+//    sakti hai kya, bina kuch toote?" Haan -> intrinsic. Nahi -> extrinsic.)
+//  ----------------------------------------------------------------------------
+//   Field                | Type      | Kyun                | Flyweight me jayega?
+//   ---------------------+-----------+---------------------+---------------------
+//   color                | INTRINSIC | type pe depend hai,  | SHARED (ek baar
+//   texture              | (shared   |  individual asteroid |  store, pointer
+//   material             |  ho sakta |  pe nahi — "Red/     |  se share) ✅
+//   length/width/weight  |  hai)     |  Rocky/Iron" sabka   |
+//                        |           |  same hai            |
+//   ---------------------+-----------+---------------------+---------------------
+//   posX, posY           | EXTRINSIC | HAR asteroid ki      | NAHI — ye har
+//   velocityX, velocityY | (har ek   |  position genuinely  |  object apna
+//                        |  ka apna) |  alag hai            |  rakhega (context)
+//
+//   📌 IS FILE KI GALTI: dono type ka data EK HI class me ghusa hua hai —
+//   isliye intrinsic data bhi har object ke saath duplicate ho raha hai.
+//   Flyweight inko ALAG karta hai — wahi pura pattern hai.
 // ============================================================================
 #include <iostream>
 #include <vector>

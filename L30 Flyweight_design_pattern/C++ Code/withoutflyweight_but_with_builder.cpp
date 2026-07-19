@@ -1,16 +1,54 @@
- // ============================================================================
-//  withoutflyweight_but_with_builder.cpp  —  Flyweight ke BINA par Builder ke SAATH
+// ============================================================================
+//  withoutflyweight_but_with_builder.cpp  —  BUILDER haan, FLYWEIGHT nahi
 // ----------------------------------------------------------------------------
-//  Yahan hum Builder Design Pattern use kar rahe hain Asteroids ko step-by-step
-//  construct karne ke liye (taaki 10-parameter wale massive constructor se bacha ja sake).
-//  Lekin Flyweight Pattern use NAHI kiya hai, isliye har Asteroid object apni saari
-//  fields khud duplicate karke rakhta hai -> Memory consumption abhi bhi high rahega.
+//  Builder = "complex object ko STEP-BY-STEP banao — fluent method chaining
+//             se (.setColor().setPosition()...build()) — taaki 10-parameter
+//             wale telescoping constructor ka jungle na jhelna pade."
 //
-//  BUILDER KA FAIDA:
-//    Code readability improve hoti hai, telescoping constructors se bacha ja sakta hai,
-//    aur client code me object creation bohot clean lagta hai.
-//  FLYWEIGHT NA HONE KA NUKSAN:
-//    Har asteroid unique object hai aur memory share nahi ho rahi.
+//  Is file ka point: Builder READABILITY deta hai, par MEMORY problem
+//  waisi ki waisi hai — kyunki Flyweight abhi bhi nahi lagaya!
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  10-PARAMETER CONSTRUCTOR ka dard (jo Builder solve karta hai):         │
+//  │                                                                          │
+//  │    // WithoutFlyWeight.cpp wala tareeka:                                │
+//  │    new Asteroid(25, 25, 250, "Red", "Rocky", "Iron",                    │
+//  │                 100, 200, 1, 2);                                        │
+//  │    // ❓ 25 kya hai? width ya weight? 100 position hai ya kuch aur?     │
+//  │    // ❓ "Rocky" texture hai ya material? Order galat = silent bug!     │
+//  │                                                                          │
+//  │    // Builder wala tareeka (is file me):                                │
+//  │    AsteroidBuilder()                                                    │
+//  │        .setDimensions(25, 25)      // ✅ naam se saaf pata hai          │
+//  │        .setWeight(250)                                                  │
+//  │        .setColor("Red")                                                 │
+//  │        .setPosition(100, 200)                                           │
+//  │        .build();                                                        │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  PATTERN KE ROLES is file me:
+//    1. Product   -> Asteroid        : final object (constructor PRIVATE hai!)
+//    2. Builder   -> AsteroidBuilder : fields step-by-step jama karta hai,
+//                                      build() pe final object banata hai
+//                                      (friend class hai — private ctor access)
+//    3. Client    -> SpaceGame       : fluent chain se clean object creation
+//
+//  ============================================================================
+//   KYA MILA / KYA NAHI MILA — scoreboard
+//  ----------------------------------------------------------------------------
+//   Cheez                        | Status | Kyun
+//   -----------------------------+--------+--------------------------------
+//   Readable object creation     | ✅     | Har value ka NAAM dikh raha hai
+//   Telescoping ctor se mukti    | ✅     | 10 params ka order yaad nahi rakhna
+//   Galat-order wala silent bug  | ✅ gone| setColor me texture nahi ja sakta
+//   Memory saving                | ❌     | Har object AB BHI fat hai (196 bytes)
+//                                |        | — intrinsic data ab bhi 10 lakh
+//                                |        |   baar duplicate! ~186.92 MB
+//
+//   📌 LESSON: Builder aur Flyweight ALAG problems solve karte hain —
+//   Builder = "banane ka TAREEKA saaf karo" (readability)
+//   Flyweight = "bane hue ka SIZE ghatao" (memory)
+//   Dono ka combo agli file me: with_flyweight_with_builder.cpp 🚀
 // ============================================================================
 #include <iostream>
 #include <vector>

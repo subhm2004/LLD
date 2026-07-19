@@ -1,28 +1,61 @@
 // ============================================================================
-//  WithFlyWeight.cpp  —  Flyweight Design Pattern (Structural) — FIXED version
+//  WithFlyWeight.cpp  —  FLYWEIGHT DESIGN PATTERN (Structural) — FIXED version
 // ----------------------------------------------------------------------------
-//  Flyweight = bahut saare similar objects ki SHARED heavy data (intrinsic
-//  state: color, texture, size) ko ek hi baar store karo, aur per-object unique
-//  data (extrinsic state: position, velocity) alag rakho. Yahan 1,000,000
-//  asteroids sirf 3 shared flyweights use karte hain -> memory bahut kam.
-//  Factory cache karta hai taaki same-type flyweight dobara na bane.
-//  (Compare with WithoutFlyWeight.cpp jahan har object apni copy rakhta hai.)
+//  Flyweight = "bahut saare similar objects ka SHARED heavy data (intrinsic
+//               state) EK hi baar store karo aur POINTER se share karo;
+//               per-object unique data (extrinsic state) alag halke context
+//               me rakho — memory ka blast ruk jaayega."
 //
-//  Pattern ke roles (GoF naming) is file me:
-//    1. Flyweight        -> AsteroidFlyweight  (sirf INTRINSIC/shared state)
-//    2. FlyweightFactory -> AsteroidFactory    (cache + reuse; naya tabhi banega
-//                                               jab wo type pehle se na ho)
-//    3. Context / Client -> AsteroidContext    (EXTRINSIC state + flyweight ka pointer)
+//  Asli duniya ka example: text editor ke characters 📝
+//    - "aaaa..." me 'a' ka font/shape data EK baar store hota hai (glyph),
+//      har position pe bas uska reference + coordinates hote hain.
+//    - Waise hi yahan: 10,00,000 asteroids, par sirf 3 SHARED flyweights —
+//      har asteroid ke paas bas pointer (8 bytes) + apni position.
 //
-//  Pura idea ek line me:
-//    "Jo data sabka same hai use EK baar store karo aur POINTER share kar do;
-//     jo data har object ka alag hai wahi per-object rakho."
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  MEMORY COMPARISON — WithoutFlyWeight vs WithFlyWeight:                 │
+//  │                                                                          │
+//  │                    | WITHOUT           | WITH                           │
+//  │  ------------------+-------------------+------------------------------- │
+//  │  Per-object size   | 196 bytes (fat)   | 24 bytes (pointer + 4 ints)    │
+//  │  Heavy data copies | 10,00,000 baar 💥 | Sirf 3 baar ✅                 │
+//  │  Total (1M objects)| ~186.92 MB        | ~22.89 MB (~8x kam!)           │
+//  │  Growth            | linear — count    | context linear, par shared     │
+//  │                    |  double = RAM     |  hissa CONSTANT (540 bytes,    │
+//  │                    |  double           |  chahe 1 crore asteroid ho!)   │
+//  │                                                                          │
+//  │  Output dono ka BILKUL SAME aata hai — user ko farq nahi dikhta.        │
+//  │  Pattern behavior nahi badalta, sirf memory bachata hai. 🎯             │
+//  └──────────────────────────────────────────────────────────────────────────┘
 //
-//  Kaise pata karein kaunsa field intrinsic hai?
-//    Khud se poochho: "Do alag asteroids ke liye ye value same ho sakti hai kya,
-//    bina kuch toote?" Haan -> intrinsic (share karo). Nahi -> extrinsic (alag rakho).
-//      color/texture/material/size -> haan, type pe depend karta hai -> SHARED
-//      position/velocity           -> nahi, har asteroid ka apna         -> CONTEXT
+//  PATTERN KE ROLES (GoF naming) is file me:
+//    1. Flyweight        -> AsteroidFlyweight : sirf INTRINSIC/shared state
+//                                               (color, texture, material, size)
+//    2. FlyweightFactory -> AsteroidFactory   : cache + reuse — naya flyweight
+//                                               TABHI banega jab wo type pehle
+//                                               se cache me na ho
+//    3. Context          -> AsteroidContext   : EXTRINSIC state (position,
+//                                               velocity) + flyweight ka pointer
+//    4. Client           -> SpaceGameWithFlyweight : bahar se WithoutFlyWeight
+//                                               jaisa hi dikhta hai!
+//
+//  ============================================================================
+//   ⭐ INTRINSIC vs EXTRINSIC — decision table (Flyweight ka dil)
+//   (Sawaal: "Do alag asteroids ke liye ye value SAME ho sakti hai kya?")
+//  ----------------------------------------------------------------------------
+//   Field                | Jawab | Category  | Kahan gaya
+//   ---------------------+-------+-----------+----------------------------------
+//   color/texture/       | Haan  | INTRINSIC | AsteroidFlyweight (SHARED —
+//   material/size/weight |       |           |  poore program me sirf 3 objects)
+//   posX/posY/velocity   | Nahi  | EXTRINSIC | AsteroidContext (har object
+//                        |       |           |  apna — 10 lakh halke objects)
+//
+//   📌 SABSE BADA RULE — FLYWEIGHT IMMUTABLE HONA CHAHIYE:
+//   Flyweight SHARED hai — agar galti se posX isme daal diya, to ek
+//   asteroid ki position badalne se 3+ lakh asteroids ki position badal
+//   jaayegi! Isliye: flyweight me sirf wo data jo (a) sabka same hai aur
+//   (b) kabhi change nahi hota. Extrinsic data render() ke PARAMETERS se
+//   bahar se inject hota hai — yahi pattern ka core mechanism hai.
 // ============================================================================
 #include <iostream>
 #include <vector>

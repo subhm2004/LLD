@@ -1,5 +1,11 @@
-// models/Recipient.h — Notification ka receiver: naam + contact details
-// (email/phone) + preferred channel. Engine isse decide karta hai kahan bhejna.
+// ============================================================================
+//  models/Recipient.h — Notification ka receiver (naam + contact + channel)
+// ----------------------------------------------------------------------------
+//  Ek user jise notification milega: id, naam, address (email/phone), aur
+//  preferredChannel (EMAIL/SMS/POPUP). Immutable — sab getters. Notification
+//  Service isse map me store karta hai (id -> Recipient). std::move
+//  constructor me — string copies bachane ke liye.
+// ============================================================================
 #ifndef RECIPIENT_H
 #define RECIPIENT_H
 

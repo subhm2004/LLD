@@ -1,10 +1,28 @@
 // ============================================================================
-//  dclp_multithreading_safe_notification_system.cpp  —  thread-safe variant
+//  dclp_multithreading_safe_notification_system.cpp — MONOLITH #3 (thread-safe)
 // ----------------------------------------------------------------------------
-//  Notification system ka thread-safe version: Singleton ko Double-Checked
-//  Locking (DCLP) + mutex se thread-safe banaya gaya hai, taaki multi-threaded
-//  environment me bhi ek hi NotificationService instance bane (race nahi).
-//  Is file me detailed comments (Hinglish + English mix) add kiye gaye hain.
+//  Teesra version — same 4 patterns, par SINGLETON ko THREAD-SAFE banaya
+//  Double-Checked Locking (DCLP) + mutex se. Multi-threaded environment me
+//  bhi sirf EK NotificationService instance banega (race condition nahi).
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  DCLP (Double-Checked Locking) — L10 wala pattern yahan real use me:    │
+//  │                                                                          │
+//  │    if (!instance) {              // CHECK #1 (bina lock — fast path)    │
+//  │        lock_guard lock(mtx);     // lock sirf zaroorat pe               │
+//  │        if (!instance) {          // CHECK #2 (lock ke andar — race stop)│
+//  │            instance = new ...;                                          │
+//  │        }                                                                │
+//  │    }                                                                     │
+//  │                                                                          │
+//  │  Do checks: #1 se banne ke baad har call fast (bina lock); #2 se do    │
+//  │  threads ek saath aane pe DUSRA instance banne se ruk jaata hai.       │
+//  │  (Modern C++ me Meyers static-local isse simple aur safe karta hai —    │
+//  │   L10 MeyersSingleton.cpp dekho.)                                       │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  Baaki sab NotificationSystem.cpp jaisa: Decorator + Observer + Strategy.
+//  extra includes: <mutex> (locking), <fstream>/<ctime> (file logging/time).
 // ============================================================================
 #include <iostream>
 #include <vector>

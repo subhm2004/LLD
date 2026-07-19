@@ -1,5 +1,18 @@
-// core/NotificationSystem.h — System ka core orchestrator/facade: message banao,
-// rules check karo, engine ke through channels par bhejo, observers ko notify karo.
+// ============================================================================
+//  core/NotificationSystem.h — FACADE: system ka simple entry-point
+// ----------------------------------------------------------------------------
+//  Client ko andar ke Hub/Observable/Engine/Strategies/Decorators ka jhamela
+//  nahi dekhna padta — bas 3 aasaan methods:
+//    registerRecipient() -> kaun, kaunse channel pe notification chahta hai
+//    setupDefaultEngine()-> Logger + Engine ko observable pe attach karo, aur
+//                           3 channel strategies (Email/SMS/Popup) add karo
+//    sendNotification()  -> message banao aur bhejo (baaki sab automatic)
+//
+//  ⭐ setupDefaultEngine() ka `static` + `initialized` flag trick: Logger/
+//  Engine sirf EK baar setup hon (dobara call pe strategies double na ho
+//  jayein). static local objects program-lifetime tak zinda rehte hain —
+//  isliye observable se attached rehte hain jab tak main chalta hai.
+// ============================================================================
 #ifndef NOTIFICATION_SYSTEM_H
 #define NOTIFICATION_SYSTEM_H
 

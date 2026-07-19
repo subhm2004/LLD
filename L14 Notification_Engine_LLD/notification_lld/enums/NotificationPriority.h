@@ -1,5 +1,11 @@
-// enums/NotificationPriority.h — Notification ki priority: LOW / MEDIUM / HIGH.
-// Rules engine isse use karke decide kar sakta hai konsa message kaise/kab bheje.
+// ============================================================================
+//  enums/NotificationPriority.h — Priority: LOW / MEDIUM / HIGH
+// ----------------------------------------------------------------------------
+//  Message ki urgency. Abhi mostly data ke roop me store hota hai; Rules
+//  engine (ya future logic) isse use karke decide kar sakta hai kaunsa
+//  message pehle/kaise bheje (jaise HIGH turant, LOW batch me). enum class
+//  (scoped, type-safe).
+// ============================================================================
 #ifndef NOTIFICATION_PRIORITY_H
 #define NOTIFICATION_PRIORITY_H
 

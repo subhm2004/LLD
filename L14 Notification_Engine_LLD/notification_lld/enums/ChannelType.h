@@ -1,5 +1,11 @@
-// enums/ChannelType.h — Notification kis channel se jaayega: EMAIL / SMS / POPUP.
-// Type-safe enum taaki magic strings na use karne padein.
+// ============================================================================
+//  enums/ChannelType.h — Notification kis channel se: EMAIL / SMS / POPUP
+// ----------------------------------------------------------------------------
+//  Recipient ka preferred channel batata hai. `enum class` (scoped) —
+//  ChannelType::EMAIL likhna padta hai, aur int me chupke se convert nahi
+//  hota (type-safe). Magic strings ("email") se behtar — typo compile-time
+//  pe pakda jayega.
+// ============================================================================
 #ifndef CHANNEL_TYPE_H
 #define CHANNEL_TYPE_H
 

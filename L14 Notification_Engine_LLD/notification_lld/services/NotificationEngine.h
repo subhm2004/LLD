@@ -1,5 +1,32 @@
-// services/NotificationEngine.h — Observer jo naya notification aane par usko
-// registered STRATEGIES (Email/SMS/Popup) ke through actually deliver karta hai.
+// ============================================================================
+//  services/NotificationEngine.h — SYSTEM KA DIL: 4 patterns yahin rehte hain ❤️
+// ----------------------------------------------------------------------------
+//  Ye file bada hai kyunki isme poore system ka core hai. 4 patterns:
+//
+//  1. DECORATOR (INotification + decorators):
+//     SimpleNotification ke UPAR TimestampDecorator, uske upar Signature-
+//     Decorator — har layer content me kuch JODTI hai bina base ko chhede.
+//     getContent() chain: Signature -> Timestamp -> Simple (andar se bahar).
+//     shared_ptr use hua taaki ownership safe rahe (L13 Decorator dekho).
+//
+//  2. OBSERVER (IObserver/IObservable + NotificationObservable):
+//     Observable ke paas observers ki list. setNotification() hote hi
+//     SAB observers ko update() call — "ek event, kai reactions".
+//     Yahan observers: LoggerObserver + NotificationEngine.
+//
+//  3. STRATEGY (INotificationStrategy + Email/SMS/PopUp):
+//     Channel pe bhejne ka tareeka swap-able. Engine ke paas strategies
+//     ki list — update() aane pe SAB pe content bhej deta hai.
+//
+//  4. SINGLETON (NotificationHub):
+//     Poore system me EK observable hub. MEYERS style (static local +
+//     deleted copy) — L10 wala recommended tareeka!
+//
+//  ⭐ OBSERVER + STRATEGY ka combo dekho: NotificationEngine KHUD ek
+//  observer hai (event sunta hai) AUR strategies ka container hai
+//  (event aane pe har channel pe bhejta hai). Ek pattern dusre ko feed
+//  karta hai — real systems aise hi bante hain!
+// ============================================================================
 #ifndef NOTIFICATION_ENGINE_H
 #define NOTIFICATION_ENGINE_H
 

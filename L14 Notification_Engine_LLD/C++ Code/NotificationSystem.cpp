@@ -1,13 +1,29 @@
 // ============================================================================
-//  NotificationSystem.cpp  —  Notification Engine (monolithic, single-file)
+//  NotificationSystem.cpp — NOTIFICATION ENGINE (single-file MONOLITH #1)
 // ----------------------------------------------------------------------------
-//  Ek notification system jo 4 patterns ek saath dikhata hai:
-//    Singleton  -> ek hi NotificationService instance
-//    Decorator  -> message ko Timestamp/Signature se wrap karna
-//    Observer   -> naya notification aane par observers (logger/UI) ko notify
-//    Strategy   -> alag channels (Email/SMS/Popup) se delivery
-//  Yeh original single-file version hai; modular version notification_lld/ me.
-//  Is file me detailed comments (Hinglish + English mix) add kiye gaye hain.
+//  Poora notification system EK file me — 4 design patterns ek saath!
+//  Modular version notification_lld/ folder me hai (detail: design_patterns_used.md).
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  EK notification ka SAFAR (4 patterns milke):                          │
+//  │                                                                          │
+//  │   SimpleNotification("msg")                                             │
+//  │      -> TimestampDecorator    \ DECORATOR: content pe layer-by-layer   │
+//  │      -> SignatureDecorator    /  timestamp + signature chipakte hain   │
+//  │      -> NotificationService (SINGLETON) ka observable set              │
+//  │      -> OBSERVER: sab observers ko update() —                          │
+//  │           Logger      -> log print                                     │
+//  │           Engine      -> STRATEGY: har channel (Email/SMS/Popup) pe    │
+//  │                          content bhejo                                 │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  IS FILE KA LAYOUT: Decorator classes -> Observer (Observable+observers) ->
+//  Singleton (NotificationService) -> Strategy (channels) -> Engine -> main.
+//
+//  L14 me 3 monolith versions hain (evolution):
+//    1. NotificationSystem.cpp (ye)         -> basic 4-pattern version
+//    2. NotificationSystemUpdated.cpp        -> cleaner/extra features
+//    3. dclp_...safe_notification_system.cpp -> Singleton thread-safe (DCLP)
 // ============================================================================
 #include <iostream>
 #include <vector>

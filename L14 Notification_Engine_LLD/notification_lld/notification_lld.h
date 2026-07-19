@@ -1,5 +1,18 @@
-// notification_lld.h — Umbrella header: poore modular notification system ke
-// saare parts (core/enums/models/rules/services) ek jagah include kar deta hai.
+// ============================================================================
+//  notification_lld.h — UMBRELLA header (saare parts ek jagah include)
+// ----------------------------------------------------------------------------
+//  Convenience header — ek #include se poora system mil jaata hai
+//  (core + enums + models + rules + services). main.cpp isse use NAHI karta
+//  (wo seedha core/NotificationSystem.h include karta hai) — ye reference
+//  ke liye hai.
+//
+//  ⚠️ NOTE (interview-worthy): is file me neeche ek DUSRA #ifndef block hai
+//  jisme purani raw-pointer wali class definitions hain. Par same include-
+//  guard (NOTIFICATION_LLD_H) upar wale block me already define ho chuka
+//  hai, isliye dusra block compiler SKIP kar deta hai — wo DEAD CODE hai.
+//  (models/NotificationMessage.h me bhi yahi dead-block pattern hai.)
+//  Ideally ye purana block hata dena chahiye — confusion se bachne ke liye.
+// ============================================================================
 #ifndef NOTIFICATION_LLD_H
 #define NOTIFICATION_LLD_H
 

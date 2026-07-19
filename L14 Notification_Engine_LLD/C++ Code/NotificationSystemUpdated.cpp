@@ -1,9 +1,16 @@
 // ============================================================================
-//  NotificationSystemUpdated.cpp  —  Notification Engine (improved version)
+//  NotificationSystemUpdated.cpp — NOTIFICATION ENGINE (MONOLITH #2, improved)
 // ----------------------------------------------------------------------------
-//  NotificationSystem.cpp ka refined version — same patterns (Singleton +
-//  Decorator + Observer + Strategy) par cleaner structure / extra features.
-//  Is file me detailed comments (Hinglish + English mix) add kiye gaye hain.
+//  NotificationSystem.cpp ka REFINED version — wahi 4 patterns (Singleton +
+//  Decorator + Observer + Strategy), par cleaner structure aur extra features.
+//  Ye "iterate karke behtar banao" wali soch dikhata hai — pehla version
+//  banao (NotificationSystem.cpp), phir refine karo (ye), phir thread-safe
+//  karo (dclp_...). Teeno ko side-by-side padho to design evolution samajh
+//  aayega.
+//
+//  4 PATTERNS ka same flow: Decorator (message wrap) -> Singleton (ek
+//  service) -> Observer (event -> sab observers) -> Strategy (channels).
+//  Detail: ../design_patterns_used.md
 // ============================================================================
 #include <iostream>
 #include <vector>

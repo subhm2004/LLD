@@ -1,5 +1,29 @@
-// rules/ChessRules.h — STRATEGY for rule engine: move legal hai? (piece moves +
-// king safety), aur check/checkmate/stalemate detection. Match isse consult karta.
+// ============================================================================
+//  rules/ChessRules.h — RULES ENGINE (Strategy pattern): chess ka "dimaag" 🧠
+// ----------------------------------------------------------------------------
+//  ChessRules abstract interface hai, StandardChessRules implementation —
+//  kal "Chess960Rules" ya "BlitzRules" aaye to Match me swap ho sakta hai
+//  (Match sirf ChessRules* jaanta hai). Yahi STRATEGY pattern hai.
+//
+//  5 sawalon ke jawab deta hai — sab ek-dusre pe bane hain (pyramid):
+//    isValidMove()        = piece ja sakta hai? AND king expose nahi hoga?
+//    wouldMoveCauseCheck()= move SIMULATE karo, check dekho, UNDO karo ⭐
+//    isInCheck()          = koi dushman piece mere king tak pahunch sakta hai?
+//    isCheckmate()        = check ME hoon AND koi bhi move bacha nahi sakti
+//    isStalemate()        = check me NAHI hoon PAR koi legal move bhi nahi
+//                           (haar nahi — DRAW! chess ka mashhoor twist)
+//
+//  ⭐ SIMULATE-AND-RESTORE trick (wouldMoveCauseCheck — sabse smart code):
+//    1. Move ko board pe TEMPORARILY khel do (remove + place)
+//    2. Dekho apna king check me aaya kya?
+//    3. Sab kuch WAPAS rakh do (jaise kuch hua hi nahi — capture bhi restore!)
+//  Isi se "pinned piece" wala rule free me mil jaata hai — jo piece hilne
+//  se apna king khul jaye, uski move automatically invalid!
+//
+//  CHECKMATE/STALEMATE ka brute-force: apne HAR piece ki HAR possible move
+//  try karo — koi EK bhi legal nikli to mate/stalemate nahi. Chhote board
+//  pe ye kaafi fast hai (engines isi pe pruning laga ke tez karte hain).
+// ============================================================================
 #ifndef CHESS_LLD_RULES_CHESSRULES_H
 #define CHESS_LLD_RULES_CHESSRULES_H
 

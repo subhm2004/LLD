@@ -1,6 +1,25 @@
-// core/GameManager.h — SINGLETON: users ko queue karta hai, score-based
-// matchmaking se matches banata hai, aur match lifecycle manage karta hai.
-// Poore chess system ka central coordinator.
+// ============================================================================
+//  core/GameManager.h — SINGLETON: poore system ka central coordinator 🎮
+// ----------------------------------------------------------------------------
+//  Chess.com ka "server" samjho ise — teen cheezein sambhalta hai:
+//    1. waitingUsers_   -> matchmaking queue (jinhe opponent nahi mila)
+//    2. activeMatches_  -> chal rahe matches (id -> Match*)
+//    3. matchingStrategy_-> pairing ka algorithm (STRATEGY pattern —
+//                           abhi ScoreBasedMatching ±100; kal region-based
+//                           ya time-control-based aa sakta hai, swap-able!)
+//
+//  requestMatch() ka flow:
+//    strategy se opponent dhundo -> mila? match banao (MATCH_1, MATCH_2...)
+//    aur opponent ko queue se hatao : nahi mila? user ko queue me daalo.
+//
+//  SINGLETON NOTE (L24 se COMPARE karo — interview gold!):
+//  Yahan CLASSIC lazy singleton hai: static pointer + null check.
+//    - L24 CouponManager: Meyers style (static local) — C++11 thread-safe
+//    - Yahan: pointer style — SIMPLE hai par thread-safe NAHI (do threads
+//      ek saath getInstance() karein to do instances ban sakte hain!),
+//      aur delete manually karna padta hai (main.cpp me hota hai).
+//  Dono styles jaano, farq bata pao — full marks. 😉
+// ============================================================================
 #ifndef CHESS_LLD_CORE_GAMEMANAGER_H
 #define CHESS_LLD_CORE_GAMEMANAGER_H
 

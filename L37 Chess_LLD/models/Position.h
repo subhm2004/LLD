@@ -1,5 +1,16 @@
-// models/Position.h — Board pe ek cell ka coordinate (row, col). Moves aur board
-// lookups isi se hote hain.
+// ============================================================================
+//  models/Position.h — Board ka ek coordinate (row, col) + chess notation
+// ----------------------------------------------------------------------------
+//  Chhota par har jagah use hone wala model. Teen kaam ki cheezein:
+//    isValid()          : 0-7 range check — move generation me boundary guard
+//    operator== aur <   : == comparison ke liye, < isliye ZAROORI hai kyunki
+//                         Board me map<Position, Piece*> hai — std::map ko
+//                         keys sort karne ke liye < chahiye hota hai!
+//    toChessNotation()  : (row,col) -> "e4" jaisi asli chess bhasha:
+//                         col 0-7 -> file 'a'-'h';  row 0-7 -> rank '8'-'1'
+//                         (ULTA! row 0 = rank 8 — kyunki board array upar
+//                          se neeche print hota hai, black upar hota hai)
+// ============================================================================
 #ifndef CHESS_LLD_MODELS_POSITION_H
 #define CHESS_LLD_MODELS_POSITION_H
 

@@ -1,5 +1,27 @@
-// models/User.h — Player: id, naam, aur score/rating. Matchmaking score se hota
-// hai; match khatam/quit par score update hota hai.
+// ============================================================================
+//  models/User.h — Player model + MEDIATOR PATTERN ke interfaces (3-in-1 file!)
+// ----------------------------------------------------------------------------
+//  Is file me Mediator pattern ka POORA contract hai (L35 wala pattern live):
+//
+//    ChatMediator (interface) : "beech ka aadmi" — sendMessage/add/removeUser.
+//                               Match.h isse implement karta hai.
+//    Colleague (base)         : "baat karne wala" — mediator ka pointer
+//                               rakhta hai, send/receive ka contract deta hai.
+//    User : Colleague         : actual player — id, naam, score (1000 se
+//                               shuru), aur chat methods.
+//
+//  MEDIATOR KA FLOW (players ek-dusre ko NAHI jaante!):
+//    aditya.send(msg) ──> mediator_->sendMessage(msg, this)
+//                              │ (Match decide karta hai kise dena hai)
+//                              ▼
+//                         rohit.receive(msg)
+//  Fayda: User class me opponent ka koi pointer NAHI — Match hi routing
+//  karta hai. Naya feature (group chat, spectators) aaye to sirf mediator
+//  badlega, User untouched!
+//
+//  SCORE: matchmaking ka aadhaar (ScoreBasedMatching ±100 dekhta hai) —
+//  jeet +30, haar -20, quit -50 (Match.h ke endGame/quitGame se).
+// ============================================================================
 #ifndef CHESS_LLD_MODELS_USER_H
 #define CHESS_LLD_MODELS_USER_H
 

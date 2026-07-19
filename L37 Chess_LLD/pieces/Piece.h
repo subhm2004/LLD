@@ -1,5 +1,21 @@
-// pieces/Piece.h — Ek chess piece: type, color, position, aur uska move-generation
-// behavior (PieceMoves). Board inhi pieces se bharta hai.
+// ============================================================================
+//  pieces/Piece.h — Piece hierarchy: 1 abstract base + 6 concrete pieces ♚♛♜♝♞♟
+// ----------------------------------------------------------------------------
+//  Har piece ke paas: color, type, hasMoved flag (pawn ke 2-step ke liye
+//  zaroori!), aur DO virtual methods:
+//    getPossibleMoves() -> "main is position se kahan-kahan ja sakta hoon?"
+//                          (har piece ka apna algorithm — PieceMoves.h me)
+//    getSymbol()        -> display ke liye ("K","Q","R","B","N","P" —
+//                          Knight ka "N" kyunki King ne "K" le liya!)
+//
+//  POLYMORPHISM ka classic use: Rules/Board sirf Piece* jaante hain —
+//  virtual dispatch khud sahi piece ka move-logic chala deta hai. Naya
+//  piece type aaye (fairy chess!) to nayi subclass — baaki code untouched.
+//
+//  NOTE: getPossibleMoves() sirf declaration hai — DEFINITIONS PieceMoves.h
+//  me hain, kyunki unhe Board ki poori definition chahiye (Piece.h me Board
+//  sirf forward-declared hai — circular dependency ka standard solution).
+// ============================================================================
 #ifndef CHESS_LLD_PIECES_PIECE_H
 #define CHESS_LLD_PIECES_PIECE_H
 

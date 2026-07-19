@@ -1,5 +1,23 @@
-// core/Board.h — 8x8 chess board: pieces ka layout, initial setup, piece move/
-// capture, aur position lookups. Rules isi board ko padh ke legal moves nikalte.
+// ============================================================================
+//  core/Board.h — 8×8 board: pieces ka ghar 🏠 (setup, move, capture, lookup)
+// ----------------------------------------------------------------------------
+//  SMART DESIGN — DO data structures EK SAATH (interview-worthy!):
+//    1. board_[8][8] array      -> "is cell pe kya hai?" — O(1) lookup
+//    2. map<Position, Piece*>   -> "saare pieces kahan hain?" — bina 64
+//                                   cells scan kiye iterate (findKing,
+//                                   getAllPiecesOfColor isi se fast hain)
+//  Dono ko HAR operation (place/remove/move) me SYNC rakhna zaroori hai —
+//  ek update kiya dusra bhoole to board jhooth bolne lagega!
+//
+//  COORDINATE SYSTEM samjho (confusion ka #1 source):
+//    row 0 = rank 8 (BLACK ki back row) | row 7 = rank 1 (WHITE ki back row)
+//    col 0 = file 'a'                   | col 7 = file 'h'
+//    White NEECHE se UPAR khelta hai (row ghatta hai), Black ulta.
+//
+//  OWNERSHIP: Board hi pieces ka MALIK hai — capture pe piece delete,
+//  destructor me saare bache pieces delete. (Rules simulate karte waqt
+//  remove/place karta hai par delete NAHI — wahi to restore hota hai!)
+// ============================================================================
 #ifndef CHESS_LLD_CORE_BOARD_H
 #define CHESS_LLD_CORE_BOARD_H
 

@@ -1,5 +1,34 @@
-// pieces/PieceMoves.h — Har piece type ka move-generation logic (King/Queen/Rook/
-// Bishop/Knight/Pawn apne-apne tareeke se chalte hain). Piece isse delegate karta hai.
+// ============================================================================
+//  pieces/PieceMoves.h — Har piece ka MOVE-GENERATION algorithm (asli chess yahan!)
+// ----------------------------------------------------------------------------
+//  Pieces ke move-patterns ki 3 categories hain — ye samajh lo to sab clear:
+//
+//   Category         | Pieces         | Algorithm
+//   -----------------+----------------+---------------------------------------
+//   STEPPER (1 kadam)| King, Knight   | direction array me har offset try karo
+//                    |                |  — valid + apna piece nahi? -> add
+//   SLIDER (phisalne | Queen, Rook,   | har direction me 1,2,3...7 tak SLIDE
+//    wale)           | Bishop         |  karo jab tak: board khatam / apna
+//                    |                |  piece (ruk jao) / dushman (capture
+//                    |                |  karke ruk jao — AAR-PAAR nahi!)
+//   SPECIAL (ajeeb)  | Pawn           | seedha chalta hai par TIRCHHA maarta
+//                    |                |  hai; pehli move pe 2 kadam ka bonus
+//
+//  Direction arrays ka pattern dekho:
+//    King/Queen : 8 directions (chaaro taraf + diagonals)
+//    Rook       : 4 straight   {up, down, left, right}
+//    Bishop     : 4 diagonal
+//    Knight     : 8 "L" jumps  {±2,±1} combos — beech ke pieces ko JUMP
+//                 kar jaata hai (isliye slider loop nahi, direct check!)
+//
+//  ⚠️ NOTE: Ye moves "pseudo-legal" hain — "king expose to nahi hoga?" wala
+//  final check ChessRules::isValidMove() karta hai (wouldMoveCauseCheck).
+//  Simplification: castling, en-passant, pawn-promotion implement nahi hain.
+//
+//  `inline` kyun har function pe? Ye header-only project hai — same function
+//  multiple .cpp me include hone par linker "duplicate symbol" na bole,
+//  isliye inline zaroori hai!
+// ============================================================================
 #ifndef CHESS_LLD_PIECES_PIECEMOVES_H
 #define CHESS_LLD_PIECES_PIECEMOVES_H
 

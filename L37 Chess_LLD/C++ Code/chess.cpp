@@ -1,3 +1,26 @@
+// ============================================================================
+//  chess.cpp  —  ONLINE CHESS SYSTEM (single-file MONOLITH version)
+// ----------------------------------------------------------------------------
+//  Ye poora chess system EK file me hai — lecture ka original code. Isi ko
+//  refactor karke MODULAR version banaya gaya hai (../core, ../pieces,
+//  ../models, ../rules, ../factories, ../strategies folders + ../main.cpp).
+//  Detailed folder-wise comments wahan padho; ye file "sab ek jagah" reference
+//  ke liye hai.
+//
+//  IS FILE KA LAYOUT (upar se neeche):
+//    1. Enums (Color/PieceType/GameStatus) + Position model
+//    2. Message + Mediator interfaces + User    <- MEDIATOR pattern
+//    3. Piece hierarchy + move generation       <- polymorphism
+//    4. PieceFactory                            <- FACTORY pattern
+//    5. Board (8x8 + piece map)
+//    6. ChessRules (validate/check/mate)        <- STRATEGY pattern
+//    7. Match (gameplay + chat mediator)
+//    8. MatchingStrategy + GameManager          <- STRATEGY + SINGLETON
+//    9. Demo (Scholar's Mate) + main()
+//
+//  Patterns: Singleton + Strategy + Mediator + Factory — wahi 4 jo modular
+//  version me hain. Dono versions ka behavior same hai.
+// ============================================================================
 #include <algorithm>
 #include <cmath>
 #include <ctime>

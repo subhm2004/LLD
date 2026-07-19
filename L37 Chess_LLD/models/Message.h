@@ -1,5 +1,13 @@
-// models/Message.h — In-match chat ka ek message: sender + text. ChatMediator
-// inhe players ke beech route karta hai.
+// ============================================================================
+//  models/Message.h — Chat ka ek message (sender + text + timestamp)
+// ----------------------------------------------------------------------------
+//  Simple immutable data holder — banne ke baad badalta nahi (koi setter
+//  nahi). timestamp_ constructor me time(0) se auto-set hota hai.
+//  Flow me role: User.send(new Message(...)) -> Match (Mediator) isse
+//  chatHistory_ me store karta hai + opponent ko receive() karwata hai.
+//  Ownership note: Message heap pe banta hai, Match ka destructor
+//  chatHistory_ ke saare messages delete karta hai.
+// ============================================================================
 #ifndef CHESS_LLD_MODELS_MESSAGE_H
 #define CHESS_LLD_MODELS_MESSAGE_H
 

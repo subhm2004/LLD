@@ -1,5 +1,24 @@
-// core/Match.h — Ek match between two users: board, turns, move history, result,
-// aur in-match chat (ChatMediator ke through). Gameplay orchestrate karta hai.
+// ============================================================================
+//  core/Match.h — Ek match ka ORCHESTRATOR + chat ka MEDIATOR (2-in-1 class!)
+// ----------------------------------------------------------------------------
+//  Do users ke beech ka pura khel yahi class chalati hai:
+//    - Board + Rules + turn tracking + move history + result + chat history
+//
+//  MEDIATOR PATTERN yahan live hai: Match : public ChatMediator —
+//  players ek-dusre ko DIRECT message nahi bhejte, Match ke through bhejte
+//  hain (player.send() -> Match.sendMessage() -> opponent.receive()).
+//  Fayda: players ek-dusre ka pointer tak nahi rakhte — loose coupling!
+//
+//  makeMove() ka VALIDATION LADDER (har move in 4 gates se guzarta hai):
+//    Gate 1: game IN_PROGRESS hai?          -> nahi: "Game is not in progress!"
+//    Gate 2: isi player ki turn hai?        -> nahi: "It's not your turn!"
+//    Gate 3: from pe APNA piece hai?        -> nahi: "Invalid piece selection!"
+//    Gate 4: ChessRules se move legal hai?  -> nahi: "Invalid move!"
+//    Sab pass -> board update -> history me daalo -> checkmate/stalemate/
+//    check detect -> turn switch. Yahi ek method pura game-loop ka dil hai.
+//
+//  SCORING RULES: jeet +30, haar -20, quit -50, stalemate = koi change nahi.
+// ============================================================================
 #ifndef CHESS_LLD_CORE_MATCH_H
 #define CHESS_LLD_CORE_MATCH_H
 

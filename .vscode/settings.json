@@ -105,4 +105,5 @@
   "github.copilot.chat.agent.autoFix": true,
   "geminicodeassist.inlineSuggestions.enableAuto": true,
   "geminicodeassist.displayInlineContextHint": false,
+  "cmake.sourceDirectory": "/Users/shubham/Desktop/LLD/LFU_Cache_LLD",
 }

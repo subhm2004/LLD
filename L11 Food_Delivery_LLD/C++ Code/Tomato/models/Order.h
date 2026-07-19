@@ -1,5 +1,18 @@
-// Order.h — Abstract base order: user, restaurant, items, total, time, payment.
-// Isse DeliveryOrder aur PickupOrder inherit karte hain (alag fulfillment type).
+// ============================================================================
+//  Order.h — ABSTRACT base order (DeliveryOrder / PickupOrder ka parent)
+// ----------------------------------------------------------------------------
+//  Ek order ka pura data: user, restaurant, items, total, scheduled time,
+//  aur PAYMENT STRATEGY (composition — Order khud pay nahi karta, strategy
+//  se karwata hai!). getType() pure virtual hai — subclass "Delivery" ya
+//  "Pickup" batati hai (polymorphism).
+//
+//  ⭐ processPayment() me STRATEGY delegation dekho:
+//    paymentStrategy->pay(total)  — Order ko pata nahi UPI hai ya Card,
+//    bas strategy ko bol deta hai. Yahi Strategy + composition ka core.
+//
+//  nextOrderId static counter se har order ko unique id milti hai (1,2,3...).
+//  Virtual destructor hai — base Order* se derived delete safe.
+// ============================================================================
 #ifndef ORDER_H
 #define ORDER_H
 

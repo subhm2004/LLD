@@ -1,5 +1,12 @@
-// NowOrderFactory.h — Concrete factory: turant (abhi) wala order banata hai
-// (current time ke saath). OrderFactory interface ko implement karta hai.
+// ============================================================================
+//  NowOrderFactory.h — Concrete Factory #1: ABHI wala order (current time)
+// ----------------------------------------------------------------------------
+//  OrderFactory ka implementation — order banata hai AUR uska scheduled time
+//  TimeUtils::getCurrentTime() (ABHI) set karta hai.
+//  Andar orderType dekh ke Delivery ya Pickup order banata hai (delivery me
+//  user address, pickup me restaurant location set hota hai). Yahi ek jagah
+//  hai jahan concrete order classes ka naam aata hai — client insse door.
+// ============================================================================
 #ifndef NOW_ORDER_FACTORY_H
 #define NOW_ORDER_FACTORY_H
 

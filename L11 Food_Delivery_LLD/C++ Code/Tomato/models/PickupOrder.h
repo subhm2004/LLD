@@ -1,5 +1,10 @@
-// PickupOrder.h — Order ka woh type jahan user khud restaurant se PICKUP karta
-// hai (koi delivery address nahi). Order base ko extend karta hai.
+// ============================================================================
+//  PickupOrder.h — Concrete Order #2: user khud restaurant se PICKUP kare
+// ----------------------------------------------------------------------------
+//  Order base ko extend karta hai + extra field: restaurantAddress (kahan
+//  se pickup karna hai). getType() "Pickup" return karta hai. DeliveryOrder
+//  ka mirror — sirf address ka meaning alag (delivery addr vs pickup point).
+// ============================================================================
 #ifndef PICKUP_ORDER_H
 #define PICKUP_ORDER_H
 

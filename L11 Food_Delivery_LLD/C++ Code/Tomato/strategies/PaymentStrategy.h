@@ -1,6 +1,13 @@
-// PaymentStrategy.h — Payment ka STRATEGY interface (pay() method). Concrete
-// strategies (UPI, CreditCard) ise implement karte hain -> payment mode runtime
-// par swap ho sakta hai bina order logic chhede. (Strategy pattern)
+// ============================================================================
+//  PaymentStrategy.h — STRATEGY interface: payment ka "kaise" (L8 pattern!)
+// ----------------------------------------------------------------------------
+//  Payment ka TAREEKA (UPI/Card/Wallet...) alag-alag ho sakta hai, par
+//  Order ko sirf itna pata: "koi pay(amount) karega". Concrete strategy
+//  (UpiPaymentStrategy, CreditCardPaymentStrategy) runtime pe inject hoti
+//  hai — Order ka koi code nahi badalta.
+//  Client (main.cpp) decide karta hai: checkoutNow(..., new UpiPaymentStrategy())
+//  Naya mode (PayPal, COD) chahiye? -> nayi class banao, bas. OCP ✅
+// ============================================================================
 #ifndef PAYMENT_STRATEGY_H
 #define PAYMENT_STRATEGY_H
 

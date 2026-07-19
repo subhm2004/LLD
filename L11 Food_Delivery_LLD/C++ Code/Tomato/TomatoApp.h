@@ -1,10 +1,27 @@
 // ============================================================================
-//  TomatoApp.h  —  FACADE of the food-delivery system ("Tomato" = Zomato/Swiggy)
+//  TomatoApp.h  —  FACADE: poore system ka SINGLE ENTRY-POINT (L17 wala pattern!)
 // ----------------------------------------------------------------------------
-//  Yeh poore system ka single entry-point (Facade) hai. Client ko andar ke
-//  managers/factories/strategies ka jhamela nahi dekhna padta — bas TomatoApp
-//  ke through restaurant search, cart, order place, payment, notification sab
-//  ho jaata hai. Patterns yahan: Facade (yeh class) + Factory + Strategy.
+//  Client ko sirf YE class dikhti hai — andar ka poora jhamela chhupa hai:
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  TomatoApp ke har method ke PEECHE kya chalta hai:                      │
+//  │                                                                          │
+//  │   searchRestaurants() -> RestaurantManager (SINGLETON) se lookup        │
+//  │   selectRestaurant()  -> user ke Cart me restaurant set                 │
+//  │   addToCart()         -> restaurant ke menu se item dhundo -> cart me   │
+//  │   checkoutNow()       -> NowOrderFactory se order banao      \ FACTORY  │
+//  │   checkoutScheduled() -> ScheduledOrderFactory se banao      / METHOD   │
+//  │       dono -> common checkout() -> OrderManager me register             │
+//  │   payForOrder()       -> order->processPayment() [STRATEGY: UPI/Card]   │
+//  │                          success? -> NotificationService + cart clear   │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  ⭐ FACADE ka asli fayda yahan dekho: checkout() me 4 cheezein coordinate
+//  hoti hain (cart validate -> factory se order -> manager me add) — client
+//  ko is ORDER ka gyaan nahi chahiye, bas checkoutNow() call karo!
+//
+//  📌 NOTE: checkout() COMMON logic hai; Now vs Scheduled ka farq sirf
+//  KAUNSI FACTORY inject hui — yahi Factory Method ka power hai (L9).
 // ============================================================================
 #ifndef TOMATO_APP_H
 #define TOMATO_APP_H

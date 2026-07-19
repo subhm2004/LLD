@@ -1,6 +1,19 @@
-// RestaurantManager.h — Saare restaurants ka central registry; naam/location se
-// search deta hai. Yeh SINGLETON hai (double-checked locking se thread-safe) —
-// kyunki poore app me ek hi restaurant catalog hona chahiye.
+// ============================================================================
+//  RestaurantManager.h — SINGLETON (DCL): saare restaurants ka central registry
+// ----------------------------------------------------------------------------
+//  Poore app me restaurant catalog EK hona chahiye — do catalogs hote to
+//  ek me restaurant register, dusre me search = "not found" chaos! Isliye
+//  SINGLETON: getInstance() ekmatra instance deta hai (add + searchByLocation).
+//
+//  Ye DOUBLE-CHECKED LOCKING (DCL) style hai — L10 me detail padha:
+//    Check #1 (bina lock, fast) -> Check #2 (lock ke andar, race rokta hai)
+//  File me neeche ek commented block bhi hai jo MEYERS style dikhata hai
+//  (static local) — wahi modern/simple choice hai. Dono valid, DCL classic.
+//
+//  searchByLocation ka detail: dono locations LOWERCASE karke compare karta
+//  hai (transform + ::tolower) — "Delhi" == "delhi" == "DELHI" sab match!
+//  Mutex se add/search operations thread-safe hain.
+// ============================================================================
 #ifndef RESTAURANT_MANAGER_H //
 #define RESTAURANT_MANAGER_H
 

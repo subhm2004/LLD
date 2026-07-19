@@ -1,6 +1,17 @@
-// OrderFactory.h — Abstract Factory interface: order banane ka contract.
-// Concrete factories (NowOrderFactory, ScheduledOrderFactory) ise implement
-// karke "abhi" ya "scheduled" order banate hain. (Factory Method pattern)
+// ============================================================================
+//  OrderFactory.h — FACTORY METHOD interface: order banane ka contract (L9!)
+// ----------------------------------------------------------------------------
+//  createOrder() ka abstract contract — kaunsa order banega ye SUBCLASS
+//  decide karti hai (NowOrderFactory = abhi wala, ScheduledOrderFactory =
+//  future time wala). TomatoApp sirf OrderFactory* jaanta hai — concrete
+//  factory inject hoti hai (checkoutNow vs checkoutScheduled me).
+//
+//  DHYAN DO — YAHAN DO-LEVEL VARIATION hai (isliye Factory Method perfect):
+//    1. WHEN: abhi ya scheduled  -> kaunsi FACTORY (Now/Scheduled)
+//    2. HOW:  delivery ya pickup -> factory ke andar orderType se decide
+//  Ek hi createOrder() interface, char alag combinations bina if-else
+//  jungle ke. Naya order-timing (jaise "recurring") = nayi factory class!
+// ============================================================================
 #ifndef ORDER_FACTORY_H
 #define ORDER_FACTORY_H
 

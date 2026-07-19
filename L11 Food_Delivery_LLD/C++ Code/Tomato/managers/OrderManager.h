@@ -1,5 +1,13 @@
-// OrderManager.h — Saare orders ko track/manage karta hai (place, store, list).
-// Order placement flow ko coordinate karta hai (factory se order banwa ke rakhta).
+// ============================================================================
+//  OrderManager.h — SINGLETON: saare orders ka central tracker
+// ----------------------------------------------------------------------------
+//  App ke saare orders ek jagah — add + list. RestaurantManager ki tarah
+//  ye bhi SINGLETON hai (poore system me ek order-book).
+//  ⚠️ NOTE: ye SIMPLE lazy singleton hai (bas null-check, koi lock nahi) —
+//  RestaurantManager wale DCL se kam safe hai (multi-thread me race ho
+//  sakta hai). Ek hi project me do alag singleton styles — L10 me inka
+//  farq detail me hai. Consistency ke liye dono ko Meyers karna better hota.
+// ============================================================================
 #ifndef ORDER_MANAGER_H
 #define ORDER_MANAGER_H
 

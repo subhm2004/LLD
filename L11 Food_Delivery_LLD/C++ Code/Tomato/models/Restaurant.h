@@ -1,5 +1,11 @@
-// Restaurant.h — Restaurant model: id, naam, location, aur uska menu (MenuItems).
-// RestaurantManager inhe manage karta hai.
+// ============================================================================
+//  Restaurant.h — Restaurant model: id, naam, location, aur menu
+// ----------------------------------------------------------------------------
+//  Ek restaurant ka data + uska menu (MenuItems ki list). nextRestaurantId
+//  static counter se auto-incrementing id milti hai. Location matchmaking
+//  ke liye zaroori — searchByLocation isi field pe match karta hai.
+//  RestaurantManager (Singleton) inhe manage/store karta hai.
+// ============================================================================
 #ifndef RESTAURANT_H
 #define RESTAURANT_H
 

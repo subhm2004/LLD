@@ -1,9 +1,20 @@
 // ============================================================================
-//  main.cpp  —  Tomato food-delivery system ka demo driver
+//  main.cpp  —  TOMATO food-delivery app ka demo driver (L11 LLD project)
 // ----------------------------------------------------------------------------
-//  End-to-end flow chalata hai: user banao -> restaurant search -> cart me item
-//  add -> order place (now/scheduled) -> payment (UPI/CreditCard strategy) ->
-//  notification. Sab kaam TomatoApp facade ke through.
+//  "Tomato" = Zomato/Swiggy ka mini version! End-to-end happy flow:
+//
+//   User banao -> searchRestaurants("Delhi") -> restaurant select ->
+//   addToCart(P1, P2) -> checkoutNow (Delivery + UPI strategy) ->
+//   payForOrder -> payment success -> notification + cart clear
+//
+//  DHYAN DO: client (ye file) sirf TOMATOAPP (Facade) se baat karta hai —
+//  RestaurantManager, OrderManager, factories, notification... sab andar
+//  chhupa hai. Ek bhi manager/factory ka naam yahan nahi dikhta (UPI
+//  strategy inject karna client ka decision hai isliye wo dikhti hai).
+//
+//  IS PROJECT ME 4 PATTERNS: Facade (TomatoApp) + Singleton (managers) +
+//  Strategy (payment) + Factory Method (now/scheduled orders).
+//  Detail: ../design_patterns_used.md padho!
 // ============================================================================
 #include <iostream>
 #include "TomatoApp.h"

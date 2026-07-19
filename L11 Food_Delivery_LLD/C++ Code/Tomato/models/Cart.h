@@ -1,5 +1,13 @@
-// Cart.h — User ka shopping cart: chosen restaurant + uske menu items ki list,
-// aur total amount nikalta hai. Order place karne se pehle ka state.
+// ============================================================================
+//  Cart.h — User ka shopping cart (order banne se PEHLE ka state) 🛒
+// ----------------------------------------------------------------------------
+//  Ek restaurant + uske chune hue menu items ki list. Total khud jodta hai.
+//  DESIGN RULE: item add karne se PEHLE restaurant set hona ZAROORI hai —
+//  addItem() guard karta hai (bina restaurant ke item add nahi hoga), aur
+//  isEmpty() bhi restaurant null hone ko empty maanta hai.
+//  Ek Cart me ek hi restaurant ke items (do restaurants mix nahi hote).
+//  Payment success ke baad clear() se cart khaali (main.cpp me hota hai).
+// ============================================================================
 #ifndef CART_H
 #define CART_H
 

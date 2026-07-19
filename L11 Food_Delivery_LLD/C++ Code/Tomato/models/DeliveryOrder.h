@@ -1,5 +1,10 @@
-// DeliveryOrder.h — Order ka woh type jahan khana user ke address pe DELIVER
-// hota hai (delivery address extra field). Order base ko extend karta hai.
+// ============================================================================
+//  DeliveryOrder.h — Concrete Order #1: khana user ke ADDRESS pe deliver
+// ----------------------------------------------------------------------------
+//  Order base ko extend karta hai + ek extra field: userAddress (kahan
+//  deliver karna hai). getType() "Delivery" return karta hai. Factory isi
+//  ko banati hai jab orderType == "Delivery" ho.
+// ============================================================================
 #ifndef DELIVERY_ORDER_H
 #define DELIVERY_ORDER_H
 

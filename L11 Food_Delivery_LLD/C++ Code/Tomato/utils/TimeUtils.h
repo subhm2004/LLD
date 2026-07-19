@@ -1,5 +1,10 @@
-// TimeUtils.h — Chhota helper: current time / formatted time strings dene ke
-// liye. Now vs Scheduled orders ke timestamps yahin se aate hain.
+// ============================================================================
+//  TimeUtils.h — Chhota time helper (current time string)
+// ----------------------------------------------------------------------------
+//  getCurrentTime() abhi ka time ek readable string me deta hai (ctime se,
+//  trailing newline hata ke). NowOrderFactory isse use karta hai order ka
+//  scheduled time set karne ke liye. Static utility — koi state nahi.
+// ============================================================================
 #ifndef TIME_UTILS_H
 #define TIME_UTILS_H
 

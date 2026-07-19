@@ -1,5 +1,10 @@
-// User.h — App ka user: id, naam, address, aur uska apna Cart. Orders isi user
-// ke against bante hain.
+// ============================================================================
+//  User.h — App ka user: id, naam, address, aur apna Cart
+// ----------------------------------------------------------------------------
+//  Har user ke paas apna EK Cart hota hai (constructor me banta, destructor
+//  me delete — User Cart ka MALIK hai). Orders isi user ke against bante hain.
+//  Address delivery orders me use hota hai (khana kahan bhejna hai).
+// ============================================================================
 #ifndef USER_H
 #define USER_H
 

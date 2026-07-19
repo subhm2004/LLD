@@ -1,5 +1,10 @@
-// ScheduledOrderFactory.h — Concrete factory: future time ke liye scheduled
-// order banata hai (user-given time). OrderFactory interface implement karta hai.
+// ============================================================================
+//  ScheduledOrderFactory.h — Concrete Factory #2: FUTURE time wala order
+// ----------------------------------------------------------------------------
+//  NowOrderFactory jaisa hi, PAR scheduled time constructor se aata hai
+//  (user-given future time, current nahi). checkoutScheduled() isse use karta.
+//  Baaki sab same: orderType se Delivery/Pickup, phir order fields set.
+// ============================================================================
 #ifndef SCHEDULED_ORDER_FACTORY_H
 #define SCHEDULED_ORDER_FACTORY_H
 
@@ -25,10 +30,15 @@ public:
             auto deliveryOrder = new DeliveryOrder();
             deliveryOrder->setUserAddress(user->getAddress());
             order = deliveryOrder;
-        } 
+        }
         else {
             auto pickupOrder = new PickupOrder();
             pickupOrder->setRestaurantAddress(restaurant->getLocation());
+            // BUG FIX: pehle yahan `order = pickupOrder;` MISSING tha —
+            // isse pickup order me `order` nullptr reh jaata aur neeche
+            // order->setUser() pe CRASH ho jaata (segfault). NowOrderFactory
+            // me ye line sahi thi, yahan copy karte waqt chhoot gayi thi.
+            order = pickupOrder;
         }
         order->setUser(user);
         order->setRestaurant(restaurant);

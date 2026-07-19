@@ -1,5 +1,10 @@
-// MenuItem.h — Restaurant ke menu ka ek item (code, naam, price). Cart aur Order
-// inhi items se bante hain.
+// ============================================================================
+//  MenuItem.h — Menu ka ek item: code (P1/P2...), naam, price
+// ----------------------------------------------------------------------------
+//  Sabse basic data holder. `code` se item identify hota hai (addToCart
+//  isi code se menu me item dhundta hai). Cart aur Order inhi items ki
+//  COPIES rakhte hain (pointers nahi — value type, simple ownership).
+// ============================================================================
 #ifndef MENUITEM_H
 #define MENUITEM_H
 

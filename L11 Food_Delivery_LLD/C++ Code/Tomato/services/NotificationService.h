@@ -1,5 +1,12 @@
-// NotificationService.h — Order confirm hone par user ko notification/receipt
-// bhejta hai (order summary print). Notification concern ko alag rakhta hai.
+// ============================================================================
+//  NotificationService.h — Order confirm hone par receipt/notification bhejo
+// ----------------------------------------------------------------------------
+//  Payment success ke baad order ki poori summary print karta hai (id,
+//  customer, restaurant, items, total, time). SEPARATION OF CONCERNS:
+//  notification ka kaam alag class me — Order/Payment isse mixed nahi.
+//  Kal SMS/email/push add karna ho to bas yahi class badlegi (ya Strategy/
+//  Observer laga sakte ho — L12/L14 wala). Abhi static print-only.
+// ============================================================================
 #ifndef NOTIFICATION_SERVICE_H
 #define NOTIFICATION_SERVICE_H
 

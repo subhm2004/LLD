@@ -1,11 +1,33 @@
 // ============================================================================
-//  ProtectionProxy.cpp  —  Proxy Pattern (Structural) : PROTECTION proxy variant
+//  ProtectionProxy.cpp  —  PROXY PATTERN (Structural) : PROTECTION proxy variant
 // ----------------------------------------------------------------------------
-//  Protection Proxy = access control ka kaam karta hai. Real object tak request
-//  tabhi jaati hai jab AUTHORIZATION pass ho. Yahan DocumentProxy pehle check
-//  karta hai ki user premium hai ya nahi — non-premium ko block, premium ko
-//  RealDocumentReader tak forward. Security logic proxy me, client me scattered
-//  nahi. Same interface (IDocumentReader) hone se client ko farq nahi padta.
+//  Protection Proxy = "real object tak request TABHI jaane do jab AUTHORIZATION
+//                      pass ho — proxy ek SECURITY GUARD 💂 ki tarah kaam kare."
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  PROTECTION PROXY ka kaam — ACCESS CONTROL:                             │
+//  │                                                                          │
+//  │    Yahan: PDF unlock karna sirf PREMIUM users ke liye allowed hai.      │
+//  │                                                                          │
+//  │    DocumentProxy pehle CHECK karta hai — user premium hai?              │
+//  │      - Nahi (Rohan)  -> "Access denied" — real reader tak jaane hi nahi │
+//  │                          diya (request wahin block!)                    │
+//  │      - Haan (Rashmi) -> RealDocumentReader ko forward — PDF unlock       │
+//  │                                                                          │
+//  │    Security logic EK jagah (proxy me) — har client me if(premium)       │
+//  │    check bikhra nahi. Naya rule (jaise "sirf office hours") add karna   │
+//  │    ho to sirf proxy badlega, RealReader untouched. ✅                   │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  PATTERN KE ROLES:
+//    1. Subject (interface) -> IDocumentReader     : common contract (unlockPDF)
+//    2. RealSubject         -> RealDocumentReader  : asli PDF unlock karta hai
+//    3. Proxy               -> DocumentProxy       : premium check karke forward
+//    4. Client              -> main()              : IDocumentReader* use karta
+//
+//  📌 KEY IDEA: Proxy aur RealSubject dono SAME interface (IDocumentReader)
+//  implement karte hain — isliye client ko farq hi nahi padta ki beech me
+//  security guard khada hai. Bas kaam authorized hone pe hota hai.
 // ============================================================================
 #include <iostream>
 #include <string>
@@ -53,12 +75,15 @@ public:
     }
 
     void unlockPDF(string filePath, string password) override {
+        // >>> ACCESS CONTROL CHECK (proxy ka asli kaam) <<<
+        // Non-premium user? -> request YAHIN block, real reader tak jaane
+        // hi nahi diya. Ye "guard at the gate" hai.
         if (!user->premium_Membership) {
             cout << "[DocumentProxy] Access denied. Only premium members can unlock PDFs.\n";
-            return;
+            return;  // real object ko call kiye bina wapas
         }
 
-        // Forwarding the request to the real reader
+        // Authorization pass -> ab asli kaam RealDocumentReader ko forward
         realReader->unlockPDF(filePath, password);
     }
 
@@ -83,5 +108,21 @@ int main() {
     docReader->unlockPDF("protected_document.pdf", "secret123");
     delete docReader;
 
+    // NOTE: user1/user2 delete nahi hue (chhota demo) — production me cleanup!
     return 0;
 }
+
+// ============================================================================
+//  EXPECTED OUTPUT:
+// ----------------------------------------------------------------------------
+//  == Rohan (Non-Premium) tries to unlock PDF ==
+//  [DocumentProxy] Access denied. Only premium members can unlock PDFs.
+//                                    ^^ real reader tak pahuncha hi nahi!
+//  == Rashmi (Premium) unlocks PDF ==
+//  [RealDocumentReader] Unlocking PDF at: protected_document.pdf
+//  [RealDocumentReader] PDF unlocked successfully with password: secret123
+//  [RealDocumentReader] Displaying PDF content...
+//
+//  Rohan block, Rashmi allowed — SAME interface, alag access. Yahi
+//  protection proxy ka pura point! ✅
+// ============================================================================

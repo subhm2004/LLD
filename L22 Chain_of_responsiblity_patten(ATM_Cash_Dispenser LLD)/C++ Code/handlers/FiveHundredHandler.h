@@ -1,5 +1,10 @@
-// handlers/FiveHundredHandler.h — ₹500 notes dispense karta hai, baaki ₹200
-// handler ko forward. Chain me Thousand ke baad. MoneyHandler extend karta hai.
+// ============================================================================
+//  handlers/FiveHundredHandler.h — ₹500 notes handler (chain me 2nd)
+// ----------------------------------------------------------------------------
+//  Same 4-step dispense pattern (ThousandHandler jaisa), bas denomination
+//  500. ₹1000 handler se bacha hua amount yahan aata hai; yahan se bacha
+//  ₹200 handler ko forward. Chain: Thousand -> [FiveHundred] -> TwoHundred.
+// ============================================================================
 #ifndef COR_ATM_HANDLERS_FIVE_HUNDRED_HANDLER_H
 #define COR_ATM_HANDLERS_FIVE_HUNDRED_HANDLER_H
 

@@ -1,5 +1,13 @@
-// handlers/ThousandHandler.h — Chain ka pehla handler: ₹1000 ke notes dispense
-// karta hai (jitne possible), baaki ₹500 handler ko forward. MoneyHandler extend.
+// ============================================================================
+//  handlers/ThousandHandler.h — Chain ka PEHLA handler (₹1000 notes)
+// ----------------------------------------------------------------------------
+//  dispense() ka 4-step pattern (saare handlers me yahi, sirf denomination alag):
+//    1. notesNeeded = amount/1000 (kitne ₹1000 note chahiye)
+//    2. stock check: itne hain? nahi to jitne hain utne do, stock 0 karo
+//    3. jo diye print karo
+//    4. bacha hua amount NEXT handler (₹500) ko forward -> yahi CoR ka core!
+//  Chain ka sabse pehla link — bade note se shuru taaki kam notes me kaam ho.
+// ============================================================================
 #ifndef COR_ATM_HANDLERS_THOUSAND_HANDLER_H
 #define COR_ATM_HANDLERS_THOUSAND_HANDLER_H
 

@@ -1,6 +1,11 @@
-// handlers/MoneyHandler.h — Chain of Responsibility ka BASE handler. Har handler
-// apni denomination ke notes dispense karta hai aur bacha hua amount NEXT handler
-// ko pass karta hai (setNextHandler). Yahi CoR ki reedh ki haddi hai.
+// ============================================================================
+//  handlers/MoneyHandler.h — CoR ka BASE handler (chain ki reedh ki haddi)
+// ----------------------------------------------------------------------------
+//  Har handler ke paas: nextHandler pointer (chain ki agli kadi) + dispense()
+//  (pure virtual — har denomination handler apna logic deta hai).
+//  setNextHandler() se handlers ek linked chain me jud-te hain. Yahi 2
+//  cheezein pura Chain of Responsibility banati hain.
+// ============================================================================
 #ifndef COR_ATM_HANDLERS_MONEY_HANDLER_H
 #define COR_ATM_HANDLERS_MONEY_HANDLER_H
 
@@ -17,7 +22,13 @@ public:
     void setNextHandler(MoneyHandler *next) { nextHandler = next; }
 
     virtual void dispense(int amount) = 0;
-    virtual ~MoneyHandler() = default;
+
+    // RECURSIVE CLEANUP FIX: pehle ye `= default` tha, jisse
+    // manager ka `delete chainHead_` sirf pehla handler delete karta aur
+    // baaki 3 LEAK ho jaate. Ab har handler apne NEXT ko delete karta hai
+    // -> head delete karo, poori chain domino ki tarah saaf! (L24 Coupon
+    // chain wala hi trick — CoR chains me ye standard cleanup hai.)
+    virtual ~MoneyHandler() { delete nextHandler; }
 };
 
 } // namespace cor_atm

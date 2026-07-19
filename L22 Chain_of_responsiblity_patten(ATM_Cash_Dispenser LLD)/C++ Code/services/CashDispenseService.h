@@ -1,6 +1,17 @@
-// services/CashDispenseService.h — High-level service: withdrawal request leta hai,
-// inventory check karta hai, aur chain manager ke through dispense start karta hai.
-// Client ke liye single entry-point (handlers/chain ka jhamela chhupata hai).
+// ============================================================================
+//  services/CashDispenseService.h — client-facing WITHDRAW API (facade-ish)
+// ----------------------------------------------------------------------------
+//  High-level service — client ko handlers/chain ka jhamela nahi dekhna padta,
+//  bas withdraw() call karo. Do kaam:
+//    initialize() -> inventory set + manager se chain bana lo
+//    withdraw()   -> VALIDATE (amount > 0, ₹100 ka multiple), phir chain
+//                    head se dispense start karo, DispenseStatus return
+//
+//  ⭐ VALIDATION monolith se bada improvement hai: yahan galat amount
+//  (jaise ₹150 ya -500) pehle hi pakda jaata hai (INVALID_AMOUNT status),
+//  chain tak jaane se pehle. Monolith me ye check tha hi nahi — seedha
+//  dispense chalu ho jaata. Layered design me validation service layer me.
+// ============================================================================
 #ifndef COR_ATM_SERVICES_CASH_DISPENSE_SERVICE_H
 #define COR_ATM_SERVICES_CASH_DISPENSE_SERVICE_H
 

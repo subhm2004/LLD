@@ -1,6 +1,19 @@
-// managers/CashDispenseChainManager.h — Handlers ki chain ko WIRE karta hai:
-// Thousand -> FiveHundred -> TwoHundred -> Hundred. Ek hi jagah chain banती hai,
-// taaki order/links galat na hon. Service isi se dispense start karti hai.
+// ============================================================================
+//  managers/CashDispenseChainManager.h — chain ka BUILDER + OWNER
+// ----------------------------------------------------------------------------
+//  Ye class handlers ki chain ek jagah WIRE karti hai (Thousand -> FiveHundred
+//  -> TwoHundred -> Hundred) — order EK jagah define, galat links ka risk nahi.
+//  Inventory se har handler ka note-count leti hai (kitne notes available).
+//
+//  ⭐ OWNERSHIP + CLEANUP (monolith se bada improvement):
+//  chainHead_ pointer rakhta hai; destroyChain() `delete chainHead_` karta
+//  hai. Pehle isme ek LEAK tha (sirf pehla handler delete hota, baaki 3
+//  leak), par ab MoneyHandler ka destructor RECURSIVE hai (apne next ko
+//  delete karta hai) -> head delete = poori chain saaf. buildChain() bhi
+//  pehle destroyChain() call karta hai taaki re-init pe purani chain leak na ho.
+//  Monolith (COR_Original.cpp) me to cleanup tha hi nahi — ye modular
+//  version usse behtar hai.
+// ============================================================================
 #ifndef COR_ATM_MANAGERS_CASH_DISPENSE_CHAIN_MANAGER_H
 #define COR_ATM_MANAGERS_CASH_DISPENSE_CHAIN_MANAGER_H
 

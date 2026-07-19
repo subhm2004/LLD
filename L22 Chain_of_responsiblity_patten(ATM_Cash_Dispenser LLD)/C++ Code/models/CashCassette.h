@@ -1,5 +1,12 @@
-// models/CashCassette.h — Ek denomination ka cassette (drawer): note value +
-// available count. Inventory inhi cassettes se banti hai.
+// ============================================================================
+//  models/CashCassette.h — Ek denomination ka CASSETTE (drawer) 🗄️
+// ----------------------------------------------------------------------------
+//  Asli ATM me har note-value ka apna physical cassette (tray) hota hai.
+//  Ye model wahi represent karta hai: kaunsa denomination + kitne notes.
+//  Inventory in cassettes ka collection hai. setNumNotes() se count update
+//  ho sakta hai (dispense ke baad ghatana). Real-world modeling ka achha
+//  example — monolith me sirf `int numNotes` tha, yahan proper model.
+// ============================================================================
 #ifndef COR_ATM_MODELS_CASH_CASSETTE_H
 #define COR_ATM_MODELS_CASH_CASSETTE_H
 

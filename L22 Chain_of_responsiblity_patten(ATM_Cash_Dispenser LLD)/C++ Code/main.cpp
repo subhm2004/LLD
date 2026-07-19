@@ -1,15 +1,26 @@
-/*
- * Chain of Responsibility — ATM cash dispense (L22)
- *
- * Layered layout:
- *   enums/     → NoteDenomination, DispenseStatus
- *   models/    → CashCassette, ATMCashInventory, WithdrawalRequest
- *   handlers/  → MoneyHandler + concrete handlers (original CoR logic)
- *   managers/  → CashDispenseChainManager (builds ₹1000→₹500→₹200→₹100 chain)
- *   services/  → CashDispenseService (withdraw API)
- *
- * Handler dispense() logic is unchanged from the original single-file demo.
- */
+// ============================================================================
+//  main.cpp — CHAIN OF RESPONSIBILITY: ATM cash dispenser (MODULAR version)
+// ----------------------------------------------------------------------------
+//  COR_Original.cpp ka MODULAR/LAYERED version — same CoR logic, par clean
+//  folders me tuta hua (real-project structure).
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  LAYERS (har concern apni jagah):                                       │
+//  │    enums/     -> NoteDenomination (1000/500/200/100), DispenseStatus    │
+//  │    models/    -> CashCassette (ek drawer), ATMCashInventory (sab stock),│
+//  │                  WithdrawalRequest (kitna nikalna hai)                  │
+//  │    handlers/  -> MoneyHandler + 4 concrete (CoR ka asli dil)            │
+//  │    managers/  -> CashDispenseChainManager (chain WIRE karta hai)        │
+//  │    services/  -> CashDispenseService (client-facing withdraw API)       │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  FLOW: main -> Service.withdraw() -> Manager ne bana rakhi chain ->
+//        handlers ek-ek karke notes dispense karte hain (CoR).
+//
+//  MONOLITH vs MODULAR: dispense() ka CoR logic BILKUL SAME hai dono me —
+//  farq sirf organization ka. Monolith seekhne ke liye (sab dikhta hai),
+//  modular real code jaisa (inventory model, service layer, clean cleanup).
+// ============================================================================
 
 #include <bits/stdc++.h>
 

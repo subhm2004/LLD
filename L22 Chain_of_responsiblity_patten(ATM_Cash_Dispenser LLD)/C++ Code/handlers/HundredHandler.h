@@ -1,6 +1,11 @@
-// handlers/HundredHandler.h — Chain ka aakhri handler: ₹100 notes dispense karta
-// hai. Iske baad koi next nahi — agar phir bhi amount bacha to dispense fail.
-// MoneyHandler extend karta hai.
+// ============================================================================
+//  handlers/HundredHandler.h — AAKHRI handler (₹100 notes, chain ka end)
+// ----------------------------------------------------------------------------
+//  Same 4-step dispense pattern, denomination 100. Ye chain ka LAST link hai
+//  (nextHandler = nullptr). Agar iske baad bhi amount bacha to "Insufficient
+//  fund" — ATM ke paas sahi combination ke notes nahi the. Chain khatam.
+//  Chain: ... TwoHundred -> [Hundred] -> (end).
+// ============================================================================
 #ifndef COR_ATM_HANDLERS_HUNDRED_HANDLER_H
 #define COR_ATM_HANDLERS_HUNDRED_HANDLER_H
 

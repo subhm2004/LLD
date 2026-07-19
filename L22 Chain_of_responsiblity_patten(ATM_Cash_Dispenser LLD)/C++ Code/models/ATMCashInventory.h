@@ -1,5 +1,16 @@
-// models/ATMCashInventory.h — ATM me har denomination ke kitne notes hain, iska
-// hisaab (cassettes ka collection). Handlers yahin se notes nikalte/ghatate hain.
+// ============================================================================
+//  models/ATMCashInventory.h — ATM ka POORA cash stock (cassettes ka collection)
+// ----------------------------------------------------------------------------
+//  Har denomination ka ek cassette (drawer) — inventory unka map rakhti hai
+//  (denomination -> CashCassette). addCassette() se stock set, getNumNotes()
+//  se kisi denomination ke available notes.
+//
+//  DETAIL: map ki key `enum class NoteDenomination` hai — par unordered_map
+//  ko key HASH karna aata nahi (enum class ke liye default hash nahi hota),
+//  isliye custom NoteDenominationHash struct banaya hai jo enum ko int me
+//  badal ke hash karta hai. Ye C++ ka ek common gotcha hai (enum class as
+//  unordered_map key)! Manager isse har handler ka note-count leta hai.
+// ============================================================================
 #ifndef COR_ATM_MODELS_ATM_CASH_INVENTORY_H
 #define COR_ATM_MODELS_ATM_CASH_INVENTORY_H
 

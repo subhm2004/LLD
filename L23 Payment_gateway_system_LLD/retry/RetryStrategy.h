@@ -1,5 +1,13 @@
-// retry/RetryStrategy.h — STRATEGY interface for retry timing: "kitni der ruko
-// before next attempt". Concrete: Linear vs ExponentialBackoff. Proxy isse use karta.
+// ============================================================================
+//  retry/RetryStrategy.h — STRATEGY interface (L8): retry ka TIMING
+// ----------------------------------------------------------------------------
+//  "Fail hone pe kitni baar aur kitni der baad retry karein?" — ye policy
+//  swap-able strategy hai. Proxy isse use karta hai (kab-kitna wait karke
+//  retry). Do concrete: Linear (fixed wait) vs ExponentialBackoff (badhta wait).
+//  Contract: getMaxRetries (kitni baar), getDelayMs (attempt pe kitni der),
+//  getName (logging ke liye). Nayi policy (jaise "jittered backoff") = nayi
+//  strategy class — proxy untouched.
+// ============================================================================
 #ifndef PAYMENT_GATEWAY_LLD_RETRY_RETRYSTRATEGY_H
 #define PAYMENT_GATEWAY_LLD_RETRY_RETRYSTRATEGY_H
 

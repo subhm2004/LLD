@@ -1,5 +1,12 @@
-// models/PaymentRequest.h — Common payment request data: sender, receiver,
-// amount, currency. Saare gateways isi unified model pe kaam karte hain.
+// ============================================================================
+//  models/PaymentRequest.h — Payment request data (sender/receiver/amount/currency)
+// ----------------------------------------------------------------------------
+//  Ek UNIFIED request model jispe SAARE gateways kaam karte hain — Paytm ho
+//  ya PayPal, sab yahi PaymentRequest lete hain. Isi uniform model ki wajah
+//  se gateways interchangeable hain. Simple struct (public fields).
+//  (NOTE: field ka naam "reciever" hai — spelling typo, par code me
+//  consistent hai isliye chalta hai.)
+// ============================================================================
 #ifndef PAYMENT_GATEWAY_LLD_MODELS_PAYMENTREQUEST_H
 #define PAYMENT_GATEWAY_LLD_MODELS_PAYMENTREQUEST_H
 

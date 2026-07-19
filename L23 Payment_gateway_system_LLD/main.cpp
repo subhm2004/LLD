@@ -1,10 +1,42 @@
 // ============================================================================
-//  main.cpp  —  Multi-gateway Payment Gateway system ka demo driver
+//  main.cpp  —  MULTI-GATEWAY Payment System ka demo driver (L23 LLD project)
 // ----------------------------------------------------------------------------
-//  PaymentController ke through alag providers (Paytm UPI / Razorpay / PayPal)
-//  se payment, retry (linear/exponential) on failure, aur subscriptions ka
-//  billing cycle chalata hai. Patterns: Template Method + Strategy + Proxy +
-//  Factory + Singleton ek saath.
+//  System kya karta hai: alag payment providers (Paytm UPI / Razorpay / PayPal)
+//  se payment kara sakta hai, fail hone pe RETRY karta hai (linear/exponential
+//  backoff), aur subscriptions ka billing cycle bhi chalata hai. Poora
+//  payment-gateway ka mini LLD — 5 design patterns ek saath!
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  EK PAYMENT KA SAFAR (5 patterns milke):                                │
+//  │                                                                          │
+//  │   Controller.handlePayment(PAYTM, req)   [SINGLETON entry]              │
+//  │      │                                                                  │
+//  │      ▼                                                                  │
+//  │   GatewayFactory.getGateway(PAYTM)       [FACTORY]                      │
+//  │      │ banata hai: Proxy(PaytmGateway, RetryStrategy)                   │
+//  │      ▼                                                                  │
+//  │   PaymentGatewayProxy.processPayment()   [PROXY — retry wrapping]       │
+//  │      │ fail? -> RetryStrategy se delay -> phir try [STRATEGY]           │
+//  │      ▼                                                                  │
+//  │   PaytmGateway.processPayment()          [TEMPLATE METHOD]              │
+//  │      validate -> initiate -> confirm (fixed order, steps override)      │
+//  │      │                                                                  │
+//  │      ▼                                                                  │
+//  │   PaytmBankingSystem.processPayment()    [STRATEGY — backend]           │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  IS PROJECT ME 5 PATTERNS:
+//    Template Method -> PaymentGateway (validate->initiate->confirm skeleton)
+//    Strategy        -> RetryStrategy (retry timing) + BankingSystem (backend)
+//    Proxy           -> PaymentGatewayProxy (real gateway pe retry wrap)
+//    Factory         -> GatewayFactory + RetryStrategyFactory
+//    Singleton       -> Controller + PaymentService + factories (ek-ek instance)
+//  Detail: design_patterns_used.md padho!
+//
+//  NOTE: banking systems RANDOM success dete hain (80-90%) — isliye retry
+//  ka asli faayda dikhta hai (kabhi pehli try fail, retry pe pass).
+//  ⚠️ MEMORY: req objects delete hote hain, par gateways/strategies (jo
+//  factory ne banaye) PaymentService.setGateway ke delete se clean hote.
 // ============================================================================
 #include <bits/stdc++.h>
 

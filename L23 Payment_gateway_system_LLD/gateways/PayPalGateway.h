@@ -1,6 +1,14 @@
-// gateways/PayPalGateway.h — Concrete gateway: PayPal flow (wallet emails,
-// international currency validation USD/EUR/GBP, unique transaction ID).
-// PaymentGateway extend karta hai.
+// ============================================================================
+//  gateways/PayPalGateway.h — Concrete Gateway #3: PayPal flow (international)
+// ----------------------------------------------------------------------------
+//  Template Method ki 3 steps, PayPal style:
+//    validate -> amount > 0 AND currency USD/EUR/GBP (international only —
+//                INR reject! isliye demo me PayPal ke liye USD use hota)
+//    initiate -> PayPalBankingSystem (85% success)
+//    confirm  -> receipt (wallet emails "name@paypal.com", txn ID, timestamp)
+//  Teeno gateways compare karo: validate ka rule har ek me alag (INR-only,
+//  any, international-only) — same interface, provider-specific logic.
+// ============================================================================
 #ifndef PAYMENT_GATEWAY_LLD_GATEWAYS_PAYPALGATEWAY_H
 #define PAYMENT_GATEWAY_LLD_GATEWAYS_PAYPALGATEWAY_H
 

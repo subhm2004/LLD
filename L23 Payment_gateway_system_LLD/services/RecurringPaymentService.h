@@ -1,6 +1,20 @@
-// services/RecurringPaymentService.h — Subscriptions ko manage karta hai:
-// register, cancel, aur billing cycle par saari active subscriptions ko usi
-// payment flow (retries ke saath) se charge karta hai.
+// ============================================================================
+//  services/RecurringPaymentService.h — SINGLETON: subscriptions manager
+// ----------------------------------------------------------------------------
+//  Netflix/Spotify jaise recurring payments handle karta hai:
+//    registerSubscription() -> nayi subscription banao (SUB-1, SUB-2...)
+//    cancelSubscription()   -> active flag false (soft delete)
+//    processBillingCycle()  -> saari ACTIVE subscriptions ko charge karo
+//
+//  ⭐ REUSE: billing cycle me har active subscription ke liye WAHI payment
+//  flow use hota hai (GatewayFactory -> proxy -> gateway -> retry) jo
+//  one-time payment me tha! Ek hi payment infrastructure, do use-cases
+//  (one-time + recurring). Yahi achha layered design hai.
+//
+//  Cancel "soft" hai (active=false, object delete nahi) — history/audit ke
+//  liye subscription record rehta hai. billing cycle inactive ko skip karta.
+//  SINGLETON: ek hi subscription registry (static instance + inline).
+// ============================================================================
 #ifndef PAYMENT_GATEWAY_LLD_SERVICES_RECURRINGPAYMENTSERVICE_H
 #define PAYMENT_GATEWAY_LLD_SERVICES_RECURRINGPAYMENTSERVICE_H
 

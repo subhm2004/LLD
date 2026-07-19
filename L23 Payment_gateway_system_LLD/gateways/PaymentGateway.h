@@ -1,6 +1,30 @@
-// gateways/PaymentGateway.h — TEMPLATE METHOD base: processPayment() ka fixed
-// skeleton (validate -> initiate -> confirm). Concrete gateways (Paytm/Razorpay/
-// PayPal) sirf apne provider-specific steps override karte hain, order base ke control me.
+// ============================================================================
+//  gateways/PaymentGateway.h — TEMPLATE METHOD base (L20): payment ka skeleton
+// ----------------------------------------------------------------------------
+//  Har payment provider ka flow SAME 3 steps ka hai — validate, initiate,
+//  confirm — ISI ORDER me. Par HAR provider ke ye steps alag hote hain
+//  (Paytm UPI check, Razorpay account, PayPal currency...).
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  TEMPLATE METHOD: processPayment() = FIXED SKELETON                     │
+//  │                                                                          │
+//  │   bool processPayment(req) {          // <- ye template method hai      │
+//  │       if (!validatePayment(req)) return false;   // STEP 1 (abstract)   │
+//  │       if (!initiatePayment(req)) return false;   // STEP 2 (abstract)   │
+//  │       if (!confirmPayment(req))  return false;   // STEP 3 (abstract)   │
+//  │       return true;                                                      │
+//  │   }                                                                     │
+//  │                                                                          │
+//  │  Order base ke CONTROL me (koi provider steps ka order nahi badal       │
+//  │  sakta), par HAR step subclass fill karti hai (pure virtual). Kisi bhi  │
+//  │  step ne false diya to poora flow fail — fail-fast!                     │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  DHYAN DO — har gateway ke paas ek BANKING SYSTEM (Strategy) bhi hai jo
+//  actual money process karta hai. Do patterns ek class me: Template Method
+//  (flow skeleton) + Strategy (banking backend, composition).
+//  (Paytm/Razorpay/PayPal isko extend karte hain — teeno neeche.)
+// ============================================================================
 #ifndef PAYMENT_GATEWAY_LLD_GATEWAYS_PAYMENTGATEWAY_H
 #define PAYMENT_GATEWAY_LLD_GATEWAYS_PAYMENTGATEWAY_H
 

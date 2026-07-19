@@ -1,5 +1,15 @@
-// gateways/PaytmGateway.h — Concrete gateway: Paytm UPI flow. Validate/initiate/
-// confirm steps override karta hai (source/dest UPI IDs, timestamp, reference no.).
+// ============================================================================
+//  gateways/PaytmGateway.h — Concrete Gateway #1: Paytm UPI flow
+// ----------------------------------------------------------------------------
+//  Template Method (PaymentGateway) ki 3 steps override karta hai apne Paytm
+//  tareeke se:
+//    validate -> amount > 0 AND currency == "INR" (Paytm sirf INR!)
+//    initiate -> PaytmBankingSystem (strategy) se paisa process
+//    confirm  -> UPI receipt print (from/to UPI IDs, ref number, timestamp)
+//  Constructor me apna BankingSystem (PaytmBankingSystem) set karta hai —
+//  yahi Strategy injection hai (har gateway ka apna banking backend).
+//  UPI-specific formatting PaytmTransactionUtil se aati hai.
+// ============================================================================
 #ifndef PAYMENT_GATEWAY_LLD_GATEWAYS_PAYTMGATEWAY_H
 #define PAYMENT_GATEWAY_LLD_GATEWAYS_PAYTMGATEWAY_H
 

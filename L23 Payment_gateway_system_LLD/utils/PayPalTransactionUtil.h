@@ -1,5 +1,13 @@
-// utils/PayPalTransactionUtil.h — PayPal ke liye helper: unique transaction ID,
-// timestamp etc. generate karta hai.
+// ============================================================================
+//  utils/PayPalTransactionUtil.h — PayPal receipt helpers (static utility)
+// ----------------------------------------------------------------------------
+//  PayPalGateway ke confirm step ke helpers:
+//    toPayPalEmail()         -> naam se wallet email ("name@paypal.com")
+//    formatTimestamp()       -> timestamp string
+//    generateTransactionId() -> unique "PAYPAL-<timestamp><counter>"
+//  Teeno utils (Paytm/Razorpay/PayPal) ka structure same — sirf format
+//  aur identifiers alag (UPI vs A/C vs email). Static utility, no state.
+// ============================================================================
 #ifndef PAYMENT_GATEWAY_LLD_UTILS_PAYPALTRANSACTIONUTIL_H
 #define PAYMENT_GATEWAY_LLD_UTILS_PAYPALTRANSACTIONUTIL_H
 

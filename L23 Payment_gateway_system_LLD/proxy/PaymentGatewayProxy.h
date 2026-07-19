@@ -1,6 +1,32 @@
-// proxy/PaymentGatewayProxy.h — PROXY around a PaymentGateway: same interface,
-// par failure par RETRY add karta hai (retry strategy ke through). Retry ka
-// cross-cutting concern gateway code se bahar rehta hai.
+// ============================================================================
+//  proxy/PaymentGatewayProxy.h — PROXY (L21): real gateway pe RETRY wrap 🔄
+// ----------------------------------------------------------------------------
+//  Ye proxy real PaymentGateway ko wrap karta hai — SAME interface deta hai
+//  (PaymentGateway extend karta), par ek extra kaam add karta: FAILURE par
+//  RETRY. Gateway ko retry logic khud nahi rakhna padta (cross-cutting
+//  concern bahar rehta).
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  RETRY FLOW (proxy ka asli kaam):                                       │
+//  │                                                                          │
+//  │   for attempt in 0..maxRetries:                                         │
+//  │       if attempt > 0:                                                   │
+//  │           delay = retryStrategy->getDelayMs(attempt)  [STRATEGY]        │
+//  │           sleep(delay)   // linear: fixed | exponential: badhta         │
+//  │       result = realGateway->processPayment()  // asli kaam delegate     │
+//  │       if result: break   // pass ho gaya, ruk jao                       │
+//  │                                                                          │
+//  │  Client ko proxy aur real gateway me FARQ nahi (dono PaymentGateway).   │
+//  │  Retry KITNI der aur KITNI baar — ye RetryStrategy decide karti hai     │
+//  │  (Proxy + Strategy ka combo!). Baaki methods seedha real ko forward.    │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  ⭐ PROXY vs DECORATOR: yahan proxy "behavior add" (retry) kar raha hai jo
+//  Decorator jaisa lagta hai — par intent ACCESS CONTROL/management ka hai
+//  (real gateway tak controlled access), isliye Proxy. (Interview me ye
+//  overlap aata hai — intent se decide karo, structure se nahi.)
+//  Nested ownership: proxy real gateway + retry strategy DONO ka malik.
+// ============================================================================
 #ifndef PAYMENT_GATEWAY_LLD_PROXY_PAYMENTGATEWAYPROXY_H
 #define PAYMENT_GATEWAY_LLD_PROXY_PAYMENTGATEWAYPROXY_H
 

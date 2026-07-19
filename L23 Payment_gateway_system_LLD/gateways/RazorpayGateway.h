@@ -1,5 +1,13 @@
-// gateways/RazorpayGateway.h — Concrete gateway: Razorpay flow (bank account
-// numbers, completion timestamp, unique payment ID). PaymentGateway extend karta hai.
+// ============================================================================
+//  gateways/RazorpayGateway.h — Concrete Gateway #2: Razorpay flow
+// ----------------------------------------------------------------------------
+//  Template Method ki 3 steps, Razorpay style:
+//    validate -> amount > 0 (Razorpay any currency accept karta, Paytm nahi!)
+//    initiate -> RazorpayBankingSystem (90% success — sabse reliable)
+//    confirm  -> receipt (bank A/C numbers, payment ID "pay_...", timestamp)
+//  Har gateway ka validate DIFFERENT hai — yahi Template Method ka point:
+//    same skeleton (validate->initiate->confirm), alag implementations.
+// ============================================================================
 #ifndef PAYMENT_GATEWAY_LLD_GATEWAYS_RAZORPAYGATEWAY_H
 #define PAYMENT_GATEWAY_LLD_GATEWAYS_RAZORPAYGATEWAY_H
 

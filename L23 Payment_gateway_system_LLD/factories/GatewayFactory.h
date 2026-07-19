@@ -1,6 +1,26 @@
-// factories/GatewayFactory.h — FACTORY (Singleton): GatewayType ke hisaab se
-// sahi gateway banata hai, AUR usse retry-proxy me wrap karke deta hai. Client
-// ko hamesha ek ready-to-use proxied gateway milta hai.
+// ============================================================================
+//  factories/GatewayFactory.h — FACTORY (Singleton): gateway + proxy assembler
+// ----------------------------------------------------------------------------
+//  Ye is project ka SABSE IMPORTANT factory hai — 3 patterns ko ek saath
+//  assemble karta hai! getGateway() ke andar:
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │   1. RetryStrategyFactory se retry strategy banao   [FACTORY]           │
+//  │   2. GatewayType dekh ke sahi real gateway banao     [FACTORY]          │
+//  │      (PaytmGateway / RazorpayGateway / PayPalGateway) [TEMPLATE METHOD] │
+//  │   3. real gateway ko PROXY me wrap karo (retry ke saath) [PROXY]        │
+//  │                                                                          │
+//  │   return new PaymentGatewayProxy(new PaytmGateway(), strategy);         │
+//  │              ^^^^^ PROXY          ^^^^^ real gateway  ^^^^ retry strategy│
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  Client ko HAMESHA ek ready-to-use PROXIED gateway milta hai — usse pata
+//  hi nahi ki andar proxy + real gateway + retry strategy ka poora setup hai.
+//  Yahi factory ka fayda: complex object assembly EK jagah chhupi hui.
+//
+//  defaultRetryConfig() har gateway ke liye alag retry config deta (Paytm 3x
+//  200ms, PayPal 3x 150ms...) — provider-specific tuning. SINGLETON: ek factory.
+// ============================================================================
 #ifndef PAYMENT_GATEWAY_LLD_FACTORIES_GATEWAYFACTORY_H
 #define PAYMENT_GATEWAY_LLD_FACTORIES_GATEWAYFACTORY_H
 

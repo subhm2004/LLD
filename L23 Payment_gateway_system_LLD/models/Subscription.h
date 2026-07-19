@@ -1,5 +1,12 @@
-// models/Subscription.h — Recurring payment ka data: subscriber, receiver,
-// amount, currency, gateway, billing interval, active/cancelled status.
+// ============================================================================
+//  models/Subscription.h — Recurring payment ka data (Netflix/Spotify jaisa)
+// ----------------------------------------------------------------------------
+//  Ek subscription record: id, subscriber, receiver, amount, currency,
+//  kaunsa gateway use karega, billing interval (weekly/monthly), aur active
+//  flag. RecurringPaymentService inhe manage karta; billing cycle me har
+//  active subscription charge hota. `active` false = cancelled (soft delete).
+//  Simple struct — data holder, koi logic nahi.
+// ============================================================================
 #ifndef PAYMENT_GATEWAY_LLD_MODELS_SUBSCRIPTION_H
 #define PAYMENT_GATEWAY_LLD_MODELS_SUBSCRIPTION_H
 

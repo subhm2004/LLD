@@ -1,10 +1,24 @@
 // ============================================================================
-//  PaymentGatewayApplication.cpp  —  Payment Gateway (original single-file)
+//  PaymentGatewayApplication.cpp — PAYMENT GATEWAY (single-file MONOLITH)
 // ----------------------------------------------------------------------------
-//  Poore multi-gateway payment system ka original monolithic version (saari
-//  classes ek file me). Modular, folder-based version parent folder me hai
-//  (gateways/, proxy/, retry/, factories/, services/, controllers/).
-//  Is file me detail me (Hinglish + English mix) comments add kiye gaye hain.
+//  Poora multi-gateway payment system EK file me — original version. Modular
+//  folder-based version parent folder me hai (gateways/, proxy/, retry/,
+//  factories/, services/, controllers/). Detail: ../design_patterns_used.md
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  EK PAYMENT KA SAFAR (5 patterns milke):                                │
+//  │   Controller [SINGLETON] -> GatewayFactory [FACTORY] -> Proxy [PROXY]   │
+//  │      -> real Gateway [TEMPLATE METHOD: validate->initiate->confirm]     │
+//  │      -> BankingSystem [STRATEGY], retry pe RetryStrategy [STRATEGY]     │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  IS FILE KA LAYOUT: PaymentRequest -> BankingSystem (Strategy) ->
+//  PaymentGateway (Template Method) + concrete gateways -> RetryStrategy
+//  (Strategy) -> Proxy -> Factories -> Service -> Controller -> main.
+//
+//  5 PATTERNS: Template Method + Strategy + Proxy + Factory + Singleton.
+//  Modular version me ye sab alag files me clean hain; ye monolith "sab ek
+//  jagah" reference ke liye hai. Dono ka behavior same.
 // ============================================================================
 #include <cstdlib>
 #include <ctime>

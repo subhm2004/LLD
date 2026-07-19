@@ -1,5 +1,14 @@
-// utils/PaytmTransactionUtil.h — Paytm ke liye helper: unique reference number,
-// timestamp etc. generate karta hai (confirmed transaction ke details).
+// ============================================================================
+//  utils/PaytmTransactionUtil.h — Paytm receipt helpers (static utility)
+// ----------------------------------------------------------------------------
+//  PaytmGateway ke confirm step me use hone wale helpers:
+//    toPaytmUpi()            -> naam ko UPI banao ("Shubham" -> "shubham@paytm")
+//    formatTimestamp()       -> current time readable string
+//    generateReferenceNumber -> unique ref ("PAYTM<timestamp><counter>")
+//  Sab static — koi state nahi, seedha call. Formatting logic gateway se
+//  ALAG rakhna (utility class) achhi separation-of-concerns hai.
+//  (PayPal aur Razorpay ke apne-apne aise util hain — same role.)
+// ============================================================================
 #ifndef PAYMENT_GATEWAY_LLD_UTILS_PAYTMTRANSACTIONUTIL_H
 #define PAYMENT_GATEWAY_LLD_UTILS_PAYTMTRANSACTIONUTIL_H
 

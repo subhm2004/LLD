@@ -1,5 +1,16 @@
-// services/PaymentService.h — SINGLETON service: factory se sahi gateway leke
-// payment process karwata hai. Controller aur gateways ke beech orchestration layer.
+// ============================================================================
+//  services/PaymentService.h — SINGLETON: gateway ko hold karke payment chalata
+// ----------------------------------------------------------------------------
+//  Controller aur gateway ke beech ka thin orchestration layer. setGateway()
+//  se current gateway (proxy-wrapped) set hota hai, processPayment() usse
+//  chala deta hai.
+//
+//  ⭐ OWNERSHIP DETAIL: setGateway() naya gateway set karne se PEHLE purana
+//  delete karta hai (leak nahi). Aur ~PaymentService bhi last gateway delete
+//  karta. Gateway ke andar Proxy hai, Proxy ke andar real gateway + retry
+//  strategy — ye poora chain ek delete se saaf ho jaata (nested destructors).
+//  SINGLETON: ek hi payment service (static instance + inline, C++17).
+// ============================================================================
 #ifndef PAYMENT_GATEWAY_LLD_SERVICES_PAYMENTSERVICE_H
 #define PAYMENT_GATEWAY_LLD_SERVICES_PAYMENTSERVICE_H
 

@@ -1,6 +1,21 @@
-// controllers/PaymentController.h — SINGLE entry-point (Singleton) for clients:
-// handlePayment(request, provider). Andar PaymentService ko delegate karta hai —
-// client ko gateways/proxy/factory ka kuch nahi pata. (Facade-jaisa controller.)
+// ============================================================================
+//  controllers/PaymentController.h — SINGLE entry-point (SINGLETON + Facade-ish)
+// ----------------------------------------------------------------------------
+//  Client (main.cpp) ke liye ekmatra darwaza. 4 simple methods:
+//    handlePayment()          -> one-time payment (factory se gateway leke)
+//    createSubscription()     -> recurring payment register
+//    cancelSubscription()     -> subscription band
+//    processRecurringBilling()-> saari active subscriptions ko charge karo
+//
+//  Client ko GatewayFactory, Proxy, PaymentService, RetryStrategy... in sab
+//  ke jhamele ka kuch pata nahi — controller sab delegate karta hai. Facade
+//  jaisa role, par ye "controller" hai (request handle karta hai).
+//
+//  SINGLETON style yahan MODERN hai: `static PaymentController instance;` +
+//  `inline` definition (C++17) + deleted copy/assignment. Ek hi instance,
+//  clean. (L10 me singleton styles ka comparison hai — ye eager static
+//  member wala hai, thread-safe by static-init.)
+// ============================================================================
 #ifndef PAYMENT_GATEWAY_LLD_CONTROLLERS_PAYMENTCONTROLLER_H
 #define PAYMENT_GATEWAY_LLD_CONTROLLERS_PAYMENTCONTROLLER_H
 

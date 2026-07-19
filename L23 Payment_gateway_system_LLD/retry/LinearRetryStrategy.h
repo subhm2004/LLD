@@ -1,5 +1,10 @@
-// retry/LinearRetryStrategy.h — Concrete: har attempt ke beech FIXED interval
-// (jaise har baar 2s). RetryStrategy implement karta hai.
+// ============================================================================
+//  retry/LinearRetryStrategy.h — Concrete Strategy #1: FIXED delay
+// ----------------------------------------------------------------------------
+//  Har retry ke beech SAME wait (jaise har baar 200ms). getDelayMs() attempt
+//  ko IGNORE karta hai — hamesha fixedDelayMs. Simple, predictable.
+//  Delay pattern: 200, 200, 200... (flat line).
+// ============================================================================
 #ifndef PAYMENT_GATEWAY_LLD_RETRY_LINEARRETRYSTRATEGY_H
 #define PAYMENT_GATEWAY_LLD_RETRY_LINEARRETRYSTRATEGY_H
 

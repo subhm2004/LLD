@@ -1,5 +1,13 @@
-// utils/RazorpayTransactionUtil.h — Razorpay ke liye helper: unique payment ID,
-// completion timestamp etc. generate karta hai.
+// ============================================================================
+//  utils/RazorpayTransactionUtil.h — Razorpay receipt helpers (static utility)
+// ----------------------------------------------------------------------------
+//  RazorpayGateway ke confirm step ke helpers:
+//    toRazorpayAccount() -> naam se fake bank A/C number (hash-based)
+//    formatCompletedAt() -> timestamp string
+//    generatePaymentId() -> unique "pay_<timestamp><counter>"
+//  nameHash() ek simple string hash hai (hash*31 + char) — same naam ka
+//  hamesha same account number deta (deterministic). Static utility.
+// ============================================================================
 #ifndef PAYMENT_GATEWAY_LLD_UTILS_RAZORPAYTRANSACTIONUTIL_H
 #define PAYMENT_GATEWAY_LLD_UTILS_RAZORPAYTRANSACTIONUTIL_H
 

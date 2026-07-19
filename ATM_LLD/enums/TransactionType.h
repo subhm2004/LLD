@@ -7,7 +7,14 @@ using namespace std;
 
 namespace atm_lld {
 
-enum class TransactionType { BALANCE_INQUIRY, CASH_WITHDRAWAL };
+/**
+ * @enum TransactionType
+ * @brief ATM system me hone wale alag-alag transactions ke types ko represent karta hai.
+ */
+enum class TransactionType { 
+    BALANCE_INQUIRY, // Account balance check karne ki query transaction.
+    CASH_WITHDRAWAL  // Account se cash nikalne ki withdrawal transaction.
+};
 
 } // namespace atm_lld
 

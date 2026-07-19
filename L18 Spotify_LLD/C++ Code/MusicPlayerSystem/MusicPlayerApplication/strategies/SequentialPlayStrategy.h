@@ -1,5 +1,10 @@
-// strategies/SequentialPlayStrategy.h — Concrete strategy: songs ko ek-ke-baad-ek
-// (order me) play karta hai. PlayStrategy ko implement karta hai.
+// ============================================================================
+//  strategies/SequentialPlayStrategy.h — Concrete Strategy #1: ek-ke-baad-ek
+// ----------------------------------------------------------------------------
+//  Sabse simple play order — songs ko playlist ke ORDER me chalao (0,1,2...).
+//  State bas ek currentIndex hai; next() index++, previous() index--.
+//  Yahi normal "play" mode hai (shuffle off).
+// ============================================================================
 #ifndef SEQUENTIAL_PLAY_STRATEGY_HPP
 #define SEQUENTIAL_PLAY_STRATEGY_HPP
 
@@ -24,11 +29,12 @@ public:
         currentIndex = -1;
     }
 
+    // Aage koi song bacha hai? (agla index playlist ke size ke andar ho)
     bool hasNext() override {
         return ((currentIndex + 1) < currentPlaylist->getSize());
     }
 
-    // Next in Loop
+    // Agla song do aur cursor aage badhao
     Song* next() override {
         if (!currentPlaylist || currentPlaylist->getSize() == 0) {
             throw runtime_error("No playlist loaded or playlist is empty.");
@@ -37,11 +43,15 @@ public:
         return currentPlaylist->getSongs()[currentIndex];
     }
 
+    // BUG FIX: pehle ye `(currentIndex - 1 > 0)` tha — off-by-one!
+    // Iska matlab currentIndex > 1, yaani index 0 (PEHLA song) pe kabhi
+    // wapas nahi ja sakte the. Sahi condition: currentIndex - 1 >= 0
+    // (yaani currentIndex >= 1) — tab index 0 tak previous ja sakta hai.
     bool hasPrevious() override {
-        return (currentIndex - 1 > 0);
+        return (currentIndex - 1 >= 0);
     }
 
-    // previous in Loop
+    // Pichla song do aur cursor peeche karo
     Song* previous() override {
         if (!currentPlaylist || currentPlaylist->getSize() == 0) {
             throw runtime_error("No playlist loaded or playlist is empty.");

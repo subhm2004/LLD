@@ -1,5 +1,10 @@
-// external/WiredSpeakerAPI.h — Third-party wired-speaker API (incompatible
-// interface); WiredSpeakerAdapter isse IAudioOutputDevice me wrap karta hai.
+// ============================================================================
+//  external/WiredSpeakerAPI.h — "ADAPTEE" #2: third-party wired-speaker API
+// ----------------------------------------------------------------------------
+//  Bluetooth API jaisa hi — external class jise change nahi kar sakte. Iska
+//  method playSoundViaCable() hai (bluetooth wale se bhi alag naam!).
+//  WiredSpeakerAdapter isse IAudioOutputDevice me wrap karta hai.
+// ============================================================================
 #ifndef WIRED_SPEAKER_API_HPP
 #define WIRED_SPEAKER_API_HPP
 #include<string>

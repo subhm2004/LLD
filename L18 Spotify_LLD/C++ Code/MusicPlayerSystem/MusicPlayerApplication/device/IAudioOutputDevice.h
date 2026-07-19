@@ -1,6 +1,16 @@
-// device/IAudioOutputDevice.h — Target interface jo AudioEngine expect karta hai
-// (playAudio(song)). Saare adapters isse implement karte hain -> engine ko farq
-// nahi padta device bluetooth hai, wired ya headphones. (Adapter pattern target)
+// ============================================================================
+//  device/IAudioOutputDevice.h — ADAPTER pattern ka "TARGET" interface 🎯
+// ----------------------------------------------------------------------------
+//  Ye wo interface hai jo hamara AudioEngine EXPECT karta hai — sirf
+//  playAudio(song). Engine bas itna jaanta hai; use farq nahi padta device
+//  bluetooth hai, wired ya headphones.
+//
+//  ADAPTER pattern ka funda: humare paas external speaker APIs hain jinke
+//  method-naam ALAG hain (playSoundViaBluetooth, playSoundViaCable,
+//  playSoundViaJack) — engine unse SEEDHA baat nahi kar sakta. Adapters
+//  in APIs ko IS interface (playAudio) me "translate" karte hain. Engine
+//  ek hi bhasha bolta hai, adapter uski translation karta hai! (L16 Adapter)
+// ============================================================================
 #ifndef I_AUDIO_OUTPUT_DEVICE_HPP
 #define I_AUDIO_OUTPUT_DEVICE_HPP
 #include "../models/Song.h"

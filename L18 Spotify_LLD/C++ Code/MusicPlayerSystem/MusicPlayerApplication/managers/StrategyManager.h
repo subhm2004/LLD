@@ -1,6 +1,17 @@
-// managers/StrategyManager.h — SINGLETON: PlayStrategyType ke hisaab se sahi
-// PlayStrategy (Sequential/Random/CustomQueue) deta hai. Play-order ko swap
-// karne ka central point.
+// ============================================================================
+//  managers/StrategyManager.h — SINGLETON + strategy provider (Factory-ish)
+// ----------------------------------------------------------------------------
+//  PlayStrategyType do, sahi PlayStrategy object lo (Sequential/Random/
+//  CustomQueue). Ye Factory jaisa hai, par ek KHAAS difference:
+//
+//  ⭐ Teeno strategies EK BAAR banti hain (constructor me) aur REUSE hoti
+//  hain — har baar new nahi. Ye ek FLYWEIGHT/cache flavour hai: strategy
+//  objects stateless-ish hain (playlist set hone pe reset ho jaate), to
+//  ek hi instance baar-baar kaam aata hai. Memory efficient!
+//
+//  SINGLETON kyun: strategies ka ek central pool. Facade isse getStrategy()
+//  se maangta hai jab user play-mode switch karta hai.
+// ============================================================================
 #ifndef STRATEGY_MANAGER_HPP
 #define STRATEGY_MANAGER_HPP
 #include<iostream>

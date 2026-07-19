@@ -1,6 +1,23 @@
-// MusicPlayerApplication.h — Top-level application (SINGLETON). Saare managers
-// (playlist/device/strategy) + audio engine ko wire karta hai. Facade isi ke
-// upar baith ke client ko simple API deta hai. (Patterns: Singleton + Facade)
+// ============================================================================
+//  MusicPlayerApplication.h — TOP-LEVEL app (SINGLETON) + song library
+// ----------------------------------------------------------------------------
+//  System ka sabse upar wala layer — client (main.cpp) sirf isse baat karta.
+//  Do kaam:
+//    1. SONG LIBRARY manage karta hai (saare songs ka master store) +
+//       findSongByTitle() se lookup
+//    2. Baaki har kaam MusicPlayerFacade ko DELEGATE karta hai (playlist,
+//       device, strategy, playback) — khud complexity nahi rakhta
+//
+//  SINGLETON kyun: pura app EK hi hona chahiye (ek music player instance).
+//  Ye SIMPLE lazy singleton hai (bas null-check) — thread-safe nahi.
+//  (`inline static` C++17 feature se static member yahin define ho jaata,
+//   alag .cpp line ki zaroorat nahi.)
+//
+//  DHYAN DO — do-layer facade design: Application KHUD ek thin wrapper hai
+//  jo Facade ke upar hai. Application = "app-level API + song library",
+//  Facade = "playback subsystem coordination". Dono milke client ko ekdum
+//  saaf interface dete hain.
+// ============================================================================
 #ifndef MUSIC_PLAYER_APPLICATION_HPP
 #define MUSIC_PLAYER_APPLICATION_HPP
 #include "MusicPlayerFacade.h"

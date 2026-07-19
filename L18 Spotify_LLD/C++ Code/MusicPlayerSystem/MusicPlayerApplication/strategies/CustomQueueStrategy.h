@@ -1,5 +1,18 @@
-// strategies/CustomQueueStrategy.h — Concrete strategy: user-defined queue ke
-// hisaab se play (user manually next songs queue karta hai). PlayStrategy implement.
+// ============================================================================
+//  strategies/CustomQueueStrategy.h — Concrete Strategy #3: user QUEUE ➕
+// ----------------------------------------------------------------------------
+//  "Play next" wala feature — user manually songs queue karta hai, wo pehle
+//  chalte hain, phir normal sequential. Spotify ka "Add to Queue" jaisa!
+//
+//  HYBRID logic (2 modes ek saath):
+//    - nextQueue (queue) me kuch hai? -> wahi pehle bajao (FIFO)
+//    - queue khaali? -> nextSequential() (normal order me chalo)
+//  addToNext() se user queue me daalta hai. prevStack se previous track.
+//
+//  ⭐ SMART: jab queued song bajta hai, currentIndex ko us song ki playlist
+//  position se SYNC karta hai (loop se dhundhta hai) — taaki queue khatam
+//  hone ke baad sequential wahin se continue ho, na ki purane index se.
+// ============================================================================
 # ifndef CUSTOM_QUEUE_STRATEGY_HPP
 # define CUSTOM_QUEUE_STRATEGY_HPP
 #include<iostream>
@@ -75,8 +88,11 @@ public:
         return nextSequential();
     }
 
+    // BUG FIX: pehle `(currentIndex - 1 > 0)` tha (off-by-one) — index 0
+    // wala pehla song previous se reachable nahi tha. Sahi: >= 0.
+    // (SequentialPlayStrategy me bhi yahi bug tha, wahan bhi fix kiya.)
     bool hasPrevious() override {
-        return (currentIndex - 1 > 0);
+        return (currentIndex - 1 >= 0);
     }
 
     Song* previous() override {

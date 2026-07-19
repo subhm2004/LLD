@@ -1,5 +1,18 @@
-// core/AudioEngine.h — Actual playback engine: current song ko chosen output
-// device par play/pause karta hai. System ka "core" jahan sound nikalta hai.
+// ============================================================================
+//  core/AudioEngine.h — PLAYBACK engine (system ka core jahan "sound" nikalta)
+// ----------------------------------------------------------------------------
+//  Ye actual play/pause karta hai — current song + paused state track karta.
+//  play() ko output DEVICE (adapter) diya jaata hai, aur wo device pe
+//  playAudio() call karta hai (yahi jagah adapter ka translation trigger hota).
+//
+//  ⭐ SMART RESUME logic: agar same song jo paused tha, wapas play karo to
+//  "Resuming..." bolta hai (naya playback nahi). Ye state machine chhota hai:
+//    playing -> pause() -> paused -> play(same song) -> resuming -> playing
+//
+//  DHYAN DO — Engine ko device ke CONCRETE type ka pata nahi (Bluetooth/
+//  Wired?) — bas IAudioOutputDevice* jaanta hai. Yahi Adapter + polymorphism
+//  ka fayda: engine ek hi bhasha bolta hai, device kuch bhi ho.
+// ============================================================================
 #ifndef AUDIO_ENGINE_HPP
 #define AUDIO_ENGINE_HPP
 

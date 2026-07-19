@@ -1,10 +1,37 @@
 // ============================================================================
-//  main.cpp  —  Spotify-style Music Player ka demo driver
+//  main.cpp  —  SPOTIFY-style Music Player ka demo driver (L18 LLD project)
 // ----------------------------------------------------------------------------
-//  Flow: songs/playlist banao -> output device connect karo (Bluetooth/Wired/
-//  Headphones adapter) -> play strategy chuno (Sequential/Random/CustomQueue) ->
-//  play/pause/next. Sab MusicPlayerFacade ke through. Patterns: Facade, Singleton,
-//  Strategy, Adapter, Factory ek saath.
+//  System kya karta hai: songs library banao -> playlist banao -> output
+//  device connect karo (Bluetooth/Wired/Headphones) -> play strategy chuno
+//  (Sequential/Random/CustomQueue) -> play/pause/next/previous. Poora
+//  Spotify/Gaana ka mini LLD — 5 design patterns ek saath!
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  SYSTEM KA STACK (upar se neeche):                                      │
+//  │                                                                          │
+//  │   main (client)                                                         │
+//  │      │ sirf simple methods (createSong, playAll...)                     │
+//  │      ▼                                                                  │
+//  │   MusicPlayerApplication (SINGLETON) — top-level API                    │
+//  │      │                                                                  │
+//  │      ▼                                                                  │
+//  │   MusicPlayerFacade (FACADE) — subsystem ko coordinate karta hai       │
+//  │      ├── DeviceManager  -> DeviceFactory -> Adapter (ADAPTER + FACTORY) │
+//  │      ├── StrategyManager -> PlayStrategy (STRATEGY)                     │
+//  │      ├── PlaylistManager                                                │
+//  │      └── AudioEngine (actual play/pause)                                │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  IS PROJECT ME 5 PATTERNS:
+//    Facade    -> MusicPlayerFacade (client ko simple API)
+//    Singleton -> Application + Facade + saare Managers (ek-ek instance)
+//    Strategy  -> PlayStrategy (Sequential/Random/CustomQueue — play order swap)
+//    Adapter   -> device adapters (external speaker APIs ko fit karana)
+//    Factory   -> DeviceFactory (DeviceType se sahi adapter banana)
+//  Detail: agar design_patterns md chahiye to bata dena!
+//
+//  NOTE: pura code try-catch me hai — koi bhi manager exception phenke
+//  (song not found, no device...) to gracefully error print hota hai.
 // ============================================================================
 #include <bits/stdc++.h>
 #include "MusicPlayerApplication.h"

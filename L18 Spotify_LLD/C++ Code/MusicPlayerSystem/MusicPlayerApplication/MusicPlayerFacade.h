@@ -1,6 +1,32 @@
-// MusicPlayerFacade.h — FACADE: client ke liye simple API (play/pause/next,
-// playlist load, device connect). Andar managers/engine ke saare steps chhupata
-// hai taaki caller ko subsystem ki complexity na dekhni pade.
+// ============================================================================
+//  MusicPlayerFacade.h — FACADE (L17 pattern): playback subsystem ka coordinator
+// ----------------------------------------------------------------------------
+//  Ye class subsystem ke saare parts (DeviceManager, StrategyManager,
+//  PlaylistManager, AudioEngine) ko COORDINATE karti hai — client ko in sab
+//  ke aapasi steps ka gyaan nahi chahiye.
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  EK method ke PEECHE kitne parts (playAllTracks example):               │
+//  │                                                                          │
+//  │   while (playStrategy->hasNext()) {        // STRATEGY se order         │
+//  │       Song* s = playStrategy->next();                                   │
+//  │       device = DeviceManager::getOutputDevice();  // konsa device       │
+//  │       audioEngine->play(device, s);        // ENGINE actual play        │
+//  │   }                                                                     │
+//  │                                                                          │
+//  │  3 subsystems (strategy + device + engine) ek loop me — client ko sirf  │
+//  │  playAllTracks() dikhta hai. Yahi Facade ka asli fayda!                 │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  ITSELF SINGLETON: ek hi facade instance. Andar AudioEngine bhi rakhta hai
+//  (playback state — current song/paused). Managers ko getInstance() se
+//  access karta (wo bhi singletons).
+//
+//  ⚠️ NOTE: playSong() pehle check karta hai device connected hai — nahi to
+//  exception. loadPlaylist() strategy set hone ka check karta. Ye guard
+//  clauses achhe hain (fail-fast), par ownership/cleanup (delete) missing
+//  hai (chhota demo — production me smart pointers chahiye).
+// ============================================================================
 # ifndef MUSIC_PLAYER_FACADE_HPP
 # define MUSIC_PLAYER_FACADE_HPP
 #include "core/AudioEngine.h"

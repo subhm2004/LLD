@@ -1,5 +1,19 @@
-// strategies/RandomPlayStrategy.h — Concrete strategy: songs ko shuffle/random
-// order me play karta hai (already-played track karke). PlayStrategy implement.
+// ============================================================================
+//  strategies/RandomPlayStrategy.h — Concrete Strategy #2: SHUFFLE 🔀
+// ----------------------------------------------------------------------------
+//  Random order me play — par SMART way se, koi song REPEAT nahi hota jab
+//  tak sab na chal jaayein (Spotify shuffle jaisa). Do data structures:
+//    remainingSongs (vector) -> jo abhi tak nahi chale (inme se random pick)
+//    history (stack)         -> jo chal chuke (previous ke liye — LIFO)
+//
+//  ⭐ SWAP-AND-POP trick (next() me): random song pick karke usse O(1) me
+//  remove karne ke liye — usse last element ke saath swap karo, phir
+//  pop_back(). Vector se beech ka element hatana normally O(n) hota (sab
+//  shift), par order matter nahi karta yahan (random hai!) to swap-pop O(1).
+//
+//  previous() history stack se aata hai (jo abhi bajaya wahi wapas) — isliye
+//  ye "true previous" hai, phir se random nahi.
+// ============================================================================
 #ifndef RANDOM_PLAY_STRATEGY_HPP
 #define RANDOM_PLAY_STRATEGY_HPP
 #include<iostream>
@@ -41,14 +55,16 @@ public:
             throw runtime_error("No songs left to play");
         }
 
+        // Random index pick karo remaining songs me se
         int idx = rand() % remainingSongs.size();
         Song* selectedSong = remainingSongs[idx];
 
-        // Remove the selectedSong from the list. (Swap and pop to remove in O(1))
+        // SWAP-AND-POP: selected ko last ke saath swap, phir pop_back —
+        // O(1) me remove (order matter nahi karta kyunki random hai)
         swap(remainingSongs[idx], remainingSongs.back());
         remainingSongs.pop_back();
 
-        history.push(selectedSong);
+        history.push(selectedSong); // previous() ke liye yaad rakho
         return selectedSong;
     }
 

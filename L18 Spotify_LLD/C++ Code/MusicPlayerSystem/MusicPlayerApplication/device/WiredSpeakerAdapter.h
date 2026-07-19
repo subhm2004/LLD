@@ -1,5 +1,11 @@
-// device/WiredSpeakerAdapter.h — ADAPTER: IAudioOutputDevice ko external
-// WiredSpeakerAPI me translate karta hai (same role as other adapters).
+// ============================================================================
+//  device/WiredSpeakerAdapter.h — ADAPTER: wired speaker ke liye
+// ----------------------------------------------------------------------------
+//  BluetoothSpeakerAdapter jaisa hi — playAudio(song) [target] ko
+//  playSoundViaCable(payload) [wired API] me translate karta hai. Song ko
+//  string payload me convert karke external API ko forward. Engine ko farq
+//  nahi ki andar wired hai ya bluetooth — sab IAudioOutputDevice hain.
+// ============================================================================
 #ifndef WIRED_SPEAKER_ADAPTER_HPP
 #define WIRED_SPEAKER_ADAPTER_HPP
 

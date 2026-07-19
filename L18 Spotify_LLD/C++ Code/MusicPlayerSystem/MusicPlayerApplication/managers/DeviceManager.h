@@ -1,5 +1,21 @@
-// managers/DeviceManager.h — SINGLETON: currently connected output device ko
-// manage karta hai (connect/switch). Factory se device banwa ke engine ko deta.
+// ============================================================================
+//  managers/DeviceManager.h — SINGLETON: connected output device ka manager
+// ----------------------------------------------------------------------------
+//  Ek waqt me ek hi output device active hota hai (jaise phone me ek
+//  bluetooth speaker connected) — DeviceManager usse track karta hai.
+//  connect() DeviceFactory se naya device banwata hai (purana delete karke),
+//  getOutputDevice() se engine use leta hai.
+//
+//  SINGLETON kyun: poore app me ek hi "currently connected device" state.
+//  DHYAN DO — ye MEYERS-ISH style hai (getInstance ke andar `static local`
+//  pointer + null check) — thodi mixed hai. Baaki managers (Playlist/Strategy)
+//  static member pointer style use karte hain. Ek hi project me alag styles
+//  (L10 me detail); consistency ke liye sabko pure Meyers karna better.
+//
+//  ⭐ connect() me OLD device delete karta hai naya banane se pehle — device
+//  switch pe memory leak nahi (achhi practice). Adapter+API dono ka
+//  ownership yahin hai.
+// ============================================================================
 # ifndef DEVICE_MANAGER_HPP
 # define DEVICE_MANAGER_HPP
 #include<iostream>

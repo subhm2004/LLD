@@ -1,5 +1,11 @@
-// device/HeadphonesAdapter.h — ADAPTER: IAudioOutputDevice ko external
-// HeadphonesAPI me translate karta hai (same role as Bluetooth adapter).
+// ============================================================================
+//  device/HeadphonesAdapter.h — ADAPTER: headphones ke liye
+// ----------------------------------------------------------------------------
+//  Teesra adapter — playAudio(song) [target] ko playSoundViaJack(payload)
+//  [headphones API] me translate karta hai. Teeno adapters ka structure
+//  BILKUL SAME hai, sirf wrapped API aur uske method-naam alag. Yahi
+//  Adapter pattern ki khoobi: alag-alag external APIs, ek uniform interface.
+// ============================================================================
 #ifndef HEADPHONES_ADAPTER_HPP
 #define HEADPHONES_ADAPTER_HPP
 

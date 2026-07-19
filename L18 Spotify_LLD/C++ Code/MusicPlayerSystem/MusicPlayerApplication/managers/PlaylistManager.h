@@ -1,5 +1,12 @@
-// managers/PlaylistManager.h — SINGLETON: playlists create karna, song add/remove,
-// aur playlists ka lookup. Songs/playlists ka central store.
+// ============================================================================
+//  managers/PlaylistManager.h — SINGLETON: saari playlists ka central store
+// ----------------------------------------------------------------------------
+//  Playlists ka registry — create, song add, lookup by name (map: name ->
+//  Playlist*). Poore app me ek hi playlist collection hona chahiye, isliye
+//  SINGLETON. Duplicate playlist ya missing playlist pe exception phenkta
+//  hai (fail-fast — silently ignore nahi karta).
+//  Simple lazy singleton (null-check) — thread-safe nahi (L10 dekho).
+// ============================================================================
 #   ifndef PLAYLIST_MANAGER_HPP
 #   define PLAYLIST_MANAGER_HPP
 #include "../models/Playlist.h"

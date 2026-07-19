@@ -1,5 +1,12 @@
-// models/Playlist.h — Songs ka ordered collection (naam + list of Songs).
-// PlaylistManager inhe manage karta hai; PlayStrategy inhi par chalti hai.
+// ============================================================================
+//  models/Playlist.h — Songs ka ORDERED collection (naam + Song list)
+// ----------------------------------------------------------------------------
+//  Ek playlist = naam + songs ka vector (order maayne rakhta — sequential
+//  strategy isi order pe chalti hai). Songs ko POINTER se rakhta (copies
+//  nahi) — ek hi Song multiple playlists me ho sakta hai (library shared).
+//  PlaylistManager inhe manage karta; PlayStrategy inpe next/previous karti.
+//  addSong me null-check hai (fail-fast). getSongs() const list deta.
+// ============================================================================
 #ifndef PLAYLIST_HPP
 #define PLAYLIST_HPP
 #include <vector>

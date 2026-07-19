@@ -1,5 +1,11 @@
-// external/HeadphonesAPI.h — Third-party headphones API (incompatible interface);
-// HeadphonesAdapter isse IAudioOutputDevice me wrap karta hai.
+// ============================================================================
+//  external/HeadphonesAPI.h — "ADAPTEE" #3: third-party headphones API
+// ----------------------------------------------------------------------------
+//  Teesra external API — method playSoundViaJack(). Teeno APIs (Bluetooth/
+//  Wired/Headphones) ke method-naam ALAG-ALAG hain — yahi problem Adapter
+//  solve karta hai (sabko ek common playAudio() me laata hai).
+//  HeadphonesAdapter isse IAudioOutputDevice me wrap karta hai.
+// ============================================================================
 #ifndef HEADPHONES_API_HPP
 #define HEADPHONES_API_HPP
 #include<string>

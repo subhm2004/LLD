@@ -50,7 +50,8 @@
 using namespace std;
 using namespace chess_lld;
 
-int main() {
+int main()
+{
     cout << "=== Chess System with Design Patterns Demo ===" << endl;
     ChessSystemDemo::demonstrateScholarsMate();
 
@@ -58,17 +59,17 @@ int main() {
     GameManager *gm = GameManager::getInstance();
     User *saurav = new User("USER_1", "Saurav");
     User *manish = new User("USER_2", "Manish");
-    User *abhishek = new User("USER_3", "Abhishek");
+    User *Shubham = new User("USER_3", "Shubham");
 
-    cout << "\nUsers: " << saurav->toString() << ", " << manish->toString() << ", " << abhishek->toString() << endl;
+    cout << "\nUsers: " << saurav->toString() << ", " << manish->toString() << ", " << Shubham->toString() << endl;
     gm->requestMatch(saurav);
     gm->requestMatch(manish);
-    gm->requestMatch(abhishek);
+    gm->requestMatch(Shubham);
     gm->displayActiveMatches();
 
     delete saurav;
     delete manish;
-    delete abhishek;
+    delete Shubham;
     delete GameManager::getInstance();
     return 0;
 }

@@ -1,203 +1,425 @@
-# Deep Dive into the Observer Design Pattern
+# Observer Design Pattern — Deep Dive
 
-## NOTE: Agar hum Observer Design Pattern ko use na karein, to humare paas ek technique hoti hai — **Polling Technique**
-
-> **Polling Technique kya hoti hai?**
-> Isme observer baar baar subject se poochta rehta hai —
-> _"Kuch naya aaya kya? Kuch naya aaya kya?"_
-> Chahe kuch change hua ho ya na hua ho.
-
-### Polling ke Nuksan (Disadvantages):
-
-- **Wasteful hai** — Unnecessary requests jaati rehti hain, chahe koi change na hua ho
-- **CPU & Network par load** — Har baar check karne se resources waste hote hain
-- **Real-time nahi hota** — Thodi delay hoti hai notification mein
-
-### Observer Pattern kyun better hai?
-
-- Subject khud notify karta hai jab **actually** kuch change hota hai
-- Koi unnecessary checking nahi — **Event-driven** approach hai
-- Efficient, fast, aur scalable hota hai
+> **Ek line me:** "Ek Subject apne kai Observers ko, state badalte hi, khud-b-khud
+> khabar kar deta hai."
+>
+> 📄 Code: [`ObserverDesignPattern.cpp`](ObserverDesignPattern.cpp) — YouTube
+> channel + subscribers ka example.
 
 ---
 
-## 1. Introduction
+## Table of Contents
 
-The **Observer Design Pattern** is a fundamental **Behavioral Design Pattern** used to establish a one-to-many dependency between objects. It ensures that when one object (the **Subject**) changes its state, all its dependent objects (the **Observers**) are automatically notified and updated.
-
-Think of it as a **Notification System** where information flows from a central source to multiple interested parties without the source needing to know the specific details of its audience.
-
----
-
-## 2. Core Concepts and Roles
-
-To understand the Observer pattern, we must look at the four primary participants:
-
-### A. The Subject (Interface/Abstract Class)
-
-This defines the contract for any object that wants to be "watched."
-
-- **Responsibilities**:
-  - Maintains a list of observers.
-  - Provides methods to **attach** (subscribe) and **detach** (unsubscribe) observers.
-  - Includes a **notify** method to alert all current observers of a state change.
-
-### B. The Concrete Subject
-
-This is the actual object that holds the state of interest.
-
-- **Responsibilities**:
-  - Stores the state that observers are interested in.
-  - Sends a notification to its observers when its state changes (e.g., when a YouTube creator uploads a new video).
-
-### C. The Observer (Interface)
-
-This is the blueprint for all objects that want to receive updates.
-
-- **Responsibilities**:
-  - Defines an `update()` method that the Subject calls during notification.
-
-### D. The Concrete Observer
-
-These are the specific objects reacting to the Subject.
-
-- **Responsibilities**:
-  - Implements the `update()` method.
-  - Maintains a reference to the Concrete Subject to pull the latest data if needed.
+1. [Pehle problem samjho — POLLING](#1-pehle-problem-samjho--polling)
+2. [Observer kya hai](#2-observer-kya-hai)
+3. [Chaar roles (GoF)](#3-chaar-roles-gof)
+4. [Code ka poora flow](#4-code-ka-poora-flow---step-by-step)
+5. [Push vs Pull model](#5-push-vs-pull-model)
+6. [Fayde (kyun use karein)](#6-fayde--kyun-use-karein)
+7. [⚠️ Khatre (kya dhyaan rakhein)](#7-%EF%B8%8F-khatre--kya-dhyaan-rakhein)
+8. [Is code ka ek asli BUG](#8-is-code-ka-ek-asli-bug)
+9. [Asli duniya me kahan use hota hai](#9-asli-duniya-me-kahan-use-hota-hai)
+10. [Observer vs Mediator](#10-observer-vs-mediator--interview-favourite)
+11. [Interview me kya bolna](#11-interview-me-kya-bolna)
 
 ---
 
-## 3. The Lifecycle of an Observer Interaction
+## 1. Pehle problem samjho — POLLING
 
-The interaction typically follows this sequence:
+Observer ko samajhne ke liye pehle uska **ulta** samajhna zaroori hai.
 
-1. **Subscription Phase**: Observers register themselves with the Subject.
-2. **Event Trigger**: An internal or external action changes the Subject's state.
-3. **Broadcast Phase**: The Subject iterates through its internal list and triggers the `update()` method on every registered Observer.
-4. **Action Phase**: Each Observer performs its unique logic (e.g., logging a message, sending an email, or updating a UI element).
+Maan lo tumhe pata karna hai ki tumhare favourite channel pe naya video aaya ya
+nahi. **Bina** Observer ke tum kya karoge? Baar-baar khud check karoge:
 
----
+```cpp
+while (true) {
+    if (channel.hasNewVideo()) {   // "naya aaya kya?"
+        showNotification();
+    }
+    sleep(5);                      // "ab? ... ab? ... ab?"
+}
+```
 
-## 4. Key Advantages (The "Why")
+Ise **POLLING** kehte hain. Iski teen bimariyan hain:
 
-- **Loose Coupling**: The Subject does not need to know the class types of the observers. It only knows that they implement the `Observer` interface.
-- **Support for Broadcast Communication**: You can notify any number of objects simultaneously with a single trigger.
-- **Dynamic Relationships**: You can add or remove listeners at runtime without restarting the application or changing the Subject's code.
-- **Adherence to Open/Closed Principle**: You can introduce new types of observers without modifying the existing Subject code.
+| Problem                | Kya hota hai                                                       |
+| ---------------------- | ------------------------------------------------------------------ |
+| **Bekaar ka kaam**     | 99% baar jawab "nahi" hota — poori mehnat zaya                      |
+| **CPU/network barbaad** | Har check ek request. 10 lakh users × har 5 second = server dead 💀 |
+| **Der ho jaati hai**   | Video aaya 1:00 baje, pata chala 1:05 pe                            |
 
----
+### Observer ka ulta idea
 
-## 5. Potential Pitfalls (The "Watch-outs")
+Subscriber **poochta hi nahi**. Channel **khud bata deta hai** — aur theek us
+waqt jab asal me kuch hua ho.
 
-- **Memory Leaks**: In languages without automatic garbage collection (or even with it), failing to "unsubscribe" can lead to objects staying in memory indefinitely (often called the "Lapsed Listener" problem).
-- **Order of Notification**: Usually, there is no guarantee about the order in which observers are notified. Your system should not depend on Observer A being updated before Observer B.
-- **Performance Overhead**: If a Subject has thousands of observers and changes state frequently, the notification process can become a bottleneck.
+```
+POLLING   :  Subscriber ──"naya aaya?"──> Channel   (baar-baar, bekaar)
+                        <──"nahi"────────
 
----
+OBSERVER  :  Channel ──"video aaya!"──> Subscriber  (sirf ek baar, jab zaroorat ho)
+```
 
-## 6. Real-World Applications
-
-- **Event Listeners in GUI**: In frameworks like Java Swing or JavaScript, button clicks are handled via observers (listeners).
-- **Social Media**: Following an account on Twitter or Instagram.
-- **Stock Markets**: Apps that alert users when a specific stock hits a target price.
-- **MVC Architecture**: The "View" observes the "Model" to update the display whenever data changes.
-
----
-
-## 7. Comparison: Push vs. Pull Model
-
-| Feature           | Push Model                                                 | Pull Model                                                   |
-| :---------------- | :--------------------------------------------------------- | :----------------------------------------------------------- |
-| **Data Transfer** | Subject sends detailed information in the notification.    | Subject sends a minimal notification; Observer fetches data. |
-| **Coupling**      | Slightly higher (Subject needs to know what data to send). | Lower (Subject just says "Something changed").               |
-| **Efficiency**    | Good if observers need all the data.                       | Better if observers only need specific parts of the data.    |
+> 📌 Ise **"Hollywood Principle"** kehte hain:
+> **_"Don't call us, we'll call you."_**
 
 ---
 
-## Observer Design Pattern: Comprehensive Workflow & Guide
+## 2. Observer kya hai
 
-## 1. Introduction
+**Observer** ek **Behavioral** design pattern hai jo **one-to-many** rishta
+banata hai:
 
-The **Observer Design Pattern** is a behavioral pattern that defines a one-to-many relationship. When the **Subject** (Channel) changes, all **Observers** (Subscribers) get notified automatically.
+> Jab ek object (**Subject**) ki state badalti hai, to uske saare dependent
+> objects (**Observers**) ko apne aap khabar ho jaati hai.
 
----
+Is code me:
 
-## 2. System Workflow (Step-by-Step)
-
-The following steps explain the logic flow of the provided C++ implementation:
-
-### Step 1: Initialization (Object Setup)
-
-- **Subject Creation:** A `Channel` object (e.g., "CoderArmy") is instantiated. It initializes an empty list (vector) of subscribers.
-- **Observer Creation:** Multiple `Subscriber` objects (e.g., "Varun", "Tarun") are created. They are linked to the channel via pointers.
-
-### Step 2: Subscription (Registration)
-
-- When `channel->subscribe(subscriber)` is called:
-  - The system checks if the subscriber is already in the list.
-  - If not, the subscriber's memory address is added to the `vector<ISubscriber*>`.
-- **Current State:** The Channel now "knows" who to alert.
-
-### Step 3: Trigger Event (The Upload)
-
-- The `uploadVideo("Title")` function is triggered.
-- Two things happen inside this function:
-  1. The `latestVideo` variable is updated with the new title.
-  2. The `notifySubscribers()` method is called automatically.
-
-### Step 4: Notification Broadcast (The Loop)
-
-- Inside `notifySubscribers()`:
-  - The Channel runs a `for` loop through its `subscribers` vector.
-  - For every pointer in that list, it calls the virtual `update()` method.
-  - **Note:** This is where **Polymorphism** works; the channel doesn't need to know the subscriber's concrete class, just the interface.
-
-### Step 5: Observer Execution (The Reaction)
-
-- Each Subscriber's `update()` function executes:
-  - It reaches back to the channel using its pointer to call `getVideoData()`.
-  - It receives the string: _"Checkout our new Video : [Title]"_.
-  - It prints the final message to the console.
-
-### Step 6: Detachment (Unsubscribing)
-
-- When `channel->unsubscribe(subscriber)` is called:
-  - The system searches for that specific pointer in the vector.
-  - Once found, it is erased from the list.
-  - **Result:** Future notifications will bypass this user entirely.
+| Pattern ka role | Is code me     | Asli duniya me                    |
+| --------------- | -------------- | --------------------------------- |
+| Subject         | `Channel`      | YouTube channel                   |
+| Observer        | `Subscriber`   | Tum (jo subscribe karte ho)       |
+| State           | `latestVideo`  | Naya video                        |
+| Notify          | `uploadVideo()` | Bell icon 🔔 wali notification    |
 
 ---
 
-## 3. Data Flow Diagram (Sequence)
+## 3. Chaar roles (GoF)
 
-| Phase        | Actor      | Action                | Target                          |
-| :----------- | :--------- | :-------------------- | :------------------------------ |
-| **Register** | Main       | `subscribe()`         | Add Pointer to Vector           |
-| **Action**   | Channel    | `uploadVideo()`       | Updates Internal State          |
-| **Notify**   | Channel    | `notifySubscribers()` | Iterates through Vector         |
-| **Update**   | Subscriber | `update()`            | Triggers individual logic       |
-| **Fetch**    | Subscriber | `getVideoData()`      | Pulls latest state from Subject |
+```
+      ┌─────────────────┐              ┌──────────────────┐
+      │   IChannel      │              │   ISubscriber    │
+      │  (Subject       │              │   (Observer      │
+      │   interface)    │              │    interface)    │
+      ├─────────────────┤   notify     ├──────────────────┤
+      │ + subscribe()   │─────────────>│ + update() = 0   │
+      │ + unsubscribe() │              └────────▲─────────┘
+      │ + notify()      │                       │ implements
+      └────────▲────────┘                       │
+               │ implements              ┌──────┴───────┐
+      ┌────────┴────────┐                │  Subscriber  │
+      │    Channel      │<───────────────│  (Concrete   │
+      │  (Concrete      │  getVideoData()│   Observer)  │
+      │   Subject)      │   (PULL)       ├──────────────┤
+      ├─────────────────┤                │ - name       │
+      │ - subscribers[] │                │ - channel*   │
+      │ - latestVideo   │                │ + update()   │
+      │ + uploadVideo() │                └──────────────┘
+      └─────────────────┘
+```
+
+### A. `ISubscriber` — Observer interface
+
+```cpp
+class ISubscriber {
+public:
+    virtual void update() = 0;
+    virtual ~ISubscriber() {}
+};
+```
+
+Bas ek function. Jo bhi notification lena chahta hai, use `update()` likhna
+padega — compiler majboor karta hai.
+
+> 💡 **Interface vs Abstract class:** agar **saare** methods pure virtual
+> (`= 0`) hon to use **interface** kehte hain. Ek bhi method ka body ho to
+> **abstract class**. C++ me dono ke liye alag keyword nahi hai (Java me
+> `interface` hota hai) — bas convention hai. Isi liye naam `I` se shuru
+> hota hai: `ISubscriber`, `IChannel`.
+
+### B. `IChannel` — Subject interface
+
+Teen kaam ka contract: `subscribe`, `unsubscribe`, `notifySubscribers`.
+
+### C. `Channel` — Concrete Subject
+
+**Sabse zaroori line poore code me:**
+
+```cpp
+vector<ISubscriber *> subscribers;
+//     └── INTERFACE ka pointer, `Subscriber*` NAHI!
+```
+
+Isi **ek line** se poora loose coupling aata hai. Channel ko `Subscriber` class
+ka **naam tak nahi pata** — usko bas itna pata hai ki "in sabme `update()` hai."
+
+### D. `Subscriber` — Concrete Observer
+
+`update()` implement karta hai, aur channel ka pointer rakhta hai taaki data
+**kheench** sake (pull model — section 5).
 
 ---
 
-## 4. Key Logic Principles
+## 4. Code ka poora flow — step by step
 
-### Loose Coupling
+### Step 1: Setup
 
-The `Channel` class is **decoupled** from the `Subscriber` class. It only interacts with the `ISubscriber` interface. This means you can add a `PremiumSubscriber` or `AdminSubscriber` later without changing a single line of code in the `Channel` class.
+```cpp
+Channel *channel = new Channel("Bhai_ki_padhai");
+Subscriber *subs1 = new Subscriber("Shubham", channel);
+Subscriber *subs2 = new Subscriber("Hardik", channel);
+```
 
-### Push vs. Pull
+Channel bana — uski `subscribers` list abhi **khaali** hai.
 
-In your code, a **Hybrid Model** is used:
+### Step 2: Subscribe (rishta juda)
 
-1. **Push:** The Subject tells the Observers _that_ something changed via `update()`.
-2. **Pull:** The Observer then _pulls_ the specific data it needs via `getVideoData()`.
+```cpp
+channel->subscribe(subs1);
+channel->subscribe(subs2);
+```
+
+Andar kya hua:
+
+- `find()` se check hua ki **pehle se list me to nahi hai**
+- Nahi tha → `subscribers` vector me pointer add ho gaya
+
+> ⭐ **Duplicate check kyun?** Bina iske, koi galti se do baar subscribe kar de
+> to usko har video ki notification **do baar** milegi. Asli app me user
+> "subscribe" button do baar daba sakta hai — ye guard usse bachata hai.
+
+### Step 3: Event — video upload
+
+```cpp
+channel->uploadVideo("Observer Pattern Tutorial");
+```
+
+Andar **do** kaam, aur **order zaroori hai**:
+
+```cpp
+latestVideo = title;      // 1. pehle state badlo
+notifySubscribers();      // 2. PHIR sabko batao
+```
+
+> ⚠️ **Ulta karte to bug ban jaata:** pehle notify karte, phir state badalte —
+> to subscribers `getVideoData()` bulate aur unhe **purana video** milta. 🐛
+
+### Step 4: Broadcast (pattern ka dil)
+
+```cpp
+void notifySubscribers() override {
+    for (ISubscriber *sub : subscribers) {
+        sub->update();
+    }
+}
+```
+
+Ye **teen line hi poora Observer pattern** hain. Dhyaan do:
+
+- Channel ko pata **nahi** ki `sub` asal me kaun hai
+- Wo bas `update()` bulata hai aur aage badh jaata hai
+- Sahi class ka `update()` **apne aap** chalta hai (virtual dispatch)
+
+> 💡 List khaali ho to? Loop chalega hi nahi. Channel **bina kisi subscriber ke
+> bhi theek chalta hai** — dono taraf se aazadi.
+
+### Step 5: Reaction
+
+Har subscriber ka `update()` chalta hai → wo channel se data **kheenchta** hai →
+message print karta hai.
+
+### Step 6: Unsubscribe (rishta toota)
+
+```cpp
+channel->unsubscribe(subs1);
+```
+
+⭐ Ye **runtime** pe hua — koi recompile nahi, Channel me koi `if-else` nahi.
+Bas list se pointer hat gaya. Yahi **dynamic relationship** hai.
+
+### Asli output
+
+```
+[Bhai_ki_padhai uploaded "Observer Pattern Tutorial"]
+Hey Shubham,
+Checkout our new Video : Observer Pattern Tutorial
+Hey Hardik,                                          ← dono ko mila
+Checkout our new Video : Observer Pattern Tutorial
+
+[Bhai_ki_padhai uploaded "Decorator Pattern Tutorial"]
+Hey Hardik,                                          ← ab sirf Hardik!
+Checkout our new Video : Decorator Pattern Tutorial     (Shubham unsubscribe kar chuka)
+```
 
 ---
 
-## 5. Summary of Methods
+## 5. Push vs Pull model
 
-- **`subscribe()`**: Adds a listener to the collection.
-- **`unsubscribe()`**: Removes a listener (prevents memory overhead/unwanted alerts).
-- **`notifySubscribers()`**: The "Engine" that drives the broadcast.
-- **`update()`**: The "Reaction" defined by the listener.
+Ye interview ka favourite sawaal hai.
+
+| | **PUSH** | **PULL** |
+| --- | --- | --- |
+| Signature | `update(string videoTitle)` | `update()` |
+| Kaun data deta | Subject **bhej** deta hai | Observer khud **kheenchta** hai |
+| Subject ko sochna padta | "kya-kya bhejun?" | kuch nahi — bas "kuch badla" |
+| Coupling | thoda zyada | kam ✅ |
+| Kab achha | sab observers ko **same** data chahiye | har observer ko **alag** data chahiye |
+
+**Ye code PULL use karta hai:**
+
+```cpp
+void update() override {                              // ← koi param nahi
+    cout << "Hey " << name << "," << channel->getVideoData();
+    //                                 └── data KHUD kheencha
+}
+```
+
+**Pull ka fayda:** kal ek `ViewCountLogger` add karo — usko video ka naam nahi,
+sirf count chahiye. Push model me Channel ko **sabka** data bhejna padta
+(bekaar), pull me har observer apni cheez khud le leta hai.
+
+> 💡 Asal me ye **HYBRID** hai: "kuch hua" ki khabar **push** hui (`update()`
+> call), aur data **pull** hua (`getVideoData()`). Zyadatar real systems aisa
+> hi karte hain.
+
+---
+
+## 6. Fayde — kyun use karein
+
+| Fayda | Matlab |
+| --- | --- |
+| **Loose Coupling** | Channel ko `Subscriber` ka naam tak nahi pata — bas `ISubscriber` interface se baat karta hai |
+| **Broadcast** | Ek trigger, aur **kitne bhi** observers ko khabar |
+| **Dynamic** | Subscribe/unsubscribe **runtime** pe — code badle bina |
+| **Open/Closed** | Naya observer type (`EmailNotifier`, `MobileApp`) add karo — Channel ka code **ek line bhi nahi** badlega ✅ |
+
+---
+
+## 7. ⚠️ Khatre — kya dhyaan rakhein
+
+### (a) Lapsed Listener — sabse aam galti 💀
+
+Subscriber object **delete** ho gaya, par usne **unsubscribe nahi kiya**?
+Channel ki list me uska **dangling pointer** reh gaya. Agli `notifySubscribers()`
+pe seedha **crash**.
+
+```cpp
+Subscriber *s = new Subscriber("Amit", channel);
+channel->subscribe(s);
+delete s;                    // ❌ unsubscribe nahi kiya!
+channel->uploadVideo("...");  // 💥 CRASH — mare hue object ka update() bula raha
+```
+
+**Hal:** subscriber ke destructor me khud unsubscribe karo, ya `weak_ptr` use
+karo.
+
+### (b) Notification ka order
+
+Kaunsa observer pehle notify hoga — iski **koi guarantee nahi** honi chahiye.
+Agar tumhara code "A pehle, phir B" pe depend karta hai, to design galat hai.
+
+### (c) Performance
+
+Hazaron observers aur state baar-baar badle? Har notify ek poora loop hai. Tab
+batching ya async notification sochna padta hai.
+
+### (d) Cascade / infinite loop
+
+Observer ke `update()` me subject ki state badal di? Wo phir notify karega → wo
+phir update → **infinite loop**. 🔁 Observer ko sirf **padhna** chahiye, badalna
+nahi.
+
+---
+
+## 8. Is code ka ek asli BUG
+
+`main()` me **memory leak** hai:
+
+```cpp
+Channel *channel = new Channel("Bhai_ki_padhai");   // new
+Subscriber *subs1 = new Subscriber("Shubham", channel);  // new
+Subscriber *subs2 = new Subscriber("Hardik", channel);   // new
+...
+return 0;    // ❌ ek bhi `delete` nahi!
+```
+
+Teeno objects leak ho rahe hain. Hona chahiye tha:
+
+```cpp
+delete subs1;
+delete subs2;
+delete channel;
+```
+
+> ⭐ **Ek dilchasp baat:** macOS ka `leaks` tool is leak ko **pakad nahi paata**
+> — wo "0 leaks" bolta hai! Kyunki wo stack scan karta hai, aur ye pointers exit
+> ke waqt bhi stack me pade dikhte hain → tool unhe "reachable" maan leta hai.
+>
+> Maine `new`/`delete` **gin ke** confirm kiya: **8 allocations, sirf 3 frees.**
+>
+> 📌 **Sabak:** tool ka "clean" hamesha sach nahi hota. Code padhna zaroori hai.
+
+**Sabse saaf hal:** raw pointer ki jagah `unique_ptr` — phir delete bhoolne ka
+sawaal hi nahi. (Ya objects stack pe hi bana lo — is demo me `new` ki zaroorat
+hi nahi thi!)
+
+---
+
+## 9. Asli duniya me kahan use hota hai
+
+| Jagah | Subject | Observers |
+| --- | --- | --- |
+| **GUI / Web** | Button | Click listeners (`addEventListener`) |
+| **Social media** | Account | Followers (Twitter/Instagram) |
+| **Stock market** | Stock price | Alert lagane wale users |
+| **MVC** | Model | Views (data badle → UI update) |
+| **Excel** | Cell | Formulas jo us cell pe depend karti hain |
+| **Is repo me** | `Group` | `User` (L31 Splitwise), `SnakeAndLadderGame` → notifier (L34) |
+
+---
+
+## 10. Observer vs Mediator — interview favourite
+
+Dono objects ko decouple karte hain, par **ulti soch se**:
+
+| | **OBSERVER** | **MEDIATOR** |
+| --- | --- | --- |
+| Rishta | **one-to-many** | **many-to-many** |
+| Direction | ek-tarfa (subject → observers) | do-tarfa (sab ↔ sab) |
+| Kaun jaanta hai | Subject ke paas observers ki list | Mediator ke paas sabki list |
+| Yaad rakhne ka tareeka | **Newsletter** — ek bhejta, sab padhte | **Group chat admin** — sab bolte, admin route karta |
+
+> 📄 Mediator ki poori baat: [`L35 Mediator_design_pattern/`](../../L35%20Mediator_design_pattern/)
+
+---
+
+## 11. Interview me kya bolna
+
+**Definition (ek line):**
+
+> "Observer ek behavioral pattern hai jo one-to-many dependency banata hai —
+> subject ki state badle to saare observers ko apne aap khabar ho jaati hai."
+
+**Kyun use karein (teen point):**
+
+1. **Polling se bachte hain** — subject khud batata hai, wo bhi tabhi jab
+   ASAL me kuch badla ho
+2. **Loose coupling** — subject sirf interface jaanta hai, concrete class nahi
+3. **Runtime pe subscribe/unsubscribe** — code badle bina
+
+**Khatra jo tum khud se bataoge (ye impress karta hai 🎯):**
+
+> "Sabse badi galti **Lapsed Listener** hai — observer delete ho jaye par
+> unsubscribe na kare, to subject ki list me dangling pointer reh jaata hai aur
+> agli notify pe crash. Isi liye main ya to destructor me unsubscribe karta hu,
+> ya `weak_ptr` use karta hu."
+
+**Follow-up jo aa sakta hai:**
+
+- _"Push ya pull?"_ → section 5 padho
+- _"Observer vs Mediator?"_ → section 10
+- _"Async notification kaise karoge?"_ → queue me daal do, observers ko alag
+  thread pe notify karo (par tab thread-safety sambhalni padegi)
+
+---
+
+## Summary — methods ek nazar me
+
+| Method | Kaam |
+| --- | --- |
+| `subscribe()` | Listener jodo (duplicate check ke saath) |
+| `unsubscribe()` | Listener hatao — **lapsed listener** se bachne ke liye zaroori |
+| `notifySubscribers()` | **Engine** — sabko `update()` bulao |
+| `uploadVideo()` | **Trigger** — state badlo, phir notify karo (order zaroori!) |
+| `update()` | **Reaction** — observer apna kaam kare |
+| `getVideoData()` | **Pull** — observer data kheenchta hai |

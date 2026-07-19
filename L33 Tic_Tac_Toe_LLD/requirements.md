@@ -22,11 +22,6 @@
 1. Code should be modular and easy to extend.
 2. Game rule logic should be strategy-based.
 3. Notification logic should be observer-based.
-4. Header files must use `#ifndef / #define / #endif` guards.
-5. All files should follow project conventions:
-   - Use `namespace tictactoe_lld`,
-   - Include `<bits/stdc++.h>`,
-   - Use `using namespace std;`.
 
 ## Folder Structure
 

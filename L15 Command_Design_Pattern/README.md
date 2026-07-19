@@ -20,10 +20,12 @@
 10. [Execution Flow (Step-by-Step)](#10-execution-flow-step-by-step)
 11. [Architecture Diagrams](#11-architecture-diagrams)
 12. [Build & Run](#12-build--run)
-13. [Command vs Related Patterns](#13-command-vs-related-patterns)
-14. [Advanced Extensions (Undo Stack, Macro, Queue)](#14-advanced-extensions-undo-stack-macro-queue)
-15. [Interview Talking Points](#15-interview-talking-points)
-16. [Summary](#16-summary)
+13. [🧹 Memory & Ownership — kaun kiska maalik?](#13--memory--ownership--kaun-kiska-maalik)
+14. [🐛 Code Quality — mile hue issues (fix ho chuke)](#14--code-quality--mile-hue-issues-fix-ho-chuke)
+15. [Command vs Related Patterns](#15-command-vs-related-patterns)
+16. [Advanced Extensions (Undo Stack, Macro, Queue)](#16-advanced-extensions-undo-stack-macro-queue)
+17. [Interview Talking Points](#17-interview-talking-points)
+18. [Summary](#18-summary)
 
 ---
 
@@ -547,7 +549,193 @@ Invalid button or no command at [1][1]
 
 ---
 
-## 13. Command vs Related Patterns
+## 13. 🧹 Memory & Ownership — kaun kiska maalik?
+
+Command pattern me pointers har taraf ghoomte hain — Command ke paas Receiver ka
+pointer, Invoker ke paas Command ka. To sawaal ye: **delete kaun karega?**
+
+> 📌 **Golden rule:** _"Pointer hone ka matlab MAALIK hona nahi hota."_
+> Kuch pointers **maalik** hote hain (delete karna unka kaam), kuch bas
+> **dekhte** hain (borrow — unhe haath nahi lagana).
+
+### Is code me ownership ka naksha
+
+```
+main()
+  ├── OWNS ──> Light, Fan          (receivers)      → main delete karta hai
+  └── OWNS ──> RemoteController                     → main delete karta hai
+                    │
+                    └── OWNS ──> LightCommand, FanCommand
+                                      │              → REMOTE delete karta hai
+                                      └── borrows ──> Light, Fan
+                                                      ❌ command delete NAHI karta
+```
+
+| Kaun | Kiska maalik | Kaun delete karta |
+| --- | --- | --- |
+| `main()` | `Light`, `Fan` | `main()` — `delete livingRoomLight` |
+| `main()` | `RemoteController` | `main()` — `delete remote` |
+| `RemoteController` | saare `Command` objects | uska **destructor** |
+| `LightCommand` | ❌ kuch nahi | Light ko sirf **borrow** karta hai |
+
+### Isi liye ye do baatein zaroori hain
+
+**1. `RemoteController` ka destructor commands delete karta hai:**
+
+```cpp
+~RemoteController() {
+    for (auto &row : buttons)
+        for (auto &cmd : row)
+            if (cmd != nullptr) delete cmd;
+}
+```
+
+**2. `LightCommand` me destructor hai hi NAHI** — aur ye **sahi** hai! Wo Light
+ka maalik nahi hai. Agar wo `delete light` karta, to `main()` ka
+`delete livingRoomLight` **double-free** kar deta. 💥
+
+### `setCommand` me purana command delete hota hai
+
+```cpp
+if (buttons[row][col] != nullptr)
+    delete buttons[row][col];    // ← purana hatao, warna leak
+buttons[row][col] = cmd;
+```
+
+Ek hi button pe do baar command lagao — purana **delete hona hi chahiye**, warna
+wo hamesha ke liye leak ho jaata.
+
+### ✅ Verify kiya (gin ke)
+
+```
+new    chala: 13 baar
+delete chala: 13 baar
+--> LEAK: 0 ✅
+ASan: clean (koi double-free / use-after-free nahi)
+```
+
+> 💡 **Aur bhi saaf tareeka:** `vector<vector<unique_ptr<Command>>>` use karo —
+> tab destructor likhne ki zaroorat hi nahi padti, aur `setCommand` me purana
+> delete karna bhi apne aap ho jaata hai. Yahan raw pointer isi liye rakha hai
+> taaki **ownership manually dikhe aur samajh aaye**.
+
+---
+
+## 14. 🐛 Code Quality — mile hue issues (fix ho chuke)
+
+Code ko `-Wall -Wextra` ke saath thok-bajaa ke dekha gaya. Logic bilkul sahi
+tha, par **teen** cheezein theek karne layak thi:
+
+### (a) `vector` use ho raha tha, par include hi nahi tha ⚠️
+
+```cpp
+#include <iostream>     // ← bas itna hi tha!
+...
+vector<vector<Command *>> buttons;   // par vector use ho raha tha!
+```
+
+Code chal **raha tha** — kyunki `<iostream>` andar-hi-andar `<vector>` kheench
+laata hai. Par ye **"transitive include"** pe bharosa hai, aur wo fragile hai:
+compiler ya standard-library version badla to **build toot jaayegi**.
+
+**✅ Ab code me `#include <bits/stdc++.h>` hai** — ye saari standard headers ek
+saath le aata hai, to `vector` wali problem khatam.
+
+> ⚠️ **Par jaan lo:** `<bits/stdc++.h>` **standard C++ nahi hai** — ye GCC ka
+> apna header hai. MSVC ya Apple Clang pe ye **hai hi nahi**, aur compile time
+> bhi badha deta hai (saari headers kheench laata hai).
+>
+> **Competitive programming** me ye theek hai (jaldi likhna hota hai). Par
+> **production code** me har header alag likhna behtar hai:
+>
+> ```cpp
+> #include <iostream>
+> #include <vector>
+> ```
+>
+> 📌 **Rule:** jo use karo, wo **khud** include karo — aur portable rehna ho to
+> standard headers hi use karo.
+
+### (b) `override` missing tha
+
+README me code snippet `override` dikhata tha, par **asli code me nahi tha**:
+
+```cpp
+void execute() { light->on(); }             // ❌ pehle
+void execute() override { light->on(); }    // ✅ ab
+```
+
+`override` compiler se check karwata hai ki base me sach me aisa virtual function
+hai. **Typo** hui (jaise `exectue()`) to **compile error** milega — chupke se ek
+naya function banne ke bajaye.
+
+### (c) Sign-compare warning — aur ismein ek CHHUPA TRAP tha ⭐
+
+Ye sabse interesting hai. Pehle aisa tha:
+
+```cpp
+if (row < buttons.size() && ...)    // int vs size_t → 4 warnings
+```
+
+**Par ye ittefaq se SAFE tha!** `row = -1` hone pe, `-1` **`size_t` me convert**
+hoke ek vishaal number (18 quintillion) ban jaata → check **FALSE** → reject. 😅
+
+**⚠️ TRAP:** agar koi warning "theek" karne ke liye seedha cast laga deta —
+
+```cpp
+if (row < (int)buttons.size())      // ❌ ab -1 < 2 = TRUE!
+```
+
+— to negative index **pass** ho jaata aur `buttons[-1]` → **undefined behavior!**
+Yaani **warning theek karne se ek ASLI BUG paida ho jaata.** 💥
+
+**✅ Sahi fix** — pehle `>= 0` check, phir cast:
+
+```cpp
+if (row >= 0 && col >= 0 &&
+    static_cast<size_t>(row) < buttons.size() &&
+    static_cast<size_t>(col) < buttons[row].size())
+```
+
+Ab dono theek — warning bhi nahi, aur negative bhi safe (**jaan-boojh ke**,
+ittefaq se nahi).
+
+> 📌 **Sabak:** _"warning ko chup karana"_ aur _"bug theek karna"_ — do alag
+> cheezein hain. Cast lagane se pehle sochо ki wo **kyun** warning de raha hai.
+
+### Test karke verify
+
+| Input | Natija |
+| --- | --- |
+| `row = -1` | reject ✅ |
+| `row = 0` | accept ✅ |
+| `row = 5` (grid 2×2) | reject ✅ |
+
+```
+Build : zero warnings (-Wall -Wextra)   ← pehle 4 the
+Output: bilkul same (behavior nahi badla)
+ASan  : clean
+Leaks : 0 (13 new, 13 delete)
+```
+
+### Ek chhoti baat jo abhi bhi hai
+
+`setCommand()` me galat index bhejo, to `cmd` **chup-chaap leak** ho jaayega —
+caller ne `new` kiya tha, aur function na use rakhta hai na delete karta:
+
+```cpp
+void setCommand(int row, int col, Command *cmd) {
+    if (/* index sahi hai */) { ... }
+    // ← else me `delete cmd` nahi hai!
+}
+```
+
+`main()` hamesha sahi index bhejta hai, isi liye trigger nahi hota. Theek karne
+ka tareeka: `else { delete cmd; }`, ya `bool` return karke caller ko batao.
+
+---
+
+## 15. Command vs Related Patterns
 
 | Pattern | Focus | Command se Farq |
 | ------- | ----- | --------------- |
@@ -577,7 +765,7 @@ Kya chahiye?
 
 ---
 
-## 14. Advanced Extensions (Undo Stack, Macro, Queue)
+## 16. Advanced Extensions (Undo Stack, Macro, Queue)
 
 Is demo mein **per-button toggle** hai. Production systems mein ye common extensions hote hain:
 
@@ -630,7 +818,7 @@ queue<Command*> jobQueue;
 
 ---
 
-## 15. Interview Talking Points
+## 17. Interview Talking Points
 
 1. **One-liner:** "Command request ko object mein encapsulate karta hai — execute, undo, queue, log sab possible."
 
@@ -648,7 +836,7 @@ queue<Command*> jobQueue;
 
 ---
 
-## 16. Summary
+## 18. Summary
 
 | Pehlu | Detail |
 | ----- | ------ |

@@ -1,11 +1,50 @@
 // ============================================================================
-//  FacadePattern.cpp  —  Facade Design Pattern (Structural)
+//  FacadePattern.cpp  —  FACADE DESIGN PATTERN (Structural)
 // ----------------------------------------------------------------------------
-//  Facade = ek complex subsystem (bahut saari classes) ke upar ek SIMPLE
-//  interface. Client ko andar ke saare parts (PowerSupply, CPU, BIOS...) ke
-//  saath alag-alag deal nahi karna padta — bas ek hi call `startComputer()`.
-//  Example: computer boot karna — peeche bahut steps hain, par client ke liye
-//  ek button. Fayda: client aur subsystem ke beech loose coupling.
+//  Facade = "complex subsystem (bahut saari classes) ke UPAR ek SIMPLE
+//            interface rakh do — client ko andar ki bheed se matlab nahi,
+//            bas EK aasaan button chahiye."
+//
+//  Asli duniya ka example: computer ka POWER BUTTON 🔘
+//    Tum button dabate ho — bas. Peeche kya hota hai? Power supply on,
+//    fans start, BIOS boot, CPU init, memory self-test, hard drive spin,
+//    OS load... 7 subsystems ka tandav! Par tumhe sirf EK button dikhta hai.
+//    Yahi Facade hai — complexity CHHUPTI nahi, bas EK jagah ORGANIZE hoti hai.
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  FACADE KYUN? — bina iske client ka haal:                               │
+//  │                                                                          │
+//  │    // Client ko khud 7 classes + unka SAHI ORDER yaad rakhna padta:     │
+//  │    powerSupply.providePower();   // pehle ye...                         │
+//  │    coolingSystem.startFans();    // phir ye...                          │
+//  │    bios.boot(cpu, memory);       // phir ye (CPU/Memory pass karke!)    │
+//  │    hardDrive.spinUp();           // order galat = boot fail!            │
+//  │    os.load();                                                           │
+//  │                                                                          │
+//  │  1) Client 7 subsystems se TIGHTLY COUPLED — koi bhi badla, client toota│
+//  │  2) Boot ka sahi ORDER har client ko yaad rakhna padta hai              │
+//  │  3) Naya client = wahi 5-line sequence copy-paste (aur galti ka chance) │
+//  │                                                                          │
+//  │  FACADE se: ComputerFacade ek startComputer() deta hai — order ka       │
+//  │  gyaan EK jagah, client sirf facade ko jaanta hai. ✅                   │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  PATTERN KE ROLES is file me:
+//    1. Subsystems -> PowerSupply, CoolingSystem, CPU, Memory, HardDrive,
+//                     BIOS, OperatingSystem  (7 complex parts — inhe koi
+//                     change NAHI karna padta, ye pattern se anjaan hain!)
+//    2. Facade     -> ComputerFacade  (sabko member banake SAHI ORDER me
+//                     call karta hai — startComputer() hi poora sequence)
+//    3. Client     -> main()  (sirf facade se baat karta hai)
+//
+//  ⭐ FACADE vs ADAPTER vs MEDIATOR (interview ka confusion):
+//    Facade   = SIMPLIFY karta hai (naya aasaan interface UPAR se)
+//    Adapter  = CONVERT karta hai (incompatible interface ko fit karana)
+//    Mediator = COORDINATE karta hai (objects ki aapas ki baat-cheet route)
+//
+//  📌 NOTE: Facade subsystem ko BAND nahi karta — zaroorat ho to client
+//  seedha CPU/BIOS access kar SAKTA hai. Facade ek convenience hai,
+//  restriction nahi (yahi Proxy se bhi alag banata hai).
 // ============================================================================
 #include <iostream>
 using namespace std;

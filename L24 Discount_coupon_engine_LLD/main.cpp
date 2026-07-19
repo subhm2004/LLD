@@ -1,10 +1,46 @@
 // ============================================================================
-//  main.cpp  —  Discount Coupon Engine ka demo driver
+//  main.cpp  —  DISCOUNT COUPON ENGINE ka demo driver (L24 LLD project)
 // ----------------------------------------------------------------------------
-//  Cart banao, multiple coupons (seasonal/loyalty/bulk/banking) register karo,
-//  aur CouponManager unhe ek CHAIN me cart par apply karta hai. Discount math
-//  STRATEGY se aata hai (flat/percent/percent-with-cap). Patterns: Chain of
-//  Responsibility + Strategy + Factory + Singleton.
+//  System kya karta hai: Cart banao, multiple coupons runtime pe register
+//  karo, aur CouponManager unhe ek CHAIN me cart par apply karta hai —
+//  har coupon khud decide karta hai "main is cart pe lagta hoon ya nahi".
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  COUPON CHAIN KA FLOW (Chain of Responsibility):                        │
+//  │                                                                          │
+//  │   Cart ──> [Seasonal] ──> [Loyalty] ──> [Bulk] ──> [Banking-EXCLUSIVE]  │
+//  │              │               │            │            │                │
+//  │         lagta hai?      lagta hai?   lagta hai?   lagta hai?            │
+//  │         haan->discount  nahi->skip   haan->apply  haan->apply + STOP    │
+//  │         phir NEXT       phir NEXT    phir NEXT    (isCombinable=false   │
+//  │                                                    -> chain yahin band) │
+//  │                                                                          │
+//  │  Har coupon apna DISCOUNT MATH khud nahi karta — wo STRATEGY se aata    │
+//  │  hai (flat / percent / percent-with-cap), jo FACTORY banati hai.        │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  ============================================================================
+//   IS PROJECT ME 4 DESIGN PATTERNS use hue hain (detail: design_patterns.md)
+//  ----------------------------------------------------------------------------
+//   Pattern                 | Kahan                    | Kya kaam
+//   ------------------------+--------------------------+------------------------
+//   Chain of Responsibility | coupons/Coupon.h         | Coupons ki linked chain —
+//                           |                          |  har link apply/skip/stop
+//   Strategy                | strategies/*.h           | Discount ka MATH alag
+//                           |                          |  classes me (flat/%/cap)
+//   Factory (Simple)        | factories/Discount-      | StrategyType -> sahi
+//                           |  StrategyManager.h       |  strategy object banana
+//   Singleton               | CouponManager +          | Dono managers ka poore
+//                           |  DiscountStrategyManager |  program me EK instance
+//
+//   COUPON x STRATEGY MAPPING (kaunsa coupon kaunsa math use karta hai):
+//   Coupon               | Level     | Strategy          | Extra rule
+//   ---------------------+-----------+-------------------+---------------------
+//   SeasonalOffer        | CATEGORY  | PERCENT           | sirf matching category
+//   LoyaltyDiscount      | CART      | PERCENT           | loyalty member hona
+//   BulkPurchaseDiscount | CART      | FLAT              | originalTotal >= min
+//   BankingCoupon        | CART      | PERCENT_WITH_CAP  | bank match + min spend
+//                        |           |                   | + EXCLUSIVE (chain stop)
 // ============================================================================
 #include <bits/stdc++.h>
 

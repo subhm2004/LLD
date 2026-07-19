@@ -1,5 +1,11 @@
-// strategies/PercentageDiscountStrategy.h — Concrete: percentage off (jaise 10%).
-// IDiscountStrategy implement karta hai.
+// ============================================================================
+//  strategies/PercentageDiscountStrategy.h — Concrete Strategy #2: PERCENT off
+// ----------------------------------------------------------------------------
+//  "10% off" ka plain formula: (percent/100) × base. Na cap, na koi twist —
+//  Single Responsibility ka perfect example: EK class, EK formula.
+//  Use hota hai: SeasonalOffer (category subtotal pe) aur LoyaltyDiscount
+//  (cart total pe) — SAME strategy, alag base amount. Yahi reuse ka fayda!
+// ============================================================================
 #ifndef DISCOUNT_COUPON_LLD_STRATEGIES_PERCENTAGEDISCOUNTSTRATEGY_H
 #define DISCOUNT_COUPON_LLD_STRATEGIES_PERCENTAGEDISCOUNTSTRATEGY_H
 

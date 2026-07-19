@@ -1,5 +1,17 @@
-// models/Cart.h — Cart: items ki list, original total, aur applied discounts ke
-// baad current total + loyalty/banking flags. Coupons isi cart par apply hote hain.
+// ============================================================================
+//  models/Cart.h — Cart model (coupons ka "playground" 🛒)
+// ----------------------------------------------------------------------------
+//  Items ki list + DO totals + eligibility flags. DO totals kyun?! Ye is
+//  design ka sabse smart hissa hai:
+//    originalTotal = pre-discount total — KABHI nahi badalta.
+//                    Threshold checks (bulk min 1000, bank min 2000) ISI
+//                    pe hote hain — taaki pehle lage discounts kisi coupon
+//                    ko unfairly disqualify na kar dein!
+//    currentTotal  = running total — har coupon ke discount se GHATTA
+//                    jaata hai. Agla coupon ka % isi pe lagta hai (stacking).
+//  Eligibility metadata bhi yahin: loyaltyMember flag + paymentBank string.
+//  Cart CartItems ka MALIK hai (khud banata hai) -> destructor me delete.
+// ============================================================================
 #ifndef DISCOUNT_COUPON_LLD_MODELS_CART_H
 #define DISCOUNT_COUPON_LLD_MODELS_CART_H
 

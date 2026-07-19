@@ -1,4 +1,11 @@
-// models/CartItem.h — Cart ka ek line item: Product + quantity. Cart inhi ki list rakhti hai.
+// ============================================================================
+//  models/CartItem.h — Cart ka ek LINE ITEM (Product × quantity)
+// ----------------------------------------------------------------------------
+//  "Jeans × 2" type ki entry. Product ka POINTER rakhta hai, copy nahi —
+//  aur OWNERSHIP bhi nahi leta (Product delete karna caller ka kaam,
+//  main.cpp me manual delete hota hai). itemTotal() = price × qty —
+//  SeasonalOffer isi se category subtotal jodta hai.
+// ============================================================================
 #ifndef DISCOUNT_COUPON_LLD_MODELS_CARTITEM_H
 #define DISCOUNT_COUPON_LLD_MODELS_CARTITEM_H
 

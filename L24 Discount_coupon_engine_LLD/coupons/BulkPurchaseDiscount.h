@@ -1,5 +1,15 @@
-// coupons/BulkPurchaseDiscount.h — Concrete coupon: cart total ek threshold se
-// upar ho to discount (bulk buy). Coupon base ko extend karta hai.
+// ============================================================================
+//  coupons/BulkPurchaseDiscount.h — Concrete Coupon #3: bulk buy pe FLAT off
+// ----------------------------------------------------------------------------
+//  "1000 se upar ki shopping? Rs 100 flat off." Ek SUBTLE design decision
+//  yahan chhupi hai (interview me bolne layak!):
+//    - Eligibility ORIGINAL total pe check hoti hai (pehle wale coupons
+//      discount laga ke cart ko threshold ke NEECHE gira dein, to bhi ye
+//      coupon unfairly disqualify na ho!)
+//    - Par discount CURRENT total pe lagta hai (stacking ka normal rule)
+//  Math ke liye FLAT strategy — jo min(flat, base) se total negative hone
+//  se bhi bachati hai.
+// ============================================================================
 #ifndef DISCOUNT_COUPON_LLD_COUPONS_BULKPURCHASEDISCOUNT_H
 #define DISCOUNT_COUPON_LLD_COUPONS_BULKPURCHASEDISCOUNT_H
 

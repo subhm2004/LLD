@@ -1,5 +1,13 @@
-// strategies/PercentageWithCapStrategy.h — Concrete: percentage off PAR ek max
-// cap ke saath (jaise "20% off, max ₹500"). IDiscountStrategy implement karta hai.
+// ============================================================================
+//  strategies/PercentageWithCapStrategy.h — Concrete Strategy #3: % + MAX CAP
+// ----------------------------------------------------------------------------
+//  "15% off, MAX Rs 500" — bank offers ka classic formula:
+//  min((percent/100) × base, cap). 50,000 ke cart pe 15% = 7500 banta,
+//  par cap 500 hai to 500 hi milega — bank apna nuksan limit karta hai!
+//  Use hota hai: BankingCoupon me. Dhyan do: ye PercentageDiscountStrategy
+//  ko inherit NAHI karti — chhoti si duplication (percent formula) accept
+//  ki hai taaki hierarchy flat aur simple rahe.
+// ============================================================================
 #ifndef DISCOUNT_COUPON_LLD_STRATEGIES_PERCENTAGEWITHCAPSTRATEGY_H
 #define DISCOUNT_COUPON_LLD_STRATEGIES_PERCENTAGEWITHCAPSTRATEGY_H
 

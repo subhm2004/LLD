@@ -1,6 +1,20 @@
-// factories/DiscountStrategyManager.h — FACTORY (Singleton): StrategyType ke
-// hisaab se sahi IDiscountStrategy banata/cache karta hai. Coupons isse strategy
-// maangte hain (creation centralized).
+// ============================================================================
+//  factories/DiscountStrategyManager.h — SIMPLE FACTORY + SINGLETON
+// ----------------------------------------------------------------------------
+//  Ye L9 wala Simple Factory hai, real project me use hota hua!
+//    - Coupons ko strategy chahiye par unhe CONCRETE class names
+//      (FlatDiscountStrategy...) nahi pata hone chahiye — wo bas enum
+//      (StrategyType::FLAT) bolte hain, factory sahi object bana deti hai.
+//    - Singleton isliye: factory STATELESS hai, iske do instances banane
+//      ka koi matlab hi nahi — ek hi kaafi hai.
+//    - Copy constructor + operator= DELETE kiye hain — Singleton ko galti
+//      se copy karke "do instances" banne ka rasta hi band! (L9 se ek
+//      kadam aage — interview me ye detail bolo.)
+//
+//  Simple Factory ka known trade-off yahan bhi hai: naya StrategyType aaya
+//  to is switch me case add karna padega (OCP weak) — par creation EK
+//  jagah centralized hai, har coupon me `new` bikhra nahi.
+// ============================================================================
 #ifndef DISCOUNT_COUPON_LLD_FACTORIES_DISCOUNTSTRATEGYMANAGER_H
 #define DISCOUNT_COUPON_LLD_FACTORIES_DISCOUNTSTRATEGYMANAGER_H
 

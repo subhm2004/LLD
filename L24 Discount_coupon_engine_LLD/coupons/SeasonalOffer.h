@@ -1,5 +1,12 @@
-// coupons/SeasonalOffer.h — Concrete coupon: festival/season ke time ka discount
-// (jaise category-based %). Coupon base + ek discount STRATEGY use karta hai.
+// ============================================================================
+//  coupons/SeasonalOffer.h — Concrete Coupon #1: CATEGORY-level % discount
+// ----------------------------------------------------------------------------
+//  "Clothing pe 10% off" type ka festival/seasonal coupon. Do khaas baatein:
+//    1. Ye CATEGORY-level hai — discount POORI cart pe nahi, sirf matching
+//       category (jaise Clothing) ke items ke subtotal pe lagta hai!
+//    2. Math ke liye PERCENT strategy use karta hai (factory se li).
+//  Pattern roles: Coupon (CoR ka link) + IDiscountStrategy (math injected).
+// ============================================================================
 #ifndef DISCOUNT_COUPON_LLD_COUPONS_SEASONALOFFER_H
 #define DISCOUNT_COUPON_LLD_COUPONS_SEASONALOFFER_H
 

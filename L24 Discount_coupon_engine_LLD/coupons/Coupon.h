@@ -1,6 +1,22 @@
-// coupons/Coupon.h — CHAIN OF RESPONSIBILITY ka base coupon. Har coupon check
-// karta hai "main cart pe apply hota hoon?"; agar haan to discount lagao, phir
-// NEXT coupon ko pass karo. Coupons ek chain me lagते hain (stacking).
+// ============================================================================
+//  coupons/Coupon.h — CHAIN OF RESPONSIBILITY ka base class (system ka dil ❤️)
+// ----------------------------------------------------------------------------
+//  Chain of Responsibility = "request ko handlers ki EK CHAIN se guzaro —
+//  har handler khud decide kare: main handle karu? aage bheju? ya rok du?"
+//
+//  Yahan: Cart (request) coupons ki chain se guzarta hai. Har coupon:
+//    1. isApplicable(cart)? -> nahi: SKIP karke next ko de do
+//    2. haan: discount lagao
+//    3. isCombinable()? -> false: chain YAHIN STOP (exclusive coupon!)
+//    4. warna next coupon ko pass karo (discounts STACK hote hain)
+//
+//  Concrete coupon ko sirf 3 cheezein batani hoti hain (contract):
+//    - isApplicable()  : "main is cart pe lagta hoon?"    (eligibility rule)
+//    - getDiscount()   : "kitna discount?"                (strategy se math)
+//    - name()          : "mera naam kya hai?"             (logging/listing)
+//  Chain chalane ka SAARA logic (apply/skip/stop/next) BASE me ek jagah hai —
+//  ye Template Method jaisa flavour hai: skeleton base me, details derived me.
+// ============================================================================
 #ifndef DISCOUNT_COUPON_LLD_COUPONS_COUPON_H
 #define DISCOUNT_COUPON_LLD_COUPONS_COUPON_H
 
@@ -12,20 +28,17 @@
 namespace discount_coupon_lld {
 
 // -----------------------------------------------------------------------------
-// Coupon base class (Chain of Responsibility)
-// Kya karta hai:
-// - Coupon chain ka generic behavior define karta hai.
-// - Concrete coupon ko sirf 3 cheezein batani hoti hain:
-//   1) applicability rule
-//   2) discount amount
-//   3) name
+// Coupon base class (Chain of Responsibility ka "Handler")
 // -----------------------------------------------------------------------------
 class Coupon {
+    // Chain ka agla link — nullptr matlab ye aakhri coupon hai.
+    // Ye pointer hi coupons ko linked-list jaisi chain me jodta hai.
     Coupon *next = nullptr;
 
 public:
-    // Recursive cleanup:
-    // head delete karne par poori chain release ho jati hai.
+    // RECURSIVE CLEANUP ka trick: har coupon apne NEXT ko delete karta hai,
+    // wo apne next ko... to sirf HEAD delete karo -> poori chain ek saath
+    // release! (Domino effect 🁢🁢🁢)
     virtual ~Coupon() {
         delete next;
     }
@@ -33,31 +46,37 @@ public:
     void setNext(Coupon *nxt) { next = nxt; }
     Coupon *getNext() const { return next; }
 
-    // Template-style chain step:
-    // - applicable ho to discount apply karo
-    // - non-combinable ho to yahin stop
-    // - warna next coupon evaluate karo
+    // ------------------- CHAIN KA ENGINE (sabse important method) -------------------
+    // Ye method BASE me hai, virtual NAHI hai — chain chalane ka tareeka
+    // sab coupons ke liye SAME hai, sirf rules (isApplicable/getDiscount)
+    // alag hain. Flow:
+    //   applicable? -> discount lagao -> combinable nahi? STOP : next->apply
     void applyDiscount(Cart *cart) {
         if (isApplicable(cart)) {
-            double discount = getDiscount(cart);
-            cart->applyDiscount(discount);
+            double discount = getDiscount(cart);      // math STRATEGY se aata hai
+            cart->applyDiscount(discount);            // cart ka currentTotal ghata
             std::cout << name() << " applied: " << discount << '\n';
             if (!isCombinable()) {
+                // EXCLUSIVE coupon (jaise BankingCoupon) — iske baad koi
+                // aur discount stack nahi ho sakta, chain yahin khatam!
                 std::cout << name() << " is exclusive — stopping coupon chain.\n";
                 return;
             }
         }
+        // Applicable nahi tha (skip) YA combinable tha — dono case me
+        // baaki chain ko mauka do.
         if (next) {
             next->applyDiscount(cart);
         }
     }
 
-    // Concrete coupon ka contract
-    virtual bool isApplicable(Cart *cart) = 0;
-    virtual double getDiscount(Cart *cart) = 0;
+    // ------------------- CONCRETE COUPON KA CONTRACT -------------------
+    // Har concrete coupon (Seasonal/Loyalty/Bulk/Banking) ko ye dena HOGA:
+    virtual bool isApplicable(Cart *cart) = 0;  // eligibility rule
+    virtual double getDiscount(Cart *cart) = 0; // discount amount (via strategy)
 
-    // Default behavior: stackable
-    // Exclusive coupon yeh method override karke false return kar sakta hai.
+    // Default: STACKABLE (chain aage badhegi). Exclusive coupon (Banking)
+    // isse override karke false karta hai -> chain wahin ruk jaati hai.
     virtual bool isCombinable() { return true; }
     virtual std::string name() = 0;
 };

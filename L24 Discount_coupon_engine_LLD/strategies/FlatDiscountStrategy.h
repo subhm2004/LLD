@@ -1,5 +1,11 @@
-// strategies/FlatDiscountStrategy.h — Concrete: fixed flat amount off (jaise ₹100).
-// IDiscountStrategy implement karta hai.
+// ============================================================================
+//  strategies/FlatDiscountStrategy.h — Concrete Strategy #1: FLAT amount off
+// ----------------------------------------------------------------------------
+//  "Rs 100 off" type ka seedha discount. Ek safety detail ke saath:
+//  min(flat, baseAmount) — taaki 80 Rs ke cart pe 100 ka discount laga ke
+//  total NEGATIVE na ho jaye (dukaan wale ko ulta paise dene padte! 😄)
+//  Use hota hai: BulkPurchaseDiscount me.
+// ============================================================================
 #ifndef DISCOUNT_COUPON_LLD_STRATEGIES_FLATDISCOUNTSTRATEGY_H
 #define DISCOUNT_COUPON_LLD_STRATEGIES_FLATDISCOUNTSTRATEGY_H
 

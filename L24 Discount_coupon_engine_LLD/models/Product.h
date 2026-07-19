@@ -1,4 +1,12 @@
-// models/Product.h — Ek product: naam, category, price. Cart items inhi se bante.
+// ============================================================================
+//  models/Product.h — Product model (sellable item ka data)
+// ----------------------------------------------------------------------------
+//  Naam + category + price — bas. Koi setter NAHI hai = IMMUTABLE object:
+//  ek baar bana to badla nahi ja sakta (price beech me badal jaye to
+//  discounts ka hisaab kharab ho jata!). Category field hi SeasonalOffer
+//  ke targeting ka aadhaar hai ("Clothing" match karo).
+//  std::move constructor me — string ki extra copy bachane ke liye.
+// ============================================================================
 #ifndef DISCOUNT_COUPON_LLD_MODELS_PRODUCT_H
 #define DISCOUNT_COUPON_LLD_MODELS_PRODUCT_H
 

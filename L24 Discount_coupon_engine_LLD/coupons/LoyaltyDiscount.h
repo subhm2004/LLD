@@ -1,5 +1,13 @@
-// coupons/LoyaltyDiscount.h — Concrete coupon: loyal/regular customers ke liye
-// discount. Coupon base ko extend karta hai (chain ka ek link).
+// ============================================================================
+//  coupons/LoyaltyDiscount.h — Concrete Coupon #2: loyalty members ka % off
+// ----------------------------------------------------------------------------
+//  "Loyalty member ho? 5% off poore cart pe." Do khaas baatein:
+//    1. CART-level hai — discount CURRENT total pe lagta hai, matlab isse
+//       PEHLE lage coupons ka asar isme count hota hai (stacking behavior:
+//       Seasonal ne 300 kam kiya to Loyalty ka 5% us kam hue total pe lagega).
+//    2. Math ke liye PERCENT strategy (factory se).
+//  Eligibility ekdum simple: cart.isLoyaltyMember() true ho bas.
+// ============================================================================
 #ifndef DISCOUNT_COUPON_LLD_COUPONS_LOYALTYDISCOUNT_H
 #define DISCOUNT_COUPON_LLD_COUPONS_LOYALTYDISCOUNT_H
 

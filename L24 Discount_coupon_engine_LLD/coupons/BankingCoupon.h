@@ -1,5 +1,16 @@
-// coupons/BankingCoupon.h — Concrete coupon: specific bank card se pay karne par
-// discount (jaise "XYZ Bank pe 10% off"). Coupon base ko extend karta hai.
+// ============================================================================
+//  coupons/BankingCoupon.h — Concrete Coupon #4: bank offer (EXCLUSIVE! 🛑)
+// ----------------------------------------------------------------------------
+//  "ABC Bank card se pay karo, 15% off (max Rs 500), min spend 2000."
+//  Ye sabse FEATURE-RICH coupon hai — teeno khaas cheezein ek saath:
+//    1. DOUBLE eligibility: bank match AND original total >= min spend
+//    2. PERCENT_WITH_CAP strategy — 15% to milega par Rs 500 se zyada nahi
+//       (bank apna nuksan cap karta hai — real life jaisa!)
+//    3. EXCLUSIVE: isCombinable() = false override — ye lagne ke baad
+//       chain STOP! Iske aage koi coupon stack nahi hota. Isi liye main.cpp
+//       me ise chain me SABSE AAKHIR me register kiya hai — pehle daal dete
+//       to baaki combinable coupons ko mauka hi nahi milta!
+// ============================================================================
 #ifndef DISCOUNT_COUPON_LLD_COUPONS_BANKINGCOUPON_H
 #define DISCOUNT_COUPON_LLD_COUPONS_BANKINGCOUPON_H
 

@@ -1,5 +1,13 @@
-// strategies/IDiscountStrategy.h — STRATEGY interface: "amount par kitna discount".
-// Concrete: Flat / Percentage / PercentageWithCap. Coupons isi math ko reuse karte.
+// ============================================================================
+//  strategies/IDiscountStrategy.h — STRATEGY interface (L8 wala pattern, live!)
+// ----------------------------------------------------------------------------
+//  Discount ka MATH coupon se ALAG kyun kiya? Separation of concerns:
+//    - COUPON decide karta hai: "main lagta hoon ya nahi" (eligibility)
+//    - STRATEGY decide karti hai: "kitna discount banega" (math formula)
+//  Fayda: SeasonalOffer aur LoyaltyDiscount dono PERCENT strategy REUSE
+//  karte hain — formula ek jagah likha, do jagah use hua. Naya math aaye
+//  (jaise "buy 1 get 1") to bas nayi strategy class — coupons untouched!
+// ============================================================================
 #ifndef DISCOUNT_COUPON_LLD_STRATEGIES_IDISCOUNTSTRATEGY_H
 #define DISCOUNT_COUPON_LLD_STRATEGIES_IDISCOUNTSTRATEGY_H
 

@@ -1,10 +1,40 @@
 // ============================================================================
-//  DiscountCoupon.cpp  —  Discount Coupon Engine (original single-file version)
+//  DiscountCoupon.cpp  —  DISCOUNT COUPON ENGINE (single-file MONOLITH version)
 // ----------------------------------------------------------------------------
-//  Poore coupon engine ka original monolithic version (saari classes ek file me).
-//  Modular, folder-based version parent folder me hai (coupons/, strategies/,
-//  factories/, core/). Reference ke liye preserve kiya gaya.
-//  Is file me detail me (Hinglish + English mix) comments add kiye gaye hain.
+//  Poora coupon engine EK file me — original lecture code. Isi ko refactor
+//  karke MODULAR version banaya gaya hai (../coupons, ../strategies,
+//  ../factories, ../core, ../models + ../main.cpp). Patterns ki detail:
+//  ../design_patterns.md padho!
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  COUPON CHAIN KA FLOW (Chain of Responsibility):                        │
+//  │                                                                          │
+//  │   Cart ──> [Seasonal] ──> [Loyalty] ──> [Bulk] ──> [Banking-EXCLUSIVE]  │
+//  │             lagta hai?     lagta hai?    lagta?      lagta hai?         │
+//  │             haan->apply    nahi->skip    haan->apply haan->apply+STOP🛑 │
+//  │             phir NEXT      phir NEXT     phir NEXT   (isCombinable=false│
+//  │                                                       -> chain band)    │
+//  │                                                                          │
+//  │  Har coupon apna MATH khud nahi karta — STRATEGY se karwata hai         │
+//  │  (flat/percent/percent-with-cap), jo SINGLETON FACTORY banati hai.      │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  IS FILE KA LAYOUT (upar se neeche):
+//    1. StrategyType enum + 3 discount strategies     <- STRATEGY pattern
+//    2. DiscountStrategyManager                       <- SINGLETON(DCL) + FACTORY
+//    3. Product / CartItem / Cart models
+//    4. Coupon base + 4 concrete coupons              <- CHAIN OF RESPONSIBILITY
+//    5. CouponManager                                 <- SINGLETON(DCL) + registry
+//    6. main() — demo
+//
+//  ⭐ MONOLITH vs MODULAR ka EK BADA FARQ (interview gold!):
+//  Is file ke Singletons DOUBLE-CHECKED LOCKING (DCL) style ke hain —
+//  static pointer + mutex + do baar null-check. Modular version me MEYERS
+//  style hai (getInstance me static local). Dono thread-safe hain, par:
+//    DCL    = manual lock + checks — purana classic, likhna tricky
+//    Meyers = C++11 se compiler khud guarantee deta hai — chhota aur safe
+//  Dono styles jaanna aur farq bata paana = full marks! (detail neeche
+//  DiscountStrategyManager ke comments me)
 // ============================================================================
 #include <bits/stdc++.h>
 
@@ -21,17 +51,24 @@ using namespace std;
 // Enum to identify different types of discount calculations
 enum StrategyType { FLAT, PERCENT, PERCENT_WITH_CAP };
 
+// ============================================================================
+//  SECTION 1: STRATEGY PATTERN — discount ka MATH (L8 wala pattern, live!)
 // ----------------------------------------------------------------------------
-// [DESIGN PATTERN: Strategy Pattern]
-// ----------------------------------------------------------------------------
-// Strategy Pattern ka use discount calculator math ko coupon rule algorithms se
-// alag (decouple) karne ke liye kiya gaya hai.
-// - Discount calculation ka logic (Flat discount, Percentage discount, or Percentage with Cap)
-//   alag strategy classes me encapsulated hai.
-// - Coupon classes (like SeasonalOffer, LoyaltyDiscount) concrete calculation algorithm ko
-//   hardcode karne ke bajaye `DiscountStrategy` interface ke through bind (composition) karti hain.
-// - Isse naye mathematical models implement karna asaan ho jata hai bina coupon classes ko modify kiye.
-// ----------------------------------------------------------------------------
+//  Discount ka FORMULA aur coupon ki ELIGIBILITY alag-alag cheezein hain:
+//    - COUPON decide karta hai: "main is cart pe lagta hoon ya nahi?"
+//    - STRATEGY decide karti hai: "kitna discount banega?" (sirf math)
+//
+//  Teen formulas ka scoreboard:
+//   Strategy           | Formula                    | Safety/Twist
+//   -------------------+----------------------------+------------------------
+//   FLAT               | min(flat, base)            | total negative nahi hoga
+//   PERCENT            | (pct/100) × base           | plain — koi twist nahi
+//   PERCENT_WITH_CAP   | min((pct/100) × base, cap) | bank ka nuksan capped
+//
+//  REUSE ka proof: SeasonalOffer aur LoyaltyDiscount DONO PERCENT strategy
+//  use karte hain — formula EK jagah, use DO jagah. Naya math aaye (jaise
+//  "buy 1 get 1") to bas nayi strategy class — coupons untouched! (OCP ✅)
+// ============================================================================
 
 // Discount Strategy Interface (Abstract Strategy)
 class DiscountStrategy {
@@ -94,16 +131,39 @@ public:
   }
 };
 
+// ============================================================================
+//  SECTION 2: SINGLETON (DCL style) + SIMPLE FACTORY — 2 patterns ek class me
 // ----------------------------------------------------------------------------
-// [DESIGN PATTERN: Singleton Pattern & Factory Pattern]
-// ----------------------------------------------------------------------------
-// 1. Singleton: DiscountStrategyManager pure application me single instantiation control
-//    rakhta hai. Static functions, private constructor, and block operators iske duplication
-//    ko prevent karte hain. Multithreading environments me Double-Checked Locking (DCL)
-//    ensure karta hai safety.
-// 2. Simple Factory: `getStrategy` method is a factory method jo strategy type ke rules ke basis par
-//    concrete strategy objects instantiate aur distribute karta hai.
-// ----------------------------------------------------------------------------
+//  FACTORY wala hissa: getStrategy(type, params) — enum do, sahi concrete
+//  strategy object lo. Coupons ko FlatDiscountStrategy jaise naam pata hi
+//  nahi (loose coupling) — L9 wala Simple Factory.
+//
+//  SINGLETON wala hissa — DOUBLE-CHECKED LOCKING (DCL), dhyan se samjho:
+//
+//    if (!instance) {                    // CHECK #1 — BINA lock ke
+//        lock_guard<mutex> lock(mtx);    // ab lock lo
+//        if (!instance) {                // CHECK #2 — lock ke ANDAR phir se!
+//            instance = new ...;
+//        }
+//    }
+//
+//  DO checks KYUN?! (interview ka pakka sawal):
+//    CHECK #1 (lock-free): 99.9% calls me instance BANA HUA hota hai —
+//      unke liye mutex lock karna mehnga waste hai. Pehla check unhe
+//      bina lock ke fast return de deta hai.
+//    CHECK #2 (lock ke andar): Socho DO threads ek saath check #1 pe
+//      pahunch gaye (dono ko null dikha). Dono lock ki line me lag gaye.
+//      Pehla thread instance bana ke nikla... ab dusra lock paayega —
+//      agar wo phir se check NA kare to DUSRA instance ban jayega!
+//      Check #2 yahi race condition rokta hai.
+//
+//  Saath me: private ctor + private dtor + DELETED copy AND move
+//  (constructor + assignment dono) — instance banane/copy/move karne ke
+//  SAARE piche ke raste band. Sirf getInstance() hi darwaza hai.
+//
+//  NOTE: Modular version (../factories) me yahi kaam MEYERS singleton se
+//  hua hai — 3 lines me! DCL classic hai, Meyers modern. Dono jaano.
+// ============================================================================
 
 class DiscountStrategyManager {
 private:
@@ -160,9 +220,18 @@ public:
 DiscountStrategyManager *DiscountStrategyManager::instance = nullptr;
 mutex DiscountStrategyManager::instanceMtx;
 
-// ----------------------------
-// Product Class representing Cart Line Items
-// ----------------------------
+// ============================================================================
+//  SECTION 3: MODELS — Product / CartItem / Cart
+// ----------------------------------------------------------------------------
+//  Cart ka SABSE SMART hissa — DO totals (interview me bolne layak!):
+//    originalTotal = pre-discount total, KABHI nahi badalta.
+//                    Threshold checks (bulk min 1000, bank min 2000) ISI pe
+//                    hote hain — taaki pehle lage discounts kisi coupon ko
+//                    unfairly disqualify na kar dein!
+//    currentTotal  = running total — har coupon ke discount se ghat-ta hai.
+//                    Agla coupon ka % ISI pe lagta hai (stacking behavior).
+//  Eligibility metadata bhi Cart me: loyaltyMember flag + paymentBank.
+// ============================================================================
 class Product {
 private:
   string name;
@@ -243,16 +312,33 @@ public:
   vector<CartItem *> getItems() { return items; }
 };
 
+// ============================================================================
+//  SECTION 4: CHAIN OF RESPONSIBILITY — coupons ki chain (system ka dil ❤️)
 // ----------------------------------------------------------------------------
-// [DESIGN PATTERN: Chain of Responsibility Pattern (CoR)]
-// ----------------------------------------------------------------------------
-// Chain of Responsibility Pattern ka use discount validation aur sequencing me kiya gaya hai.
-// - Coupon base class ek node ki tarah act karti hai jisme `next` pointer sequential link banata hai.
-// - `applyDiscount` method chain ko automatic sequence me iterate karwata hai.
-// - Har coupon object dynamic criteria validation check karta hai.
-// - `isCombinable()` mechanism exclusive coupons provide karta hai; agar koi coupon application ke
-//   baad combinable nahi hai (returns false), to discount traversal pipeline wahin stop ho jata hai.
-// ----------------------------------------------------------------------------
+//  CoR = "request (Cart) ko handlers (Coupons) ki chain se guzaro — har
+//  handler khud decide kare: apply karu? skip karu? ya poori chain rok du?"
+//
+//  Har coupon ka applyDiscount() flow (base class me EK jagah likha hai):
+//    1. isApplicable(cart)?  -> nahi: SKIP, seedha next ko de do
+//    2. haan: getDiscount() (strategy se math) -> cart pe lagao
+//    3. isCombinable()?      -> false: chain YAHIN STOP 🛑 (exclusive!)
+//    4. warna: next->applyDiscount(cart) — discounts STACK hote hain
+//
+//  Concrete coupon ko sirf 3 cheezein deni hain: isApplicable / getDiscount
+//  / name — chain chalane ka saara logic base me hai (Template Method
+//  flavour). Naya coupon = nayi class + register — PURANA CODE ZERO EDIT!
+//
+//  RECURSIVE CLEANUP ka trick: ~Coupon() apne next ko delete karta hai ->
+//  sirf HEAD delete karo, poori chain domino ki tarah saaf! 🁢🁢🁢
+//
+//  Chaaro coupons ka naksha:
+//   Coupon               | Level    | Strategy         | Extra rule
+//   ---------------------+----------+------------------+----------------------
+//   SeasonalOffer        | CATEGORY | PERCENT          | sirf matching category
+//   LoyaltyDiscount      | CART     | PERCENT          | loyalty member ho
+//   BulkPurchaseDiscount | CART     | FLAT             | originalTotal >= min
+//   BankingCoupon        | CART     | PERCENT_WITH_CAP | bank+minSpend, EXCLUSIVE
+// ============================================================================
 
 // Coupon Base class (Handler interface for the Chain)
 class Coupon {
@@ -440,19 +526,34 @@ public:
     return strat->calculate(cart->getCurrentTotal());
   }
 
+  // EXCLUSIVE coupon: base ka default (true) override karke false —
+  // ye lagne ke baad chain STOP! Ab guarantee STRUCTURE se aati hai,
+  // chain me position se nahi (modular version jaisa sahi design).
+  bool isCombinable() override { return false; }
+
   string name() override {
     return bank + " Bank " + to_string((int)percent) + "% off (max Rs " +
            to_string((int)offCap) + ")";
   }
 };
 
+// ============================================================================
+//  SECTION 5: COUPON MANAGER — SINGLETON (DCL) + chain registry
 // ----------------------------------------------------------------------------
-// [DESIGN PATTERN: Singleton Pattern]
-// ----------------------------------------------------------------------------
-// CouponManager application layer wrapper class hai jo rules registration list,
-// applicable coupons audit reporting aur process execution order coordinate karti hai.
-// Singleton implementation updates isko dynamic memory protection provide karti hai.
-// ----------------------------------------------------------------------------
+//  System ka orchestrator — teen kaam:
+//    registerCoupon() -> chain ke TAIL pe naya coupon jodo
+//                        (REGISTRATION ORDER = APPLICATION ORDER! Isi liye
+//                         main me exclusive BankingCoupon LAST register hota
+//                         hai — pehle hota to baaki ko mauka na milta)
+//    getApplicable()  -> DRY-RUN: kaunse coupons lagenge, BINA lagaye batao
+//    applyAll()       -> head se poori chain chalao, final total do
+//
+//  Singleton wahi DCL style (upar DiscountStrategyManager me detail).
+//  DO mutex hain — dhyan do, alag-alag kaam ke liye:
+//    instanceMtx (static) -> singleton banate waqt ka lock
+//    mtx (member)         -> chain register/read operations ka lock
+//  `mutable mutex mtx` — taaki const method (getApplicable) me bhi lock ho.
+// ============================================================================
 
 class CouponManager {
 private:
@@ -528,9 +629,19 @@ public:
 CouponManager *CouponManager::instance = nullptr;
 mutex CouponManager::instanceMtx;
 
-// ----------------------------
-// Main: Client application simulation
-// ----------------------------
+// ============================================================================
+//  SECTION 6: main() — pura engine action me
+// ----------------------------------------------------------------------------
+//  Flow: coupons register (order matters!) -> cart banao -> dry-run preview
+//  (getApplicable) -> applyAll -> final total.
+//  Cart: 3000 Clothing + 22000 Electronics = 25000, loyalty + ABC bank —
+//  matlab CHAARO coupons lagenge, aur Banking (EXCLUSIVE) pe chain rukegi:
+//    Seasonal: 3000 ka 10% = 300   -> current 24700
+//    Loyalty:  24700 ka 5% = 1235  -> current 23465
+//    Bulk:     flat 100            -> current 23365
+//    Banking:  15% = 3504.75 par CAP 500 -> current 22865 + CHAIN STOP 🛑
+//  (Output me "[CoR] Exclusive coupon applied... Terminating" bhi dikhega)
+// ============================================================================
 int main() {
   CouponManager *mgr = CouponManager::getInstance();
 

@@ -21,9 +21,11 @@
 11. [Execution Flow (Step-by-Step)](#11-execution-flow-step-by-step)
 12. [Architecture Diagrams](#12-architecture-diagrams)
 13. [Build & Run](#13-build--run)
-14. [Adapter vs Related Patterns](#14-adapter-vs-related-patterns)
-15. [Interview Talking Points](#15-interview-talking-points)
-16. [Summary](#16-summary)
+14. [🧹 Memory & Ownership](#14--memory--ownership)
+15. [🐛 Do bugs jo mile (fix ho chuke)](#15--do-bugs-jo-mile-fix-ho-chuke)
+16. [Adapter vs Related Patterns](#16-adapter-vs-related-patterns)
+17. [Interview Talking Points](#17-interview-talking-points)
+18. [Summary](#18-summary)
 
 ---
 
@@ -435,7 +437,13 @@ main()
 
 ```
 Processed JSON: {"name":"Shubham", "id":124}
+
+--- Galat format try karte hain (bina ':' ke) ---
+✅ Reject: Galat format! 'name:id' chahiye (jaise "Shubham:124"), mila: "BinaColon"
 ```
+
+Doosra scene **input validation** dikhata hai — adapter galat format ko reject
+karta hai. Pehle ye **chup-chaap invalid JSON** de deta tha (section 17b dekho).
 
 ### Data Transformation Pipeline
 
@@ -535,11 +543,116 @@ Expected output:
 
 ```
 Processed JSON: {"name":"Shubham", "id":124}
+
+--- Galat format try karte hain (bina ':' ke) ---
+✅ Reject: Galat format! 'name:id' chahiye (jaise "Shubham:124"), mila: "BinaColon"
 ```
 
 ---
 
-## 14. Adapter vs Related Patterns
+## 14. 🧹 Memory & Ownership
+
+> 📌 **Golden rule:** _"Pointer hone ka matlab MAALIK hona nahi hota."_
+
+```
+main()
+  ├── OWNS ──> XmlDataProvider  (adaptee)   → main delete karta hai
+  ├── OWNS ──> XmlDataProviderAdapter       → main delete karta hai
+  │                 └── borrows ──> XmlDataProvider   ❌ delete NAHI karta
+  └── OWNS ──> Client                       → main delete karta hai
+```
+
+| Kaun | Kiska maalik | Delete kaun karta |
+| ---- | ------------ | ----------------- |
+| `main()` | `XmlDataProvider` | `main()` |
+| `main()` | Adapter | `main()` |
+| `main()` | `Client` | `main()` ✅ (ye **pehle chhoot gaya tha** — section 15a) |
+| Adapter | ❌ kuch nahi | Adaptee ko sirf **borrow** karta hai |
+
+### Adapter me destructor kyun nahi hai?
+
+Kyunki wo `xmlProvider` ka **maalik nahi** hai! Agar wo `delete xmlProvider`
+karta, to `main()` ka `delete xmlProv` **double-free** kar deta. 💥
+
+> 💡 Aur saaf tareeka: `unique_ptr` ya stack objects use karo — is chhote demo
+> me `new` ki zaroorat hi nahi thi.
+
+**Verify:** `6 new, 6 delete → 0 leak` ✅ · ASan clean
+
+---
+
+## 15. 🐛 Do bugs jo mile (fix ho chuke)
+
+### (a) `Client` object leak ho raha tha
+
+```cpp
+Client* client = new Client();   // ← new
+...
+delete adapter;
+delete xmlProv;
+// ❌ delete client; kahan hai??
+```
+
+**3 `new`, sirf 2 `delete`.** Gin ke pakda tha. **✅ Fix:** `delete client;`
+
+### (b) Bina `:` ke — chup-chaap INVALID JSON ⚠️
+
+Ye zyada khatarnak tha, kyunki **crash nahi** hota tha — bas galat data aage
+chala jaata tha:
+
+```
+Input : "ShubhamNoColon"      (koi ':' nahi)
+Output: {"name":"ShubhamNoColon", "id":ShubhamNoColon}
+                                        └── naam! aur bina quotes ke!
+```
+
+Ye **invalid JSON** hai. Aisa bug production me **hafton chhupa** reh sakta hai.
+
+**Wajah:**
+
+```cpp
+size_t sep = data.find(':');       // ':' nahi mila → npos (vishaal number)
+string name = data.substr(0, sep); // substr(0, npos) → POORI string
+string id   = data.substr(sep + 1);// npos+1 wrap hoke 0 → PHIR poori string!
+```
+
+**✅ Fix — validation ADAPTER me:**
+
+```cpp
+if (data.find(':') == string::npos) {
+    throw runtime_error("Galat format! 'name:id' chahiye ...");
+}
+```
+
+> ⭐ **Validation adapter me kyun, adaptee me kyun nahi?**
+>
+> Kyunki adaptee **LEGACY** hai — hum use badal hi nahi sakte (yahi to poore
+> pattern ki wajah hai!). Adapter **hamara** code hai, to input saaf karna uska
+> kaam hai.
+>
+> 📌 Ye Adapter ki ek **asli zimmedari** hai: legacy ka contract lagu karwana,
+> taaki usko galat input **jaaye hi na**. Interview me ye poocha ja sakta hai. 🎯
+
+### (c) Bonus — aadha-adhoora output
+
+```cpp
+// ❌ Pehle — "Processed JSON: " print ho jaata, PHIR error aata
+cout << "Processed JSON: " << report->getJsonData(rawData) << endl;
+// Output: Processed JSON: ✅ Reject: Galat format! ...   🤦
+
+// ✅ Ab — pehle data nikalo, phir print
+string json = report->getJsonData(rawData);
+cout << "Processed JSON: " << json << endl;
+```
+
+> 📌 **Sabak:** agar kaam **fail ho sakta hai**, to uska output tabhi likho jab
+> wo **poora ho jaye**.
+
+**Verify:** zero warnings (`-Wall -Wextra`) · output saaf · 0 leak · ASan clean
+
+---
+
+## 16. Adapter vs Related Patterns
 
 | Pattern | Focus | Adapter se Farq |
 | ------- | ----- | --------------- |
@@ -575,7 +688,7 @@ Kya problem hai?
 
 ---
 
-## 15. Interview Talking Points
+## 17. Interview Talking Points
 
 1. **One-liner:** "Adapter incompatible interfaces ko compatible banata hai — legacy code bina modify kiye naye system se integrate hota hai."
 
@@ -593,7 +706,7 @@ Kya problem hai?
 
 ---
 
-## 16. Summary
+## 18. Summary
 
 | Pehlu | Detail |
 | ----- | ------ |

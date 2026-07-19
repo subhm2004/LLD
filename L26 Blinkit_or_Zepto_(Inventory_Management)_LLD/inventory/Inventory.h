@@ -1,6 +1,32 @@
-// inventory/Inventory.h — Stock manage karta hai (add/remove/reserve/deduct).
-// Pluggable InventoryStore backend (in-memory/DB-sim) ke saath, aur
-// InventoryStoreFactory bhi yahin — naya backend bina business logic chhede.
+// ============================================================================
+//  inventory/Inventory.h — Stock management + PLUGGABLE storage backend
+// ----------------------------------------------------------------------------
+//  Ye file 2 patterns dikhati hai:
+//
+//  1. STRATEGY (storage backend) — InventoryStore interface, do concrete:
+//     InMemoryInventoryStore (RAM me) aur DbInventoryStore (DB simulation).
+//     Dark store choose kar sakta konsa backend use kare — business logic
+//     (InventoryManager) ko farq nahi padta ki data RAM me hai ya DB me!
+//     Naya backend (Redis, cloud) = nayi InventoryStore class, baaki untouched.
+//
+//  2. FACTORY (InventoryStoreFactory) — InventoryStoreType se sahi store
+//     backend banata. Client ko concrete store class ka naam nahi pata.
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  LAYERS:                                                                │
+//  │   InventoryManager (business logic: addStock/removeStock/checkStock)    │
+//  │        │ delegate karta hai                                             │
+//  │        ▼                                                                │
+//  │   InventoryStore* (interface) [STRATEGY]                                │
+//  │        ├── InMemoryInventoryStore  (unordered_map me)                   │
+//  │        └── DbInventoryStore        (DB simulation)                      │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  ⭐ DEPENDENCY INVERSION: InventoryManager concrete store pe nahi, abstract
+//  InventoryStore* pe depend karta — isliye backend swap easy. Yahi
+//  "program to an interface" hai. (NOTE: dono stores ka code lagbhag same
+//  hai — real me DB wala actual DB calls karta; yahan demo hai.)
+// ============================================================================
 #ifndef BLINKIT_LLD_INVENTORY_INVENTORY_H
 #define BLINKIT_LLD_INVENTORY_INVENTORY_H
 

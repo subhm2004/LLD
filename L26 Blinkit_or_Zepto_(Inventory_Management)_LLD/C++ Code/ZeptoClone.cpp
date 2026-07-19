@@ -1,10 +1,20 @@
 // ============================================================================
-//  ZeptoClone.cpp  —  Blinkit/Zepto inventory system (original single-file)
+//  ZeptoClone.cpp — BLINKIT/ZEPTO inventory system (single-file MONOLITH)
 // ----------------------------------------------------------------------------
-//  Poore quick-commerce inventory + order system ka original monolithic version.
-//  Modular, folder-based version parent folder me hai (core/, inventory/, models/).
-//  Is file me detailed comments (Hinglish + English mix) and design patterns ke
-//  explanations add kiye gaye hain.
+//  Poora quick-commerce inventory + order system EK file me. Modular folder-
+//  based version parent folder me hai (core/, inventory/, models/ + main.cpp).
+//  Detail: ../design_patterns_used.md
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  STAR FEATURE — ORDER SPLITTING:                                        │
+//  │   Ek store poora cart na de sake to nearby stores me baant do (greedy,  │
+//  │   closest se), har store ki apni delivery partner. Asli Blinkit jaisa!  │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  PATTERNS: Strategy (replenish + storage backend) + Factory (product +
+//  store) + Facade (system) + Singleton (managers) + State machine (order
+//  status). Modular version me ye sab clean files me; ye monolith "sab ek
+//  jagah" reference. Dono ka behavior same.
 // ============================================================================
 #include <iostream>
 #include <string>

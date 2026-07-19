@@ -1,5 +1,17 @@
-// models/UserCart.h — User ka cart: SKU -> quantity ki list. Order place karte
-// waqt yahi cart stock ke against validate aur (zarurat ho to) split hota hai.
+// ============================================================================
+//  models/UserCart.h — Cart + User models
+// ----------------------------------------------------------------------------
+//  Cart = (Product, quantity) pairs ki list. addItem(sku, qty) me
+//  ProductFactory se product banta (SKU se). Order place karte waqt yahi
+//  cart nearby stores ke stock ke against validate + split hota hai.
+//
+//  User = naam + location (x, y coordinates) + apna Cart. Location zaroori
+//  hai — isi se decide hota kaunse dark stores 5km ke andar hain (nearby
+//  stores dhundhne ke liye distance calculate hota).
+//
+//  OWNERSHIP: User apne Cart ka malik (dtor me delete); Cart apne products
+//  ka malik (dtor me delete). Clean ownership hierarchy.
+// ============================================================================
 #ifndef BLINKIT_LLD_MODELS_USERCART_H
 #define BLINKIT_LLD_MODELS_USERCART_H
 

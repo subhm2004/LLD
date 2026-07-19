@@ -1,6 +1,20 @@
-// inventory/ReplenishStrategy.h — STRATEGY: stock kab/kaise refill ho
-// (Threshold-based ya Weekly). Per dark-store swap ho sakti hai, naya strategy
-// add karna easy. (Strategy pattern)
+// ============================================================================
+//  inventory/ReplenishStrategy.h — STRATEGY (L8): stock refill ka tareeka 📦
+// ----------------------------------------------------------------------------
+//  "Stock kab aur kaise refill ho?" — ye policy har dark store ki alag ho
+//  sakti hai (swap-able strategy):
+//    ThresholdReplenishStrategy -> stock threshold se NEECHE gira to refill
+//                                  (jaise stock < 3 hua to bharo) — reactive
+//    WeeklyReplenishStrategy    -> har week fixed refill — scheduled/proactive
+//
+//  Har DarkStore apni replenish strategy set karta (setReplenishStrategy).
+//  Naya tareeka (jaise "predictive ML-based") = nayi strategy class, dark
+//  store code untouched. OCP ✅
+//
+//  ⭐ Real quick-commerce me ye critical hai — Blinkit ko har store ka stock
+//  smart tareeke se bharna padta (demand predict karke), warna "out of
+//  stock" ya "overstocked" dono nuksan. Strategy pattern isse flexible rakhta.
+// ============================================================================
 #ifndef BLINKIT_LLD_INVENTORY_REPLENISHSTRATEGY_H
 #define BLINKIT_LLD_INVENTORY_REPLENISHSTRATEGY_H
 

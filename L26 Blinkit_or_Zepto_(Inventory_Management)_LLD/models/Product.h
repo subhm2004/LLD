@@ -1,5 +1,16 @@
-// models/Product.h — Product model: SKU id, naam, price. Inventory aur cart inhi
-// products se kaam karte hain (creation aksar factory se centralized).
+// ============================================================================
+//  models/Product.h — Product model + FACTORY (L9)
+// ----------------------------------------------------------------------------
+//  Product = SKU id + naam + price (immutable data holder). SKU = "Stock
+//  Keeping Unit" — har product ka unique code (101=Apple, 102=Banana...).
+//
+//  ⭐ ProductFactory bhi yahin: createProduct(sku) se sku ka sahi product
+//  banata hai. Fayda — SKU se product ki details (naam/price) EK jagah
+//  centralized. Inventory, Cart, OrderManager sab isse product banate hain,
+//  koi apni SKU->details ki mapping duplicate nahi karta. Naya product =
+//  ek line yahan, poore system me available. (Unknown SKU pe generic
+//  "Item<sku>" @ Rs 100 return karta — graceful fallback.)
+// ============================================================================
 #ifndef BLINKIT_LLD_MODELS_PRODUCT_H
 #define BLINKIT_LLD_MODELS_PRODUCT_H
 

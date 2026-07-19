@@ -1,10 +1,34 @@
 // ============================================================================
-//  main.cpp  —  Blinkit/Zepto quick-commerce inventory system ka demo driver
+//  main.cpp  —  BLINKIT/ZEPTO quick-commerce inventory system (L26 LLD project)
 // ----------------------------------------------------------------------------
-//  Dark stores onboard karo, inventory + replenishment set karo, 5km catalog
-//  dikhao, cart se order place karo — agar ek store full cart fulfill na kare
-//  to order SPLIT across nearby stores (alag delivery partners). Patterns:
-//  Strategy (replenish) + Factory (product/store) + Facade (BlinkitSystem).
+//  System kya karta hai: dark stores (chhote local warehouses) onboard karo,
+//  har store me inventory + replenishment strategy set karo, user ko 5km ke
+//  andar ka catalog dikhao, cart se order place karo. AGAR ek store poora
+//  cart fulfill na kar sake to order NEARBY stores me SPLIT ho jaata hai
+//  (alag delivery partners)! Blinkit/Zepto ka mini LLD.
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  ORDER SPLITTING — is system ka sabse smart feature:                    │
+//  │                                                                          │
+//  │   User cart: SKU101 x4, SKU102 x3, SKU103 x2                            │
+//  │   StoreA (paas): 101 x5, 102 x2   -> 101 poora + 102 me se 2 de sakta   │
+//  │   StoreB (door): 101 x3, 103 x10  -> baaki 102 nahi, 103 de sakta       │
+//  │                                                                          │
+//  │   Result: order SPLIT — StoreA se kuch (Partner1), StoreB se kuch       │
+//  │   (Partner2). Ek cart, multiple stores, multiple deliveries — bilkul    │
+//  │   asli Blinkit jaisa jab ek store me sab available nahi hota!           │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  IS PROJECT ME PATTERNS:
+//    Strategy  -> ReplenishStrategy (Threshold/Weekly) + InventoryStore backend
+//    Factory   -> ProductFactory + InventoryStoreFactory
+//    Facade    -> BlinkitSystem (DarkStoreManager + OrderManager coordinate)
+//    Singleton -> DarkStoreManager + OrderManager
+//    State machine -> OrderStatus transitions (PLACED->CONFIRMED->...->DELIVERED)
+//  Detail: design_patterns_used.md padho!
+//
+//  DEMO FLOW: setup stores -> user ka catalog dekho -> cart bharo -> order
+//  place (split hoga!) -> order status ko step-by-step aage badhao.
 // ============================================================================
 #include <bits/stdc++.h>
 

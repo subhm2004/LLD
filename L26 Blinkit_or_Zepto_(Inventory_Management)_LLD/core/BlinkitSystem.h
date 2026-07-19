@@ -1,6 +1,40 @@
-// core/BlinkitSystem.h — FACADE: DarkStoreManager (5km catalog, stores) +
-// OrderManager (stock validation, order SPLIT across nearby stores, delivery
-// partners). Quick-commerce ka central orchestrator.
+// ============================================================================
+//  core/BlinkitSystem.h — SYSTEM KA DIL: managers + order splitting + state ❤️
+// ----------------------------------------------------------------------------
+//  Ye file sabse bada hai kyunki isme poore system ka core logic hai.
+//  Multiple patterns + ek smart algorithm:
+//
+//  1. SINGLETON — DarkStoreManager + OrderManager (ek-ek central manager,
+//     Meyers style: static local instance). Poore app me ek hi store-registry
+//     aur ek hi order-manager.
+//
+//  2. FACADE (BlinkitSystem overall) — managers ko coordinate karte hain;
+//     client (main) sirf simple calls karta (showCatalog, placeOrder,
+//     updateOrderStatus) — andar ka splitting/distance/fee jhamela chhupa.
+//
+//  3. STATE MACHINE — OrderStatus transitions. Order sirf VALID order me
+//     aage badh sakta: PLACED -> CONFIRMED -> PACKING -> OUT_FOR_DELIVERY
+//     -> DELIVERED (ya kabhi bhi CANCELLED). isValidTransition() galat
+//     jump (jaise PLACED -> DELIVERED) rok deta hai — exception!
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  ⭐ ORDER SPLITTING ALGORITHM (placeOrder ka dil):                      │
+//  │                                                                          │
+//  │   1. Nearby stores nikaalo (5km, distance se sorted — paas wala pehle)  │
+//  │   2. Pehla store poora cart de sakta hai? -> haan: single store se do   │
+//  │   3. Nahi? -> SPLIT: har nearby store se jitna mil sake lo (greedy),    │
+//  │      har store ki apni delivery partner. Jo remaining bacha wo agla     │
+//  │      store degа. Sab store cover, phir bhi bacha? "could not fulfill".  │
+//  │                                                                          │
+//  │  Ye asli Blinkit jaisa hai — ek store me sab nahi to paas ke stores     │
+//  │  se mangwa ke alag-alag deliveries!                                     │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  ⚠️ DESIGN NOTE: placeOrder pehle stock DEDUCT karta hai (removeStock) —
+//  agar order aage fail ho jaye (payment) to rollback nahi hota (reserved
+//  stock leak). Real system me "reserve then confirm" pattern chahiye
+//  (jaise L39 Memento se rollback). Interview me ye limitation bolna good sign.
+// ============================================================================
 #ifndef BLINKIT_LLD_CORE_BLINKITSYSTEM_H
 #define BLINKIT_LLD_CORE_BLINKITSYSTEM_H
 
@@ -112,14 +146,18 @@ public:
 
     void registerDarkStore(DarkStore *store) { stores_.push_back(store); }
 
+    // User ke (ux,uy) se maxDistanceKm ke andar wale stores, PAAS se DOOR
+    // sorted. Order splitting isi order pe chalta (closest store pehle try) —
+    // isliye sorting zaroori: kam distance = kam delivery time/cost.
     vector<DarkStore *> nearbyStores(double ux, double uy, double maxDistanceKm) const {
         vector<pair<double, DarkStore *>> candidates;
         for (DarkStore *store : stores_) {
             const double distance = store->distanceTo(ux, uy);
-            if (distance <= maxDistanceKm) {
+            if (distance <= maxDistanceKm) {   // 5km service radius ke andar hi
                 candidates.push_back({distance, store});
             }
         }
+        // Distance se sort — front() hamesha closest store hoga
         sort(candidates.begin(), candidates.end(),
              [](const auto &a, const auto &b) { return a.first < b.first; });
 
@@ -192,11 +230,14 @@ public:
             remaining[item.first->getSku()] += item.second;
         }
 
+        // FAST PATH check: kya SABSE PAAS wala store poora cart de sakta hai?
+        // (nearbyStores distance-sorted hai, front() = closest). Agar haan to
+        // ek hi store se, ek hi delivery — best case (splitting ki zaroorat nahi).
         DarkStore *firstStore = nearbyStores.front();
         bool allInFirstStore = true;
         for (const auto &entry : remaining) {
             if (firstStore->checkStock(entry.first) < entry.second) {
-                allInFirstStore = false;
+                allInFirstStore = false;  // ek bhi item kam? -> split karna padega
                 break;
             }
         }
@@ -220,12 +261,15 @@ public:
             slices.push_back(slice);
             cout << "  Assigned delivery partner: Partner1\n";
         } else {
+            // SPLIT PATH: ek store se sab nahi milega, to nearby stores me
+            // baant do. Greedy: har store se jitna mil sake lo, remaining
+            // agla store degа. Har contributing store ki apni delivery partner.
             cout << "  Splitting order across dark stores...\n";
             int partnerId = 1;
 
             for (DarkStore *store : nearbyStores) {
                 if (remaining.empty()) {
-                    break;
+                    break;  // pura cart fulfill ho gaya, aur stores nahi chahiye
                 }
 
                 cout << "   Checking: " << store->getName() << "\n";
@@ -333,18 +377,26 @@ private:
         return {baseFee, distanceFee, surgeMultiplier, totalFee};
     }
 
+    // >>> STATE MACHINE ka core: sirf VALID transitions allow karo <<<
+    // Order lifecycle: PLACED -> CONFIRMED -> PACKING -> OUT_FOR_DELIVERY
+    //                  -> DELIVERED. Har state se sirf AGLA state valid hai.
     static bool isValidTransition(OrderStatus current, OrderStatus next) {
+        // TERMINAL states — delivered/cancelled ke baad kuch nahi ho sakta
         if (current == OrderStatus::CANCELLED || current == OrderStatus::DELIVERED) {
             return false;
         }
+        // CANCELLED har (non-terminal) state se allowed hai (order kabhi bhi cancel)
         if (next == OrderStatus::CANCELLED) {
             return true;
         }
+        // Normal forward transitions — har state ka sirf EK valid agla state.
+        // Isse "PLACED -> DELIVERED" jaisa GALAT jump rok jaata hai (packing/
+        // delivery skip nahi kar sakte). Galat transition = exception (upar).
         if (current == OrderStatus::PLACED && next == OrderStatus::CONFIRMED) return true;
         if (current == OrderStatus::CONFIRMED && next == OrderStatus::PACKING) return true;
         if (current == OrderStatus::PACKING && next == OrderStatus::OUT_FOR_DELIVERY) return true;
         if (current == OrderStatus::OUT_FOR_DELIVERY && next == OrderStatus::DELIVERED) return true;
-        return false;
+        return false;  // baaki sab invalid
     }
 };
 

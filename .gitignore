@@ -37,3 +37,6 @@ build/
 *~
 .idea/
 *.dSYM/
+
+# ---- Local helper scripts (repo me commit nahi karne) ----
+make_commits.sh

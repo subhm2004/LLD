@@ -1,3 +1,22 @@
+// ============================================================================
+//  core/CacheService.h  —  Cache ka FACADE (cache + statistics ek jagah)
+// ----------------------------------------------------------------------------
+//  Client ke liye "cache" yahi class hai. Andar ThreadSafeLRUCache (asli cache)
+//  aur CacheStatistics (hit/miss counters) dono. CacheService har operation ko
+//  cache pe forward karta hai AUR saath me statistics update kar deta hai.
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  ⭐ FACADE PATTERN — do cheezon ko ek saaf interface me jodo             │
+//  │                                                                          │
+//  │  Client ko alag-alag cache aur statistics manage nahi karne padte. Wo     │
+//  │  `service.get(key)` bulata hai; andar cache se value + hit/miss stats      │
+//  │  khud update. Metrics (cross-cutting concern) ek jagah wrap ho gaya —     │
+//  │  cache core ko iski khabar tak nahi (SRP).                                │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  📌 Statistics is layer pe (cache ke andar nahi) taaki LRU algorithm apne kaam
+//     pe focus rahe. Wahi CacheStatistics class LFU folder me bhi reuse hoti hai.
+// ============================================================================
 #ifndef LRU_CACHE_LLD_CORE_CACHESERVICE_H
 #define LRU_CACHE_LLD_CORE_CACHESERVICE_H
 
@@ -18,6 +37,7 @@ class CacheService {
 public:
     explicit CacheService(const CacheConfig &config) : cache_(config) {}
 
+    // ---- GET: value do + hit/miss stat --------------------------------------
     std::optional<Value> get(const Key &key) {
         std::optional<Value> value = cache_.get(key);
         if (value.has_value()) {
@@ -28,10 +48,11 @@ public:
         return value;
     }
 
+    // ---- PUT: daalo + put stat, eviction hui to eviction stat ---------------
     void put(const Key &key, const Value &value) {
         cache_.put(key, value);
         statistics_.recordPut();
-        if (cache_.didLastPutEvict()) {
+        if (cache_.didLastPutEvict()) { // cache batata hai eviction hui kya
             statistics_.recordEviction();
         }
     }
@@ -49,11 +70,9 @@ public:
     void clear() { cache_.clear(); }
 
     size_t size() const { return cache_.size(); }
-
     size_t capacity() const { return cache_.capacity(); }
 
     const CacheStatistics &getStatistics() const { return statistics_; }
-
     void printStatistics() const { statistics_.print(); }
 
     void printState() const {
@@ -63,6 +82,11 @@ public:
         std::cout << "===================\n";
     }
 
+    // ========================================================================
+    //  DEMO HELPER — ek operation chala ke uska readable description lauta do
+    // ========================================================================
+    //  Enum-driven runner: operation ke hisaab se sahi method bula ke ek line
+    //  banata hai ("GET key=user:2 => HIT value=Bob"). Demo code clean rehta.
     std::string executeAndDescribe(CacheOperationType operation, const Key &key,
                                    const std::optional<Value> &value = std::nullopt) {
         std::ostringstream stream;
@@ -102,8 +126,8 @@ public:
     }
 
 private:
-    ThreadSafeLRUCache<Key, Value> cache_;
-    CacheStatistics statistics_;
+    ThreadSafeLRUCache<Key, Value> cache_; // asli thread-safe cache
+    CacheStatistics statistics_;           // hit/miss/evict counters
 };
 
 } // namespace lru_cache_lld

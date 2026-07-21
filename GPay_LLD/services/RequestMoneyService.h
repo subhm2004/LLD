@@ -1,3 +1,48 @@
+// ============================================================================
+//  services/RequestMoneyService.h  —  "Paise bhej do" requests ka registry
+// ----------------------------------------------------------------------------
+//  UPI ka COLLECT flow. Yaad rakho: ye service paisa BILKUL nahi hilati — wo
+//  TransferService ka kaam hai. Ye sirf requests ka record rakhti hai.
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  ⭐ Do-step flow (aur wo alag kyun hai)                                   │
+//  │                                                                          │
+//  │     createRequest()  -> MoneyRequest banti hai, status PENDING            │
+//  │                         [paisa NAHI hila]                                │
+//  │     ...payer approve karta hai...                                        │
+//  │     markFulfilled()  -> status SUCCESS                                    │
+//  │                         [paisa TransferService ne hilaya]                │
+//  │                                                                          │
+//  │  Request banate hi paisa nahi khichta — warna koi bhi kisi se paise       │
+//  │  "kheench" leta. Approval hamesha PAYER ki taraf se hoti hai.            │
+//  │  (Ye check GPaySystem me hai: `request.getPayerUserId() != payerUserId`.) │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  ⭐⭐ `markFulfilled` ka `isPending()` check = DOUBLE-PAY GUARD           │
+//  │                                                                          │
+//  │      if (!request.isPending()) throw "request already processed";        │
+//  │                                                                          │
+//  │  Bina iske: payer galti se (ya double-tap se) ek hi request DO baar       │
+//  │  fulfill kar deta -> paisa DO baar jaata. 😱 Status hi yahan lock ka kaam │
+//  │  karta hai — ek baar SUCCESS/FAILED ho gaya to dobara nahi ho sakta.      │
+//  │  📌 Ye idempotency ka STATE-MACHINE wala roop hai (Ecommerce me           │
+//  │     clientRequestId wala roop tha) — dono ka maqsad ek: DUPLICATE ROKO.  │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  ⚠ ORDER KA NOTE (GPaySystem::fulfillMoneyRequest me): pehle transfer hota
+//     hai, PHIR `markFulfilled`. Yaani transfer fail hua to request PENDING hi
+//     rehti hai — payer dobara try kar sakta hai. ✅ Sahi order.
+//     Ulta karte (pehle mark, phir transfer) to fail hone pe request "fulfilled"
+//     dikhti par paisa gaya hi nahi hota. 😱
+//
+//  ⭐ `createRequest` me `requester == payer` block hai — khud se paise maangna
+//     bekaar hai. (TransferService me bhi self-transfer block hai — do layer.)
+//
+//  📌 `getRequestOrThrow` NON-const reference deta hai kyunki caller ko request
+//     ki state badalni hoti hai (fulfill/cancel). Naam me hi "OrThrow" hai —
+//     yahan "nahi mila" ek asli error hai, normal case nahi.
+// ============================================================================
 #ifndef GPAY_LLD_SERVICES_REQUESTMONEYSERVICE_H
 #define GPAY_LLD_SERVICES_REQUESTMONEYSERVICE_H
 
@@ -12,6 +57,7 @@ namespace gpay_lld {
 
 class RequestMoneyService {
 public:
+    // Request banao — paisa yahan BILKUL nahi hilta (sirf record).
     std::string createRequest(const User& requester, const User& payer, double amount,
                               const std::string& note, int& requestCounter) {
         if (requester.getUserId() == payer.getUserId()) {
@@ -23,7 +69,7 @@ public:
         const std::string requestId = "REQ_" + std::to_string(++requestCounter);
         requests_.emplace(requestId,
                           MoneyRequest(requestId, requester.getUserId(), payer.getUserId(),
-                                       amount, note));
+                                       amount, note)); // status PENDING se shuru
         return requestId;
     }
 
@@ -35,6 +81,7 @@ public:
         return it->second;
     }
 
+    // ⭐⭐ DOUBLE-PAY GUARD yahi hai (upar note).
     void markFulfilled(const std::string& requestId) {
         MoneyRequest& request = getRequestOrThrow(requestId);
         if (!request.isPending()) {
@@ -44,7 +91,7 @@ public:
     }
 
 private:
-    std::unordered_map<std::string, MoneyRequest> requests_;
+    std::unordered_map<std::string, MoneyRequest> requests_; // requestId -> request
 };
 
 }  // namespace gpay_lld

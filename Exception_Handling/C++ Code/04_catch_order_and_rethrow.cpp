@@ -1,14 +1,44 @@
-// C++17 — g++ -std=c++17 "C++ Code/04_catch_order_and_rethrow.cpp" -o bin/04_catch_order_and_rethrow
-#include <bits/stdc++.h>
+// ============================================================================
+//  04_catch_order_and_rethrow.cpp  —  Catch ka sahi ORDER + REthrow
+// ----------------------------------------------------------------------------
+//  Build: g++ -std=c++17 "C++ Code/04_catch_order_and_rethrow.cpp" -o bin/04_catch_order_and_rethrow
+//
+//  Do important cheezein:
+//    1. Multiple catch blocks ka ORDER kaisa ho (specific pehle, general baad me)
+//    2. `throw;` (rethrow) — error ko catch karke, log karke, WAPAS aage bhejna
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  ⭐ RULE: SPECIFIC pehle, GENERAL (base) sabse aakhri me                  │
+//  │                                                                          │
+//  │  Catch blocks UPAR se NEECHE check hote hain, aur PEHLA matching jeet     │
+//  │  jaata hai. `std::exception` (base) sabko match karta hai — agar use      │
+//  │  SABSE UPAR likh diya, to neeche wale specific catch (out_of_range,       │
+//  │  runtime_error) tak control pahunchega hi NAHI (dead/unreachable code).   │
+//  │                                                                          │
+//  │     ✅ Sahi order:            ❌ Galat order:                             │
+//  │        catch(out_of_range)       catch(exception)   <- sab yahin fas gaye │
+//  │        catch(runtime_error)      catch(out_of_range) <- kabhi nahi chalega│
+//  │        catch(exception)          catch(runtime_error)<- kabhi nahi chalega│
+//  │                                                                          │
+//  │  (g++ isse "-Woverloaded-virtual"/unreachable warning bhi de sakta hai.) │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  ⭐ `throw;` (bina argument) = REthrow — "log karke aage badha do"        │
+//  │                                                                          │
+//  │  Kabhi hum error ko yahan PURA handle nahi karna chahte — bas log karna   │
+//  │  chahte hain (telemetry, rollback), aur asli handling upar wali layer pe  │
+//  │  chhodni hai. `throw;` current exception ko jaisa-ka-tesa (type + data    │
+//  │  intact) dobara phenk deta hai. ⚠ `throw ex;` mat likhna — wo COPY banata │
+//  │  hai aur derived type "slice" (kat) sakta hai. Sirf `throw;` (khaali).    │
+//  └──────────────────────────────────────────────────────────────────────────┘
+// ============================================================================
+#include <iostream>
+#include <stdexcept>
+
 using namespace std;
 
-// Demo 4: Catch block ka sahi order (specific -> general) aur Exception Rethrowing logic
-
-/**
- * @brief Demo function jo runtime_error ya out_of_range exception throw kar sakta hai.
- * 
- * @param throwRuntime bool flag jo decide karta hai kaunsa error throw karna hai.
- */
+// throwRuntime true -> runtime_error, false -> out_of_range.
 void riskyOperation(bool throwRuntime) {
     if (throwRuntime) {
         throw runtime_error("something failed at runtime");
@@ -19,37 +49,41 @@ void riskyOperation(bool throwRuntime) {
 int main() {
     cout << "=== 04 Catch order & rethrow ===\n\n";
 
-    // RULE: Humesha specific exceptions ko pehle catch karein aur base class (std::exception) ko aakhri me!
-    // Agar hum catch(const exception &ex) ko sabse upar likh denge, toh niche likhe specific catch block
-    // (jaise out_of_range aur runtime_error) kabhi execute hi nahi honge kyunki parent catch sab ko pehle hi pakaad lega (Unreachable code error/warning).
+    // ---- Part 1: sahi catch order (specific -> general) --------------------
     try {
-        riskyOperation(false);
-    } 
-    catch (const out_of_range &ex) {
+        riskyOperation(false); // out_of_range throw karega
+    }
+    catch (const out_of_range &ex) { // ✅ specific pehle
         cout << "Specific catch (out_of_range): " << ex.what() << "\n";
-    } 
-    catch (const runtime_error &ex) {
+    }
+    catch (const runtime_error &ex) { // specific
         cout << "Specific catch (runtime_error): " << ex.what() << "\n";
-    } 
-    catch (const exception &ex) {
+    }
+    catch (const exception &ex) { // ✅ general (base) sabse aakhri me — safety net
         cout << "General catch (exception): " << ex.what() << "\n";
     }
 
+    // ---- Part 2: rethrow (log + propagate) ---------------------------------
     cout << "\n--- Rethrow: log + propagate ---\n";
-    // Rethrow logic: Jab hum exception ko catch karke kuch log karna chahte hain (jaise telemetry, transactions rollback),
-    // aur uske baad exception ko dobara throw kar dete hain taaki upper layer (caller stack) ise handle kar sake.
     try {
         try {
-            riskyOperation(true);
-        } 
-        catch (const runtime_error &ex) {
-            cout << "Inner log: " << ex.what() << " (Yahan error log kar diya)\n";
-            throw; // `throw;` statement bina arguments ke current exception ko exactly rethrow kar deta hai.
+            riskyOperation(true); // runtime_error throw
         }
-    } 
+        catch (const runtime_error &ex) {
+            // Yahan sirf LOG kiya (rollback/telemetry), handle NAHI kiya poora.
+            cout << "Inner log: " << ex.what() << " (Yahan error log kar diya)\n";
+            throw; // ⭐ REthrow — wahi exception aage (outer block) ko de do
+        }
+    }
     catch (const runtime_error &ex) {
-        cout << "Outer handled after rethrow: " << ex.what() << " (Yahan upper block me properly handle ho gaya)\n";
+        // Asli handling yahan (outer/upper layer).
+        cout << "Outer handled after rethrow: " << ex.what() << " (Yahan properly handle ho gaya)\n";
     }
 
     return 0;
 }
+
+// Expected output:
+//   Specific catch (out_of_range): index invalid
+//   Inner log: something failed at runtime (Yahan error log kar diya)
+//   Outer handled after rethrow: something failed at runtime (Yahan properly handle ho gaya)

@@ -1,20 +1,48 @@
-// C++17 — g++ -std=c++17 -Wall -Wextra "C++ Code/08_lsp_exception_rule.cpp" -o bin/08_lsp_exception_rule
-#include <bits/stdc++.h>
+// ============================================================================
+//  08_lsp_exception_rule.cpp  —  LSP ka exception rule (override kya throw kare)
+// ----------------------------------------------------------------------------
+//  Build: g++ -std=c++17 -Wall -Wextra "C++ Code/08_lsp_exception_rule.cpp" -o bin/08_lsp_exception_rule
+//
+//  LSP = Liskov Substitution Principle: "child object ko parent ki jagah rakho
+//  to code TOOTNA nahi chahiye." Exceptions ke liye iska matlab:
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  ⭐ OVERRIDE method parent se WIDER (broader) exception THROW nahi kar    │
+//  │     sakta — same ya NARROWER (subclass) hi chalega                       │
+//  │                                                                          │
+//  │  Kyun? Client parent ka contract dekh ke catch likhta hai. Agar parent   │
+//  │  bola "main sirf logic_error phenkunga", to client `catch(logic_error)`  │
+//  │  likhega. Ab agar child chupke se `runtime_error` (jo logic_error ka      │
+//  │  parallel/wider hai) phenk de, to client ka catch use MISS kar dega ->    │
+//  │  unhandled exception -> contract TOOT gaya.                              │
+//  │                                                                          │
+//  │     Parent throws:  logic_error                                          │
+//  │     GoodChild:      invalid_argument  (logic_error ka CHILD = narrower) ✅ │
+//  │     BadChild:       runtime_error     (logic_error se WIDER/parallel)   ❌ │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  📌 Yaad rakhne ka tareeka: child method exceptions ko "sikod" (narrow) sakta
+//     hai, "phaila" (widen) nahi. Bilkul noexcept wale rule jaisa (file 06):
+//     guarantee ko TIGHT karna OK, LOOSE karna galat.
+//
+//  ⚠ C++ ye rule COMPILER se enforce nahi karta (Java ke `throws` clause ki
+//     tarah nahi) — ye ek DESIGN discipline hai. Isi demo me BadChild compile
+//     to ho jaata hai, par client ka logic_error-wala catch use miss kar deta.
+// ============================================================================
+#include <iostream>
+#include <stdexcept>
+
 using namespace std;
 
-// Demo 8: Liskov Substitution Principle (LSP) — Child class method ko parent contract se wider exceptions throw nahi karna chahiye.
-
-// Parent class: contract set karti hai ki `getValue` sirf `logic_error` throw karegi.
+// Parent ka "contract": getValue sirf logic_error family phenkega.
 class Parent {
 public:
-    virtual void getValue() { 
-        throw logic_error("Parent logic_error"); 
-    }
+    virtual void getValue() { throw logic_error("Parent logic_error"); }
+    virtual ~Parent() = default;
 };
 
-// Good Child: LSP follow kar raha hai.
-// Kyunki `invalid_argument` child class hai `logic_error` ki (Narrower exception).
-// Client jo `logic_error` expect kar raha hai, wo is narrow range ko handle kar lega.
+// ✅ GoodChild: invalid_argument phenkta hai — jo logic_error ka SUBCLASS hai
+//    (narrower). Client ka catch(logic_error) ise AAP HI pakad lega. LSP safe.
 class GoodChild : public Parent {
 public:
     void getValue() override {
@@ -22,9 +50,8 @@ public:
     }
 };
 
-// Bad Child: LSP violate kar raha hai.
-// Kyunki `runtime_error` standard hierarchy me `logic_error` se direct parallel/wider class hai, ye logic_error branch me nahi aati.
-// Agar client sirf `logic_error` target kar raha hai, toh runtime_error handle nahi ho payega aur client contract break ho jayega.
+// ❌ BadChild: runtime_error phenkta hai — jo logic_error se WIDER/parallel hai
+//    (uska subclass nahi). Client ka catch(logic_error) ise MISS kar dega. LSP violated.
 class BadChild : public Parent {
 public:
     void getValue() override {
@@ -32,7 +59,7 @@ public:
     }
 };
 
-// Client class jo Parent object consume karti hai polymorphism ke through.
+// Client jo Parent (polymorphically) use karta hai aur logic_error expect karta hai.
 class Client {
 public:
     explicit Client(Parent *p) : p_(p) {}
@@ -40,14 +67,15 @@ public:
     void takeValue() {
         try {
             p_->getValue();
-        } 
-        // Client expects and safely handles logic_error
+        }
+        // Client ka asli, intended handler — logic_error ke liye.
         catch (const logic_error &ex) {
             cout << "Client caught logic_error: " << ex.what() << "\n";
-        } 
-        // Dusre exceptions catch all me chale jayenge
+        }
+        // ⭐ Ye "safety net" sirf isliye hai taaki demo crash na kare. Asli code me
+        //    BadChild ka runtime_error yahan girega = LSP toot gaya (intended handler miss).
         catch (const exception &ex) {
-            cout << "Client caught other exception (LSP Violated): " << ex.what() << "\n";
+            cout << "Client caught OTHER exception (LSP Violated): " << ex.what() << "\n";
         }
     }
 
@@ -63,13 +91,18 @@ int main() {
     BadChild bad;
 
     cout << "Parent class execution:\n";
-    Client(&parent).takeValue();
+    Client(&parent).takeValue(); // logic_error -> intended catch
 
     cout << "\nGoodChild execution (Narrower exception -> OK):\n";
-    Client(&good).takeValue();
+    Client(&good).takeValue(); // invalid_argument (child of logic_error) -> intended catch
 
     cout << "\nBadChild execution (runtime_error -> LSP Violated):\n";
-    Client(&bad).takeValue();
+    Client(&bad).takeValue(); // runtime_error -> girta hai OTHER catch me (violation)
 
     return 0;
 }
+
+// Expected output:
+//   Parent:    Client caught logic_error: Parent logic_error
+//   GoodChild: Client caught logic_error: narrower: invalid_argument ...
+//   BadChild:  Client caught OTHER exception (LSP Violated): BROADER than logic_error ...

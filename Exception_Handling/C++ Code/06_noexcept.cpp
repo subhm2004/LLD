@@ -1,32 +1,62 @@
-#include <bits/stdc++.h>
+// ============================================================================
+//  06_noexcept.cpp  —  `noexcept`: "ye function kabhi throw nahi karega" ka vaada
+// ----------------------------------------------------------------------------
+//  Build: g++ -std=c++17 -Wall -Wextra "C++ Code/06_noexcept.cpp" -o bin/06_noexcept
+//
+//  `noexcept` ek promise hai jo function apne callers aur compiler se karta hai:
+//  "main koi exception bahar nahi phenkunga."
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  ⭐ noexcept ka FAYDA — compiler optimization + clarity                   │
+//  │                                                                          │
+//  │  Agar compiler jaanta hai ki function throw nahi karega, to use "stack    │
+//  │  unwinding ka intezaam" (metadata/bookkeeping) rakhne ki zaroorat nahi -> │
+//  │  thoda tez/chhota code. Aur reader ko turant pata: "ye safe hai".        │
+//  │                                                                          │
+//  │  ⚠ WAADA TODA to SAZA badi: agar `noexcept` function ke andar se koi      │
+//  │  exception bahar nikal AAYI, to program `std::terminate()` call karke     │
+//  │  TURANT MAR jaata hai (koi catch nahi, koi cleanup nahi). Isliye noexcept │
+//  │  sirf tab lagao jab SACH me pakka ho ki throw nahi hoga.                 │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  ⭐ MOVE operations pe noexcept KYUN important hai (bada interview point):
+//     std::vector jab grow hoti hai to elements ko naye buffer me shift karti hai.
+//     Agar move-constructor `noexcept` hai, vector MOVE karti hai (fast). Nahi to
+//     safety ke liye COPY karti hai (slow) — kyunki move ke beech throw ho jaaye
+//     to vector aadhi-adhoori reh jaati. Isliye move ctor/assignment ko noexcept banao.
+//
+//  📌 DESTRUCTORS C++11 se by-default `noexcept` hote hain — taaki stack unwinding
+//     (jo pehle se ek exception handle kar rahi hai) ke beech doosri exception na
+//     aaye. Do exceptions ek saath = seedha terminate. Isliye destructor kabhi throw na kare.
+// ============================================================================
+#include <iostream>
+#include <stdexcept>
+
 using namespace std;
 
-// Demo 6: noexcept specifier — compiler ko promise karna ki ye function exception throw nahi karega
+// Ye function throw kar sakta hai (noexcept NAHI hai).
+void mightThrow() { throw runtime_error("boom"); }
 
-// Ye function standard error state trigger kar sakta hai.
-void mightThrow() { 
-    throw runtime_error("boom"); 
-}
-
-// `noexcept` keyword compiler aur callers ko ensure karta hai ki ye function exceptions safe hai.
-// Isse compiler micro-optimizations perform kar sakta hai (jaise stack unwinding metadata remove karna).
+// ⭐ `noexcept` -> ye kabhi throw nahi karega (aur compiler ispe bharosa karega).
 void willNotThrow() noexcept {
     cout << "willNotThrow() is noexcept — should not throw\n";
 }
 
-// Liskov Substitution Principle (LSP) exception specification rule check:
-// Child class method standard methods ki exceptions boundaries badha nahi sakti, par narrow (yaani safe or `noexcept`) kar sakti hai.
+// ---- LSP + noexcept: override method exception guarantee ko TIGHT kar sakta hai --
 class Base {
 public:
-    virtual void work() { 
-        cout << "Base::work (Normal version, might throw)\n"; 
+    virtual void work() { // base "throw kar sakta hoon" (loose guarantee)
+        cout << "Base::work (Normal version, might throw)\n";
     }
+    virtual ~Base() = default;
 };
 
 class SafeDerived : public Base {
 public:
-    // SafeDerived ne override method ko `noexcept` mark kiya hai. Ye correct design hai
-    // kyunki safe implementation parent ke non-safe contracts ko break nahi karega.
+    // ⭐ Override ne guarantee ko TIGHT (safe) kar diya (noexcept). Ye ALLOWED hai:
+    //    parent "throw kar sakta hoon" bolta tha, child "main to throw karunga hi
+    //    nahi" bolta hai — ye parent ke contract ko TODTA nahi (aur safe banata).
+    //    (Ulta galat hota: parent noexcept, child throw kare -> contract break.)
     void work() noexcept override {
         cout << "SafeDerived::work (Safe version, guarantees noexcept)\n";
     }
@@ -39,10 +69,15 @@ int main() {
 
     SafeDerived d;
     Base *bp = &d;
-    bp->work(); // Base pointer dynamic dispatch ke through derived class ki work method run karega.
+    bp->work(); // dynamic dispatch -> SafeDerived::work chalega
 
-    cout << "\nIf mightThrow() called from inside a noexcept context → std::terminate runs immediately (destructors call skip ho jate hain).\n";
-    cout << "Interview Tip: C++11 ke baad se, destructors by default `noexcept` hote hain taaki destruction process me double exception na ho.\n";
+    cout << "\nIf mightThrow() called from inside a noexcept context -> std::terminate runs immediately (destructors skip).\n";
+    cout << "Tip: C++11 ke baad destructors by default noexcept hote hain (double-exception se bachne ke liye).\n";
 
+    // Note: mightThrow() ko jaan-boojh ke yahan call NAHI kiya (wo demo ke liye hai).
     return 0;
 }
+
+// Expected output:
+//   willNotThrow() is noexcept — should not throw
+//   SafeDerived::work (Safe version, guarantees noexcept)

@@ -1,6 +1,33 @@
-// C++17 demo — std::optional, std::string_view, structured bindings, aur if-with-initializer support
-// Build: g++ -std=c++17 -Wall -Wextra "C++ Code/09_cpp17_features.cpp" -o bin/09_cpp17_features
-
+// ============================================================================
+//  09_cpp17_features.cpp  —  Modern C++17: exceptions ke ALTERNATIVES + syntax
+// ----------------------------------------------------------------------------
+//  Build: g++ -std=c++17 -Wall -Wextra "C++ Code/09_cpp17_features.cpp" -o bin/09_cpp17_features
+//
+//  Har error ke liye exception phenkna aksar OVERKILL hai (exceptions "mehnge"
+//  hote hain — throw/unwind slow hai). C++17 ke kuch features hume "expected"
+//  failures ko exception ke BINA handle karne dete hain.
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  ⭐ SABSE BADI SEEKH — kab optional, kab exception?                       │
+//  │                                                                          │
+//  │   std::optional  -> jab failure NORMAL/EXPECTED ho (key missing, balance  │
+//  │                     kam, cache miss). "Mila ya nahi" wala natija. Sasta.  │
+//  │   Exception      -> jab state EXTREME/INVALID ho (corrupt data, system    │
+//  │                     fault, "aisa hona hi nahi chahiye tha"). Mehenga.     │
+//  │                                                                          │
+//  │  Rule of thumb: "exception should be EXCEPTIONAL" — normal control flow   │
+//  │  ke liye exceptions mat use karo.                                         │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  Is file me 4 C++17 features dikhaye gaye hain:
+//     1. std::optional          — "value ya kuch nahi" (nullopt)
+//     2. std::string_view       — string ka lightweight non-owning view
+//     3. if-with-initializer    — if(init; condition) — scope tight rakhta hai
+//     4. structured bindings     — auto& [key, value] — pair/struct destructure
+//
+//  📌 Notice: ye file pehle se targeted includes use karti thi (bits/stdc++.h
+//     nahi) — accha modern style. Baaki files ko bhi isi style pe laaya gaya.
+// ============================================================================
 #include <iostream>
 #include <optional>
 #include <stdexcept>
@@ -10,26 +37,20 @@
 
 using namespace std;
 
-/**
- * @class Wallet
- * @brief Wallet class jo withdrawal operations perform karti hai.
- * 
- * LLD Rule: Har error ke liye Exception throw karna costly ho sakta hai.
- * Agar koi operation naturally fail ho sakta hai (jaise balance kam hona), 
- * toh use control karne ke liye `std::optional` return karna ek behtar modern C++ approach hai (No exceptions overhead).
- */
+// ---- Feature 1: std::optional — failure ko exception ke bina represent karo --
 class Wallet {
 public:
-    // tryWithdraw return karta hai balance agar withdraw ho gaya, warna std::nullopt (empty state).
+    // ⭐ tryWithdraw exception NAHI phenkta. Success -> optional me balance,
+    //    failure (invalid/insufficient) -> nullopt (khaali). Caller check karta.
     optional<double> tryWithdraw(double amount) {
         if (amount <= 0) {
-            return nullopt; // empty state represent karta hai failure.
+            return nullopt; // failure (expected) — koi throw nahi
         }
         if (amount > balance_) {
-            return nullopt; // insufficient balance.
+            return nullopt; // insufficient (expected) — koi throw nahi
         }
         balance_ -= amount;
-        return balance_; // wrapped double value.
+        return balance_; // success -> value wrap karke do
     }
 
     double getBalance() const { return balance_; }
@@ -38,10 +59,10 @@ private:
     double balance_ = 1000.0;
 };
 
-// C++17 Feature: string_view. 
-// Ye ek lightweight non-owning reference hai strings ke liye. Copy operations avoid karne ke liye read-only parameters me use hota hai.
+// ---- Feature 2: std::string_view — string ki COPY banaye bina "dekho" --------
+// Read-only parameter ke liye string_view lo -> string copy nahi banti (fast).
 optional<string_view> lookupFileName(const unordered_map<string, string> &files, string_view path) {
-    auto it = files.find(string(path));
+    auto it = files.find(string(path)); // (map ki key string hai, isliye yahan convert)
     if (it == files.end()) {
         return nullopt;
     }
@@ -53,11 +74,10 @@ int main() {
 
     Wallet wallet;
 
-    // C++17 Feature: if-with-initializer
-    // Hum condition check ke sath hi local variable scope initialize kar sakte hain `if (init; condition)`.
-    // Isse `left` variable if-else block ke bahar leaks/pollute nahi karta memory ko.
+    // ---- Feature 3: if-with-initializer -> if (init; condition) -------------
+    // `left` sirf is if-else ke andar zinda rehta (bahar leak nahi karta — clean scope).
     if (optional<double> left = wallet.tryWithdraw(200); left.has_value()) {
-        cout << "Withdraw OK, balance left: " << *left << "\n";
+        cout << "Withdraw OK, balance left: " << *left << "\n"; // *left = value nikaalo
     } else {
         cout << "Withdraw failed (optional empty — no exception)\n";
     }
@@ -65,7 +85,7 @@ int main() {
     if (optional<double> left = wallet.tryWithdraw(9999); left.has_value()) {
         cout << "Should not print\n";
     } else {
-        cout << "Large withdraw rejected via optional\n";
+        cout << "Large withdraw rejected via optional\n"; // 9999 > balance -> nullopt
     }
 
     unordered_map<string, string> files{{"/a.txt", "content-A"}, {"/b.txt", "content-B"}};
@@ -74,12 +94,12 @@ int main() {
         cout << "lookup /a.txt -> " << *name << "\n";
     }
 
-    // C++17 Feature: structured bindings
-    // Map entries, pairs ya structs ko direct destructure karne ke liye: `auto& [key, value]`.
+    // ---- Feature 4: structured bindings -> auto& [key, value] ---------------
+    // Map ke har pair ko seedha do naam me tod do (`.first`/`.second` likhne ki jagah).
     for (const auto &[path, content] : files) {
         cout << "file " << path << " size=" << content.size() << "\n";
     }
 
-    cout << "\nLLD Tip: `std::optional` tab use karein jab failure common/expected ho (e.g. key missing, balance limit fail). Exceptions tab use karein jab state extreme invalid ya system fault ho.\n";
+    cout << "\nTip: `std::optional` tab use karo jab failure common/expected ho; exceptions tab jab state extreme-invalid ho.\n";
     return 0;
 }

@@ -1,48 +1,63 @@
-#include <bits/stdc++.h>
+// ============================================================================
+//  05_raii_exception_safety.cpp  —  RAII: exception aane par bhi cleanup pakka
+// ----------------------------------------------------------------------------
+//  Build: g++ -std=c++17 -Wall -Wextra "C++ Code/05_raii_exception_safety.cpp" -o bin/05_raii_exception_safety
+//
+//  RAII = "Resource Acquisition Is Initialization". Fancy naam, simple idea:
+//     - resource LO constructor me (file open, memory alloc, lock)
+//     - resource CHHODO destructor me (file close, delete, unlock)
+//  Aur destructor scope khatam hote hi APNE AAP chalta hai — chahe normal flow ho
+//  ya EXCEPTION aa jaye. Isi liye RAII exception-safe cleanup ka C++ tareeka hai.
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  ⭐ EXCEPTION aaye tab bhi DESTRUCTOR chalta hai — yahi jaadu hai         │
+//  │                                                                          │
+//  │  Jab `throw` hota hai, "stack unwinding" shuru hoti hai: system current   │
+//  │  function ke saare LOCAL objects ke destructors call karta hai (aage badhne│
+//  │  se pehle). To agar tumne resource ek stack object (RAII) me wrap kiya hai,│
+//  │  wo GUARANTEED release hoga — chahe beech me exception aa jaaye.          │
+//  │                                                                          │
+//  │  ⚠ ISI LIYE raw `new`/`delete` KHATARNAK hai: agar `new` ke baad aur      │
+//  │     `delete` se pehle exception aa gayi, to `delete` chalta hi nahi ->    │
+//  │     MEMORY LEAK. RAII (unique_ptr/stack object) me ye problem hi nahi.    │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  📌 Ye poori file "throw ke baad bhi Resource released kyun dikhta hai" prove
+//     karti hai — dono case me (stack object aur unique_ptr).
+// ============================================================================
+#include <iostream>
 #include <memory>
+#include <stdexcept>
+#include <string>
+
 using namespace std;
 
-// Demo 5: RAII (Resource Acquisition Is Initialization) — Exception aane par bhi resources aur memory cleanup ka guaranteed mechanism.
-
-/**
- * @class Resource
- * @brief Ek standard class jo database connection ya external resource wrap karti hai.
- * 
- * RAII standard guidelines ke mutabik: Resource acquisition constructor me aur resource release destructor me honi chahiye.
- */
+// Ek resource (jaise DB connection) — RAII rule: acquire ctor me, release dtor me.
 class Resource {
 public:
     explicit Resource(string name) : name_(std::move(name)) {
-        cout << "  [Resource] acquired: " << name_ << "\n";
-    }
-    
-    // Destructor scope end hone par (chahe normal flow ho ya exceptional jump) guaranteed execute hota hai.
-    ~Resource() { 
-        cout << "  [Resource] released: " << name_ << "\n"; 
+        cout << "  [Resource] acquired: " << name_ << "\n"; // <- acquire
     }
 
-    void use() const { 
-        cout << "  [Resource] using " << name_ << "\n"; 
+    // ⭐ Ye destructor scope khatam hote hi chalega — normal ya exceptional, dono me.
+    ~Resource() {
+        cout << "  [Resource] released: " << name_ << "\n"; // <- release (guaranteed)
     }
+
+    void use() const { cout << "  [Resource] using " << name_ << "\n"; }
 
 private:
     string name_;
 };
 
-/**
- * @brief Demo function jo heap ya stack memory handle karke exception trigger kar sakti hai.
- * 
- * @param fail bool flag jo trigger decide karta hai.
- */
+// fail == true -> resource acquire karne ke BAAD exception throw karega.
 void mayThrow(bool fail) {
-    // Resource object ko stack memory par create kiya hai.
-    Resource r("DB connection"); 
+    Resource r("DB connection"); // stack object (RAII)
     r.use();
 
     if (fail) {
-        // Exception throw hone par stack unwinding shuru hoti hai.
-        // Stack unwinding ka matlab hai ki system current stack frame me se local objects
-        // (jaise r) ke destructors ko automatically aur safely call karta hai.
+        // ⭐ Yahan throw hua -> stack unwinding -> `r` ka destructor AUTOMATICALLY
+        //    chalega (Resource released print hoga) — phir exception upar jaayegi.
         throw runtime_error("operation failed after resource acquired");
     }
 
@@ -62,9 +77,9 @@ int main() {
 
     cout << "Case B: unique_ptr — same idea for heap\n";
     try {
-        // `unique_ptr` smart pointer RAII rule ke hisab se dynamically allocated memory ko wrap karta hai.
-        // Agar heap allocation ke baad exception aati hai, toh standard heap ptr pointer leak nahi hota,
-        // unique_ptr ka destructor use delete kar deta hai.
+        // ⭐ `unique_ptr` = RAII for heap. Andar `new` hai, par uska `delete`
+        //    destructor me hai. Exception aaye to bhi unique_ptr apne aap delete
+        //    karega -> NO LEAK (raw pointer hota to leak ho jaata).
         auto ptr = make_unique<Resource>("smart pointer");
         ptr->use();
         throw runtime_error("fail after unique_ptr");
@@ -72,7 +87,10 @@ int main() {
         cout << "Caught: " << ex.what() << "\n";
     }
 
-    cout << "\nRule: LLD code me memory leaks se bachne ke liye hamesha unique_ptr / stack objects (RAII) use karein, raw new/delete nahi.\n";
-
+    cout << "\nRule: LLD me memory leak se bachne ke liye hamesha unique_ptr / stack objects (RAII) use karo, raw new/delete nahi.\n";
     return 0;
 }
+
+// Expected output (dhyaan do "released" throw ke baad bhi chalta hai):
+//   Case A: ... acquired -> using -> released -> Caught: ...
+//   Case B: ... acquired -> using -> released -> Caught: ...

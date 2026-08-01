@@ -2,15 +2,17 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Focus-System%20Design-e63946?style=for-the-badge" alt="System Design" />
-  <img src="https://img.shields.io/badge/Deep%20Dives-32%20topics-2F81F7?style=for-the-badge" alt="topics" />
+  <img src="https://img.shields.io/badge/Deep%20Dives-43%20topics-2F81F7?style=for-the-badge" alt="topics" />
+  <img src="https://img.shields.io/badge/Case%20Studies-30%20designs-a855f7?style=for-the-badge" alt="case studies" />
   <img src="https://img.shields.io/badge/Interview%20Guide-3800%2B%20lines-16a34a?style=for-the-badge" alt="Guide" />
   <img src="https://img.shields.io/badge/Diagrams-Mermaid-FB8500?style=for-the-badge" alt="Mermaid" />
 </p>
 
 > **High-Level Design (HLD)** = poore system ka architecture — scalability, databases, caching,
-> distributed systems, security. Yahan **32 detailed topic deep-dives** (diagrams + tables +
-> advantages/disadvantages + interview Q&A) + ek complete **HLD interview guide** hai. Har file
-> Hinglish me, interview-focused. LLD (code-level) ke liye [`../LLD/`](../LLD/) dekho.
+> distributed systems, security. Yahan **43 detailed topic deep-dives** (21 core + 11 deep-dives +
+> 11 advanced) + **30 full system-design case studies** (TinyURL, Twitter, Uber, Payment, Maps, DynamoDB…) —
+> diagrams + tables + advantages/disadvantages + interview Q&A — plus ek complete **HLD interview
+> guide**. Har file Hinglish me, interview-focused. LLD (code-level) ke liye [`../LLD/`](../LLD/) dekho.
 
 ---
 
@@ -18,9 +20,11 @@
 
 | Chahiye | Jao |
 |---|---|
+| ⚡ **Quick revision cheatsheet** (15-min last-minute) | [`CHEATSHEET.md`](./CHEATSHEET.md) |
 | **Complete interview guide** (framework + 20+ system designs) | [`HLD_Interview.md`](./HLD_Interview.md) |
+| **30 full system-design case studies** (classic + real apps) | [`System_Design_Case_Studies/`](./System_Design_Case_Studies/README.md) |
 | **21 core topics** (structured course) | [Section neeche](#-part-1--21-core-topics) |
-| **11 deep-dive topics** (advanced) | [Section neeche](#-part-2--advanced-deep-dives) |
+| **11 deep-dive + 11 advanced topics** | [Deep-dives](#-part-2--advanced-deep-dives) · [Advanced](#-part-3--advanced-topics-advanced_topicsreadmemd) |
 | **Theory notes** | [`System_Design_theory.md`](./System_Design_theory.md) |
 | LLD (code, patterns, C++) | [`../LLD/`](../LLD/README.md) |
 
@@ -122,6 +126,67 @@ topics ko complement karte hain.
 
 ---
 
+## 🔬 PART 3 — Advanced Topics ([`Advanced_Topics/`](./Advanced_Topics/README.md))
+
+Senior/SDE-2+ level deep-dives — ek alag folder me, apne [index](./Advanced_Topics/README.md) ke saath.
+
+| # | Topic | Kya cover |
+|---|---|---|
+| 01 | [Consensus Algorithms](./Advanced_Topics/01_Consensus_Algorithms.md) | Raft, Paxos, leader election, quorum, Zookeeper/etcd |
+| 02 | [Observability](./Advanced_Topics/02_Observability_Monitoring_Logging_Tracing.md) | Metrics/Logs/Traces, p95/p99, tracing, SLI/SLO/SLA, error budget |
+| 03 | [Database Indexing Deep-Dive](./Advanced_Topics/03_Database_Indexing_Deep_Dive.md) | B+Tree vs LSM-Tree, clustered/covering/composite index |
+| 04 | [Search Systems & Elasticsearch](./Advanced_Topics/04_Search_Systems_and_Elasticsearch.md) | Inverted index, BM25 ranking, autocomplete, shards/replicas |
+| 05 | [Big Data & Stream Processing](./Advanced_Topics/05_Big_Data_and_Stream_Processing.md) | Batch vs Stream, MapReduce, Spark, Lambda vs Kappa |
+| 06 | [Geospatial & Location Services](./Advanced_Topics/06_Geospatial_and_Location_Services.md) | Geohash, Quadtree, S2, "nearby" (Uber) design |
+| 07 | [Resilience & Fault Tolerance](./Advanced_Topics/07_Resilience_and_Fault_Tolerance.md) | Timeout, retry+backoff, circuit breaker, bulkhead, DR (RTO/RPO) |
+| 08 | [Blob/Object Storage & Large Files](./Advanced_Topics/08_Blob_Object_Storage_and_Large_Files.md) | S3, chunking, dedup, pre-signed URLs, Dropbox design |
+| 09 | [DNS Deep-Dive](./Advanced_Topics/09_DNS_Deep_Dive.md) | Resolution, TTL, GeoDNS, DNS load balancing, anycast |
+| 10 | [Service Discovery & Service Mesh](./Advanced_Topics/10_Service_Discovery_and_Service_Mesh.md) | Registry, K8s discovery, sidecar/Envoy, Istio, mTLS |
+| 11 | [Deployment Strategies & CI/CD](./Advanced_Topics/11_Deployment_Strategies_and_CICD.md) | Rolling, blue-green, canary, feature flags, DB migrations |
+
+---
+
+## 🏗️ PART 4 — System Design Case Studies ([`System_Design_Case_Studies/`](./System_Design_Case_Studies/README.md))
+
+**30 full end-to-end designs** (classic + famous real apps) — ek hi folder me, har ek me **main bada
+HLD architecture diagram** + chhote flow diagrams. RESHADED format (requirements → estimation → API →
+schema → architecture → deep-dive → bottlenecks).
+
+| # | Design | Core concept |
+|---|---|---|
+| 01 | [TinyURL / URL Shortener](./System_Design_Case_Studies/01_TinyURL_URL_Shortener.md) | Base62 + distributed ID, cache, read-heavy |
+| 02 | [Rate Limiter](./System_Design_Case_Studies/02_Rate_Limiter.md) | Token bucket, distributed Redis + atomicity |
+| 03 | [Distributed Cache](./System_Design_Case_Studies/03_Distributed_Cache.md) | Consistent hashing, eviction, replication |
+| 04 | [SQL Database Internals](./System_Design_Case_Studies/04_SQL_Database_Internals.md) | Optimizer, B+Tree, buffer pool, WAL, MVCC, ACID |
+| 05 | [Twitter / News Feed](./System_Design_Case_Studies/05_Twitter_News_Feed.md) | Fanout (push/pull/hybrid), celebrity problem |
+| 06 | [Instagram](./System_Design_Case_Studies/06_Instagram.md) | Media (object store+CDN) + feed fanout |
+| 07 | [WhatsApp / Chat](./System_Design_Case_Studies/07_WhatsApp_Chat.md) | WebSockets, registry, presence, offline |
+| 08 | [Notification System](./System_Design_Case_Studies/08_Notification_System.md) | Queues, multi-channel fanout, retries/DLQ |
+| 09 | [YouTube / Netflix](./System_Design_Case_Studies/09_YouTube_Netflix.md) | CDN + adaptive bitrate, transcoding |
+| 10 | [Spotify](./System_Design_Case_Studies/10_Spotify_Music_Streaming.md) | Audio streaming + recommendation engine |
+| 11 | [Uber / Ride-Hailing](./System_Design_Case_Studies/11_Uber_Ride_Hailing.md) | Geospatial, matching, real-time location |
+| 12 | [Swiggy / Zomato](./System_Design_Case_Studies/12_Swiggy_Zomato_Food_Delivery.md) | Three-sided marketplace, geo, matching, tracking |
+| 13 | [Zepto / Blinkit](./System_Design_Case_Studies/13_Zepto_Blinkit_Quick_Commerce.md) | Dark stores, hyperlocal inventory, rider assign |
+| 14 | [Tinder](./System_Design_Case_Studies/14_Tinder_Dating_App.md) | Geospatial swipe deck, swipe writes, match detection |
+| 15 | [Ticketmaster / Booking](./System_Design_Case_Studies/15_Ticketmaster_Booking_System.md) | No double-book, seat hold, CP |
+| 16 | [IRCTC](./System_Design_Case_Studies/16_IRCTC_Train_Booking.md) | Tatkal thundering herd, no double-book, waitlist/RAC |
+| 17 | [Airbnb](./System_Design_Case_Studies/17_Airbnb_Marketplace.md) | Geo + date-availability search, date-range no-double-book |
+| 18 | [Search Autocomplete](./System_Design_Case_Studies/18_Search_Autocomplete_Typeahead.md) | Trie + precomputed top-k, multi-layer cache |
+| 19 | [Google Docs](./System_Design_Case_Studies/19_Google_Docs.md) | OT vs CRDT, real-time collab, op log |
+| 20 | [Payment System / UPI / Wallet](./System_Design_Case_Studies/20_Payment_System_UPI_Wallet.md) | Ledger, idempotency, double-spend, Saga, reconciliation |
+| 21 | [Google Maps / Navigation](./System_Design_Case_Studies/21_Google_Maps_Navigation.md) | Map tiles, shortest path (CH), ETA, live traffic |
+| 22 | [Web Crawler](./System_Design_Case_Studies/22_Web_Crawler.md) | BFS at scale, politeness, Bloom dedup, frontier |
+| 23 | [Distributed Job Scheduler](./System_Design_Case_Studies/23_Distributed_Job_Scheduler.md) | Scheduling, at-least-once, leader election, locks |
+| 24 | [Key-Value Store (DynamoDB)](./System_Design_Case_Studies/24_Key_Value_Store_DynamoDB.md) | Consistent hashing, quorum, vector clocks, gossip |
+| 25 | [Distributed Unique ID (Snowflake)](./System_Design_Case_Studies/25_Distributed_Unique_ID_Snowflake.md) | 64-bit ID, timestamp+machine+seq, clock skew |
+| 26 | [Leaderboard / Gaming Rank](./System_Design_Case_Studies/26_Leaderboard_Gaming_Rank.md) | Redis sorted sets, real-time ranking, top-K |
+| 27 | [Ad Click Aggregation / Analytics](./System_Design_Case_Studies/27_Ad_Click_Aggregation_Analytics.md) | Stream processing, exactly-once, Lambda/Kappa |
+| 28 | [Slack / Discord](./System_Design_Case_Studies/28_Slack_Discord.md) | Channels, huge-room fanout, presence, search |
+| 29 | [Google Drive / Dropbox](./System_Design_Case_Studies/29_Google_Drive_Dropbox.md) | Chunking, delta sync, dedup, conflict resolution |
+| 30 | [LinkedIn](./System_Design_Case_Studies/30_LinkedIn.md) | Social graph, 2nd-degree, PYMK, feed, who-viewed |
+
+---
+
 ## 🎯 System Design Interview — RESHADED Framework
 
 ```mermaid
@@ -190,7 +255,27 @@ HLD/
 ├── Bloom_Filters_and_Probabilistic_Data_Structures.md
 ├── WebSockets_and_Realtime.md
 ├── Distributed_Transactions.md
-└── Stateful_and_Stateless_Architecture.md
+├── Stateful_and_Stateless_Architecture.md
+├── Advanced_Topics/            ← 11 advanced deep-dives (own README)
+│   ├── 01_Consensus_Algorithms.md
+│   ├── 02_Observability_Monitoring_Logging_Tracing.md
+│   ├── 03_Database_Indexing_Deep_Dive.md
+│   ├── 04_Search_Systems_and_Elasticsearch.md
+│   ├── 05_Big_Data_and_Stream_Processing.md
+│   ├── 06_Geospatial_and_Location_Services.md
+│   ├── 07_Resilience_and_Fault_Tolerance.md
+│   ├── 08_Blob_Object_Storage_and_Large_Files.md
+│   ├── 09_DNS_Deep_Dive.md
+│   ├── 10_Service_Discovery_and_Service_Mesh.md
+│   └── 11_Deployment_Strategies_and_CICD.md
+└── System_Design_Case_Studies/ ← 30 end-to-end designs, 01-30 (own README)
+    ├── 01-19: TinyURL, Rate Limiter, Distributed Cache, SQL Internals,
+    │          Twitter, Instagram, WhatsApp, Notification, YouTube, Spotify,
+    │          Uber, Swiggy, Zepto, Tinder, Ticketmaster, IRCTC, Airbnb,
+    │          Autocomplete, Google Docs
+    └── 20-30: Payment/UPI, Google Maps, Web Crawler, Job Scheduler,
+               Key-Value Store, Snowflake ID, Leaderboard, Ad Aggregation,
+               Slack/Discord, Google Drive, LinkedIn
 ```
 
 ---

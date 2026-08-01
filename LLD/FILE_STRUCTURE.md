@@ -11,6 +11,7 @@
 ├── books/
 ├── Car_Rental_System_LLD/
 ├── Concurrent_HashMap_LLD/
+├── Consistent_Hashing_LLD/
 ├── CricBuzz_LLD/
 ├── docs/
 ├── Ecommerce_Cart_Checkout_LLD/
@@ -107,6 +108,7 @@
 | `books/` | [FILE_STRUCTURE.md](./books/FILE_STRUCTURE.md) |
 | `Car_Rental_System_LLD/` | [FILE_STRUCTURE.md](./Car_Rental_System_LLD/FILE_STRUCTURE.md) |
 | `Concurrent_HashMap_LLD/` | [FILE_STRUCTURE.md](./Concurrent_HashMap_LLD/FILE_STRUCTURE.md) |
+| `Consistent_Hashing_LLD/` | [FILE_STRUCTURE.md](./Consistent_Hashing_LLD/FILE_STRUCTURE.md) |
 | `CricBuzz_LLD/` | [FILE_STRUCTURE.md](./CricBuzz_LLD/FILE_STRUCTURE.md) |
 | `docs/` | [FILE_STRUCTURE.md](./docs/FILE_STRUCTURE.md) |
 | `Ecommerce_Cart_Checkout_LLD/` | [FILE_STRUCTURE.md](./Ecommerce_Cart_Checkout_LLD/FILE_STRUCTURE.md) |
@@ -207,6 +209,7 @@
 | [books/](./books/FILE_STRUCTURE.md) | Project / notes |
 | [Car_Rental_System_LLD/](./Car_Rental_System_LLD/FILE_STRUCTURE.md) | System LLD project |
 | [Concurrent_HashMap_LLD/](./Concurrent_HashMap_LLD/FILE_STRUCTURE.md) | System LLD project |
+| [Consistent_Hashing_LLD/](./Consistent_Hashing_LLD/FILE_STRUCTURE.md) | System LLD project |
 | [CricBuzz_LLD/](./CricBuzz_LLD/FILE_STRUCTURE.md) | System LLD project |
 | [docs/](./docs/FILE_STRUCTURE.md) | Project / notes |
 | [Ecommerce_Cart_Checkout_LLD/](./Ecommerce_Cart_Checkout_LLD/FILE_STRUCTURE.md) | System LLD project |

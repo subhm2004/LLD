@@ -85,7 +85,7 @@ Structured system-design course (sequential padho). Har file: concept + diagrams
 | 16 | [Database Design Tips](./16_Database_Design_Tips.md) | SQL vs NoSQL, indexing, normalization, transactions, pooling |
 | 17 | [Avoid Single Point of Failure](./17_Avoid_Single_Point_of_Failure.md) | redundancy, failover, multi-region, availability math |
 | 18 | [Message Queues (Kafka/RabbitMQ)](./18_Message_Queues_Kafka_RabbitMQ.md) | queue vs pub-sub, Kafka/RabbitMQ, delivery guarantees |
-| 19 | [Consistent Hashing](./19_Consistent_Hashing.md) | hash ring, virtual nodes, resharding, replication |
+| 19 | [Consistent Hashing](./19_Consistent_Hashing.md) | hash ring, virtual nodes, resharding, replication<br/>💻 **runnable C++**: [`Consistent_Hashing/`](./Consistent_Hashing/README.md) |
 | 20 | [Back-of-the-Envelope Calculations](./20_Back_of_the_Envelope_Calculations.md) | numbers, formulas, worked examples (TinyURL/Twitter/Chat) |
 | 21 | [Database Sharding](./21_Database_Sharding.md) | strategies, shard key, resharding, cross-shard, hotspots |
 

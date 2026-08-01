@@ -212,7 +212,7 @@ flowchart TB
     B[User B] <--> WS2[WebSocket Server 2]
     WS1 & WS2 --> REG[(Redis: Connection Registry<br/>userId → server)]
     WS1 & WS2 <--> PS[Pub-Sub / Message Broker]
-    Note[A → B message: WS1 looks up B's server (WS2)<br/>via registry → route via pub-sub → WS2 → B]
+    Note["A → B message: WS1 looks up B server WS2<br/>via registry → route via pub-sub → WS2 → B"]
 ```
 
 **Approach:**

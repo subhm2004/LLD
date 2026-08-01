@@ -185,7 +185,7 @@ timestamp add.
 ```mermaid
 flowchart TB
     Req[New request at time T] --> R[Remove timestamps older than T - 60s]
-    R --> C{count in window < limit?}
+    R --> C{"count in window < limit?"}
     C -->|yes| A[Allow + add T to log]
     C -->|no| Rej[Reject]
 ```

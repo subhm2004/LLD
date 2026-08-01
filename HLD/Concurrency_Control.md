@@ -208,7 +208,7 @@ sequenceDiagram
     Note over C1: GC pause... TTL expired
     C2->>R: write (token 34)
     C1->>R: write (token 33) — STALE
-    Note over R: reject token 33 < 34 (fencing) ✅
+    Note over R: reject token 33 (older than 34, fencing) ✅
 ```
 **Fencing token** — lock ke saath monotonic increasing token. Resource highest token accept karta,
 purane (stale holder) reject. Prevents old holder corruption.
@@ -228,7 +228,7 @@ Pessimistic locking me **deadlock** — do transactions ek doosre ke lock ka wai
 flowchart LR
     T1[Transaction 1<br/>holds lock A, wants B] -->|waits for B| T2
     T2[Transaction 2<br/>holds lock B, wants A] -->|waits for A| T1
-    Note[Circular wait → DEADLOCK (both stuck forever)]
+    Note["Circular wait → DEADLOCK (both stuck forever)"]
 ```
 
 ### 4 conditions (Coffman) — all needed for deadlock

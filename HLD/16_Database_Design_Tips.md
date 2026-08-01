@@ -68,8 +68,8 @@ clear relationships, moderate scale.
 
 ```mermaid
 flowchart LR
-    Q["Query: WHERE email = 'x'"] --> NI[No index: O(n) scan<br/>every row check]
-    Q --> WI[Index on email: O(log n)<br/>B-tree direct lookup]
+    Q["Query: WHERE email = 'x'"] --> NI["No index: O(n) scan<br/>every row check"]
+    Q --> WI["Index on email: O(log n)<br/>B-tree direct lookup"]
 ```
 
 ### Index types

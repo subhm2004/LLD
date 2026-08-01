@@ -29,7 +29,7 @@ flowchart TB
     LB[Load Balancer] --> S1[Server 1: user count 100]
     LB --> S2[Server 2: user count 100]
     LB --> S3[Server 3: user count 100]
-    Note[Total = 300! (limit tha 100)<br/>each server unaware of others]
+    Note["Total = 300! (limit tha 100)<br/>each server unaware of others"]
 ```
 
 User ke requests LB se different servers pe jaate. Har server apna count 100 tak allow karta →
@@ -50,7 +50,7 @@ flowchart TB
     S1[Server 1] --> R[(Redis<br/>central counter)]
     S2[Server 2] --> R
     S3[Server 3] --> R
-    R -->|count < limit?| Decision[Allow / Reject]
+    R -->|"count < limit?"| Decision[Allow / Reject]
 ```
 
 ### Basic flow (fixed window)

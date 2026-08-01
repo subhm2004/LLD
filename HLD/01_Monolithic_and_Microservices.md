@@ -1174,7 +1174,7 @@ Naye version ko **thode users** (canary — 5%) ko release, monitor. Theek → g
 flowchart TB
     LB[Load Balancer] -->|95%| V1[v1 - stable]
     LB -->|5% canary| V2[v2 - new]
-    Note[Monitor v2 metrics (errors, latency).<br/>OK -> increase %. Bad -> rollback.]
+    Note["Monitor v2 metrics (errors, latency).<br/>OK -> increase %. Bad -> rollback."]
 ```
 - ✅ **Risk minimize** (small blast radius), real-user testing, gradual confidence.
 - ❌ Slower rollout, needs good monitoring + traffic splitting (service mesh/gateway).

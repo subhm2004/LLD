@@ -192,7 +192,7 @@ clocks in datacenters) ki uncertainty **bounded** ho. TrueTime API real time ek 
 
 ```mermaid
 flowchart LR
-    TT["TrueTime.now() = [earliest, latest]"] --> WAIT["Commit wait: wait out the uncertainty (few ms)"]
+    TT["TrueTime.now() = earliest..latest interval"] --> WAIT["Commit wait: wait out the uncertainty (few ms)"]
     WAIT --> ORDER["Guarantees global external consistency (linearizable timestamps)"]
 ```
 

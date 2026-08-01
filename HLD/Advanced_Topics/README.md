@@ -2,7 +2,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Level-Advanced-8b5cf6?style=for-the-badge" alt="Advanced" />
-  <img src="https://img.shields.io/badge/Topics-12-2F81F7?style=for-the-badge" alt="topics" />
+  <img src="https://img.shields.io/badge/Topics-13-2F81F7?style=for-the-badge" alt="topics" />
   <img src="https://img.shields.io/badge/Format-Hinglish%20%2B%20Mermaid-16a34a?style=for-the-badge" alt="format" />
 </p>
 
@@ -12,7 +12,7 @@
 
 ---
 
-## 📚 Topics (12)
+## 📚 Topics (13)
 
 ### 🔥 Core distributed & data (top priority)
 | # | Topic | Ek line me |
@@ -37,6 +37,7 @@
 | # | Topic | Ek line me |
 |---|---|---|
 | 12 | [Logical Clocks & Distributed Time](./12_Logical_Clocks_and_Distributed_Time.md) | Lamport & vector clocks, HLC, NTP, clock skew, happens-before, causal consistency, TrueTime |
+| 13 | [Hot Key / Celebrity Problem](./13_Hot_Key_Celebrity_Problem.md) | "Justin Bieber problem" — hot reads/writes, celebrity fanout, sharded counters, key salting, thundering herd |
 
 ---
 

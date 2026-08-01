@@ -2,15 +2,15 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Focus-System%20Design-e63946?style=for-the-badge" alt="System Design" />
-  <img src="https://img.shields.io/badge/Deep%20Dives-43%20topics-2F81F7?style=for-the-badge" alt="topics" />
+  <img src="https://img.shields.io/badge/Deep%20Dives-44%20topics-2F81F7?style=for-the-badge" alt="topics" />
   <img src="https://img.shields.io/badge/Case%20Studies-30%20designs-a855f7?style=for-the-badge" alt="case studies" />
   <img src="https://img.shields.io/badge/Interview%20Guide-3800%2B%20lines-16a34a?style=for-the-badge" alt="Guide" />
   <img src="https://img.shields.io/badge/Diagrams-Mermaid-FB8500?style=for-the-badge" alt="Mermaid" />
 </p>
 
 > **High-Level Design (HLD)** = poore system ka architecture — scalability, databases, caching,
-> distributed systems, security. Yahan **43 detailed topic deep-dives** (21 core + 11 deep-dives +
-> 11 advanced) + **30 full system-design case studies** (TinyURL, Twitter, Uber, Payment, Maps, DynamoDB…) —
+> distributed systems, security. Yahan **44 detailed topic deep-dives** (21 core + 11 deep-dives +
+> 12 advanced) + **30 full system-design case studies** (TinyURL, Twitter, Uber, Payment, Maps, DynamoDB…) —
 > diagrams + tables + advantages/disadvantages + interview Q&A — plus ek complete **HLD interview
 > guide**. Har file Hinglish me, interview-focused. LLD (code-level) ke liye [`../LLD/`](../LLD/) dekho.
 
@@ -24,7 +24,7 @@
 | **Complete interview guide** (framework + 20+ system designs) | [`HLD_Interview.md`](./HLD_Interview.md) |
 | **30 full system-design case studies** (classic + real apps) | [`System_Design_Case_Studies/`](./System_Design_Case_Studies/README.md) |
 | **21 core topics** (structured course) | [Section neeche](#-part-1--21-core-topics) |
-| **11 deep-dive + 11 advanced topics** | [Deep-dives](#-part-2--advanced-deep-dives) · [Advanced](#-part-3--advanced-topics-advanced_topicsreadmemd) |
+| **11 deep-dive + 12 advanced topics** | [Deep-dives](#-part-2--advanced-deep-dives) · [Advanced](#-part-3--advanced-topics-advanced_topicsreadmemd) |
 | **Theory notes** | [`System_Design_theory.md`](./System_Design_theory.md) |
 | LLD (code, patterns, C++) | [`../LLD/`](../LLD/README.md) |
 
@@ -143,6 +143,7 @@ Senior/SDE-2+ level deep-dives — ek alag folder me, apne [index](./Advanced_To
 | 09 | [DNS Deep-Dive](./Advanced_Topics/09_DNS_Deep_Dive.md) | Resolution, TTL, GeoDNS, DNS load balancing, anycast |
 | 10 | [Service Discovery & Service Mesh](./Advanced_Topics/10_Service_Discovery_and_Service_Mesh.md) | Registry, K8s discovery, sidecar/Envoy, Istio, mTLS |
 | 11 | [Deployment Strategies & CI/CD](./Advanced_Topics/11_Deployment_Strategies_and_CICD.md) | Rolling, blue-green, canary, feature flags, DB migrations |
+| 12 | [Logical Clocks & Distributed Time](./Advanced_Topics/12_Logical_Clocks_and_Distributed_Time.md) | Lamport/vector clocks, HLC, NTP, clock skew, causal consistency |
 
 ---
 
@@ -256,7 +257,7 @@ HLD/
 ├── WebSockets_and_Realtime.md
 ├── Distributed_Transactions.md
 ├── Stateful_and_Stateless_Architecture.md
-├── Advanced_Topics/            ← 11 advanced deep-dives (own README)
+├── Advanced_Topics/            ← 12 advanced deep-dives (own README)
 │   ├── 01_Consensus_Algorithms.md
 │   ├── 02_Observability_Monitoring_Logging_Tracing.md
 │   ├── 03_Database_Indexing_Deep_Dive.md
@@ -267,7 +268,8 @@ HLD/
 │   ├── 08_Blob_Object_Storage_and_Large_Files.md
 │   ├── 09_DNS_Deep_Dive.md
 │   ├── 10_Service_Discovery_and_Service_Mesh.md
-│   └── 11_Deployment_Strategies_and_CICD.md
+│   ├── 11_Deployment_Strategies_and_CICD.md
+│   └── 12_Logical_Clocks_and_Distributed_Time.md
 └── System_Design_Case_Studies/ ← 30 end-to-end designs, 01-30 (own README)
     ├── 01-19: TinyURL, Rate Limiter, Distributed Cache, SQL Internals,
     │          Twitter, Instagram, WhatsApp, Notification, YouTube, Spotify,

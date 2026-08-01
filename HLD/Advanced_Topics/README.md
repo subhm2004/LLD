@@ -2,7 +2,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Level-Advanced-8b5cf6?style=for-the-badge" alt="Advanced" />
-  <img src="https://img.shields.io/badge/Topics-11-2F81F7?style=for-the-badge" alt="topics" />
+  <img src="https://img.shields.io/badge/Topics-12-2F81F7?style=for-the-badge" alt="topics" />
   <img src="https://img.shields.io/badge/Format-Hinglish%20%2B%20Mermaid-16a34a?style=for-the-badge" alt="format" />
 </p>
 
@@ -12,7 +12,7 @@
 
 ---
 
-## 📚 Topics (11)
+## 📚 Topics (12)
 
 ### 🔥 Core distributed & data (top priority)
 | # | Topic | Ek line me |
@@ -32,6 +32,11 @@
 | 09 | [DNS Deep-Dive](./09_DNS_Deep_Dive.md) | Resolution flow, TTL/caching, records, GeoDNS, DNS load balancing, anycast |
 | 10 | [Service Discovery & Service Mesh](./10_Service_Discovery_and_Service_Mesh.md) | Registry, client/server-side discovery, K8s, sidecar/Envoy, Istio, mTLS |
 | 11 | [Deployment Strategies & CI/CD](./11_Deployment_Strategies_and_CICD.md) | Rolling, blue-green, canary, feature flags, expand-contract DB migrations |
+
+### 🕐 Distributed foundations
+| # | Topic | Ek line me |
+|---|---|---|
+| 12 | [Logical Clocks & Distributed Time](./12_Logical_Clocks_and_Distributed_Time.md) | Lamport & vector clocks, HLC, NTP, clock skew, happens-before, causal consistency, TrueTime |
 
 ---
 

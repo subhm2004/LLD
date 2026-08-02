@@ -53,7 +53,7 @@ Structured system-design course (sequential padho). Har file: concept + diagrams
 |---|---|---|
 | 01 | [Monolithic vs Microservices](./01_Monolithic_and_Microservices.md) ⭐ | architectures + **microservices design patterns by phase** (Strangler Fig, **Saga deep**, CQRS, Event Sourcing, Outbox, Canary, Circuit Breaker) |
 | 02 | [API Gateway & Load Balancer](./02_API_Gateway_and_Load_Balancer.md) | gateway vs LB, cross-cutting, aggregation, resiliency |
-| 03 | [Load Balancer — Types & Algorithms](./03_Load_Balancer_Types_and_Algorithms.md) | L4 vs L7, RR/least-conn/hash, health checks, NAT/DSR |
+| 03 | [Load Balancer — Types & Algorithms](./03_Load_Balancer_Types_and_Algorithms.md) | L4 vs L7, RR/least-conn/hash, health checks, NAT/DSR<br/>💻 **runnable C++**: [`Load_Balancer_Algorithms/`](./Load_Balancer_Algorithms/README.md) |
 | 04 | [Proxy & Reverse Proxy](./04_Proxy_and_Reverse_Proxy.md) | forward vs reverse, use cases, SSL/cache/security mechanics |
 | 05 | [Network Protocols](./05_Network_Protocols.md) | client-server vs P2P, TCP/UDP, HTTP/1-2-3, WebSocket, REST/gRPC/GraphQL |
 

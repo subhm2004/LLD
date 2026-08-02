@@ -62,7 +62,7 @@ Structured system-design course (sequential padho). Har file: concept + diagrams
 |---|---|---|
 | 06 | [Scaling — Vertical & Horizontal](./06_Scaling_Vertical_and_Horizontal.md) | scale up vs out, stateless, DB scaling, autoscaling |
 | 07 | [Scale App 0 → Million](./07_Scale_Application_0_to_Million.md) | full evolution: 1 server → sharding → microservices |
-| 08 | [Caching & Distributed Caching](./08_Caching_and_Distributed_Caching.md) | strategies, eviction, invalidation, thundering herd, Redis |
+| 08 | [Caching & Distributed Caching](./08_Caching_and_Distributed_Caching.md) | strategies, eviction, invalidation, thundering herd, Redis<br/>💻 **runnable C++**: [`Cache_Eviction_Policies/`](./Cache_Eviction_Policies/README.md) |
 
 ### 🌐 Distributed Systems (9–11)
 | # | Topic | Kya cover |
@@ -122,7 +122,7 @@ topics ko complement karte hain.
 | Topic | Kya cover |
 |---|---|
 | [**Security in System Design**](./Security_in_System_Design.md) | AuthN vs AuthZ, OAuth/JWT, encryption, attacks (SQLi/XSS/CSRF/DDoS) + defenses, secrets, zero-trust |
-| [**Bloom Filters & Probabilistic DS**](./Bloom_Filters_and_Probabilistic_Data_Structures.md) | Bloom filter, Count-Min Sketch, HyperLogLog, Merkle tree, Skip list |
+| [**Bloom Filters & Probabilistic DS**](./Bloom_Filters_and_Probabilistic_Data_Structures.md) | Bloom filter, Count-Min Sketch, HyperLogLog, Merkle tree, Skip list<br/>💻 **runnable C++**: [`Probabilistic_Data_Structures/`](./Probabilistic_Data_Structures/README.md) |
 
 ---
 

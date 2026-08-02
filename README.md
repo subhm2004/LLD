@@ -52,6 +52,8 @@ repo/
   Consensus, Rate Limiting, Message Queues...
 - **30 full system-design case studies**: TinyURL, Twitter, Uber, Payment/UPI, Google Maps, DynamoDB...
 - **`HLD_Interview.md`** — 3800+ line interview guide (RESHADED + 20+ system designs) + a quick-revision **CHEATSHEET**
+- **5 runnable C++ folders** ⭐ — HLD theory ko **chala kar, naap kar** verify karta hai
+  (neeche dekho)
 - Mermaid diagrams throughout
 
 **👉 [Open the HLD folder](./HLD/README.md)**
@@ -77,6 +79,22 @@ open HLD/01_Monolithic_and_Microservices.md
 # or the complete guide
 open HLD/HLD_Interview.md
 ```
+
+### HLD — runnable demos ⭐
+```bash
+cd HLD/Consistent_Hashing && ./compile.sh && ./02_hash_ring_basic_demo
+```
+
+Baaki HLD theory-only hai; ye 4 folders usse **chala kar** dikhate hain — har demo apni
+kamzori khud **naap kar** batata hai (formula vs asli measurement).
+
+| Folder | Kya naap ke dikhata hai |
+|---|---|
+| [`Consistent_Hashing/`](./HLD/Consistent_Hashing/README.md) | `hash % N` pe node add karne se **80%** keys hilti hain, ring pe sirf **1/N** |
+| [`Load_Balancer_Algorithms/`](./HLD/Load_Balancer_Algorithms/README.md) | Unequal servers pe plain Round Robin ki latency **40.96** vs Weighted RR **3.13** |
+| [`Rate_Limiting_Algorithms/`](./HLD/Rate_Limiting_Algorithms/README.md) | Fixed window boundary pe **hamesha 2x** limit nikal jaati hai |
+| [`Probabilistic_Data_Structures/`](./HLD/Probabilistic_Data_Structures/README.md) | Bloom FP rate formula se **0.6% ke andar**; HLL 1 arab items **16 KB** me |
+| [`Cache_Eviction_Policies/`](./HLD/Cache_Eviction_Policies/README.md) | Ek scan LRU ka miss rate **0.5% → 5%** kar deta hai (DB pe 10x load) |
 
 > 💡 **Diagrams render on GitHub automatically.** In VS Code, install the **"Markdown Preview Mermaid
 > Support"** extension to see the Mermaid diagrams in preview.

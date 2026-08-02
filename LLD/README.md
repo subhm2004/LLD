@@ -283,6 +283,7 @@ Structured course: **foundations → design patterns → hybrid LLD projects**. 
 |---|---|---|---|
 | [Rate_Limiter_LLD](./Rate_Limiter_LLD/) 📝 | Strategy, Factory | token bucket, sliding window | `g++ -std=c++17 Main.cpp -o rate_limiter_app` |
 | [LoadBalancer_LLD](./LoadBalancer_LLD/) 📝 | Strategy | round robin, least connections | `g++ -std=c++17 main.cpp -o load_balancer_app` |
+| [Consistent_Hashing_LLD](./Consistent_Hashing_LLD/) 📝 | Strategy, Facade, Observer | hash ring, vnodes, replication, weights | `./compile.sh && ./consistent_hashing_app` |
 | [Logger_LLD](./Logger_LLD/) 📝 | Singleton, CoR, Observer, Strategy | levels chain, appenders | `g++ -std=c++17 Main.cpp -o logger_app` |
 | [URL_Shortner_LLD](./URL_Shortner_LLD/) 📝 | Strategy, Base62 encoding | shorten, resolve, analytics | `g++ -std=c++17 main.cpp -o url_shortner_app` |
 | [ATM_LLD](./ATM_LLD/) 📐📝 | Facade, service layer, backtracking dispense | login→balance→withdraw | `g++ -std=c++17 main.cpp -o atm_app` |

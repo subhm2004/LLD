@@ -74,7 +74,7 @@ Structured system-design course (sequential padho). Har file: concept + diagrams
 ### 🛡️ Rate Limiting & Security (12–15)
 | # | Topic | Kya cover |
 |---|---|---|
-| 12 | [Rate Limiting & Algorithms](./12_Rate_Limiting_and_Algorithms.md) | token/leaky bucket, fixed/sliding window |
+| 12 | [Rate Limiting & Algorithms](./12_Rate_Limiting_and_Algorithms.md) | token/leaky bucket, fixed/sliding window<br/>💻 **runnable C++**: [`Rate_Limiting_Algorithms/`](./Rate_Limiting_Algorithms/README.md) |
 | 13 | [Rate Limiting Part-2 (Distributed)](./13_Rate_Limiting_Part_2.md) | Redis, race conditions, atomicity (Lua), fail open/closed |
 | 14 | [SSL Certificate](./14_SSL_Certificate.md) | TLS handshake, certificates, CA chain, mTLS |
 | 15 | [Rate Limiting Strategies](./15_Rate_Limiting_Strategies.md) | placement, dimensions, tiers, 429 headers, graceful |

@@ -160,5 +160,51 @@ int main()
     cout << "\n  LRU 'kab' dekhta hai. 'KITNI BAAR' dekhne wala -> LFU (file 02)\n";
     cout << "  Scan se bachne wala                            -> ARC (file 04)\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: LRU ka DEFINING behaviour (isse FIFO alag hai) -----------
+    //  ⭐ Ye check sabse zaroori hai. Upar wale checks (loop=0%, scan pollution)
+    //     FIFO bhi pass kar leta hai — to agar koi galti se LRU ka reordering
+    //     hata de, wo checks pakad hi nahi paate. Ye trace pakad leta hai:
+    //
+    //       A B C daale (cache size 3, ab full)
+    //       A dobara chhua  -> LRU ke liye ab B sabse purana hai
+    //       D daala         -> LRU 'B' nikaalega, FIFO 'A' nikaalega
+    {
+        LruCache v(3);
+        v.access("A");
+        v.access("B");
+        v.access("C");
+        v.access("A"); // A ab sabse naya
+        v.access("D"); // is se B nikalna chahiye (A nahi)
+
+        demo::check(v.access("A"), "LRU: A abhi-abhi use hua tha, wo cache me hona chahiye");
+        demo::check(!v.access("B"), "LRU: B sabse purana tha, wo nikal jaana chahiye");
+    }
+
+    // ---- VERIFY: aur isi wajah se LRU ko FIFO se aage hona chahiye ---------
+    {
+        vector<string> z = makeZipfWorkload(5000, 100000);
+        LruCache a(100);
+        FifoCache b(100);
+        demo::check(runWorkload(a, z) > runWorkload(b, z),
+                    "Zipf traffic pe LRU ko FIFO se behtar hona chahiye (reordering ka faayda)");
+    }
+
+    // ---- VERIFY: LRU ke dono andhe dhabbe ---------------------------------
+    {
+        vector<string> loopTrace = makeLoopWorkload(120, 200);
+        LruCache vl(100);
+        RandomCache vr(100);
+        demo::checkNear(runWorkload(vl, loopTrace), 0.0, 0.01,
+                        "cache se bade loop pe LRU ka hit rate 0% hona chahiye");
+        demo::check(runWorkload(vr, loopTrace) > 50.0,
+                    "usi loop pe Random ko 50%+ dena chahiye (randomness ka bachav)");
+
+        LruCache vc(100), vd(100);
+        double clean = hotKeyHitRate(vc, makeWorkingSetScanWorkload(100, 0, 20000, 1 << 30));
+        double dirty = hotKeyHitRate(vd, makeWorkingSetScanWorkload(100, 200, 20000, 2000));
+        demo::check((100.0 - dirty) > 3.0 * (100.0 - clean),
+                    "scan ko LRU ka miss rate kam se kam 3x badha dena chahiye");
+    }
+
+    return demo::report();
 }

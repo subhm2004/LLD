@@ -222,5 +222,11 @@ int main()
     cout << "  ⭐ Practice me HYBRID use karo: fresh signal (connections) +\n";
     cout << "     sach wala signal (CPU) — dono milakar.\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: hybrid sabse behtar, aur sab RR se aage -------------------
+    demo::check(hybridResult.avgLatency <= lcResult.avgLatency,
+                "hybrid (CPU+conns) ko akele Least Connections jitna ya behtar hona chahiye");
+    demo::check(lcResult.avgLatency < rrResult.avgLatency,
+                "koi bhi dynamic policy Round Robin se behtar honi chahiye");
+
+    return demo::report();
 }

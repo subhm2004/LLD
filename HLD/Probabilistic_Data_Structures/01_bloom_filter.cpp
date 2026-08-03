@@ -249,5 +249,21 @@ int main()
     cout << "\n  Delete karna hai? -> COUNTING BLOOM FILTER (file 02)\n";
     cout << "  Ginti chahiye?     -> COUNT-MIN SKETCH (file 03)\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: Bloom ki EKLAUTI guarantee + formula --------------------
+    {
+        BloomFilter v = BloomFilter::forCapacity(50000, 0.01);
+        for (int i = 0; i < 50000; ++i) v.add("v:" + to_string(i));
+        int fn = 0;
+        for (int i = 0; i < 50000; ++i) if (!v.mightContain("v:" + to_string(i))) ++fn;
+        demo::checkEqual(fn, 0, "Bloom filter me FALSE NEGATIVE kabhi nahi hona chahiye");
+
+        int fp = 0;
+        for (int i = 0; i < 200000; ++i) if (v.mightContain("nope:" + to_string(i))) ++fp;
+        double measured = 100.0 * fp / 200000;
+        double theory = 100.0 * v.theoreticalFpRate(50000);
+        demo::checkNear(measured, theory, theory * 0.25,
+                        "measured FP rate formula ke 25% ke andar hona chahiye");
+    }
+
+    return demo::report();
 }

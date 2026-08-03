@@ -181,5 +181,23 @@ int main()
     cout << "     smooth karna ho to Leaking Bucket (queue) lo.\n";
     cout << "\n  Ab saare 5 ek saath dekho -> 06_compare_all.cpp\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: meter roop me leaky bucket == token bucket ---------------
+    {
+        Probe<rl::TokenBucket> vt(5, 1.0);
+        Probe<rl::LeakingBucket> vl(5, 1.0);
+        int mismatch = 0;
+        for (double t = 0.0; t < 40.0; t += 0.37)
+        {
+            for (int b = 0; b < 3; ++b)
+            {
+                if (vt.at("v", t).allowed != vl.at("v", t).allowed)
+                {
+                    ++mismatch;
+                }
+            }
+        }
+        demo::checkEqual(mismatch, 0, "leaky bucket (meter) aur token bucket ke faisle same hone chahiye");
+    }
+
+    return demo::report();
 }

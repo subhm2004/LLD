@@ -136,5 +136,11 @@ int main()
     cout << "\n  Alag capacity ka ilaaj -> WEIGHTED ROUND ROBIN (file 02).\n";
     cout << "  Server ki asli load dekhne ka ilaaj -> LEAST CONNECTIONS (dynamic).\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: RR ki ginti perfect, par load nahi -----------------------
+    demo::checkEqual(maxRequests - minRequests, 0LL,
+                     "Round Robin sabko BILKUL barabar requests deta hai");
+    demo::check(maxPeak > minPeak,
+                "phir bhi peak connections barabar nahi hote (ginti != load)");
+
+    return demo::report();
 }

@@ -247,6 +247,10 @@ int main()
     cout << "  📌 Interview me dono ka naam lena impress karta hai — khaas kar ye\n";
     cout << "     bolna ki 'chhote cluster pe main rendezvous prefer karunga\n";
     cout << "     kyunki vnodes ki tuning hi nahi karni padti'.\n";
+
+    // ---- VERIFY: HRW bhi "consistent" hai ---------------------------------
+    demo::checkEqual(movedUnnecessary, 0,
+                     "node hatane pe sirf usi ki keys hilni chahiye, baaki nahi");
     cout << "---------------------------------------------------------\n";
-    return 0;
+    return demo::report();
 }

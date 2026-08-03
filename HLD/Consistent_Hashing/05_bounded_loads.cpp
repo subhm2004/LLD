@@ -330,5 +330,14 @@ int main()
     cout << "\n  Ab tak sab kuch RING pe tha. Step 6 me ek bilkul alag rasta —\n";
     cout << "  bina ring ke: RENDEZVOUS (HRW) HASHING.\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: capacity cap ek GUARANTEE hai, ummeed nahi ---------------
+    long long worstLoad = 0;
+    for (const auto &entry : bounded.loads())
+    {
+        worstLoad = max(worstLoad, entry.second);
+    }
+    demo::check(worstLoad <= bounded.capacity(),
+                "koi bhi node apni capacity se upar nahi jaana chahiye");
+
+    return demo::report();
 }

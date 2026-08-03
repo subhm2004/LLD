@@ -226,5 +226,16 @@ int main()
     cout << "     uske ratio ke hisaab se request dega.\n";
     cout << "\n  Real-time load dekhne ka ilaaj -> DYNAMIC algorithms.\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: weight ka ratio nibhna chahiye + WRR ka faayda -----------
+    {
+        SmoothWeightedRoundRobin v({4, 4, 1, 1});
+        vector<int> counts(4, 0);
+        for (int i = 0; i < 1000; ++i) counts[v.selectNext()]++;
+        demo::checkEqual(counts[0], 400, "weight 4 wale node ko 40% requests milni chahiye");
+        demo::checkEqual(counts[2], 100, "weight 1 wale node ko 10% requests milni chahiye");
+    }
+    demo::check(wrrResult.avgLatency < rrResult.avgLatency,
+                "unequal servers pe Weighted RR ko plain RR se behtar hona chahiye");
+
+    return demo::report();
 }

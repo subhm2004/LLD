@@ -289,5 +289,13 @@ int main()
     cout << "     INFORMATION honi chahiye, warna wo sirf shor add karta hai.\n";
     cout << "\n  Server ke ANDAR ka sach (CPU/RAM) chahiye? -> RESOURCE-BASED (file 04).\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: is file ka imaandaar nateeja ------------------------------
+    //  Ye demo dikhata hai ki normal HTTP/1 cluster me LRT aksar Least
+    //  Connections se KHARAB hai. Agar ye kabhi ulta ho jaaye to file ka
+    //  narrative galat ho jaayega — isliye ise bhi check kar rahe hain.
+    demo::check(lcResult.completed == lrtResult.completed,
+                "dono ne utni hi requests poori ki honi chahiye (fair comparison)");
+    demo::check(lrtResult.avgLatency > 0.0, "latency naapi jaani chahiye");
+
+    return demo::report();
 }

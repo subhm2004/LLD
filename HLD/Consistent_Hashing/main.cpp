@@ -242,5 +242,12 @@ int main()
     cout << "\n  Yahi class Memcached client, Redis Cluster, Cassandra —\n";
     cout << "  sab ke andar kisi na kisi roop me baithi hai.\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: capstone ke teen vaade -----------------------------------
+    demo::check(primaryChanged < TOTAL_KEYS / 2,
+                "4->6 scale up pe aadhi se kam keys hilni chahiye (modulo me ~83% hoti)");
+    demo::checkNear(hitAfterCrash, 100.0, 0.01,
+                    "RF=3 ke saath ek server crash pe hit rate 100% rehna chahiye");
+    demo::check(!preferenceList.empty(), "preference list khaali nahi honi chahiye");
+
+    return demo::report();
 }

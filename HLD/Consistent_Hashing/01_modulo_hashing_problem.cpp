@@ -144,6 +144,11 @@ int main()
     cout << "  * Isliye jaha nodes aate-jaate rehte hain, wahan `% N` unusable hai.\n";
     cout << "\n  Chahiye kya: node add/remove pe sirf ~1/N keys move hon.\n";
     cout << "  Wahi STEP 2 (hash ring) me banayenge.\n";
+
+    // ---- VERIFY: theory kehti hai remap = 1 - 1/N_new ---------------------
+    demo::checkNear(moved4to5, 80.0, 2.0, "4->5 nodes pe remap ~80% hona chahiye");
+    demo::checkNear(measureRemapPercent(keys, 10, 11), 90.9, 2.0,
+                    "10->11 nodes pe remap ~90.9% hona chahiye");
     cout << "---------------------------------------------------------\n";
-    return 0;
+    return demo::report();
 }

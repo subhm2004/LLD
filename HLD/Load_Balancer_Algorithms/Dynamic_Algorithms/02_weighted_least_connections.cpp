@@ -174,5 +174,21 @@ int main()
     cout << "\n  Weight bhi khud pata chale? -> LEAST RESPONSE TIME (file 03)\n";
     cout << "  ya RESOURCE-BASED (file 04) — wo server se khud poochte hain.\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: WLC ginti nahi, UTILIZATION barabar karta hai ------------
+    {
+        int plainBigPeak = 0, plainSmallPeak = 0, wlcBigPeak = 0, wlcSmallPeak = 0;
+        for (const Server &s : lcServers)
+            (s.weight > 4 ? plainBigPeak : plainSmallPeak) = max(
+                (s.weight > 4 ? plainBigPeak : plainSmallPeak), s.peakConnections);
+        for (const Server &s : wlcServers)
+            (s.weight > 4 ? wlcBigPeak : wlcSmallPeak) = max(
+                (s.weight > 4 ? wlcBigPeak : wlcSmallPeak), s.peakConnections);
+
+        demo::check(wlcBigPeak > wlcSmallPeak,
+                    "Weighted LC me bade server pe zyada connections honi chahiye");
+        demo::check(wlcResult.maxLatency <= lcResult.maxLatency,
+                    "Weighted LC ka worst-case latency plain LC se behtar ya barabar ho");
+    }
+
+    return demo::report();
 }

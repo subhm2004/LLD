@@ -195,5 +195,13 @@ int main()
     cout << "  ❌ Naya server = thundering herd (slow start se bachao).\n";
     cout << "\n  Servers ki capacity alag ho to -> WEIGHTED LEAST CONNECTIONS (file 02).\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: dynamic ko static se behtar hona chahiye -----------------
+    demo::check(lcResult.avgLatency < rrResult.avgLatency,
+                "Least Connections ko Round Robin se kam latency deni chahiye");
+    demo::check(lcPeak < rrPeak,
+                "Least Connections ka worst peak connections kam hona chahiye");
+    demo::checkEqual(lcResult.completed, rrResult.completed,
+                     "dono ne utni hi requests poori ki honi chahiye (fair comparison)");
+
+    return demo::report();
 }

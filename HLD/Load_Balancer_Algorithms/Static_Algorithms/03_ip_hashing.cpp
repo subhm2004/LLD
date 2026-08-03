@@ -209,5 +209,24 @@ int main()
     cout << "\n  Remap problem ka ilaaj -> CONSISTENT HASHING (../../Consistent_Hashing/)\n";
     cout << "  Asli ilaaj -> server ko STATELESS banao (session Redis/JWT me).\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: stickiness + `% N` ka remap disaster ---------------------
+    {
+        const string ip = "203.0.113.99";
+        size_t first = hashIp(ip) % 4;
+        for (int i = 0; i < 100; ++i)
+        {
+            demo::checkEqual(hashIp(ip) % 4, first, "same IP hamesha same server pe jaani chahiye");
+        }
+
+        int moved = 0;
+        for (int i = 0; i < 10000; ++i)
+        {
+            string k = "10.0." + to_string(i / 256) + "." + to_string(i % 256);
+            if ((hashIp(k) % 4) != (hashIp(k) % 5)) ++moved;
+        }
+        demo::checkNear(100.0 * moved / 10000, 80.0, 3.0,
+                        "4->5 servers pe ~80% clients remap hone chahiye (1 - 1/N)");
+    }
+
+    return demo::report();
 }

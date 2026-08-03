@@ -276,5 +276,11 @@ int main()
     cout << "\n  Ab load theek hai. Par data ki ek hi copy hai — node mara to data gaya.\n";
     cout << "  Uska ilaaj -> Step 4 (REPLICATION).\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: vnodes ka dusra faayda — bojh SAB me bat-ta hai ----------
+    demo::checkEqual(inheritedPlain.size(), size_t(1),
+                     "bina vnodes ke poora bojh 1 hi padosi pe girna chahiye");
+    demo::checkEqual(inheritedVnodes.size(), size_t(4),
+                     "vnodes ke saath bojh saare 4 bache nodes me batna chahiye");
+
+    return demo::report();
 }

@@ -286,5 +286,23 @@ int main()
     cout << "     (Top-k ke liye saath me ek chhota heap rakhna padta hai.)\n";
     cout << "\n  Ab 'kitni baar' ho gaya. 'KITNE ALAG' kaise gino? -> HYPERLOGLOG (file 04)\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: CMS kabhi KAM nahi batata + bound nibhata hai ------------
+    {
+        vector<string> vs = makeZipfStream(20000, 500000, 5);
+        CountMinSketch v = CountMinSketch::forError(0.0005, 0.01);
+        unordered_map<string, uint64_t> truth;
+        for (const string &k : vs) { v.add(k); truth[k]++; }
+        int under = 0; uint64_t worst = 0;
+        for (const auto &e : truth)
+        {
+            uint64_t est = v.estimate(e.first);
+            if (est < e.second) ++under;
+            worst = max(worst, est - e.second);
+        }
+        demo::checkEqual(under, 0, "Count-Min Sketch kabhi KAM count nahi bata sakta");
+        demo::check(static_cast<double>(worst) <= v.errorBound(),
+                    "max error theory ke bound (eps*N) ke andar hona chahiye");
+    }
+
+    return demo::report();
 }

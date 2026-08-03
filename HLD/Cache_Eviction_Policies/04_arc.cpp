@@ -211,5 +211,18 @@ int main()
     cout << "     hai, to adaptive policy (ARC) hi sabse safe hai.\n";
     cout << "\n  Sab kuch ek saath -> 05_compare_all.cpp\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: ARC scan-resistant hai, par loop pe wo bhi harta hai -----
+    {
+        LruCache vlru(100);
+        ArcCache varc(100);
+        vector<string> withScan = makeWorkingSetScanWorkload(100, 200, 20000, 2000);
+        demo::check(hotKeyHitRate(varc, withScan) > hotKeyHitRate(vlru, withScan),
+                    "scan ke saath ARC ko LRU se behtar hona chahiye");
+
+        ArcCache vloop(100);
+        demo::checkNear(runWorkload(vloop, makeLoopWorkload(120, 200)), 0.0, 0.01,
+                        "pure loop pe ARC bhi 0% deta hai (deterministic policies ki seemaa)");
+    }
+
+    return demo::report();
 }

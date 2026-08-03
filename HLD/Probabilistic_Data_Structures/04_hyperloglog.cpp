@@ -265,5 +265,22 @@ int main()
     cout << "  ❌ Chhoti cardinality pe alag correction (linear counting) chahiye.\n";
     cout << "\n  Ab saare structures ek saath dekho -> 05_compare_all.cpp\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: HLL ka error theory ke daayre me hona chahiye ------------
+    {
+        HyperLogLog v(14);
+        const int VN = 500000;
+        for (int i = 0; i < VN; ++i) v.add("v:" + to_string(i));
+        double err = 100.0 * fabs(v.estimate() - VN) / VN;
+        demo::check(err < 100.0 * v.standardError() * 4.0,
+                    "HLL error standard error ke 4x ke andar hona chahiye");
+
+        HyperLogLog a(14), b(14), merged(14);
+        for (int i = 0; i < 300000; ++i) a.add("m:" + to_string(i));
+        for (int i = 200000; i < 500000; ++i) b.add("m:" + to_string(i));
+        merged.merge(a); merged.merge(b);
+        demo::check(fabs(merged.estimate() - 500000) / 500000 < 0.05,
+                    "merge ke baad overlap double nahi ginna chahiye (~5% ke andar)");
+    }
+
+    return demo::report();
 }

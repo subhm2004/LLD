@@ -152,5 +152,17 @@ int main()
     cout << "     se milta ho. Isi liye agla step: ARC (file 04) — jo khud dekh kar\n";
     cout << "     faisla karta hai.\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: LFU ka ulta-palta — dono taraf ---------------------------
+    {
+        vector<string> stable = makeZipfWorkload(5000, 100000);
+        vector<string> moving = makeShiftingWorkload(300, 10, 10000);
+        LruCache a(100), b(100);
+        LfuCache c(100), d(100);
+        demo::check(runWorkload(c, stable) > runWorkload(a, stable),
+                    "stable popularity pe LFU ko LRU se aage hona chahiye");
+        demo::check(runWorkload(d, moving) < runWorkload(b, moving),
+                    "badalti popularity pe LFU ko LRU se PEECHE hona chahiye");
+    }
+
+    return demo::report();
 }

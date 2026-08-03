@@ -294,6 +294,11 @@ int main()
     cout << "\n  Ab ek aur asli duniya ka dard: HOT KEYS. Distribution even hai,\n";
     cout << "  par traffic even nahi (ek celebrity key sab kuch kha jaati hai).\n";
     cout << "  Uska ilaaj -> Step 5 (BOUNDED LOADS).\n";
+
+    // ---- VERIFY: replication ki teen guarantees ---------------------------
+    demo::checkEqual(badKeys, 0, "ek hi key ki do copies ek hi physical node pe nahi honi chahiye");
+    demo::checkEqual(shortKeys, 0, "har key ko poori RF copies milni chahiye");
+    demo::checkEqual(lostKeys, 0, "RF>1 me ek node marne pe koi data nahi khona chahiye");
     cout << "---------------------------------------------------------\n";
-    return 0;
+    return demo::report();
 }

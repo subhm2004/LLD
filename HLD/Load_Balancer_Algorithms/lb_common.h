@@ -35,6 +35,7 @@
 #ifndef LOAD_BALANCER_ALGORITHMS_LB_COMMON_H
 #define LOAD_BALANCER_ALGORITHMS_LB_COMMON_H
 
+#include <cmath>
 #include <algorithm>
 #include <cstdint>
 #include <functional>
@@ -343,5 +344,73 @@ inline vector<Server> makeServersWithSickNode()
 }
 
 } // namespace lb
+
+
+// ============================================================================
+//  ⭐ VERIFICATION — demo ko sirf REPORT nahi, VERIFY bhi karna chahiye
+// ----------------------------------------------------------------------------
+//  Pehle ye demos numbers print karte the aur hamesha `return 0` dete the.
+//  Matlab agar kal koi implementation tod deta, to demo GALAT number print
+//  karta aur phir bhi "pass" dikhta — kisi ko pata hi nahi chalta.
+//
+//  Ab har zaroori invariant `demo::check(...)` se guzarta hai, aur `main()` ke
+//  ant me `demo::report()` failure count ke hisaab se EXIT CODE deta hai.
+//  Isi wajah se CI in demos ko regression test ki tarah chala sakta hai.
+//
+//  ⚠ Ye helper har folder ke apne common header me hai (shared file nahi) —
+//     taaki har folder standalone rahe aur akela copy kiya ja sake.
+// ============================================================================
+namespace demo
+{
+
+inline int failureCount = 0;
+
+// Ek shart check karo. Fail ho to loud print + ginti badhao.
+inline void check(bool condition, const std::string &what)
+{
+    if (!condition)
+    {
+        ++failureCount;
+        std::cout << "    ❌ VERIFY FAIL: " << what << "\n";
+    }
+}
+
+// Do value barabar honi chahiye
+template <typename T, typename U>
+inline void checkEqual(T actual, U expected, const std::string &what)
+{
+    if (!(actual == static_cast<T>(expected)))
+    {
+        ++failureCount;
+        std::cout << "    ❌ VERIFY FAIL: " << what << "  (mila " << actual
+                  << ", chahiye tha " << expected << ")\n";
+    }
+}
+
+// Value expected ke aas-paas honi chahiye — theory vs measurement ke liye
+inline void checkNear(double actual, double expected, double tolerance,
+                      const std::string &what)
+{
+    if (std::fabs(actual - expected) > tolerance)
+    {
+        ++failureCount;
+        std::cout << "    ❌ VERIFY FAIL: " << what << "  (mila " << actual
+                  << ", chahiye tha " << expected << " +/- " << tolerance << ")\n";
+    }
+}
+
+// main() ke ant me: exit 0 = sab theek, exit 1 = kuch toota
+inline int report()
+{
+    if (failureCount == 0)
+    {
+        std::cout << "\n✅ VERIFY: saare invariants theek hain.\n";
+        return 0;
+    }
+    std::cout << "\n❌ VERIFY: " << failureCount << " invariant TOOT gaye.\n";
+    return 1;
+}
+
+} // namespace demo
 
 #endif // LOAD_BALANCER_ALGORITHMS_LB_COMMON_H

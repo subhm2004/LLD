@@ -173,5 +173,12 @@ int main()
     cout << "  📌 Public APIs ka favourite: Stripe, GitHub, AWS — sab yahi.\n";
     cout << "\n  Bilkul steady outflow chahiye? -> LEAKING BUCKET (file 05).\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: pehla burst theek capacity jitna hona chahiye ------------
+    {
+        Probe<rl::TokenBucket> v(5, 1.0);
+        demo::checkEqual(sendBurst(v, "verify", 0.0, 20), 5,
+                         "bhari balti se theek capacity (5) requests nikalni chahiye");
+    }
+
+    return demo::report();
 }

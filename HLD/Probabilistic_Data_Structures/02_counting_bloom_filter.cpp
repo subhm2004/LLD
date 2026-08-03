@@ -270,5 +270,15 @@ int main()
     cout << "     (part A me naap ke dekha). Kabhi mat karna.\n";
     cout << "\n  Ab tak sirf 'hai ya nahi' tha. GINTI chahiye? -> COUNT-MIN SKETCH (file 03)\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: delete ke baad bhi false-negative guarantee bachni chahiye
+    {
+        CountingBloomFilter v = CountingBloomFilter::forCapacity(2000, 0.01);
+        for (int i = 0; i < 2000; ++i) v.add("v:" + to_string(i));
+        for (int i = 0; i < 1000; ++i) v.remove("v:" + to_string(i));
+        int fn = 0;
+        for (int i = 1000; i < 2000; ++i) if (!v.mightContain("v:" + to_string(i))) ++fn;
+        demo::checkEqual(fn, 0, "counting bloom me delete ke baad bhi false negative nahi hona chahiye");
+    }
+
+    return demo::report();
 }

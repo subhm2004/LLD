@@ -173,5 +173,30 @@ int main()
     cout << "     contention bhi utne hi zaroori hain.\n";
     cout << "\n  Ab wo policy jo khud dekh kar faisla karti hai -> ARC (file 04)\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: FIFO aur LRU ka DEFINING farak ---------------------------
+    //  Same trace pe dono ko ALAG faisla lena chahiye. Agar dono same jawab
+    //  dene lage to matlab kisi ek ka logic toot gaya hai.
+    {
+        FifoCache f(3);
+        LruCache l(3);
+        for (const string &k : {"A", "B", "C", "A", "D"})
+        {
+            f.access(k);
+            l.access(k);
+        }
+        demo::check(l.access("A"), "LRU ko A rakhna chahiye (wo dobara chhua gaya tha)");
+        demo::check(!f.access("A"), "FIFO ko A nikaal dena chahiye (wo sabse pehle aaya tha)");
+    }
+
+    // ---- VERIFY: CLOCK LRU ke kareeb hona chahiye -------------------------
+    {
+        vector<string> z = makeZipfWorkload(5000, 100000);
+        LruCache a(100);
+        ClockCache b(100);
+        double lruHit = runWorkload(a, z), clockHit = runWorkload(b, z);
+        demo::check(clockHit > 0.85 * lruHit,
+                    "CLOCK ko LRU ka kam se kam 85% hit rate dena chahiye (sasta LRU)");
+    }
+
+    return demo::report();
 }

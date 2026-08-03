@@ -194,5 +194,12 @@ int main()
     cout << "     (Cloudflare, Kong, zyadatar API gateways).\n";
     cout << "\n  Ab tak sab 'ginti' wale the. Ek alag soch -> TOKEN BUCKET (file 04).\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: counter bhi boundary burst rokta hai ---------------------
+    {
+        Probe<rl::SlidingWindowCounter> v(5, 10.0);
+        int total = sendBurst(v, "verify", 9.99, 5) + sendBurst(v, "verify", 10.01, 5);
+        demo::check(total <= 5, "sliding counter ko boundary burst rokna chahiye");
+    }
+
+    return demo::report();
 }

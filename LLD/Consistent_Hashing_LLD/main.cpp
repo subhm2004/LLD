@@ -86,6 +86,50 @@ void printKeyDistribution(const unordered_map<string, string> &owners, size_t to
 // Ek hi sample bahut noisy hota hai — average lene se asli trend dikhta hai.
 static const int TUNING_TRIALS = 200;
 
+
+// ============================================================================
+//  ⭐ VERIFICATION — demo ko sirf REPORT nahi, VERIFY bhi karna chahiye
+// ----------------------------------------------------------------------------
+//  Warna agar kal koi `ConsistentHashRing` tod de, to ye demo galat numbers
+//  print karke bhi "pass" dikhta. Ab invariants toote to EXIT CODE 1 aata hai,
+//  jisse CI ise regression test ki tarah chala sakta hai.
+// ============================================================================
+namespace demo
+{
+inline int failureCount = 0;
+
+inline void check(bool condition, const string &what)
+{
+    if (!condition)
+    {
+        ++failureCount;
+        cout << "    ❌ VERIFY FAIL: " << what << "\n";
+    }
+}
+
+template <typename T, typename U>
+inline void checkEqual(T actual, U expected, const string &what)
+{
+    if (!(actual == static_cast<T>(expected)))
+    {
+        ++failureCount;
+        cout << "    ❌ VERIFY FAIL: " << what << "  (mila " << actual << ", chahiye tha "
+             << expected << ")\n";
+    }
+}
+
+inline int report()
+{
+    if (failureCount == 0)
+    {
+        cout << "\n✅ VERIFY: saare invariants theek hain.\n";
+        return 0;
+    }
+    cout << "\n❌ VERIFY: " << failureCount << " invariant TOOT gaye.\n";
+    return 1;
+}
+} // namespace demo
+
 int main() {
     const int TOTAL_KEYS = 50000;
     vector<string> keys = makeKeys(TOTAL_KEYS);
@@ -327,7 +371,16 @@ int main() {
     cout << "  3. Replication me 'agle N POINTS' nahi, 'agle N alag PHYSICAL nodes'\n";
     cout << "---------------------------------------------------------\n";
 
-    return 0;
+    // ---- VERIFY: is LLD ke chaar core vaade -------------------------------
+    demo::checkEqual(duplicateCopies, 0,
+                     "ek key ki do copies ek hi physical node pe nahi honi chahiye");
+    demo::checkEqual(shortLists, 0, "har key ko poori RF copies milni chahiye");
+    demo::checkEqual(othersDisturbed, 0,
+                     "node DOWN karne pe baaki nodes ki keys nahi hilni chahiye");
+    demo::check(movedOnAdd < 45.0,
+                "node add pe ~1/N keys hilni chahiye, modulo wali 80% nahi");
+
+    return demo::report();
     // ⭐ Koi `delete` nahi — ring stack pe hai, uske andar nodes `unique_ptr`
     //    me hain. Scope khatam hote hi sab apne aap saaf ho jaayega.
 }

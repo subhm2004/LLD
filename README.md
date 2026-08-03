@@ -85,6 +85,16 @@ open HLD/HLD_Interview.md
 cd HLD/Consistent_Hashing && ./compile.sh && ./02_hash_ring_basic_demo
 ```
 
+### Sab kuch ek saath verify karo
+```bash
+./run_all.sh          # 31 demos build + run + invariants verify
+```
+
+> ⭐ Ye sirf compile check nahi hai. Har demo apne asli **invariants** verify karta hai —
+> "Bloom filter me false negative kabhi nahi", "Count-Min kabhi kam nahi batata",
+> "koi cache policy Belady optimal se upar nahi ja sakti". Invariant toota to demo
+> **exit code 1** deta hai aur script fail ho jaati hai. GitHub Actions har push pe yahi chalata hai.
+
 Baaki HLD theory-only hai; ye 4 folders usse **chala kar** dikhate hain — har demo apni
 kamzori khud **naap kar** batata hai (formula vs asli measurement).
 

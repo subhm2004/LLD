@@ -157,5 +157,12 @@ int main()
     cout << "\n  Chahiye: Fixed Window ki memory + Sliding Log ki accuracy.\n";
     cout << "  Wahi beech ka raasta -> SLIDING WINDOW COUNTER (file 03).\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: sliding log boundary burst rok deta hai -------------------
+    {
+        Probe<rl::SlidingWindowLog> v(5, 10.0);
+        int total = sendBurst(v, "verify", 9.99, 5) + sendBurst(v, "verify", 10.01, 5);
+        demo::checkEqual(total, 5, "sliding log me boundary pe limit se zyada nahi nikalna chahiye");
+    }
+
+    return demo::report();
 }

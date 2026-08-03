@@ -159,5 +159,19 @@ int main()
     cout << "       comparison khud chalao. Ye demos aapko tareeka de rahe hain,\n";
     cout << "       jawab nahi — jawab aapke apne data me hai.\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: SABSE ZAROORI INVARIANT ----------------------------------
+    //  Belady optimal ek UPPER BOUND hai. Koi bhi policy usse aage nikal jaaye
+    //  to ya policy me bug hai ya Belady me — dono soorat me build fail hona chahiye.
+    for (Workload &w : workloads)
+    {
+        double optimal = beladyOptimalHitRate(w.trace, CAPACITY);
+        for (CachePolicy *policy : policies)
+        {
+            demo::check(runWorkload(*policy, w.trace) <= optimal + 1e-9,
+                        string(policy->name()) + " Belady optimal se upar nahi ja sakta (" +
+                            w.name + ")");
+        }
+    }
+
+    return demo::report();
 }

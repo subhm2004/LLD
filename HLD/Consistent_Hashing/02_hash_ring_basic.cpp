@@ -273,5 +273,9 @@ int main()
     cout << "  ❌ Aur node marne pe uska POORA bojh ek hi padosi pe girta hai.\n";
     cout << "\n  Dono kamiyon ka ek hi ilaaj: VIRTUAL NODES -> Step 3.\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: consistent hashing ka core vaada -------------------------
+    demo::checkEqual(disturbed, 0, "node remove pe baaki nodes ki keys nahi hilni chahiye");
+    demo::check(movedOnAdd < 50.0, "node add pe remap modulo (80%) se kaafi kam hona chahiye");
+
+    return demo::report();
 }

@@ -1,0 +1,40 @@
+# ============================================================================
+#  CI — har push/PR pe saare demos build karo aur VERIFY karo
+# ----------------------------------------------------------------------------
+#  Ye sirf "compile ho gaya" check nahi karta. Har demo ke andar asli
+#  invariants `demo::check(...)` se verify hote hain, jaise:
+#
+#     * Bloom filter me FALSE NEGATIVE kabhi nahi hona chahiye
+#     * Count-Min Sketch kabhi KAM count nahi bata sakta
+#     * Koi bhi cache policy Belady optimal se upar nahi ja sakti
+#     * LRU ko A B C A D trace pe 'B' nikaalna chahiye (FIFO 'A' nikaalta hai)
+#
+#  Invariant toota to demo exit code 1 deta hai aur ye job RED ho jaata hai.
+#  Yaani algorithms ka BEHAVIOUR bhi protected hai, sirf syntax nahi.
+# ============================================================================
+name: build-and-verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: # GitHub UI se manually bhi chala sakte ho
+
+jobs:
+  verify:
+    name: Build + verify all demos
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compiler version
+        run: g++ --version
+
+      # ⭐ Asli kaam yahi ek line hai — run_all.sh sab sambhaal leta hai.
+      #    Wahi script local pe bhi chalti hai, to "CI me alag behave kar
+      #    raha hai" wali problem nahi aati.
+      - name: Build + verify (31 demos)
+        run: ./run_all.sh

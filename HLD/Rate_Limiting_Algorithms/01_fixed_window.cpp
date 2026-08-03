@@ -148,5 +148,12 @@ int main()
     cout << "\n  2x burst ka PERFECT ilaaj -> SLIDING WINDOW LOG (file 02).\n";
     cout << "  Sasta-sa ilaaj            -> SLIDING WINDOW COUNTER (file 03).\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: fixed window ka boundary burst HAMESHA 2x hota hai -------
+    {
+        Probe<rl::FixedWindowCounter> v(5, 10.0);
+        int total = sendBurst(v, "verify", 9.99, 5) + sendBurst(v, "verify", 10.01, 5);
+        demo::checkEqual(total, 10, "fixed window boundary pe theek 2x limit nikalni chahiye");
+    }
+
+    return demo::report();
 }

@@ -187,5 +187,16 @@ int main()
     cout << "      3. Window algorithms quota JHATKE me dete hain, buckets DRIP\n";
     cout << "         karke — backend ke liye drip behtar hai.\n";
     cout << "---------------------------------------------------------\n";
-    return 0;
+    // ---- VERIFY: sirf fixed window hi boundary pe limit todta hai ---------
+    {
+        Limiters v;
+        demo::checkEqual(sendBurst(v.fixedWindow, "v", 9.99, 5) + sendBurst(v.fixedWindow, "v", 10.01, 5),
+                         10, "fixed window boundary pe 2x deta hai");
+        demo::checkEqual(sendBurst(v.slidingLog, "v", 9.99, 5) + sendBurst(v.slidingLog, "v", 10.01, 5),
+                         5, "sliding log boundary pe limit nahi todta");
+        demo::checkEqual(sendBurst(v.tokenBucket, "v", 9.99, 5) + sendBurst(v.tokenBucket, "v", 10.01, 5),
+                         5, "token bucket boundary pe limit nahi todta");
+    }
+
+    return demo::report();
 }

@@ -164,5 +164,22 @@ int main()
         demo::checkEqual(total, 5, "sliding log me boundary pe limit se zyada nahi nikalna chahiye");
     }
 
+    // ---- VERIFY: ⭐ window SACH ME KHISAKNI chahiye ------------------------
+    //  Upar wala check akela KAAFI NAHI hai. Agar koi galti se purane timestamps
+    //  nikaalna (eviction) hi hata de, to limiter "hamesha bhara" reh jaayega —
+    //  aur upar wala check phir bhi PASS ho jaayega (kyunki wo sirf ye dekhta
+    //  hai ki 5 se zyada na nikle).
+    //
+    //  Isliye ULTI taraf se bhi check karna zaroori hai: window guzar jaane ke
+    //  BAAD requests wapas allow honi CHAHIYE. Ye wo galti pakad leta hai.
+    {
+        Probe<rl::SlidingWindowLog> v(5, 10.0);
+        sendBurst(v, "verify", 0.0, 5); // t=0 pe log bhar diya
+        demo::check(!v.at("verify", 5.0).allowed,
+                    "window ke andar (t=5) request DENY honi chahiye");
+        demo::check(v.at("verify", 11.0).allowed,
+                    "window guzarne ke baad (t=11) purane entries hat ke request ALLOW honi chahiye");
+    }
+
     return demo::report();
 }

@@ -40,6 +40,33 @@ FOLDERS=(
 BUILD_DIR="$(mktemp -d)"
 trap 'rm -rf "$BUILD_DIR"' EXIT
 
+# Ek demo ko kitne second se zyada nahi chalne dena
+DEMO_TIMEOUT="${DEMO_TIMEOUT:-120}"
+
+# ---- Portable timeout (macOS pe `timeout` command hoti hi nahi) ------------
+#  ⚠ Ye zaroori kyun hai: kuch bug INFINITE LOOP bana dete hain. Jaise CLOCK
+#     cache me agar "second chance" wala bit clear karna bhool jao, to victim
+#     dhoondhne wali sui HAMESHA ghoomti rehti hai aur kabhi rukti nahi.
+#     Bina timeout ke aisa demo CI ko latka deta (fail nahi hota, bas atak
+#     jaata). Timeout usse ek SAAF failure bana deta hai.
+run_with_timeout() {
+    local seconds="$1"
+    shift
+
+    "$@" &
+    local pid=$!
+
+    ( sleep "$seconds"; kill -9 "$pid" 2>/dev/null ) &
+    local watcher=$!
+
+    wait "$pid" 2>/dev/null
+    local status=$?
+
+    kill -9 "$watcher" 2>/dev/null
+    wait "$watcher" 2>/dev/null
+    return $status
+}
+
 total=0
 failed=0
 declare -a FAILURES=()
@@ -77,13 +104,19 @@ for folder in "${FOLDERS[@]}"; do
 
         # ⭐ Yahan asli baat hai: demo ka EXIT CODE dekhte hain.
         #    Invariant toota to demo 1 return karta hai.
-        if "$binary" >"$BUILD_DIR/$name.out" 2>&1; then
+        if run_with_timeout "$DEMO_TIMEOUT" "$binary" >"$BUILD_DIR/$name.out" 2>&1; then
             echo "    ✅ pass       : $(basename "$src")"
         else
-            echo "    ❌ VERIFY FAIL: $src"
-            grep -E "VERIFY FAIL|VERIFY:" "$BUILD_DIR/$name.out" | sed 's/^/        /' | head -10
+            status=$?
+            if [ "$status" -ge 128 ]; then
+                echo "    ❌ TIMEOUT/HANG: $src  (${DEMO_TIMEOUT}s se zyada laga — infinite loop?)"
+                FAILURES+=("TIMEOUT $src")
+            else
+                echo "    ❌ VERIFY FAIL: $src"
+                grep -E "VERIFY FAIL|VERIFY:" "$BUILD_DIR/$name.out" | sed 's/^/        /' | head -10
+                FAILURES+=("VERIFY $src")
+            fi
             failed=$((failed + 1))
-            FAILURES+=("VERIFY $src")
         fi
     done < <(find "$folder" -name "*.cpp" | sort)
     echo
